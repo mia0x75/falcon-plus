@@ -17,6 +17,7 @@ package store
 import (
 	"fmt"
 	"github.com/open-falcon/falcon-plus/common/model"
+	"github.com/open-falcon/falcon-plus/common/utils"
 	"math"
 	"strconv"
 	"strings"
@@ -27,6 +28,13 @@ type Function interface {
 }
 
 type MaxFunction struct {
+	Function
+	Limit      int
+	Operator   string
+	RightValue float64
+}
+
+type DeviationFunction struct {
 	Function
 	Limit      int
 	Operator   string
@@ -289,6 +297,8 @@ func ParseFuncFromString(str string, operator string, rightValue float64) (fn Fu
 		fn = &PDiffFunction{Limit: args[0], Operator: operator, RightValue: rightValue}
 	case "lookup":
 		fn = &LookupFunction{Num: args[0], Limit: args[1], Operator: operator, RightValue: rightValue}
+	case "deviation":
+		fn = &DeviationFunction{Limit: args[0], Operator: operator, RightValue: rightValue}
 	default:
 		err = fmt.Errorf("not_supported_method")
 	}
@@ -313,4 +323,38 @@ func checkIsTriggered(leftValue float64, operator string, rightValue float64) (i
 	}
 
 	return
+}
+
+/*
+	离群点检测函数
+	deviation（10）取最新10个点数据分别计算他们的标准差和均值，±3倍于标准方差后则报警。
+*/
+func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+	vs, isEnough = L.HistoryData(this.Limit)
+	if !isEnough {
+		return
+	}
+ 	if len(vs) == 0 {
+		isEnough = false
+		return
+	}
+ 	leftValue = vs[0].Value
+ 	var datas []float64
+	for _, i := range vs {
+		datas = append(datas, i.Value)
+	}
+ 	isTriggered = false
+ 	std := utils.ComputeStdDeviation(datas)
+	mean := utils.ComputeMean(datas)
+ 	upper_bound := mean + 3 * std
+	lower_bound := mean - 3 * std
+ 	if leftValue >= upper_bound  {
+		isTriggered = true
+		return
+	}
+ 	if leftValue <= lower_bound {
+		isTriggered = true
+		return
+	}
+ 	return
 }

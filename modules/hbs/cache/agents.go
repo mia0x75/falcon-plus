@@ -48,10 +48,11 @@ func (this *SafeAgents) Put(req *model.AgentReportRequest) {
 		agentInfo.ReportRequest.PluginVersion != req.PluginVersion {
 
 		db.UpdateAgent(val)
-		this.Lock()
-		this.M[req.Hostname] = val
-		this.Unlock()
 	}
+
+	this.Lock()
+	this.M[req.Hostname] = val
+	this.Unlock()
 }
 
 func (this *SafeAgents) Get(hostname string) (*model.AgentUpdateInfo, bool) {
@@ -104,3 +105,4 @@ func deleteStaleAgents() {
 		}
 	}
 }
+

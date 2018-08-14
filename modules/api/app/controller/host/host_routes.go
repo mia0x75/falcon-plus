@@ -59,10 +59,18 @@ func Routes(r *gin.Engine) {
 	hostr.GET("/hostgroup/:host_group/template", GetTemplateOfHostGroup)
 
 	//host
+	hostr.GET("/host", GetHosts)
 	hostr.GET("/host/:host_id/template", GetTplsRelatedHost)
 	hostr.GET("/host/:host_id/hostgroup", GetGrpsRelatedHost)
 
 	//maintain
 	hostr.POST("/host/maintain", SetMaintain)
 	hostr.DELETE("/host/maintain", UnsetMaintain)
+
+	//endpoint
+	hostr.GET("/endpoint/:endpoint_name/hostgroup", GetGrpsRelatedEndpoint)
+
+	//find
+	hostr.POST("/host/find_by_strategy", FindByMetric)
+	hostr.GET("/hosts/maintain", FindByMaintain)
 }

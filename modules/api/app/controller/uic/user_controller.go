@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"text/template"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -282,6 +283,11 @@ func IsUserInTeams(c *gin.Context) {
 		return
 	}
 
+	if len(teams) == 0 {
+		h.JSONR(c, http.StatusExpectationFailed, "query params team_names don't exist in falcon!!")
+		return
+	}
+
 	tids := []int64{}
 	for _, t := range teams {
 		tids = append(tids, t.ID)
@@ -291,6 +297,11 @@ func IsUserInTeams(c *gin.Context) {
 	dt = db.Uic.Table("rel_team_user").Where("uid = ? and tid in (?)", uid, tids).Find(&tus)
 	if dt.Error != nil {
 		h.JSONR(c, http.StatusExpectationFailed, dt.Error)
+		return
+	}
+
+	if len(tus) == 0 {
+		h.JSONR(c, http.StatusExpectationFailed, "false")
 		return
 	}
 
@@ -482,6 +493,7 @@ func UserList(c *gin.Context) {
 		return
 	}
 	q := c.DefaultQuery("q", ".+")
+	q = template.HTMLEscapeString(q)
 	var user []uic.User
 	var dt *gorm.DB
 	if limit != -1 && page != -1 {
