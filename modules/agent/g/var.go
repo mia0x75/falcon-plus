@@ -1,15 +1,17 @@
 package g
 
 import (
+	"fmt"
 	"bytes"
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/toolkits/slice"
 	"log"
 	"net"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/open-falcon/falcon-plus/common/model"
+	"github.com/toolkits/slice"
 )
 
 var Root string
@@ -26,12 +28,15 @@ var LocalIp string
 
 func InitLocalIp() {
 	if Config().Heartbeat.Enabled {
-		conn, err := net.DialTimeout("tcp", Config().Heartbeat.Addr, time.Second*10)
-		if err != nil {
-			log.Println("get local addr failed !")
-		} else {
-			LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
-			conn.Close()
+		for _, addr := range Config().Heartbeat.Addrs {
+			conn, err := net.DialTimeout("tcp", addr, time.Second*10)
+			if err != nil {
+				log.Println(fmt.Sprintf("connect to heartbeat server %s failed", addr))
+			} else {
+				defer conn.Close()
+				LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
+				break
+			}
 		}
 	} else {
 		log.Println("hearbeat is not enabled, can't get localip")
@@ -43,10 +48,10 @@ var (
 )
 
 func InitRpcClients() {
-	if Config().Heartbeat.Enabled {
+	if Config().Heartbeat.Enabled && len(Config().Heartbeat.Addrs) > 0 {
 		HbsClient = &SingleConnRpcClient{
-			RpcServer: Config().Heartbeat.Addr,
-			Timeout:   time.Duration(Config().Heartbeat.Timeout) * time.Millisecond,
+			RpcServers: Config().Heartbeat.Addrs,
+			Timeout:    time.Duration(Config().Heartbeat.Timeout) * time.Millisecond,
 		}
 	}
 }
