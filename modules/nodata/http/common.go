@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/toolkits/file"
-
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 

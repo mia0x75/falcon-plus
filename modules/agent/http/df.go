@@ -2,9 +2,10 @@ package http
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/toolkits/core"
 	"github.com/toolkits/nux"
-	"net/http"
 )
 
 func configDfRoutes() {

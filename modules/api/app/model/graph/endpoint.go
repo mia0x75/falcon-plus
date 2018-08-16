@@ -1,6 +1,8 @@
 package graph
 
-import "time"
+import (
+	"time"
+)
 
 type Endpoint struct {
 	ID               uint              `gorm:"primary_key"`

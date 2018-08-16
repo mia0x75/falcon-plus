@@ -1,9 +1,10 @@
 package cron
 
 import (
+	"time"
+
 	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
-	"time"
 )
 
 func UpdateItems() {

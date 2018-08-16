@@ -1,12 +1,13 @@
 package graph
 
 import (
+	"log"
+	"testing"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/api/config"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/spf13/viper"
-	"log"
-	"testing"
 )
 
 func init() {

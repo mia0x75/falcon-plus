@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"net/http"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,6 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
 	grh "github.com/open-falcon/falcon-plus/modules/api/graph"
 	tcache "github.com/toolkits/cache/localcache/timedcache"
-	"net/http"
 )
 
 var (

@@ -2,12 +2,13 @@ package g
 
 import (
 	"errors"
-	"github.com/toolkits/net"
 	"log"
 	"math"
 	"net/rpc"
 	"sync"
 	"time"
+
+	"github.com/toolkits/net"
 )
 
 type SingleConnRpcClient struct {

@@ -1,11 +1,12 @@
 package funcs
 
 import (
+	"log"
+	"strings"
+
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/nux"
-	"log"
-	"strings"
 )
 
 func ProcMetrics() (L []*model.MetricValue) {

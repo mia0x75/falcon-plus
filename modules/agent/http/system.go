@@ -2,10 +2,11 @@ package http
 
 import (
 	"fmt"
-	"github.com/toolkits/nux"
 	"net/http"
 	"runtime"
 	"time"
+
+	"github.com/toolkits/nux"
 )
 
 func configSystemRoutes() {

@@ -1,6 +1,8 @@
 package mockcfg
 
-import "errors"
+import (
+	"errors"
+)
 
 type APICreateNoDataInputs struct {
 	Name string `json:"name" binding:"required"`

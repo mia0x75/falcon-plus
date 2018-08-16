@@ -1,6 +1,8 @@
 package g
 
-import "path/filepath"
+import (
+	"path/filepath"
+)
 
 var Modules map[string]bool
 var BinOf map[string]string

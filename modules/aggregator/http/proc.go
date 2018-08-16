@@ -1,8 +1,9 @@
 package http
 
 import (
-	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 	"net/http"
+
+	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 )
 
 func configProcRoutes() {

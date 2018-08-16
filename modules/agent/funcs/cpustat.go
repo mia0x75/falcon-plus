@@ -1,12 +1,13 @@
 package funcs
 
 import (
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/toolkits/nux"
 	"runtime"
 	"sync"
 	"fmt"
 	"strconv"
+
+	"github.com/open-falcon/falcon-plus/common/model"
+	"github.com/toolkits/nux"
 )
 
 const (

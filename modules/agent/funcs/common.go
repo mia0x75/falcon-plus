@@ -1,8 +1,9 @@
 package funcs
 
 import (
-	"github.com/open-falcon/falcon-plus/common/model"
 	"strings"
+
+	"github.com/open-falcon/falcon-plus/common/model"
 )
 
 func NewMetricValue(metric string, val interface{}, dataType string, tags ...string) *model.MetricValue {

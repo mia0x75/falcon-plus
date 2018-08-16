@@ -2,11 +2,9 @@ package helper
 
 import (
 	"errors"
-
 	"encoding/json"
 
 	log "github.com/Sirupsen/logrus"
-
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/config"

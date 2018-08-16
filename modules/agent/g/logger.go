@@ -1,6 +1,8 @@
 package g
 
-import log "github.com/Sirupsen/logrus"
+import (
+	log "github.com/Sirupsen/logrus"
+)
 
 func InitLog(level string) (err error) {
 	switch level {

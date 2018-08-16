@@ -6,7 +6,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
 	"io/ioutil"
 
 	"github.com/gin-gonic/gin"

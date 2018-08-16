@@ -1,17 +1,3 @@
-// Copyright 2017 Xiaomi, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package test
 
 import (
@@ -22,7 +8,6 @@ import (
 	"github.com/chyeh/viper"
 	"github.com/elgs/jsonql"
 	"github.com/masato25/resty"
-
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -42,12 +27,12 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	    	"endTime": 1480521600,
-	    	"status": "PROBLEM",
-	    	"process_status": "ignored,unresolved",
-	    	"limit": 10
-	    }`).
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"status": "PROBLEM",
+				"process_status": "ignored,unresolved",
+				"limit": 10
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='PROBLEM'")
@@ -62,12 +47,12 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	    	"endTime": 1480521600,
-	    	"status": "PROBLEM,OK",
-	    	"process_status": "ignored,unresolved",
-	    	"limit": 10
-	    }`).
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"status": "PROBLEM,OK",
+				"process_status": "ignored,unresolved",
+				"limit": 10
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='PROBLEM'")
@@ -82,12 +67,12 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	      "endTime": 1480521600,
-	      "status": "PROBLEM",
-	      "process_status": "unresolved",
-	      "limit": 10
-	    }`).
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"status": "PROBLEM",
+				"process_status": "unresolved",
+				"limit": 10
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='PROBLEM'")
@@ -101,11 +86,11 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	      "endTime": 1480521600,
-	      "process_status": "unresolved",
-	      "limit": 1
-	    }`).
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"process_status": "unresolved",
+				"limit": 1
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='OK'")
@@ -119,11 +104,11 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1477584000,
-	      "endTime": 1477670400,
-	      "process_status": "unresolved",
-	      "limit": 10
-	    }`).
+				"startTime": 1477584000,
+				"endTime": 1477670400,
+				"process_status": "unresolved",
+				"limit": 10
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='OK'")
@@ -137,12 +122,12 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	      "endTime": 1480521600,
-	      "process_status": "unresolved",
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"process_status": "unresolved",
 				"page": 0,
-	      "limit": 1
-	    }`).
+				"limit": 1
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("id='s_322_00c5f5c87a71bd4c686c0a4a0544b719'")
@@ -152,12 +137,12 @@ func TestAlarmEventCase(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(`
 			{
-	      "startTime": 1466956800,
-	      "endTime": 1480521600,
-	      "process_status": "unresolved",
+				"startTime": 1466956800,
+				"endTime": 1480521600,
+				"process_status": "unresolved",
 				"page": 1,
-	      "limit": 1
-	    }`).
+				"limit": 1
+			}`).
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ = jsonql.NewStringQuery(resp.String())
 		check, _ = parser.Query("id='s_322_00a9b9f9f859d8436f9b643ea5a1fb5e'")

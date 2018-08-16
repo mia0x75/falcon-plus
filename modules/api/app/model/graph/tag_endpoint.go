@@ -1,6 +1,8 @@
 package graph
 
-import "time"
+import (
+	"time"
+)
 
 type TagEndpoint struct {
 	ID         uint `gorm:"primary_key"`

@@ -1,8 +1,9 @@
 package g
 
 import (
-	nproc "github.com/toolkits/proc"
 	"log"
+
+	nproc "github.com/toolkits/proc"
 )
 
 // counter

@@ -1,6 +1,8 @@
 package alarm
 
-import "time"
+import (
+	"time"
+)
 
 // +--------------+------------------+------+-----+-------------------+-----------------------------+
 // | Field        | Type             | Null | Key | Default           | Extra                       |

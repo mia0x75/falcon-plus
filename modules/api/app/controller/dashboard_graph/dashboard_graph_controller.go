@@ -1,14 +1,15 @@
 package dashboard_graph
 
 import (
-	"github.com/gin-gonic/gin"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
-	m "github.com/open-falcon/falcon-plus/modules/api/app/model/dashboard"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
+	m "github.com/open-falcon/falcon-plus/modules/api/app/model/dashboard"
 )
 
 type APITmpGraphCreateReqData struct {

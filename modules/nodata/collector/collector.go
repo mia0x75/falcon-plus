@@ -7,7 +7,6 @@ import (
 	tlist "github.com/toolkits/container/list"
 	"github.com/toolkits/container/nmap"
 	ttime "github.com/toolkits/time"
-
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 

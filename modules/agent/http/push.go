@@ -2,9 +2,10 @@ package http
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
-	"net/http"
 )
 
 func configPushRoutes() {

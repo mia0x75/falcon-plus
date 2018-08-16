@@ -6,7 +6,6 @@ import (
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/container/nmap"
-
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )

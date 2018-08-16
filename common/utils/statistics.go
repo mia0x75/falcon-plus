@@ -1,6 +1,8 @@
 package utils
 
-import "math"
+import (
+	"math"
+)
 
 func ComputeMean(values []float64) float64 {
 	var sum float64
