@@ -19,6 +19,7 @@
 		"numberOfReplicas": 500
 	},
 	"metric_list_file": "./api/data/metric",
+	"rpc_addr": "0.0.0.0:6040",
 	"web_port": "%%PLUS_API_HTTP%%",
 	"access_control": true,
 	"signup_disable": false,
