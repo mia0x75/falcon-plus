@@ -1,17 +1,3 @@
-// Copyright 2017 Xiaomi, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import (
@@ -24,6 +10,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	statsd "github.com/amalfra/gin-statsd/middleware"
 	yaag_gin "github.com/masato25/yaag/gin"
 	"github.com/masato25/yaag/yaag"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller"
@@ -76,6 +63,9 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes := gin.Default()
+	if false {
+		routes.Use(statsd.New(statsd.Options{Port: 8089}))
+	}
 	if viper.GetBool("gen_doc") {
 		yaag.Init(&yaag.Config{
 			On:       true,

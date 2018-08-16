@@ -1,17 +1,3 @@
-// Copyright 2017 Xiaomi, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package graph
 
 import (
@@ -39,10 +25,10 @@ func Routes(r *gin.Engine) {
 	authapi.DELETE("/graph/endpoint", DeleteGraphEndpoint)
 	authapi.DELETE("/graph/counter", DeleteGraphCounter)
 
-	grfanaapi := r.Group("/api")
-	grfanaapi.GET("/v1/grafana", GrafanaMainQuery)
-	grfanaapi.GET("/v1/grafana/metrics/find", GrafanaMainQuery)
-	grfanaapi.POST("/v1/grafana/render", GrafanaRender)
-	grfanaapi.GET("/v1/grafana/render", GrafanaRender)
+	grfanaapi := r.Group("/api/v1")
+	grfanaapi.GET("/grafana", GrafanaMainQuery)
+	grfanaapi.GET("/grafana/metrics/find", GrafanaMainQuery)
+	grfanaapi.POST("/grafana/render", GrafanaRender)
+	grfanaapi.GET("/grafana/render", GrafanaRender)
 
 }

@@ -1,17 +1,3 @@
-// Copyright 2017 Xiaomi, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package graph
 
 import (
@@ -89,7 +75,7 @@ func responseHostGroupRegexp(limit int, regexpKey string) (result []APIGrafanaMa
 // for find host list by HostGroup & grafana template searching
 func responseHostsByHostGroup(limit int, hostgroup string) (result []APIGrafanaMainQueryOutputs) {
 	result = []APIGrafanaMainQueryOutputs{}
- 	hostHelp := pm.Host{}
+	hostHelp := pm.Host{}
 	hosts := []pm.Host{}
 	hgHelp := pm.HostGroup{}
 	hgs := []pm.HostGroup{}
@@ -108,9 +94,9 @@ func responseHostsByHostGroup(limit int, hostgroup string) (result []APIGrafanaM
 	for _, grpHost := range grpHosts {
 		hostIDs = append(hostIDs, grpHost.HostID)
 	}
-        if 0 == len(hostIDs) {
+	if 0 == len(hostIDs) {
 		return
-        }
+	}
 	db.Falcon.Table(hostHelp.TableName()).Where("id in (?)", hostIDs).Limit(limit).Scan(&hosts)
 	for _, host := range hosts {
 		result = append(result, APIGrafanaMainQueryOutputs{

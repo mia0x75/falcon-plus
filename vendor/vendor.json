@@ -7,6 +7,10 @@
 			"revision": ""
 		},
 		{
+			"path": "github.com/amalfra/gin-statsd",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "QfNyP58Wby5nuvgr37f7vxct75A=",
 			"path": "github.com/BurntSushi/toml",
 			"revision": "056c9bc7be7190eaa7715723883caffa5f8fa3e4",
