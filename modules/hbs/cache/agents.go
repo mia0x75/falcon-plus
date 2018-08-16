@@ -17,7 +17,9 @@ type SafeAgents struct {
 	M map[string]*model.AgentUpdateInfo
 }
 
-var Agents = NewSafeAgents()
+var (
+	Agents = NewSafeAgents()
+)
 
 func NewSafeAgents() *SafeAgents {
 	return &SafeAgents{M: make(map[string]*model.AgentUpdateInfo)}
@@ -93,3 +95,45 @@ func deleteStaleAgents() {
 	}
 }
 
+// CheckAgentHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
+/*
+func CheckAgentHbs() {
+	duration := time.Second * time.Duration(g.Config().AgentMaxIdle)
+	for {
+		time.Sleep(duration)
+		checkAgentHbs()
+	}
+}
+
+func checkAgentHbs() {
+	before := time.Now().Unix() - g.Config().AgentMaxIdle
+	keys := Agents.Keys()
+	count := len(keys)
+	if count == 0 {
+		return
+	}
+
+	for i := 0; i < count; i++ {
+		curr, _ := Agents.Get(keys[i])
+		if curr.LastUpdate < before {
+			key := cutils.PK(curr.ReportRequest.Hostname, "agent.alive", nil)
+			genMock(genTs(time.Now().Unix(), g.Config().AgentStep), key, curr.ReportRequest.Hostname)
+		}
+	}
+
+	sender.SendMockOnceAsync()
+}
+
+func genMock(ts int64, key, hostname string) {
+	sender.AddMock(key, hostname, "agent.alive", "", ts, "GAUGE", g.Config().AgentStep, -1)
+}
+
+//mock的数据,要前移1+个周期、防止覆盖正常值
+func genTs(nowTs int64, step int64) int64 {
+	if step < 1 {
+		step = 60
+	}
+
+	return nowTs - nowTs%step - 2*step
+}
+*/

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"regexp"
 
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
@@ -46,8 +47,9 @@ func probeUrl(furl string, timeout string) (bool, error) {
 		log.Println("read retcode failed.err is:", err)
 		return false, err
 	}
-	if strings.TrimSpace(string(retcode)) != "200" {
-		log.Printf("return code [%v] is not 200.query url is [%v]", string(retcode), furl)
+	match, _ := regexp.MatchString("[20|30|10].*", strings.TrimSpace(string(retcode)))
+	if !match {
+		log.Printf("return code [%v] is not match regex. query url is [%v]", string(retcode), furl)
 		return false, err
 	}
 	return true, err
