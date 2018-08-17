@@ -5,3 +5,5 @@ out/
 *.tar.gz
 docs/_site
 .idea
+.vscode/
+open-falcon
