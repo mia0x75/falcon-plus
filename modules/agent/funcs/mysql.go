@@ -287,7 +287,7 @@ func dataType(k string) string {
 func NewMetric(name string) *model.MetricValue {
 	hostname, _ := g.Hostname()
 	return &model.MetricValue{
-		Metric:    "mysql." + strings.ToLower(name),
+		Metric:    "mysql." + name,
 		Endpoint:  hostname,
 		Type:      dataType(name),
 		Tags:      Tag,
