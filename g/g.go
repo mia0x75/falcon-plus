@@ -24,32 +24,38 @@ func init() {
 		"gateway":    true,
 		"api":        true,
 		"alarm":      true,
+		"updater":    true,
+		"task":       true,
 	}
 
 	BinOf = map[string]string{
-		"agent":      "./agent/bin/falcon-agent",
-		"aggregator": "./aggregator/bin/falcon-aggregator",
-		"graph":      "./graph/bin/falcon-graph",
-		"hbs":        "./hbs/bin/falcon-hbs",
-		"judge":      "./judge/bin/falcon-judge",
-		"nodata":     "./nodata/bin/falcon-nodata",
-		"transfer":   "./transfer/bin/falcon-transfer",
-		"gateway":    "./gateway/bin/falcon-gateway",
-		"api":        "./api/bin/falcon-api",
-		"alarm":      "./alarm/bin/falcon-alarm",
+		"agent":      "/usr/bin/falcon-agent",
+		"aggregator": "/usr/bin/falcon-aggregator",
+		"graph":      "/usr/bin/falcon-graph",
+		"hbs":        "/usr/bin/falcon-hbs",
+		"judge":      "/usr/bin/falcon-judge",
+		"nodata":     "/usr/bin/falcon-nodata",
+		"transfer":   "/usr/bin/falcon-transfer",
+		"gateway":    "/usr/bin/falcon-gateway",
+		"api":        "/usr/bin/falcon-api",
+		"alarm":      "/usr/bin/falcon-alarm",
+		"updater":    "/usr/bin/falcon-updater",
+		"task":       "/usr/bin/falcon-task",
 	}
 
 	cfgOf = map[string]string{
-		"agent":      "./agent/config/cfg.json",
-		"aggregator": "./aggregator/config/cfg.json",
-		"graph":      "./graph/config/cfg.json",
-		"hbs":        "./hbs/config/cfg.json",
-		"judge":      "./judge/config/cfg.json",
-		"nodata":     "./nodata/config/cfg.json",
-		"transfer":   "./transfer/config/cfg.json",
-		"gateway":    "./gateway/config/cfg.json",
-		"api":        "./api/config/cfg.json",
-		"alarm":      "./alarm/config/cfg.json",
+		"agent":      "/etc/mfp/agent.json",
+		"aggregator": "/etc/mfp/aggregator.json",
+		"graph":      "/etc/mfp/graph.json",
+		"hbs":        "/etc/mfp/hbs.json",
+		"judge":      "/etc/mfp/judge.json",
+		"nodata":     "/etc/mfp/nodata.json",
+		"transfer":   "/etc/mfp/transfer.json",
+		"gateway":    "/etc/mfp/gateway.json",
+		"api":        "/etc/mfp/api.json",
+		"alarm":      "/etc/mfp/alarm.json",
+		"updater":    "/etc/mfp/updater.json",
+		"task":       "/etc/mfp/task.json",
 	}
 
 	ModuleApps = map[string]string{
@@ -63,19 +69,23 @@ func init() {
 		"gateway":    "falcon-gateway",
 		"api":        "falcon-api",
 		"alarm":      "falcon-alarm",
+		"updater":    "falcon-updater",
+		"task":       "falcon-task",
 	}
 
 	logpathOf = map[string]string{
-		"agent":      "./agent/logs/agent.log",
-		"aggregator": "./aggregator/logs/aggregator.log",
-		"graph":      "./graph/logs/graph.log",
-		"hbs":        "./hbs/logs/hbs.log",
-		"judge":      "./judge/logs/judge.log",
-		"nodata":     "./nodata/logs/nodata.log",
-		"transfer":   "./transfer/logs/transfer.log",
-		"gateway":    "./gateway/logs/gateway.log",
-		"api":        "./api/logs/api.log",
-		"alarm":      "./alarm/logs/alarm.log",
+		"agent":      "/var/log/mfp/agent.log",
+		"aggregator": "/var/log/mfp/aggregator.log",
+		"graph":      "/var/log/mfp/graph.log",
+		"hbs":        "/var/log/mfp/hbs.log",
+		"judge":      "/var/log/mfp/judge.log",
+		"nodata":     "/var/log/mfp/nodata.log",
+		"transfer":   "/var/log/mfp/transfer.log",
+		"gateway":    "/var/log/mfp/gateway.log",
+		"api":        "/var/log/mfp/api.log",
+		"alarm":      "/var/log/mfp/alarm.log",
+		"updater":    "/var/log/mfp/updater.log",
+		"task":       "/var/log/mfp/task.log",
 	}
 
 	PidOf = map[string]string{
@@ -89,6 +99,8 @@ func init() {
 		"gateway":    "<NOT SET>",
 		"api":        "<NOT SET>",
 		"alarm":      "<NOT SET>",
+		"updater":    "<NOT SET>",
+		"task":       "<NOT SET>",
 	}
 
 	// Modules are deployed in this order
@@ -103,6 +115,8 @@ func init() {
 		"gateway",
 		"api",
 		"alarm",
+		"updater",
+		"task",
 	}
 }
 
