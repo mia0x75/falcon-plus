@@ -17,6 +17,7 @@ const ( // equality
 	shouldHaveBeenTrue              = "Expected: true\nActual:   %v"
 	shouldHaveBeenFalse             = "Expected: false\nActual:   %v"
 	shouldHaveBeenZeroValue         = "'%+v' should have been the zero value" //"Expected: (zero value)\nActual:   %v"
+	shouldNotHaveBeenZeroValue      = "'%+v' should NOT have been the zero value"
 )
 
 const ( // quantity comparisons
@@ -44,7 +45,7 @@ const ( // collections
 	shouldNotHaveBeenEmpty         = "Expected %+v to NOT be empty (but it was)!"
 	shouldHaveBeenAValidInteger    = "You must provide a valid integer (was %v)!"
 	shouldHaveBeenAValidLength     = "You must provide a valid positive integer (was %v)!"
-	shouldHaveHadLength            = "Expected %+v (length: %v) to have length equal to '%v', but it wasn't!"
+	shouldHaveHadLength            = "Expected collection to have length equal to [%v], but it's length was [%v] instead! contents: %+v"
 )
 
 const ( // strings
@@ -78,8 +79,8 @@ const ( // type checking
 	shouldCompareWithInterfacePointer = "The expected value must be a pointer to an interface type (eg. *fmt.Stringer)"
 	shouldNotBeNilActual              = "The actual value was 'nil' and should be a value or a pointer to a value!"
 
-	shouldBeError                   = "Expected error to occur!"
-	shouldBeErrorExpectedMessage    = "Expected error '%v' to occur (but got error: '%v')!"
+	shouldBeError                       = "Expected an error value (but was '%v' instead)!"
+	shouldBeErrorInvalidComparisonValue = "The final argument to this assertion must be a string or an error value (you provided: '%v')."
 )
 
 const ( // time comparisons
