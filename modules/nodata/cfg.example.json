@@ -5,15 +5,15 @@
         "listen": "0.0.0.0:6090"
     },
     "plus_api":{
-        "connectTimeout": 500,
-        "requestTimeout": 2000,
+        "connect_timeout": 500,
+        "request_timeout": 2000,
         "addr": "http://127.0.0.1:8080",
         "token": "default-token-used-in-server-side"
     },
     "config": {
         "enabled": true,
         "dsn": "root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&parseTime=true&wait_timeout=604800",
-        "maxIdle": 4
+        "max_idle": 4
     },
     "collector":{
         "enabled": true,
@@ -22,9 +22,9 @@
     },
     "sender":{
         "enabled": true,
-        "connectTimeout": 500,
-        "requestTimeout": 2000,
-        "transferAddr": "127.0.0.1:6060",
+        "connect_timeout": 500,
+        "request_timeout": 2000,
+        "transfer_addr": "127.0.0.1:6060",
         "batch": 500
     }
 }

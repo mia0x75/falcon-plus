@@ -7,11 +7,11 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-resty/resty"
-	. "github.com/smartystreets/goconvey/convey"
-	"github.com/spf13/viper"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
 	cfg "github.com/open-falcon/falcon-plus/modules/api/config"
+	. "github.com/smartystreets/goconvey/convey"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -26,7 +26,7 @@ func init() {
 	viper.SetConfigName("cfg_test")
 	viper.ReadInConfig()
 	log.SetLevel(log.DebugLevel)
-	api_host = fmt.Sprintf("http://localhost%s/api/v1", viper.GetString("web_port"))
+	api_host = fmt.Sprintf("http://localhost%s/api/v1", viper.GetString("listen"))
 
 	if err := cfg.InitDB(viper.GetBool("db.db_bug"), viper.GetViper()); err != nil {
 		log.Fatal(err.Error())

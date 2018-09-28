@@ -1,6 +1,6 @@
 {
     "debug": true,
-    "minStep": 30,
+    "min_step": 30,
     "http": {
         "enabled": true,
         "listen": "0.0.0.0:6060"
@@ -17,10 +17,10 @@
     "judge": {
         "enabled": true,
         "batch": 200,
-        "connTimeout": 1000,
-        "callTimeout": 5000,
-        "maxConns": 32,
-        "maxIdle": 32,
+        "connect_timeout": 1000,
+        "execute_timeout": 5000,
+        "max_connections": 32,
+        "max_idle": 32,
         "replicas": 500,
         "cluster": {
             "judge-00" : "127.0.0.1:6080"
@@ -29,10 +29,10 @@
     "graph": {
         "enabled": true,
         "batch": 200,
-        "connTimeout": 1000,
-        "callTimeout": 5000,
-        "maxConns": 32,
-        "maxIdle": 32,
+        "connect_timeout": 1000,
+        "execute_timeout": 5000,
+        "max_connections": 32,
+        "max_idle": 32,
         "replicas": 500,
         "cluster": {
             "graph-00" : "127.0.0.1:6070"
@@ -41,10 +41,10 @@
     "tsdb": {
         "enabled": false,
         "batch": 200,
-        "connTimeout": 1000,
-        "callTimeout": 5000,
-        "maxConns": 32,
-        "maxIdle": 32,
+        "connect_timeout": 1000,
+        "execute_timeout": 5000,
+        "max_connections": 32,
+        "max_idle": 32,
         "retry": 3,
         "address": "127.0.0.1:8088"
     }

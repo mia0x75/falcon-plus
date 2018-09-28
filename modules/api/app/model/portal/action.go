@@ -1,4 +1,4 @@
-package falcon_portal
+package portal
 
 ////////////////////////////////////////////////////////////////////////////////////
 // |id                    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |

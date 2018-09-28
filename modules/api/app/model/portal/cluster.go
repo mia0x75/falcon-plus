@@ -1,4 +1,4 @@
-package falcon_portal
+package portal
 
 import (
 	con "github.com/open-falcon/falcon-plus/modules/api/config"

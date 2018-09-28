@@ -1,7 +1,7 @@
 {
 	"log_level": "debug",
 	"db": {
-		"falcon_portal": "root:@tcp(127.0.0.1:3306)/falcon_portal?charset=utf8&parseTime=True&loc=Local",
+		"portal": "root:@tcp(127.0.0.1:3306)/falcon_portal?charset=utf8&parseTime=True&loc=Local",
 		"graph": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8&parseTime=True&loc=Local",
 		"uic": "root:@tcp(127.0.0.1:3306)/uic?charset=utf8&parseTime=True&loc=Local",
 		"dashboard": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8&parseTime=True&loc=Local",
@@ -12,14 +12,14 @@
 		"cluster": {
 			"graph-00": "127.0.0.1:6070"
 		},
-		"max_conns": 100,
+		"max_connections": 100,
 		"max_idle": 100,
-		"conn_timeout": 1000,
-		"call_timeout": 5000,
-		"numberOfReplicas": 500
+		"connect_timeout": 1000,
+		"execute_timeout": 5000,
+		"replicas": 500
 	},
 	"metric_list_file": "./api/data/metric",
-	"web_port": ":8080",
+	"listen": ":8080",
 	"access_control": true,
 	"signup_disable": false,
 	"skip_auth": false,

@@ -13,10 +13,10 @@
 	},
 	"db": {
 		"dsn": "root:@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
-		"maxIdle": 4
+		"max_idle": 4
 	},
-	"callTimeout": 5000,
-	"ioWorkerNum": 64,
+	"execute_timeout": 5000,
+	"io_workers": 64,
 	"migrate": {
 		"enabled": false,
 		"concurrency": 2,

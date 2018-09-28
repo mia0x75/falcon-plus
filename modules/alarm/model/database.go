@@ -10,7 +10,7 @@ import (
 func InitDatabase() {
 	// set default database
 	config := g.Config()
-	orm.RegisterDataBase("default", "mysql", config.FalconPortal.Addr, config.FalconPortal.Idle, config.FalconPortal.Max)
+	orm.RegisterDataBase("default", "mysql", config.Portal.Addr, config.Portal.Idle, config.Portal.Max)
 	// register model
 	orm.RegisterModel(new(event.Events), new(event.EventCases))
 	if config.LogLevel == "debug" {

@@ -1,13 +1,15 @@
 {
-    "debug": true,
-    "database": "%%MYSQL%%/falcon_portal?loc=Local&parseTime=true",
-    "hosts": "",
-    "maxConns": 20,
-    "maxIdle": 15,
-    "listen": ":6030",
-    "trustable": [""],
-    "http": {
-        "enabled": true,
-        "listen": "%%HBS_HTTP%%"
-    }
+	"debug": true,
+	"database": "%%MYSQL%%/falcon_portal?loc=Local&parseTime=true",
+	"hosts": "",
+	"max_connections": 20,
+	"max_idle": 15,
+	"listen": ":6030",
+	"trustable": [
+		""
+	],
+	"http": {
+		"enabled": true,
+		"listen": "%%HBS_HTTP%%"
+	}
 }

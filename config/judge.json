@@ -1,30 +1,32 @@
 {
-    "debug": true,
-    "debugHost": "nil",
-    "remain": 11,
-    "http": {
-        "enabled": true,
-        "listen": "%%JUDGE_HTTP%%"
-    },
-    "rpc": {
-        "enabled": true,
-        "listen": "%%JUDGE_RPC%%"
-    },
-    "hbs": {
-        "servers": ["%%HBS_RPC%%"],
-        "timeout": 300,
-        "interval": 60
-    },
-    "alarm": {
-        "enabled": true,
-        "minInterval": 300,
-        "queuePattern": "event:p%v",
-        "redis": {
-            "dsn": "%%REDIS%%",
-            "maxIdle": 5,
-            "connTimeout": 5000,
-            "readTimeout": 5000,
-            "writeTimeout": 5000
-        }
-    }
+	"debug": true,
+	"debug_host": "nil",
+	"remain": 11,
+	"http": {
+		"enabled": true,
+		"listen": "%%JUDGE_HTTP%%"
+	},
+	"rpc": {
+		"enabled": true,
+		"listen": "%%JUDGE_RPC%%"
+	},
+	"hbs": {
+		"servers": [
+			"%%HBS_RPC%%"
+		],
+		"timeout": 300,
+		"interval": 60
+	},
+	"alarm": {
+		"enabled": true,
+		"min_interval": 300,
+		"queue_pattern": "event:p%v",
+		"redis": {
+			"dsn": "%%REDIS%%",
+			"max_idle": 5,
+			"connect_timeout": 5000,
+			"read_timeout": 5000,
+			"write_timeout": 5000
+		}
+	}
 }

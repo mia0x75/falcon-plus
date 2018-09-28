@@ -26,22 +26,22 @@ type HbsConfig struct {
 
 type RedisConfig struct {
 	Dsn          string `json:"dsn"`
-	MaxIdle      int    `json:"maxIdle"`
-	ConnTimeout  int    `json:"connTimeout"`
-	ReadTimeout  int    `json:"readTimeout"`
-	WriteTimeout int    `json:"writeTimeout"`
+	MaxIdle      int    `json:"max_idle"`
+	ConnTimeout  int    `json:"connect_timeout"`
+	ReadTimeout  int    `json:"read_timeout"`
+	WriteTimeout int    `json:"write_timeout"`
 }
 
 type AlarmConfig struct {
 	Enabled      bool         `json:"enabled"`
-	MinInterval  int64        `json:"minInterval"`
-	QueuePattern string       `json:"queuePattern"`
+	MinInterval  int64        `json:"min_interval"`
+	QueuePattern string       `json:"queue_pattern"`
 	Redis        *RedisConfig `json:"redis"`
 }
 
 type GlobalConfig struct {
 	Debug     bool         `json:"debug"`
-	DebugHost string       `json:"debugHost"`
+	DebugHost string       `json:"debug_host"`
 	Remain    int          `json:"remain"`
 	Http      *HttpConfig  `json:"http"`
 	Rpc       *RpcConfig   `json:"rpc"`

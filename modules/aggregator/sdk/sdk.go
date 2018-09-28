@@ -8,7 +8,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/common/sdk/requests"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
-	f "github.com/open-falcon/falcon-plus/modules/api/app/model/falcon_portal"
+	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 	"github.com/toolkits/net/httplib"
 )
 

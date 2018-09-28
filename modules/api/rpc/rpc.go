@@ -11,7 +11,7 @@ import (
 )
 
 func Start() {
-	addr := viper.GetString("rpc_addr")
+	addr := viper.GetString("rpc.addr")
 	server := rpc.NewServer()
 	// server.Register(new(filter.Filter))
 	server.Register(new(GraphRpc))

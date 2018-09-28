@@ -37,8 +37,8 @@ var (
 
 func Start(addrs map[string]string) {
 	clusterMap = addrs
-	connTimeout = int32(viper.GetInt("graphs.conn_timeout"))
-	callTimeout = int32(viper.GetInt("graphs.call_timeout"))
+	connTimeout = int32(viper.GetInt("graphs.connect_timeout"))
+	callTimeout = int32(viper.GetInt("graphs.execute_timeout"))
 	for c := range clusterMap {
 		gcluster = append(gcluster, c)
 	}
@@ -378,7 +378,7 @@ func initConnPools(clusterMap map[string]string) {
 		graphInstances.Add(address)
 	}
 	GraphConnPools = backend.CreateSafeRpcConnPools(
-		int(viper.GetInt("graphs.max_conns")),
+		int(viper.GetInt("graphs.max_connections")),
 		int(viper.GetInt("graphs.max_idle")),
 		int(connTimeout), int(callTimeout), graphInstances.ToSlice())
 }
@@ -386,7 +386,7 @@ func initConnPools(clusterMap map[string]string) {
 func initNodeRings(clusterMap map[string]string) {
 	gcluster := cutils.KeysOfMap(clusterMap)
 	GraphNodeRing = rings.NewConsistentHashNodesRing(
-		int32(viper.GetInt("graphs.numberOfReplicas")),
+		int32(viper.GetInt("graphs.replicas")),
 		gcluster)
 }
 

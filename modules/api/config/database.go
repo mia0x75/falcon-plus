@@ -35,11 +35,11 @@ func SetLogLevel(loggerlevel bool) {
 
 func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
 	var p *sql.DB
-	portal, err := gorm.Open("mysql", vip.GetString("db.falcon_portal"))
+	portal, err := gorm.Open("mysql", vip.GetString("db.portal"))
 	portal.Dialect().SetDB(p)
 	portal.LogMode(loggerlevel)
 	if err != nil {
-		return fmt.Errorf("connect to falcon_portal: %s", err.Error())
+		return fmt.Errorf("connect to portal: %s", err.Error())
 	}
 	portal.SingularTable(true)
 	dbp.Falcon = portal

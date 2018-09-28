@@ -31,7 +31,7 @@ type RRDConfig struct {
 
 type DBConfig struct {
 	Dsn     string `json:"dsn"`
-	MaxIdle int    `json:"maxIdle"`
+	MaxIdle int    `json:"max_idle"`
 }
 
 type GlobalConfig struct {
@@ -41,8 +41,8 @@ type GlobalConfig struct {
 	Rpc            *RpcConfig  `json:"rpc"`
 	RRD            *RRDConfig  `json:"rrd"`
 	DB             *DBConfig   `json:"db"`
-	CallTimeout    int32       `json:"callTimeout"`
-	IOWorkerNum    int         `json:"ioWorkerNum"`
+	CallTimeout    int32       `json:"execute_timeout"`
+	IOWorkerNum    int         `json:"io_workers"`
 	FirstBytesSize int
 	Migrate        struct {
 		Concurrency int               `json:"concurrency"` //number of multiple worker per node

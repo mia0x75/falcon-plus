@@ -11,7 +11,7 @@ import (
 	"github.com/toolkits/net/httplib"
 )
 
-//TODO:use api/app/model/falcon_portal/action.go
+//TODO:use api/app/model/portal/action.go
 type Action struct {
 	Id                 int    `json:"id"`
 	Uic                string `json:"uic"`

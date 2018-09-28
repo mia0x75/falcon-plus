@@ -28,41 +28,41 @@ type SocketConfig struct {
 type JudgeConfig struct {
 	Enabled     bool                    `json:"enabled"`
 	Batch       int                     `json:"batch"`
-	ConnTimeout int                     `json:"connTimeout"`
-	CallTimeout int                     `json:"callTimeout"`
-	MaxConns    int                     `json:"maxConns"`
-	MaxIdle     int                     `json:"maxIdle"`
+	ConnTimeout int                     `json:"connect_timeout"`
+	CallTimeout int                     `json:"execute_timeout"`
+	MaxConns    int                     `json:"max_connections"`
+	MaxIdle     int                     `json:"max_idle"`
 	Replicas    int                     `json:"replicas"`
 	Cluster     map[string]string       `json:"cluster"`
-	ClusterList map[string]*ClusterNode `json:"clusterList"`
+	ClusterList map[string]*ClusterNode `json:"cluster_list"`
 }
 
 type GraphConfig struct {
 	Enabled     bool                    `json:"enabled"`
 	Batch       int                     `json:"batch"`
-	ConnTimeout int                     `json:"connTimeout"`
-	CallTimeout int                     `json:"callTimeout"`
-	MaxConns    int                     `json:"maxConns"`
-	MaxIdle     int                     `json:"maxIdle"`
+	ConnTimeout int                     `json:"connect_timeout"`
+	CallTimeout int                     `json:"execute_timeout"`
+	MaxConns    int                     `json:"max_connections"`
+	MaxIdle     int                     `json:"max_idle"`
 	Replicas    int                     `json:"replicas"`
 	Cluster     map[string]string       `json:"cluster"`
-	ClusterList map[string]*ClusterNode `json:"clusterList"`
+	ClusterList map[string]*ClusterNode `json:"cluster_list"`
 }
 
 type TsdbConfig struct {
 	Enabled     bool   `json:"enabled"`
 	Batch       int    `json:"batch"`
-	ConnTimeout int    `json:"connTimeout"`
-	CallTimeout int    `json:"callTimeout"`
-	MaxConns    int    `json:"maxConns"`
-	MaxIdle     int    `json:"maxIdle"`
+	ConnTimeout int    `json:"connect_timeout"`
+	CallTimeout int    `json:"execute_timeout"`
+	MaxConns    int    `json:"max_connections"`
+	MaxIdle     int    `json:"max_idle"`
 	MaxRetry    int    `json:"retry"`
 	Address     string `json:"address"`
 }
 
 type GlobalConfig struct {
 	Debug   bool          `json:"debug"`
-	MinStep int           `json:"minStep"` //最小周期,单位sec
+	MinStep int           `json:"min_step"` //最小周期,单位sec
 	Http    *HttpConfig   `json:"http"`
 	Rpc     *RpcConfig    `json:"rpc"`
 	Socket  *SocketConfig `json:"socket"`

@@ -17,8 +17,8 @@ type GlobalConfig struct {
 	Debug     bool        `json:"debug"`
 	Hosts     string      `json:"hosts"`
 	Database  string      `json:"database"`
-	MaxConns  int         `json:"maxConns"`
-	MaxIdle   int         `json:"maxIdle"`
+	MaxConns  int         `json:"max_connections"`
+	MaxIdle   int         `json:"max_idle"`
 	Listen    string      `json:"listen"`
 	Trustable []string    `json:"trustable"`
 	Http      *HttpConfig `json:"http"`

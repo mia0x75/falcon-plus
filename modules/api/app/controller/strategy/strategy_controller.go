@@ -3,14 +3,14 @@ package strategy
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"regexp"
 	"strconv"
 	"strings"
-	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
-	f "github.com/open-falcon/falcon-plus/modules/api/app/model/falcon_portal"
+	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 	"github.com/spf13/viper"
 )
 

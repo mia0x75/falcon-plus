@@ -1,4 +1,4 @@
-package falcon_portal
+package portal
 
 import (
 	log "github.com/Sirupsen/logrus"

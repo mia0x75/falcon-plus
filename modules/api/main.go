@@ -9,10 +9,10 @@ import (
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/gin"
 	statsd "github.com/amalfra/gin-statsd/middleware"
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
+	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller"
 	"github.com/open-falcon/falcon-plus/modules/api/config"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
@@ -78,9 +78,11 @@ func main() {
 	}
 	initGraph()
 	//start gin server
-	log.Debugf("will start with port:%v", viper.GetString("web_port"))
-	go controller.StartGin(viper.GetString("web_port"), routes)
-	go rpc.Start()
+	log.Debugf("will start with port:%v", viper.GetString("listen"))
+	go controller.StartGin(viper.GetString("listen"), routes)
+	if viper.GetBool("rpc.enabled") {
+		go rpc.Start()
+	}
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

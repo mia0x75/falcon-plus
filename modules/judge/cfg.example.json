@@ -1,6 +1,6 @@
 {
     "debug": true,
-    "debugHost": "nil",
+    "debug_host": "nil",
     "remain": 11, 
     "http": {
         "enabled": true,
@@ -17,14 +17,14 @@
     },
     "alarm": {
         "enabled": true,
-        "minInterval": 300,
-        "queuePattern": "event:p%v",
+        "min_interval": 300,
+        "queue_pattern": "event:p%v",
         "redis": {
             "dsn": "127.0.0.1:6379",
-            "maxIdle": 5,
-            "connTimeout": 5000,
-            "readTimeout": 5000,
-            "writeTimeout": 5000
+            "max_idle": 5,
+            "connect_timeout": 5000,
+            "read_timeout": 5000,
+            "write_timeout": 5000
         }
     }
 }

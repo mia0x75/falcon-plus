@@ -1,4 +1,4 @@
-package falcon_portal
+package portal
 
 ////////////////////////////////////////////////////////////////////////////
 // | Field       | Type             | Null | Key | Default | Extra          |

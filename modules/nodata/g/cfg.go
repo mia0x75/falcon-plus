@@ -16,14 +16,14 @@ type HttpConfig struct {
 type PlusAPIConfig struct {
 	Addr           string `json:"addr"`
 	Token          string `json:"token"`
-	ConnectTimeout int32  `json:"connectTimeout"`
-	RequestTimeout int32  `json:"requestTimeout"`
+	ConnectTimeout int32  `json:"connect_timeout"`
+	RequestTimeout int32  `json:"request_timeout"`
 }
 
 type NdConfig struct {
 	Enabled bool   `json:"enabled"`
 	Dsn     string `json:"dsn"`
-	MaxIdle int32  `json:"maxIdle"`
+	MaxIdle int32  `json:"max_idle"`
 }
 
 type CollectorConfig struct {
@@ -34,9 +34,9 @@ type CollectorConfig struct {
 
 type SenderConfig struct {
 	Enabled        bool   `json:"enabled"`
-	TransferAddr   string `json:"transferAddr"`
-	ConnectTimeout int32  `json:"connectTimeout"`
-	RequestTimeout int32  `json:"requestTimeout"`
+	TransferAddr   string `json:"transfer_addr"`
+	ConnectTimeout int32  `json:"connect_timeout"`
+	RequestTimeout int32  `json:"request_timeout"`
 	Batch          int32  `json:"batch"`
 }
 

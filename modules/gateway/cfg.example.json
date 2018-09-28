@@ -17,10 +17,10 @@
         "enabled": true,
         "batch": 200,
         "retry": 1,
-        "connTimeout": 1000,
-        "callTimeout": 5000,
-        "maxConns": 32,
-        "maxIdle": 32,
+        "connect_timeout": 1000,
+        "execute_timeout": 5000,
+        "max_connections": 32,
+        "max_idle": 32,
         "cluster": {
             "t1": "127.0.0.1:8433"
         }

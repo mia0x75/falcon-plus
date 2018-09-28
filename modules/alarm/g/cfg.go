@@ -15,12 +15,12 @@ type HttpConfig struct {
 
 type RedisConfig struct {
 	Addr          string   `json:"addr"`
-	MaxIdle       int      `json:"maxIdle"`
-	HighQueues    []string `json:"highQueues"`
-	LowQueues     []string `json:"lowQueues"`
-	UserIMQueue   string   `json:"userIMQueue"`
-	UserSmsQueue  string   `json:"userSmsQueue"`
-	UserMailQueue string   `json:"userMailQueue"`
+	MaxIdle       int      `json:"max_idle"`
+	HighQueues    []string `json:"high_queues"`
+	LowQueues     []string `json:"low_queues"`
+	UserIMQueue   string   `json:"user_im_queue"`
+	UserSmsQueue  string   `json:"user_sms_queue"`
+	UserMailQueue string   `json:"user_mail_queue"`
 }
 
 type ApiConfig struct {
@@ -32,7 +32,7 @@ type ApiConfig struct {
 	IM           string `json:"im"`
 }
 
-type FalconPortalConfig struct {
+type PortalConfig struct {
 	Addr string `json:"addr"`
 	Idle int    `json:"idle"`
 	Max  int    `json:"max"`
@@ -50,13 +50,13 @@ type HousekeeperConfig struct {
 }
 
 type GlobalConfig struct {
-	LogLevel     string              `json:"log_level"`
-	FalconPortal *FalconPortalConfig `json:"falcon_portal"`
-	Http         *HttpConfig         `json:"http"`
-	Redis        *RedisConfig        `json:"redis"`
-	Api          *ApiConfig          `json:"api"`
-	Worker       *WorkerConfig       `json:"worker"`
-	Housekeeper  *HousekeeperConfig  `json:"Housekeeper"`
+	LogLevel    string             `json:"log_level"`
+	Portal      *PortalConfig      `json:"portal"`
+	Http        *HttpConfig        `json:"http"`
+	Redis       *RedisConfig       `json:"redis"`
+	Api         *ApiConfig         `json:"api"`
+	Worker      *WorkerConfig      `json:"worker"`
+	Housekeeper *HousekeeperConfig `json:"housekeeper"`
 }
 
 var (
