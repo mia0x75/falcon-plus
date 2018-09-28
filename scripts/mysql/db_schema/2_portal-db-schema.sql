@@ -1,7 +1,7 @@
-CREATE DATABASE falcon_portal
+CREATE DATABASE portal
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
-USE falcon_portal;
+USE portal;
 SET NAMES utf8;
 
 /**

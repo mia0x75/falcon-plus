@@ -1,6 +1,6 @@
 {
 	"debug": true,
-	"database": "%%MYSQL%%/falcon_portal?loc=Local&parseTime=true",
+	"database": "%%MYSQL%%/portal?loc=Local&parseTime=true",
 	"hosts": "",
 	"max_connections": 20,
 	"max_idle": 15,

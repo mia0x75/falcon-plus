@@ -1,5 +1,5 @@
-#CREATE DATABASE `falcon_portal`;
-USE `falcon_portal`;
+#CREATE DATABASE `portal`;
+USE `portal`;
 SET NAMES 'utf8';
 
 /**

@@ -51,7 +51,7 @@ ss -tln
         "listen": "0.0.0.0:6055"
     },
     "database": {
-        "addr": "root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&parseTime=true",
+        "addr": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
         "idle": 10,
         "ids": [1,-1], # aggregator模块可以部署多个实例，这个配置表示当前实例要处理的数据库中cluster表的id范围
         "interval": 55

@@ -48,7 +48,7 @@ nodata所谓的异常，限定为 用户数据采集服务异常、falcon数据�
 #### 准备工作
 nodata服务正常运行，依赖如下准备工作:
 
-+ 确保已经建立mysql数据表falcon_portal.mockcfg。其中，[falcon_portal](https://github.com/open-falcon/scripts/blob/master/db_schema/portal-db-schema.sql)为portal组件的mysql数据库，mockcfg为存放nodata配置的数据表。mockcfg的建表语句，见[这里](https://github.com/nieanan/nodata/blob/master/scripts/nodata-db-schema.sql)。
++ 确保已经建立mysql数据表portal.mockcfg。其中，[portal](https://github.com/open-falcon/scripts/blob/master/db_schema/portal-db-schema.sql)为portal组件的mysql数据库，mockcfg为存放nodata配置的数据表。mockcfg的建表语句，见[这里](https://github.com/nieanan/nodata/blob/master/scripts/nodata-db-schema.sql)。
 + 确保[portal组件](https://github.com/open-falcon/portal)已经更新。portal组件中，新增了对nodata配置的UI支持。
 + 确保query组件版本不低于```1.4.3```。
 + 确保graph组件版本不低于```0.5.5```。
@@ -109,7 +109,7 @@ curl -s "127.0.0.1:6090/health"
     },
     "config": { #配置信息
         "enabled": true,
-        "dsn": "root:passwd@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&parseTime=true&wait_timeout=604800", #portal的数据库连接信息,默认数据库为falcon_portal
+        "dsn": "root:passwd@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true&wait_timeout=604800", #portal的数据库连接信息,默认数据库为portal
         "maxIdle": 4 #mysql连接池空闲连接数
     },
     "collector":{ #nodata数据采集相关的配置
@@ -263,6 +263,14 @@ nodata服务为单实例部署、存在单点故障风险，需要做好自监�
 }
 
 # b. 数据上报中断: Status为NODATA
-{    "data": {        "Cnt": 17,         "Key": "hostA/agent.alive",         "Status": "NODATA",         "Ts": 1445576100    },     "msg": "success"}
+{
+    "data": {
+        "Cnt": 17, 
+        "Key": "hostA/agent.alive", 
+        "Status": "NODATA", 
+        "Ts": 1445576100
+    }, 
+    "msg": "success"
+}
 
 ```

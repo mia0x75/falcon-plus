@@ -5,7 +5,7 @@
 		"listen": "%%AGGREGATOR_HTTP%%"
 	},
 	"database": {
-		"addr": "%%MYSQL%%/falcon_portal?loc=Local&parseTime=true",
+		"addr": "%%MYSQL%%/portal?loc=Local&parseTime=true",
 		"idle": 10,
 		"ids": [
 			1,
