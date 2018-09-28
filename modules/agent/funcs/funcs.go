@@ -74,11 +74,5 @@ func BuildMappers() {
 			},
 			Interval: interval,
 		},
-		{
-			Fs: []func() []*model.MetricValue{
-				MongoDBMetrics,
-			},
-			Interval: interval,
-		},
 	}
 }
