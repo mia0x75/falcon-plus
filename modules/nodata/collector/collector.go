@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	tlist "github.com/toolkits/container/list"
 	"github.com/toolkits/container/nmap"
 	ttime "github.com/toolkits/time"
-	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
 // 主动收集到的监控数据 的缓存

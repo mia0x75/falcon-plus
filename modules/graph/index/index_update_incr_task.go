@@ -5,10 +5,10 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	nsema "github.com/toolkits/concurrent/semaphore"
-	ntime "github.com/toolkits/time"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	proc "github.com/open-falcon/falcon-plus/modules/graph/proc"
+	nsema "github.com/toolkits/concurrent/semaphore"
+	ntime "github.com/toolkits/time"
 )
 
 const (

@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 	"github.com/toolkits/file"
-	"github.com/gin-gonic/gin"
 )
 
 func configCommonRoutes() {

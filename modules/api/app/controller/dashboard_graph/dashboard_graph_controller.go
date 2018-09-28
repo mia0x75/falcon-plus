@@ -187,7 +187,7 @@ func DashboardGraphUpdate(c *gin.Context) {
 	if inputs.TimeSpan != 0 {
 		d.TimeSpan = inputs.TimeSpan
 	}
-	if inputs.RelativeDay >=0 {
+	if inputs.RelativeDay >= 0 {
 		d.RelativeDay = inputs.RelativeDay
 	}
 	if inputs.GraphType != "" {

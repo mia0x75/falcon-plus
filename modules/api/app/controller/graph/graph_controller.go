@@ -3,10 +3,10 @@ package graph
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
-	"net/http"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

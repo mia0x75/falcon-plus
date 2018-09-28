@@ -9,11 +9,11 @@ import (
 	"time"
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	tsema "github.com/toolkits/concurrent/semaphore"
 	"github.com/toolkits/container/nmap"
 	thttpclient "github.com/toolkits/http/httpclient"
 	ttime "github.com/toolkits/time"
-	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
 var (

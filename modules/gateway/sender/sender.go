@@ -4,11 +4,11 @@ import (
 	"log"
 
 	pfc "github.com/niean/goperfcounter"
+	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 	nlist "github.com/toolkits/container/list"
 	nproc "github.com/toolkits/proc"
-	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
-	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
 const (

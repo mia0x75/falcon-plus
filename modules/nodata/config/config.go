@@ -5,9 +5,9 @@ import (
 	"sync"
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	"github.com/toolkits/container/nmap"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
+	"github.com/toolkits/container/nmap"
 )
 
 // nodata配置(mockcfg)的缓存, 这些数据来自配置中心

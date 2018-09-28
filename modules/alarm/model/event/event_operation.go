@@ -1,9 +1,9 @@
 package event
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
-	"database/sql"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/astaxie/beego/orm"

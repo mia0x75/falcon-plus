@@ -1,8 +1,8 @@
 package g
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 	"log"
 	"net"
 	"os"

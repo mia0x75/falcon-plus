@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/toolkits/file"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
+	"github.com/toolkits/file"
 )
 
 func configCommonRoutes() {

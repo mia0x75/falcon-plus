@@ -6,12 +6,12 @@ import (
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	tcron "github.com/toolkits/cron"
-	ttime "github.com/toolkits/time"
 	"github.com/open-falcon/falcon-plus/modules/nodata/collector"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	"github.com/open-falcon/falcon-plus/modules/nodata/sender"
+	tcron "github.com/toolkits/cron"
+	ttime "github.com/toolkits/time"
 )
 
 var (

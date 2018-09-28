@@ -321,27 +321,27 @@ func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryDat
 	if !isEnough {
 		return
 	}
- 	if len(vs) == 0 {
+	if len(vs) == 0 {
 		isEnough = false
 		return
 	}
- 	leftValue = vs[0].Value
- 	var datas []float64
+	leftValue = vs[0].Value
+	var datas []float64
 	for _, i := range vs {
 		datas = append(datas, i.Value)
 	}
- 	isTriggered = false
- 	std := utils.ComputeStdDeviation(datas)
+	isTriggered = false
+	std := utils.ComputeStdDeviation(datas)
 	mean := utils.ComputeMean(datas)
- 	upper_bound := mean + 3 * std
-	lower_bound := mean - 3 * std
- 	if leftValue >= upper_bound  {
+	upper_bound := mean + 3*std
+	lower_bound := mean - 3*std
+	if leftValue >= upper_bound {
 		isTriggered = true
 		return
 	}
- 	if leftValue <= lower_bound {
+	if leftValue <= lower_bound {
 		isTriggered = true
 		return
 	}
- 	return
+	return
 }
