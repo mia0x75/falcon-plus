@@ -2,6 +2,21 @@
 
 ![Open-Falcon](./logo.png)
 
+# 系统改进
+
+- 增加Updater组件用于更新agent
+- 增加Task组件用于监控graph,transfer
+- 数据库falcon_portal更名为portal
+- 修复BUG
+- 统一配置文件到/etc/mfp下
+- 统一日志输出到/var/log/mfp
+- 配置项采用统一的连字符格式
+- 集成MySQL监控
+- 集成Redis监控
+- 更新Vendor到最新版本
+- 用户密码哈希算法调整，不再使用md5+salt
+- 其他
+
 # Documentations
 
 - [Usage](http://book.open-falcon.com)
