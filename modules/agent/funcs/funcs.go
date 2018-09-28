@@ -62,5 +62,23 @@ func BuildMappers() {
 			},
 			Interval: interval,
 		},
+		{
+			Fs: []func() []*model.MetricValue{
+				MySQLMetrics,
+			},
+			Interval: interval,
+		},
+		{
+			Fs: []func() []*model.MetricValue{
+				RedisMetrics,
+			},
+			Interval: interval,
+		},
+		{
+			Fs: []func() []*model.MetricValue{
+				MongoDBMetrics,
+			},
+			Interval: interval,
+		},
 	}
 }

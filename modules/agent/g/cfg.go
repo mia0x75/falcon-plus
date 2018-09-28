@@ -2,11 +2,11 @@ package g
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"os"
-	"sync"
-	"io/ioutil"
 	"strings"
+	"sync"
 
 	"github.com/toolkits/file"
 )
@@ -39,8 +39,51 @@ type HttpConfig struct {
 }
 
 type CollectorConfig struct {
-	IfacePrefix []string `json:"ifacePrefix"`
-	MountPoint  []string `json:"mountPoint"`
+	System  *SystemConfig  `json:"system"`
+	MySQL   *MySQLConfig   `json:"mysql"`
+	Redis   *RedisConfig   `json:"redis"`
+	MongoDB *MongoDBConfig `json:"mongodb"`
+	Jmx     *JmxConfig     `json:"jmx"`
+	Nginx   *NginxConfig   `json:"nginx"`
+}
+
+type SystemConfig struct {
+	IfacePrefix []string `json:"iface_prefix"`
+	MountPoint  []string `json:"mount_point"`
+}
+
+type MySQLConfig struct {
+	Enabled  bool   `json:"enabled"`
+	Host     string `json:"host"`
+	User     string `json:"user"`
+	Passowrd string `json:"password"`
+	Port     int    `json:"port"`
+	Interval int    `json:"interval"`
+}
+
+type RedisConfig struct {
+	Enabled  bool   `json:"enabled"`
+	Host     string `json:"cluster_name"`
+	Passowrd string `json:"password"`
+	Port     int    `json:"port"`
+	Interval int    `json:"interval"`
+}
+
+type MongoDBConfig struct {
+	Enabled  bool   `json:"enabled"`
+	Host     string `json:"host"`
+	User     string `json:"user"`
+	Passowrd string `json:"password"`
+	Port     int    `json:"port"`
+	Interval int    `json:"interval"`
+}
+
+type JmxConfig struct {
+	Enabled bool `json:"enabled"`
+}
+
+type NginxConfig struct {
+	Enabled bool `json:"enabled"`
 }
 
 type GlobalConfig struct {

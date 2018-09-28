@@ -9,7 +9,7 @@ import (
 )
 
 func NetMetrics() []*model.MetricValue {
-	return CoreNetMetrics(g.Config().Collector.IfacePrefix)
+	return CoreNetMetrics(g.Config().Collector.System.IfacePrefix)
 }
 
 func CoreNetMetrics(ifacePrefix []string) []*model.MetricValue {

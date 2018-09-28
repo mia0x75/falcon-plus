@@ -14,6 +14,9 @@
 /* realloc does not support NULL as argument */
 /* #undef NO_NULL_REALLOC */
 
+
+#define _DEFAULT_SOURCE 1
+
 /* lets enable madvise defines in NetBSD */ 
 #if defined(__NetBSD__)
 # if !defined(_NETBSD_SOURCE)

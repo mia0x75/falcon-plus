@@ -19,8 +19,8 @@ func DeviceMetrics() (L []*model.MetricValue) {
 
 	var myMountPoints map[string]bool = make(map[string]bool)
 
-	if len(g.Config().Collector.MountPoint) > 0 {
-		for _, mp := range g.Config().Collector.MountPoint {
+	if len(g.Config().Collector.System.MountPoint) > 0 {
+		for _, mp := range g.Config().Collector.System.MountPoint {
 			myMountPoints[mp] = true
 		}
 	}
