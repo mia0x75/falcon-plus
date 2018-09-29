@@ -20,7 +20,6 @@ func Start() {
 	r.GET("/version", Version)
 	r.GET("/health", Health)
 	r.GET("/workdir", Workdir)
-	r.Run(addr)
-
 	log.Println("http listening", addr)
+	r.Run(addr)
 }
