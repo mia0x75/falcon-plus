@@ -16,8 +16,8 @@
 	"api": {
 		"connect_timeout": 500,
 		"request_timeout": 2000,
-		"plus_api": "http://%%API_HTTP%%",
-		"plus_api_token": "%%API_DEFAULT_TOKEN%%",
-		"push_api": "http://%%AGENT_HTTP%%/v1/push"
+		"api": "http://%%API_HTTP%%",
+		"token": "%%API_DEFAULT_TOKEN%%",
+		"agent": "http://%%AGENT_HTTP%%/v1/push"
 	}
 }
