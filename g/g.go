@@ -25,7 +25,7 @@ func init() {
 		"api":        true,
 		"alarm":      true,
 		"updater":    true,
-		"task":       true,
+		"exporter":   true,
 	}
 
 	BinOf = map[string]string{
@@ -40,7 +40,7 @@ func init() {
 		"api":        "/usr/bin/falcon-api",
 		"alarm":      "/usr/bin/falcon-alarm",
 		"updater":    "/usr/bin/falcon-updater",
-		"task":       "/usr/bin/falcon-task",
+		"exporter":   "/usr/bin/falcon-exporter",
 	}
 
 	cfgOf = map[string]string{
@@ -55,7 +55,7 @@ func init() {
 		"api":        "/etc/mfp/api.json",
 		"alarm":      "/etc/mfp/alarm.json",
 		"updater":    "/etc/mfp/updater.json",
-		"task":       "/etc/mfp/task.json",
+		"exporter":   "/etc/mfp/exporter.json",
 	}
 
 	ModuleApps = map[string]string{
@@ -70,7 +70,7 @@ func init() {
 		"api":        "falcon-api",
 		"alarm":      "falcon-alarm",
 		"updater":    "falcon-updater",
-		"task":       "falcon-task",
+		"exporter":   "falcon-exporter",
 	}
 
 	logpathOf = map[string]string{
@@ -85,22 +85,22 @@ func init() {
 		"api":        "/var/log/mfp/api.log",
 		"alarm":      "/var/log/mfp/alarm.log",
 		"updater":    "/var/log/mfp/updater.log",
-		"task":       "/var/log/mfp/task.log",
+		"exporter":   "/var/log/mfp/exporter.log",
 	}
 
 	PidOf = map[string]string{
-		"agent":      "<NOT SET>",
-		"aggregator": "<NOT SET>",
-		"graph":      "<NOT SET>",
-		"hbs":        "<NOT SET>",
-		"judge":      "<NOT SET>",
-		"nodata":     "<NOT SET>",
-		"transfer":   "<NOT SET>",
-		"gateway":    "<NOT SET>",
-		"api":        "<NOT SET>",
-		"alarm":      "<NOT SET>",
-		"updater":    "<NOT SET>",
-		"task":       "<NOT SET>",
+		"agent":      "/var/run/mfp-agent.pid",
+		"aggregator": "/var/run/mfp-aggregator.pid",
+		"graph":      "/var/run/mfp-graph.pid",
+		"hbs":        "/var/run/mfp-hbs.pid",
+		"judge":      "/var/run/mfp-judge.pid",
+		"nodata":     "/var/run/mfp-nodata.pid",
+		"transfer":   "/var/run/mfp-transfer.pid",
+		"gateway":    "/var/run/mfp-gateway.pid",
+		"api":        "/var/run/mfp-api.pid",
+		"alarm":      "/var/run/mfp-alarm.pid",
+		"updater":    "/var/run/mfp-updater.pid",
+		"exporter":   "/var/run/mfp-exporter.pid",
 	}
 
 	// Modules are deployed in this order
@@ -116,7 +116,7 @@ func init() {
 		"api",
 		"alarm",
 		"updater",
-		"task",
+		"exporter",
 	}
 }
 

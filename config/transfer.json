@@ -11,7 +11,7 @@
 	},
 	"socket": {
 		"enabled": true,
-		"listen": "0.0.0.0:4444",
+		"listen": "%%TRANSFER_SOCKET%%",
 		"timeout": 3600
 	},
 	"judge": {

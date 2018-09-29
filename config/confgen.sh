@@ -1,21 +1,26 @@
 #!/bin/bash
 
 confs=(
-    '%%AGENT_HTTP%%=0.0.0.0:1988'
-    '%%AGGREGATOR_HTTP%%=0.0.0.0:6055'
-    '%%GRAPH_HTTP%%=0.0.0.0:6071'
-    '%%GRAPH_RPC%%=0.0.0.0:6070'
-    '%%HBS_HTTP%%=0.0.0.0:6031'
-    '%%HBS_RPC%%=0.0.0.0:6030'
-    '%%JUDGE_HTTP%%=0.0.0.0:6081'
-    '%%JUDGE_RPC%%=0.0.0.0:6080'
-    '%%NODATA_HTTP%%=0.0.0.0:6090'
-    '%%TRANSFER_HTTP%%=0.0.0.0:6060'
-    '%%TRANSFER_RPC%%=0.0.0.0:8433'
     '%%REDIS%%=127.0.0.1:6379'
-    '%%MYSQL%%=root:@tcp(127.0.0.1:3306)'
-    '%%PLUS_API_DEFAULT_TOKEN%%=default-token-used-in-server-side'
-    '%%PLUS_API_HTTP%%=0.0.0.0:8080'
+    '%%MYSQL%%=root:root@tcp(127.0.0.1:3306)'
+    '%%API_DEFAULT_TOKEN%%=Y3!dHXtN]c>k@u4O.F,?L}/o=W*pgv-&'
+    '%%API_HTTP%%=127.0.0.1:6001'
+    '%%HBS_RPC%%=127.0.0.1:6030'
+    '%%HBS_HTTP%%=127.0.0.1:6031'
+    '%%AGGREGATOR_HTTP%%=127.0.0.1:6041'
+    '%%TRANSFER_RPC%%=127.0.0.1:6060'
+    '%%TRANSFER_HTTP%%=127.0.0.1:6061'
+    '%%TRANSFER_SOCKET%%=127.0.0.1:6062'
+    '%%GRAPH_RPC%%=127.0.0.1:6070'
+    '%%GRAPH_HTTP%%=127.0.0.1:6071'
+    '%%JUDGE_RPC%%=127.0.0.1:6080'
+    '%%JUDGE_HTTP%%=127.0.0.1:6081'
+    '%%NODATA_HTTP%%=127.0.0.1:6091'
+    '%%ALARM_HTTP%%=127.0.0.1:7001'
+    '%%GATEWAY_RPC%%=127.0.0.1:7010'
+    '%%GATEWAY_HTTP%%=127.0.0.1:7011'
+    '%%GATEWAY_SOCKET%%=127.0.0.1:7012'
+    '%%AGENT_HTTP%%=127.0.0.1:7021'
  )
 
 configurer() {
@@ -27,9 +32,9 @@ configurer() {
         uname=`uname`
         if [ "$uname" == "Darwin" ] ; then
             # Note the "" and -e  after -i, needed in OS X
-            find ./out/*/config/*.json -type f -exec sed -i .tpl -e "s/${search}/${replace}/g" {} \;
+            find ./out/*/*.json -type f -exec sed -i .tpl -e "s/${search}/${replace}/g" {} \;
         else
-            find ./out/*/config/*.json -type f -exec sed -i "s/${search}/${replace}/g" {} \;
+            find ./out/*/*.json -type f -exec sed -i "s/${search}/${replace}/g" {} \;
         fi
     done
 }

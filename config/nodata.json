@@ -4,11 +4,11 @@
 		"enabled": true,
 		"listen": "%%NODATA_HTTP%%"
 	},
-	"plus_api": {
+	"api": {
 		"connect_timeout": 500,
 		"request_timeout": 2000,
-		"addr": "http://127.0.0.1:8080",
-		"token": "default-token-used-in-server-side"
+		"addr": "http://%%API_HTTP%%",
+		"token": "%%API_DEFAULT_TOKEN%%"
 	},
 	"config": {
 		"enabled": true,

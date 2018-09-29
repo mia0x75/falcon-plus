@@ -43,7 +43,7 @@ type SenderConfig struct {
 type GlobalConfig struct {
 	Debug     bool             `json:"debug"`
 	Http      *HttpConfig      `json:"http"`
-	PlusApi   *PlusAPIConfig   `json:"plus_api"`
+	Api       *PlusAPIConfig   `json:"api"`
 	Config    *NdConfig        `json:"config"`
 	Collector *CollectorConfig `json:"collector"`
 	Sender    *SenderConfig    `json:"sender"`

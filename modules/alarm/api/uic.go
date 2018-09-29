@@ -105,11 +105,11 @@ func CurlUic(team string) []*uic.User {
 		return []*uic.User{}
 	}
 
-	uri := fmt.Sprintf("%s/api/v1/team/name/%s", g.Config().Api.PlusApi, team)
+	uri := fmt.Sprintf("%s/api/v1/team/name/%s", g.Config().Api.Api, team)
 	req := httplib.Get(uri).SetTimeout(2*time.Second, 10*time.Second)
 	token, _ := json.Marshal(map[string]string{
 		"name": "falcon-alarm",
-		"sig":  g.Config().Api.PlusApiToken,
+		"sig":  g.Config().Api.Token,
 	})
 	req.Header("Apitoken", string(token))
 

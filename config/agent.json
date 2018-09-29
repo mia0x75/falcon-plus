@@ -26,7 +26,7 @@
 	},
 	"http": {
 		"enabled": true,
-		"listen": ":1988",
+		"listen": "%%AGENT_HTTP%%",
 		"backdoor": false
 	},
 	"collector": {

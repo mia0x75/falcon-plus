@@ -23,9 +23,9 @@ type DatabaseConfig struct {
 type ApiConfig struct {
 	ConnectTimeout int32  `json:"connect_timeout"`
 	RequestTimeout int32  `json:"request_timeout"`
-	PlusApi        string `json:"plus_api"`
-	PlusApiToken   string `json:"plus_api_token"`
-	PushApi        string `json:"push_api"`
+	Api            string `json:"api"`
+	Token          string `json:"token"`
+	Agent          string `json:"agent"`
 }
 
 type GlobalConfig struct {

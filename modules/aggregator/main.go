@@ -52,7 +52,7 @@ func main() {
 
 	// sdk configuration
 	sender.Debug = g.Config().Debug
-	sender.PostPushUrl = g.Config().Api.PushApi
+	sender.PostPushUrl = g.Config().Api.Agent
 
 	sender.StartSender()
 

@@ -13,8 +13,8 @@ import (
 )
 
 func HostnamesByID(group_id int64) ([]string, error) {
-	uri := fmt.Sprintf("%s/api/v1/hostgroup/%d", g.Config().Api.PlusApi, group_id)
-	req, err := requests.CurlPlus(uri, "GET", "aggregator", g.Config().Api.PlusApiToken,
+	uri := fmt.Sprintf("%s/api/v1/hostgroup/%d", g.Config().Api.Api, group_id)
+	req, err := requests.CurlPlus(uri, "GET", "aggregator", g.Config().Api.Token,
 		map[string]string{}, map[string]string{})
 
 	if err != nil {
@@ -41,11 +41,11 @@ func HostnamesByID(group_id int64) ([]string, error) {
 
 func QueryLastPoints(endpoints, counters []string) (resp []*cmodel.GraphLastResp, err error) {
 	cfg := g.Config()
-	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.Api.PlusApi)
+	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.Api.Api)
 
 	var req *httplib.BeegoHttpRequest
 	headers := map[string]string{"Content-type": "application/json"}
-	req, err = requests.CurlPlus(uri, "POST", "aggregator", cfg.Api.PlusApiToken,
+	req, err = requests.CurlPlus(uri, "POST", "aggregator", cfg.Api.Token,
 		headers, map[string]string{})
 
 	if err != nil {

@@ -50,7 +50,7 @@ func NetstatMetrics() (L []*model.MetricValue) {
 		if _, ok := USES[key]; !ok {
 			continue
 		}
-		L = append(L, CounterValue("tcp_ext."+key, val))
+		L = append(L, CounterValue("TCP."+key, val))
 	}
 
 	return

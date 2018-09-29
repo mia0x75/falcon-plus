@@ -23,11 +23,11 @@
 		"enabled": true,
 		"addr": "0.0.0.0:6040"
 	},
-	"listen": "%%PLUS_API_HTTP%%",
+	"listen": "%%API_HTTP%%",
 	"access_control": true,
 	"signup_disable": false,
 	"skip_auth": false,
-	"default_token": "%%PLUS_API_DEFAULT_TOKEN%%",
+	"default_token": "%%API_DEFAULT_TOKEN%%",
 	"gen_doc": false,
 	"gen_doc_path": "doc/module.html"
 }

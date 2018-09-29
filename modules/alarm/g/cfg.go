@@ -24,12 +24,12 @@ type RedisConfig struct {
 }
 
 type ApiConfig struct {
-	Sms          string `json:"sms"`
-	Mail         string `json:"mail"`
-	Dashboard    string `json:"dashboard"`
-	PlusApi      string `json:"plus_api"`
-	PlusApiToken string `json:"plus_api_token"`
-	IM           string `json:"im"`
+	Sms       string `json:"sms"`
+	Mail      string `json:"mail"`
+	Dashboard string `json:"dashboard"`
+	Api       string `json:"api"`
+	Token     string `json:"token"`
+	IM        string `json:"im"`
 }
 
 type PortalConfig struct {

@@ -27,8 +27,8 @@
 		"sms": "http://127.0.0.1:10086/sms",
 		"mail": "http://127.0.0.1:10086/mail",
 		"dashboard": "http://127.0.0.1:8081",
-		"plus_api": "http://127.0.0.1:8080",
-		"plus_api_token": "default-token-used-in-server-side"
+		"api": "http://127.0.0.1:8080",
+		"token": "default-token-used-in-server-side"
 	},
 	"portal": {
 		"addr": "root:@tcp(127.0.0.1:3306)/alarms?charset=utf8&loc=Asia%2FChongqing",
