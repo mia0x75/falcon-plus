@@ -5,6 +5,8 @@ confs=(
     '%%MYSQL%%=root:root@tcp(127.0.0.1:3306)'
     '%%API_DEFAULT_TOKEN%%=Y3!dHXtN]c>k@u4O.F,?L}/o=W*pgv-&'
     '%%API_HTTP%%=127.0.0.1:6001'
+    '%%EXPORTER_HTTP%%=127.0.0.1:6011'
+    '%%UPDATER_HTTP%%=127.0.0.1:6021'
     '%%HBS_RPC%%=127.0.0.1:6030'
     '%%HBS_HTTP%%=127.0.0.1:6031'
     '%%AGGREGATOR_HTTP%%=127.0.0.1:6041'
