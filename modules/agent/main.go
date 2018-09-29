@@ -52,7 +52,6 @@ func main() {
 	}
 
 	os.Setenv("FALCON_AGENT_RUNTIME", g.VERSION)
-	g.InitRootDir()
 	g.InitLocalIp()
 	g.InitRpcClients()
 

@@ -36,6 +36,7 @@ type HttpConfig struct {
 	Enabled  bool   `json:"enabled"`
 	Listen   string `json:"listen"`
 	Backdoor bool   `json:"backdoor"`
+	Root     string `json:"root"`
 }
 
 type CollectorConfig struct {

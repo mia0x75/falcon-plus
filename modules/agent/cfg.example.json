@@ -28,7 +28,8 @@
 	"http": {
 		"enabled": true,
 		"listen": ":1988",
-		"backdoor": false
+		"backdoor": false,
+		"root": "/usr/share/mpf/agent"
 	},
 	"collector": {
 		"system": {

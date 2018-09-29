@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -13,16 +12,6 @@ import (
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/slice"
 )
-
-var Root string
-
-func InitRootDir() {
-	var err error
-	Root, err = os.Getwd()
-	if err != nil {
-		log.Fatalln("getwd fail:", err)
-	}
-}
 
 var LocalIp string
 
