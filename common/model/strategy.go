@@ -11,7 +11,7 @@ type Strategy struct {
 	Metric     string            `json:"metric"`
 	Tags       map[string]string `json:"tags"`
 	MaxStep    int               `json:"maxStep"`
-	Priority   int8              `json:"priority"`
+	Priority   int               `json:"priority"`
 	Func       string            `json:"func"`       // e.g. max(#3) all(#3)
 	Operator   string            `json:"operator"`   // e.g. < !=
 	RightValue float64           `json:"rightValue"` // critical value
