@@ -1,4 +1,4 @@
-CMD = agent aggregator graph hbs judge nodata transfer gateway api alarm
+CMD = agent aggregator graph hbs judge nodata transfer gateway api alarm updater exporter
 TARGET = open-falcon
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
 GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
@@ -56,11 +56,9 @@ checkbin: bin/ config/ open-falcon
 pack: checkbin
 	@if [ -e out ] ; then rm -rf out; fi
 	@mkdir out
-	@$(foreach var,$(CMD),mkdir -p ./out/$(var)/bin;)
-	@$(foreach var,$(CMD),mkdir -p ./out/$(var)/config;)
-	@$(foreach var,$(CMD),mkdir -p ./out/$(var)/logs;)
-	@$(foreach var,$(CMD),cp ./config/$(var).json ./out/$(var)/config/cfg.json;)
-	@$(foreach var,$(CMD),cp ./bin/$(var)/falcon-$(var) ./out/$(var)/bin;)
+	@$(foreach var,$(CMD),mkdir -p ./out/$(var);)
+	@$(foreach var,$(CMD),cp ./config/$(var).json ./out/$(var)/$(var).json;)
+	@$(foreach var,$(CMD),cp ./bin/$(var)/falcon-$(var) ./out/$(var);)
 	@cp -r ./modules/agent/public ./out/agent/
 	@(cd ./out && ln -s ./agent/public/ ./public)
 	@(cd ./out && mkdir -p ./agent/plugin && ln -s ./agent/plugin/ ./plugin)
@@ -69,7 +67,7 @@ pack: checkbin
 	@bash ./config/confgen.sh
 	@cp $(TARGET) ./out/$(TARGET)
 	tar -C out -zcf open-falcon-v$(VERSION).tar.gz .
-	@rm -rf out
+	# @rm -rf out
 
 clean:
 	@rm -rf ./bin
@@ -77,4 +75,4 @@ clean:
 	@rm -rf ./$(TARGET)
 	@rm -rf open-falcon-v$(VERSION).tar.gz
 
-.PHONY: clean all agent aggregator graph hbs judge nodata transfer gateway api alarm
+.PHONY: clean all agent aggregator graph hbs judge nodata transfer gateway api alarm updater exporter

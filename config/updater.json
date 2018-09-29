@@ -1,0 +1,11 @@
+{
+	"debug": true,
+	"hostname": "",
+	"desired_agent": "",
+	"server": "%%HBS_HTTP%%",
+	"interval": 300,
+	"http": {
+		"enabled": true,
+		"listen": "%%UPDATER_HTTP%%"
+	}
+}

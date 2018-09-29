@@ -1,0 +1,42 @@
+{
+	"debug": false,
+	"http": {
+		"enable": true,
+		"listen": "0.0.0.0:8002"
+	},
+	"index": {
+		"enable": false,
+		"dsn": "root:root@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
+		"max_idle": 4,
+		"auto_delete": false,
+		"cluster": {
+			"test.hostname01:6071": "0 0 0 ? * 0-5",
+			"test.hostname02:6071": "0 30 0 ? * 0-5"
+		}
+	},
+	"agent": {
+		"enable": false,
+		"dsn": "",
+		"max_idle": 4,
+		"cleaner": {
+			"interval": 60
+		},
+		"plugin": {
+			"url_pattern": "",
+			"interval": 60,
+			"concurrent": 4,
+			"connect_timeout": 500,
+			"request_timeout": 500
+		}
+	},
+	"collector": {
+		"enable": true,
+		"agent": "http://127.0.0.1:1988/v1/push",
+		"url_pattern": "http://%s/statistics/all",
+		"cluster": [
+			"transfer,test.hostname:6060",
+			"graph,test.hostname:6071",
+			"task,test.hostname:8001"
+		]
+	}
+}

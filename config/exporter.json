@@ -1,0 +1,42 @@
+{
+	"debug": false,
+	"http": {
+		"enable": true,
+		"listen": "%%EXPORTER_HTTP%%"
+	},
+	"index": {
+		"enable": false,
+		"dsn": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
+		"max_idle": 4,
+		"auto_delete": false,
+		"cluster": {
+			"test.hostname01:6071": "0 0 0 ? * 0-5",
+			"test.hostname02:6071": "0 30 0 ? * 0-5"
+		}
+	},
+	"agent": {
+		"enable": false,
+		"dsn": "",
+		"max_idle": 4,
+		"cleaner": {
+			"interval": 60
+		},
+		"plugin": {
+			"url_pattern": "",
+			"interval": 60,
+			"concurrent": 4,
+			"connect_timeout": 500,
+			"request_timeout": 500
+		}
+	},
+	"collector": {
+		"enable": true,
+		"agent": "http://%%AGENT_HTTP%%/v1/push",
+		"url_pattern": "http://%s/statistics/all",
+		"cluster": [
+			"transfer,%%TRANSFER_HTTP%%",
+			"graph,%%GRAPH_HTTP%%",
+			"exporter,%%EXPORTER_HTTP%%"
+		]
+	}
+}
