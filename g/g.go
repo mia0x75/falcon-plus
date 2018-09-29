@@ -89,18 +89,18 @@ func init() {
 	}
 
 	PidOf = map[string]string{
-		"agent":      "/var/run/mfp-agent.pid",
-		"aggregator": "/var/run/mfp-aggregator.pid",
-		"graph":      "/var/run/mfp-graph.pid",
-		"hbs":        "/var/run/mfp-hbs.pid",
-		"judge":      "/var/run/mfp-judge.pid",
-		"nodata":     "/var/run/mfp-nodata.pid",
-		"transfer":   "/var/run/mfp-transfer.pid",
-		"gateway":    "/var/run/mfp-gateway.pid",
-		"api":        "/var/run/mfp-api.pid",
-		"alarm":      "/var/run/mfp-alarm.pid",
-		"updater":    "/var/run/mfp-updater.pid",
-		"exporter":   "/var/run/mfp-exporter.pid",
+		"agent":      "<NOT SET>",
+		"aggregator": "<NOT SET>",
+		"graph":      "<NOT SET>",
+		"hbs":        "<NOT SET>",
+		"judge":      "<NOT SET>",
+		"nodata":     "<NOT SET>",
+		"transfer":   "<NOT SET>",
+		"gateway":    "<NOT SET>",
+		"api":        "<NOT SET>",
+		"alarm":      "<NOT SET>",
+		"updater":    "<NOT SET>",
+		"exporter":   "<NOT SET>",
 	}
 
 	// Modules are deployed in this order

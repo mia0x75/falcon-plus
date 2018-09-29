@@ -77,7 +77,7 @@ func (this *Event) ActionId() int {
 	return this.Strategy.Tpl.ActionId
 }
 
-func (this *Event) Priority() int {
+func (this *Event) Priority() int8 {
 	if this.Strategy != nil {
 		return this.Strategy.Priority
 	}

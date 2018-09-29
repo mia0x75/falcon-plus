@@ -14,7 +14,7 @@ type Expression struct {
 	Operator   string            `json:"operator"`   // e.g. < !=
 	RightValue float64           `json:"rightValue"` // critical value
 	MaxStep    int               `json:"maxStep"`
-	Priority   int               `json:"priority"`
+	Priority   int8              `json:"priority"`
 	Note       string            `json:"note"`
 	ActionId   int               `json:"actionId"`
 }
