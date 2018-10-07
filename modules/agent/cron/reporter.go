@@ -27,6 +27,7 @@ func reportAgentStatus(interval time.Duration) {
 			IP:            g.IP(),
 			AgentVersion:  g.VERSION,
 			PluginVersion: g.GetCurrPluginVersion(),
+			// TODO: Add system information to support inventory management
 		}
 
 		var resp model.SimpleRpcResponse
