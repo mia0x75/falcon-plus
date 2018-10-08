@@ -2,7 +2,6 @@ package uic
 
 import (
 	"github.com/open-falcon/falcon-plus/modules/api/g"
-	"github.com/spf13/viper"
 )
 
 type User struct {
@@ -18,7 +17,7 @@ type User struct {
 }
 
 func skipAccessControll() bool {
-	return !viper.GetBool("access_control")
+	return !g.Config().AccessControl
 }
 
 func (this User) IsAdmin() bool {

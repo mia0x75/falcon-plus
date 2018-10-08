@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
-	"github.com/spf13/viper"
 )
 
 type WebSession struct {
@@ -57,7 +56,7 @@ func SessionChecking(c *gin.Context) (auth bool, err error) {
 	}
 
 	//default_token used in server side access
-	default_token := viper.GetString("default_token")
+	default_token := g.Config().DefaultToken
 	if default_token != "" && websessio.Sig == default_token {
 		auth = true
 		return

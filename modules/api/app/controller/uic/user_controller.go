@@ -16,7 +16,7 @@ import (
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type APIUserInput struct {
@@ -32,7 +32,7 @@ type APIUserInput struct {
 func CreateUser(c *gin.Context) {
 	var inputs APIUserInput
 	err := c.Bind(&inputs)
-	signupDisable := viper.GetBool("signup_disable")
+	signupDisable := g.Config().SignupDisable
 
 	switch {
 	case err != nil:

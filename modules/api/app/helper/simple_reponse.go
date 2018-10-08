@@ -6,7 +6,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type RespJson struct {
@@ -26,7 +26,7 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 		wcode = arg[0].(int)
 		msg = arg[1]
 	}
-	need_doc := viper.GetBool("gen_doc")
+	need_doc := g.Config().GenDoc
 	var body interface{}
 	defer func() {
 		if need_doc {

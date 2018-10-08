@@ -12,7 +12,7 @@ import (
 	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	connp "github.com/toolkits/conn_pool"
 	rpcpool "github.com/toolkits/conn_pool/rpc_conn_pool"
 	rings "github.com/toolkits/consistent/rings"
@@ -37,8 +37,8 @@ var (
 
 func Start(addrs map[string]string) {
 	clusterMap = addrs
-	connTimeout = int32(viper.GetInt("graphs.connect_timeout"))
-	callTimeout = int32(viper.GetInt("graphs.execute_timeout"))
+	connTimeout = int32(g.Config().Graphs.ConnectTimeout)
+	callTimeout = int32(g.Config().Graphs.ExecuteTimeout)
 	for c := range clusterMap {
 		gcluster = append(gcluster, c)
 	}
@@ -378,15 +378,15 @@ func initConnPools(clusterMap map[string]string) {
 		graphInstances.Add(address)
 	}
 	GraphConnPools = backend.CreateSafeRpcConnPools(
-		int(viper.GetInt("graphs.max_connections")),
-		int(viper.GetInt("graphs.max_idle")),
+		int(g.Config().Graphs.MaxConnections),
+		int(g.Config().Graphs.MaxIdle),
 		int(connTimeout), int(callTimeout), graphInstances.ToSlice())
 }
 
 func initNodeRings(clusterMap map[string]string) {
 	gcluster := cutils.KeysOfMap(clusterMap)
 	GraphNodeRing = rings.NewConsistentHashNodesRing(
-		int32(viper.GetInt("graphs.replicas")),
+		int32(g.Config().Graphs.Replicas),
 		gcluster)
 }
 

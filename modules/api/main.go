@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
@@ -17,19 +16,18 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
 	"github.com/open-falcon/falcon-plus/modules/api/rpc"
-	"github.com/spf13/viper"
 )
 
 func initGraph() {
-	graph.Start(viper.GetStringMapString("graphs.cluster"))
+	// TODO:
+	graph.Start(g.Config().Graphs.Cluster)
 }
 
 func main() {
-	cfgTmp := flag.String("c", "cfg.json", "configuration file")
+	cfg := flag.String("c", "cfg.json", "configuration file")
 	version := flag.Bool("v", false, "show version")
 	help := flag.Bool("h", false, "help")
 	flag.Parse()
-	cfg := *cfgTmp
 	if *version {
 		fmt.Println(g.VERSION)
 		os.Exit(0)
@@ -40,48 +38,41 @@ func main() {
 		os.Exit(0)
 	}
 
-	viper.AddConfigPath(".")
-	viper.AddConfigPath("/")
-	viper.AddConfigPath("./config")
-	viper.AddConfigPath("./api/config")
-	cfg = strings.Replace(cfg, ".json", "", 1)
-	viper.SetConfigName(cfg)
+	g.ParseConfig(*cfg)
+	g.InitLog(g.Config().Log.Level)
 
-	err := viper.ReadInConfig()
+	var err error
+	err = g.InitLog(g.Config().Log.Level)
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = g.InitLog(viper.GetString("log.level"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
+	err = g.InitDB()
 	if err != nil {
 		log.Fatalf("db conn failed with error %s", err.Error())
 	}
 
 	//TODO:
-	if viper.GetString("log.level") != "debug" {
+	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes := gin.Default()
 	if false {
 		routes.Use(statsd.New(statsd.Options{Port: 8089}))
 	}
-	if viper.GetBool("gen_doc") {
+	if g.Config().GenDoc {
 		yaag.Init(&yaag.Config{
 			On:       true,
 			DocTitle: "Gin",
-			DocPath:  viper.GetString("gen_doc_path"),
+			DocPath:  g.Config().GenDocPath,
 			BaseUrls: map[string]string{"Production": "/api/v1", "Staging": "/api/v1"},
 		})
 		routes.Use(yaag_gin.Document())
 	}
 	initGraph()
 	//start gin server
-	log.Debugf("will start with port:%v", viper.GetString("listen"))
-	go controller.StartGin(viper.GetString("listen"), routes)
-	if viper.GetBool("rpc.enabled") {
+	log.Debugf("will start with port:%v", g.Config().Listen)
+	go controller.StartGin(g.Config().Listen, routes)
+	if g.Config().Rpc.Enabled {
 		go rpc.Start()
 	}
 

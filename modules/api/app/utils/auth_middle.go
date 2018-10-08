@@ -6,12 +6,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 func AuthSessionMidd(c *gin.Context) {
 	auth, err := h.SessionChecking(c)
-	if !viper.GetBool("skip_auth") {
+	if !g.Config().SkipAuth {
 		if err != nil || auth != true {
 			log.Debugf("error: %v, auth: %v", err.Error(), auth)
 			c.Set("auth", auth)

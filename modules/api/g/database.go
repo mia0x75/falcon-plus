@@ -6,7 +6,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/spf13/viper"
 )
 
 type DBPool struct {
@@ -33,11 +32,10 @@ func SetLogLevel(loggerlevel bool) {
 	dbp.Alarm.LogMode(loggerlevel)
 }
 
-func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
+func InitDB() (err error) {
 	var p *sql.DB
-	portal, err := gorm.Open("mysql", vip.GetString("db.portal"))
+	portal, err := gorm.Open("mysql", Config().DB.Portal)
 	portal.Dialect().SetDB(p)
-	portal.LogMode(loggerlevel)
 	if err != nil {
 		return fmt.Errorf("connect to portal: %s", err.Error())
 	}
@@ -45,9 +43,8 @@ func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
 	dbp.Falcon = portal
 
 	var g *sql.DB
-	graphd, err := gorm.Open("mysql", vip.GetString("db.graph"))
+	graphd, err := gorm.Open("mysql", Config().DB.Graph)
 	graphd.Dialect().SetDB(g)
-	graphd.LogMode(loggerlevel)
 	if err != nil {
 		return fmt.Errorf("connect to graph: %s", err.Error())
 	}
@@ -55,9 +52,8 @@ func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
 	dbp.Graph = graphd
 
 	var u *sql.DB
-	uicd, err := gorm.Open("mysql", vip.GetString("db.uic"))
+	uicd, err := gorm.Open("mysql", Config().DB.Uic)
 	uicd.Dialect().SetDB(u)
-	uicd.LogMode(loggerlevel)
 	if err != nil {
 		return fmt.Errorf("connect to uic: %s", err.Error())
 	}
@@ -65,9 +61,8 @@ func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
 	dbp.Uic = uicd
 
 	var d *sql.DB
-	dashd, err := gorm.Open("mysql", vip.GetString("db.dashboard"))
+	dashd, err := gorm.Open("mysql", Config().DB.Dashboard)
 	dashd.Dialect().SetDB(d)
-	dashd.LogMode(loggerlevel)
 	if err != nil {
 		return fmt.Errorf("connect to dashboard: %s", err.Error())
 	}
@@ -75,16 +70,14 @@ func InitDB(loggerlevel bool, vip *viper.Viper) (err error) {
 	dbp.Dashboard = dashd
 
 	var alm *sql.DB
-	almd, err := gorm.Open("mysql", vip.GetString("db.alarms"))
+	almd, err := gorm.Open("mysql", Config().DB.Alarms)
 	almd.Dialect().SetDB(alm)
-	almd.LogMode(loggerlevel)
 	if err != nil {
 		return fmt.Errorf("connect to alarms: %s", err.Error())
 	}
 	almd.SingularTable(true)
 	dbp.Alarm = almd
 
-	SetLogLevel(loggerlevel)
 	return
 }
 

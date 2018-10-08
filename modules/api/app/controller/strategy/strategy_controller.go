@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 func GetStrategys(c *gin.Context) {
@@ -206,7 +206,7 @@ func DeleteStrategy(c *gin.Context) {
 }
 
 func MetricQuery(c *gin.Context) {
-	filePath := viper.GetString("metric_list_file")
+	filePath := g.Config().MetricListFile
 	if filePath == "" {
 		filePath = "./data/metric"
 	}

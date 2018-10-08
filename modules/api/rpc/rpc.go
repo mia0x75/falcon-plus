@@ -7,11 +7,11 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/spf13/viper"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 func Start() {
-	addr := viper.GetString("rpc.addr")
+	addr := g.Config().Rpc.Address
 	server := rpc.NewServer()
 	// server.Register(new(filter.Filter))
 	server.Register(new(GraphRpc))
