@@ -15,6 +15,9 @@ func Start() {
 		return
 	}
 
+	if !g.IsDebug() {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.Default()
 	r.GET("/version", Version)
 	r.GET("/health", Health)
