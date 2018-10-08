@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type Team struct {
@@ -19,7 +19,7 @@ func (this Team) TableName() string {
 }
 
 func (this Team) Members() (users []User, err error) {
-	db := config.Con()
+	db := g.Con()
 	var tmapping []RelTeamUser
 	if dt := db.Uic.Where("tid = ?", this.ID).Find(&tmapping); dt.Error != nil {
 		err = dt.Error
@@ -48,7 +48,7 @@ func (this Team) Members() (users []User, err error) {
 
 func (this Team) GetCreatorName() (userName string, err error) {
 	userName = "unknown"
-	db := config.Con()
+	db := g.Con()
 	user := User{ID: this.Creator}
 	if dt := db.Uic.Find(&user); dt.Error != nil {
 		err = dt.Error

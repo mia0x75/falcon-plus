@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // +--------------+------------------+------+-----+-------------------+-----------------------------+
@@ -34,7 +34,7 @@ func (this EventNote) TableName() string {
 }
 
 func (this EventNote) GetUserName() string {
-	db := config.Con()
+	db := g.Con()
 	user := uic.User{ID: this.UserId}
 	db.Uic.Table(user.TableName()).Where(&user).Scan(&user)
 	return user.Name

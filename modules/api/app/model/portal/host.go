@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	con "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // +----------------+------------------+------+-----+-------------------+-----------------------------+
@@ -35,7 +35,7 @@ func (this Host) TableName() string {
 }
 
 func (this Host) Existing() (int64, bool) {
-	db := con.Con()
+	db := g.Con()
 	db.Falcon.Table(this.TableName()).Where("hostname = ?", this.Hostname).Scan(&this)
 	if this.ID != 0 {
 		return this.ID, true
@@ -45,7 +45,7 @@ func (this Host) Existing() (int64, bool) {
 }
 
 func (this Host) RelatedGrp() (Grps []HostGroup) {
-	db := con.Con()
+	db := g.Con()
 	grpHost := []GrpHost{}
 	db.Falcon.Select("grp_id").Where("host_id = ?", this.ID).Find(&grpHost)
 	tids := []int64{}
@@ -59,7 +59,7 @@ func (this Host) RelatedGrp() (Grps []HostGroup) {
 }
 
 func (this Host) RelatedTpl() (tpls []Template) {
-	db := con.Con()
+	db := g.Con()
 	grps := this.RelatedGrp()
 	gids := []int64{}
 	for _, g := range grps {

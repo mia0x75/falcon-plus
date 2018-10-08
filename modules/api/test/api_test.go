@@ -9,7 +9,7 @@ import (
 	"github.com/go-resty/resty"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
-	cfg "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/spf13/viper"
 )
@@ -28,7 +28,7 @@ func init() {
 	log.SetLevel(log.DebugLevel)
 	api_host = fmt.Sprintf("http://localhost%s/api/v1", viper.GetString("listen"))
 
-	if err := cfg.InitDB(viper.GetBool("db.db_bug"), viper.GetViper()); err != nil {
+	if err := g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper()); err != nil {
 		log.Fatal(err.Error())
 	}
 
@@ -47,7 +47,7 @@ func init_testing_user() {
 		QQ:     "380511212",
 	}
 
-	db := cfg.Con()
+	db := g.Con()
 	if db.Uic.Table("user").Where("name = ?", test_user_name).First(&uic.User{}).RecordNotFound() {
 		if err := db.Uic.Table("user").Create(&user).Error; err != nil {
 			log.Fatal(err)

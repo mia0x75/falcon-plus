@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // +----------------+------------------+------+-----+-------------------+-----------------------------+
@@ -62,7 +62,7 @@ func (this EventCases) TableName() string {
 }
 
 func (this EventCases) GetEvents() []Events {
-	db := config.Con()
+	db := g.Con()
 	t := Events{
 		EventCaseId: this.ID,
 	}
@@ -72,7 +72,7 @@ func (this EventCases) GetEvents() []Events {
 }
 
 func (this EventCases) GetNotes() []EventNote {
-	db := config.Con()
+	db := g.Con()
 	perpareSql := fmt.Sprintf("event_caseId = '%s' AND timestamp >= FROM_UNIXTIME(%d)", this.ID, this.Timestamp.Unix())
 	t := EventCases{}
 	notes := []EventNote{}

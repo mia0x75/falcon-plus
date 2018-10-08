@@ -7,7 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/spf13/viper"
 )
 
@@ -63,7 +63,7 @@ func SessionChecking(c *gin.Context) (auth bool, err error) {
 		return
 	}
 
-	db := config.Con().Uic
+	db := g.Con().Uic
 	var user uic.User
 	db.Where("name = ?", websessio.Name).Find(&user)
 	if user.ID == 0 {
@@ -82,7 +82,7 @@ func SessionChecking(c *gin.Context) (auth bool, err error) {
 }
 
 func GetUser(c *gin.Context) (user uic.User, err error) {
-	db := config.Con().Uic
+	db := g.Con().Uic
 	websession, getserr := GetSession(c)
 	if getserr != nil {
 		err = getserr

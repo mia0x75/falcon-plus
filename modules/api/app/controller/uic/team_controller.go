@@ -12,7 +12,7 @@ import (
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type CTeam struct {
@@ -185,7 +185,7 @@ func UpdateTeam(c *gin.Context) {
 	}
 }
 
-func bindUsers(db config.DBPool, tid int, users []int) (err error) {
+func bindUsers(db g.DBPool, tid int, users []int) (err error) {
 	var dt *gorm.DB
 	uids, err := utils.ArrIntToString(users)
 	if err != nil {

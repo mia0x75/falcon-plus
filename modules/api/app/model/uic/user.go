@@ -1,7 +1,7 @@
 package uic
 
 import (
-	con "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/spf13/viper"
 )
 
@@ -42,7 +42,7 @@ func (this User) IsSuperAdmin() bool {
 }
 
 func (this User) FindUser() (user User, err error) {
-	db := con.Con()
+	db := g.Con()
 	user = this
 	dt := db.Uic.Find(&user)
 	if dt.Error != nil {

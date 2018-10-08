@@ -4,8 +4,8 @@ import (
 	"log"
 	"testing"
 
+	"github.com/mia0x75/falcon-plus/modules/api/g"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/spf13/viper"
 )
@@ -19,11 +19,11 @@ func init() {
 		log.Fatal(err)
 	}
 
-	err = config.InitLog("debug")
+	err = g.InitLog("debug")
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = config.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
+	err = g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
 	if err != nil {
 		log.Fatalf("db conn failed with error %s", err.Error())
 	}

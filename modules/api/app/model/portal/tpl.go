@@ -3,7 +3,7 @@ package portal
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
-	con "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type Template struct {
@@ -21,7 +21,7 @@ func (this Template) TableName() string {
 func (this Template) FindUserName() (name string, err error) {
 	var user uic.User
 	user.Name = this.CreateUser
-	db := con.Con()
+	db := g.Con()
 	dt := db.Uic.Find(&user)
 	if dt.Error != nil {
 		err = dt.Error
@@ -37,7 +37,7 @@ func (this Template) FindParentName() (name string, err error) {
 		return
 	}
 	ptpl.ID = this.ParentID
-	db := con.Con()
+	db := g.Con()
 	dt := db.Falcon.Find(&ptpl)
 	if dt.Error != nil {
 		log.Debugf("tpl_id: %v find parent: %v with error: %s", this.ID, ptpl.ID, dt.Error.Error())

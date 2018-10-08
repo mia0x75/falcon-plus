@@ -5,15 +5,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
-var db config.DBPool
+var db g.DBPool
 
 const badstatus = http.StatusBadRequest
 
 func Routes(r *gin.Engine) {
-	db = config.Con()
+	db = g.Con()
 	tmpr := r.Group("/api/v1/template")
 	tmpr.Use(utils.AuthSessionMidd)
 	tmpr.GET("", GetTemplates)

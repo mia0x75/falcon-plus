@@ -13,8 +13,9 @@ import (
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
+	"github.com/mia0x75/falcon-plus/modules/api/config"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller"
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
 	"github.com/open-falcon/falcon-plus/modules/api/rpc"
 	"github.com/spf13/viper"
@@ -51,11 +52,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = config.InitLog(viper.GetString("log_level"))
+	err = g.InitLog(viper.GetString("log_level"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = config.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
+	err = g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
 	if err != nil {
 		log.Fatalf("db conn failed with error %s", err.Error())
 	}

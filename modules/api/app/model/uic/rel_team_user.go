@@ -1,7 +1,7 @@
 package uic
 
 import (
-	"github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 type RelTeamUser struct {
@@ -15,6 +15,6 @@ func (this RelTeamUser) TableName() string {
 }
 
 func (this RelTeamUser) Me() {
-	db := config.Con()
+	db := g.Con()
 	db.Uic.Where("id = 1")
 }

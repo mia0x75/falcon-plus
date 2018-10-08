@@ -1,7 +1,7 @@
 package portal
 
 import (
-	con "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // +---------+------------------+------+-----+---------+-------+
@@ -22,7 +22,7 @@ func (this GrpHost) TableName() string {
 
 func (this GrpHost) Existing() bool {
 	var tGrpHost GrpHost
-	db := con.Con()
+	db := g.Con()
 	db.Falcon.Table(this.TableName()).Where("grp_id = ? AND host_id = ?", this.GrpID, this.HostID).Scan(&tGrpHost)
 	if tGrpHost.GrpID != 0 {
 		return true

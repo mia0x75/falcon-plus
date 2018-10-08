@@ -1,7 +1,7 @@
 package portal
 
 import (
-	con "github.com/open-falcon/falcon-plus/modules/api/config"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // +-------------+------------------+------+-----+-------------------+-----------------------------+
@@ -41,7 +41,7 @@ func (this Cluster) HostGroupName() (name string, err error) {
 	if this.GrpId == 0 {
 		return
 	}
-	db := con.Con()
+	db := g.Con()
 	var hg HostGroup
 	hg.ID = this.GrpId
 	if dt := db.Falcon.Find(&hg); dt.Error != nil {
