@@ -29,6 +29,7 @@ type RpcConfig struct {
 	Enabled bool   `json:"enabled"`
 	Address string `json:"addr"`
 }
+
 type LogConfig struct {
 	Level string `json:"level"`
 }

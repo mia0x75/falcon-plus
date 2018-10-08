@@ -3,30 +3,32 @@
 		"level": "debug"
 	},
 	"debug_host": "nil",
-    "remain": 11, 
-    "http": {
-        "enabled": true,
-        "listen": "0.0.0.0:6081"
-    },
-    "rpc": {
-        "enabled": true,
-        "listen": "0.0.0.0:6080"
-    },
-    "hbs": {
-        "servers": ["127.0.0.1:6030"],
-        "timeout": 300,
-        "interval": 60
-    },
-    "alarm": {
-        "enabled": true,
-        "min_interval": 300,
-        "queue_pattern": "event:p%v",
-        "redis": {
-            "dsn": "127.0.0.1:6379",
-            "max_idle": 5,
-            "connect_timeout": 5000,
-            "read_timeout": 5000,
-            "write_timeout": 5000
-        }
-    }
+	"remain": 11,
+	"http": {
+		"enabled": true,
+		"listen": "0.0.0.0:6081"
+	},
+	"rpc": {
+		"enabled": true,
+		"listen": "0.0.0.0:6080"
+	},
+	"hbs": {
+		"servers": [
+			"127.0.0.1:6030"
+		],
+		"timeout": 300,
+		"interval": 60
+	},
+	"alarm": {
+		"enabled": true,
+		"min_interval": 300,
+		"queue_pattern": "event:p%v",
+		"redis": {
+			"dsn": "127.0.0.1:6379",
+			"max_idle": 5,
+			"connect_timeout": 5000,
+			"read_timeout": 5000,
+			"write_timeout": 5000
+		}
+	}
 }

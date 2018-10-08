@@ -3,30 +3,30 @@
 		"level": "debug"
 	},
 	"http": {
-        "enabled": true,
-        "listen": "0.0.0.0:6090"
-    },
-    "api":{
-        "connect_timeout": 500,
-        "request_timeout": 2000,
-        "addr": "http://127.0.0.1:8080",
-        "token": "default-token-used-in-server-side"
-    },
-    "config": {
-        "enabled": true,
-        "dsn": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true&wait_timeout=604800",
-        "max_idle": 4
-    },
-    "collector":{
-        "enabled": true,
-        "batch": 200,
-        "concurrent": 10
-    },
-    "sender":{
-        "enabled": true,
-        "connect_timeout": 500,
-        "request_timeout": 2000,
-        "transfer_addr": "127.0.0.1:6061",
-        "batch": 500
-    }
+		"enabled": true,
+		"listen": "0.0.0.0:6090"
+	},
+	"api": {
+		"connect_timeout": 500,
+		"request_timeout": 2000,
+		"addr": "http://127.0.0.1:8080",
+		"token": "default-token-used-in-server-side"
+	},
+	"config": {
+		"enabled": true,
+		"dsn": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true&wait_timeout=604800",
+		"max_idle": 4
+	},
+	"collector": {
+		"enabled": true,
+		"batch": 200,
+		"concurrent": 10
+	},
+	"sender": {
+		"enabled": true,
+		"connect_timeout": 500,
+		"request_timeout": 2000,
+		"transfer_addr": "127.0.0.1:6061",
+		"batch": 500
+	}
 }

@@ -19,7 +19,6 @@ import (
 )
 
 func initGraph() {
-	// TODO:
 	graph.Start(g.Config().Graphs.Cluster)
 }
 
