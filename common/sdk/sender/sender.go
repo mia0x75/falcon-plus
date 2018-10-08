@@ -1,8 +1,9 @@
 package sender
 
 import (
-	"log"
 	"time"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 const LIMIT = 200

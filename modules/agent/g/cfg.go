@@ -198,5 +198,5 @@ func ParseConfig(cfg string) {
 
 	config = &c
 
-	log.Println("read config file:", cfg, "successfully")
+	log.Debugln("read config file:", cfg, "successfully")
 }

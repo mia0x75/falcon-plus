@@ -117,7 +117,7 @@ func ParseConfig(cfg string) {
 	defer configLock.Unlock()
 	config = &c
 
-	log.Println("g.ParseConfig ok, file ", cfg)
+	log.Debugln("read config file:", cfg, "successfully")
 }
 
 // CLUSTER NODE

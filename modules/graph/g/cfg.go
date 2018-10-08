@@ -103,5 +103,5 @@ func ParseConfig(cfg string) {
 	// set config
 	atomic.StorePointer(&ptr, unsafe.Pointer(&c))
 
-	log.Println("g.ParseConfig ok, file", cfg)
+	log.Debugln("read config file:", cfg, "successfully")
 }

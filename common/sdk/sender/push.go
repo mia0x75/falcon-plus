@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 )
 

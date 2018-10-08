@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -88,5 +88,5 @@ func ParseConfig(cfg string) {
 
 	config = &c
 
-	log.Println("read config file:", cfg, "successfully")
+	log.Debugln("read config file:", cfg, "successfully")
 }
