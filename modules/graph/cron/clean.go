@@ -1,10 +1,10 @@
 package cron
 
 import (
-	"log"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	pfc "github.com/niean/goperfcounter"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/index"
@@ -13,11 +13,8 @@ import (
 
 func CleanCache() {
 	var ticker *time.Ticker
-	if g.Config().Debug {
-		ticker = time.NewTicker(time.Duration(600) * time.Second)
-	} else {
-		ticker = time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)
-	}
+	//TODO: Move g.CLEAN_CACHE to cfg
+	ticker = time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)
 	defer ticker.Stop()
 	for {
 		<-ticker.C

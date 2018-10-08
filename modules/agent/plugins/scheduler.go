@@ -3,12 +3,12 @@ package plugins
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"os/exec"
 	"path/filepath"
 	"syscall"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/file"
@@ -55,10 +55,7 @@ func PluginRun(plugin *Plugin) {
 		return
 	}
 
-	debug := g.Config().Debug
-	if debug {
-		log.Println(fpath, "running...")
-	}
+	log.Debugln(fpath, "running...")
 
 	cmd := exec.Command(fpath)
 	var stdout bytes.Buffer
@@ -71,9 +68,7 @@ func PluginRun(plugin *Plugin) {
 		log.Printf("[ERROR] plugin start fail, error: %s\n", err)
 		return
 	}
-	if debug {
-		log.Println("plugin started:", fpath)
-	}
+	log.Debugln("plugin started:", fpath)
 
 	err, isTimeout := sys.CmdRunWithTimeout(cmd, time.Duration(timeout)*time.Millisecond)
 
@@ -87,8 +82,8 @@ func PluginRun(plugin *Plugin) {
 
 	if isTimeout {
 		// has be killed
-		if err == nil && debug {
-			log.Println("[INFO] timeout and kill process", fpath, "successfully")
+		if err == nil {
+			log.Debugln("[INFO] timeout and kill process", fpath, "successfully")
 		}
 
 		if err != nil {
@@ -106,9 +101,7 @@ func PluginRun(plugin *Plugin) {
 	// exec successfully
 	data := stdout.Bytes()
 	if len(data) == 0 {
-		if debug {
-			log.Println("[DEBUG] stdout of", fpath, "is blank")
-		}
+		log.Debugln("[DEBUG] stdout of", fpath, "is blank")
 		return
 	}
 

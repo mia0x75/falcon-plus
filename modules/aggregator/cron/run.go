@@ -1,20 +1,18 @@
 package cron
 
 import (
-	"log"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/sdk/sender"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/sdk"
 )
 
 func WorkerRun(item *g.Cluster) {
-	debug := g.Config().Debug
-
 	numeratorStr := cleanParam(item.Numerator)
 	denominatorStr := cleanParam(item.Denominator)
 
@@ -62,10 +60,10 @@ func WorkerRun(item *g.Cluster) {
 		if needComputeNumerator {
 			numeratorVal, err = compute(numeratorOperands, numeratorOperators, numeratorComputeMode, hostname, valueMap)
 
-			if debug && err != nil {
-				log.Printf("[W] [hostname:%s] [numerator:%s] id:%d, err:%v", hostname, item.Numerator, item.Id, err)
-			} else if debug {
-				log.Printf("[D] [hostname:%s] [numerator:%s] id:%d, value:%0.4f", hostname, item.Numerator, item.Id, numeratorVal)
+			if err != nil {
+				log.Debugf("[W] [hostname:%s] [numerator:%s] id:%d, err:%v", hostname, item.Numerator, item.Id, err)
+			} else {
+				log.Debugf("[D] [hostname:%s] [numerator:%s] id:%d, value:%0.4f", hostname, item.Numerator, item.Id, numeratorVal)
 			}
 
 			if err != nil {
@@ -76,10 +74,10 @@ func WorkerRun(item *g.Cluster) {
 		if needComputeDenominator {
 			denominatorVal, err = compute(denominatorOperands, denominatorOperators, denominatorComputeMode, hostname, valueMap)
 
-			if debug && err != nil {
-				log.Printf("[W] [hostname:%s] [denominator:%s] id:%d, err:%v", hostname, item.Denominator, item.Id, err)
-			} else if debug {
-				log.Printf("[D] [hostname:%s] [denominator:%s] id:%d, value:%0.4f", hostname, item.Denominator, item.Id, denominatorVal)
+			if err != nil {
+				log.Debugf("[W] [hostname:%s] [denominator:%s] id:%d, err:%v", hostname, item.Denominator, item.Id, err)
+			} else {
+				log.Debugf("[D] [hostname:%s] [denominator:%s] id:%d, value:%0.4f", hostname, item.Denominator, item.Id, denominatorVal)
 			}
 
 			if err != nil {
@@ -87,9 +85,7 @@ func WorkerRun(item *g.Cluster) {
 			}
 		}
 
-		if debug {
-			log.Printf("[D] hostname:%s  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
-		}
+		log.Debugf("[D] hostname:%s  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
 		numerator += numeratorVal
 		denominator += denominatorVal
 		validCount += 1
@@ -129,9 +125,7 @@ func WorkerRun(item *g.Cluster) {
 		return
 	}
 
-	if debug {
-		log.Printf("[D] hostname:all  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", numerator, denominator, numerator/denominator)
-	}
+	log.Debugf("[D] hostname:all  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", numerator, denominator, numerator/denominator)
 	sender.Push(item.Endpoint, item.Metric, item.Tags, numerator/denominator, item.DsType, int64(item.Step))
 }
 
