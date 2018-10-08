@@ -15,12 +15,6 @@
 			"revisionTime": "2018-09-25T19:35:18Z"
 		},
 		{
-			"checksumSHA1": "EOG98L+WcoYbvCU3x1lwnMex+NI=",
-			"path": "github.com/amalfra/gin-statsd",
-			"revision": "de58afc5f8627c3b29b9eb08c70d72daf7481943",
-			"revisionTime": "2018-07-15T16:13:04Z"
-		},
-		{
 			"checksumSHA1": "B2NOeRnPI2A5ZTaujt3xb4mPvkU=",
 			"path": "github.com/amalfra/gin-statsd/middleware",
 			"revision": "de58afc5f8627c3b29b9eb08c70d72daf7481943",
@@ -706,8 +700,10 @@
 			"revisionTime": "2018-07-28T08:01:47Z"
 		},
 		{
+			"checksumSHA1": "GtamqiJoL7PGHsN454AoffBFMa8=",
 			"path": "golang.org/x/net/context",
-			"revision": ""
+			"revision": "161cd47e91fd58ac17490ef4d742dc98bb4cf60e",
+			"revisionTime": "2018-09-06T07:10:30Z"
 		},
 		{
 			"checksumSHA1": "r6aEFdHvXVXum48wmH6hrEZgqAk=",
