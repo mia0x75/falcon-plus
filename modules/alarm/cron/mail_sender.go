@@ -1,6 +1,7 @@
 package cron
 
 import (
+	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -34,14 +35,17 @@ func SendMail(mail *model.Mail) {
 	}()
 
 	url := g.Config().Api.Mail
-	r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
-	r.Param("tos", mail.Tos)
-	r.Param("subject", mail.Subject)
-	r.Param("content", mail.Content)
-	resp, err := r.String()
-	if err != nil {
-		log.Errorf("send mail fail, receiver:%s, subject:%s, cotent:%s, error:%v", mail.Tos, mail.Subject, mail.Content, err)
+	if strings.TrimSpace(url) != "" {
+		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
+		r.Param("tos", mail.Tos)
+		r.Param("subject", mail.Subject)
+		r.Param("content", mail.Content)
+		resp, err := r.String()
+		if err != nil {
+			log.Errorf("send mail fail, receiver:%s, subject:%s, cotent:%s, error:%v", mail.Tos, mail.Subject, mail.Content, err)
+		}
+		log.Debugf("send mail:%v, resp:%v, url:%s", mail, resp, url)
+	} else {
+		log.Debugf("mail url:%s is blank, SKIP", url)
 	}
-
-	log.Debugf("send mail:%v, resp:%v, url:%s", mail, resp, url)
 }

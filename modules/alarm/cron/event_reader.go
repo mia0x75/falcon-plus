@@ -2,6 +2,7 @@ package cron
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -44,9 +45,7 @@ func ReadLowEvent() {
 }
 
 func popEvent(queues []string) (*cmodel.Event, error) {
-
 	count := len(queues)
-
 	params := make([]interface{}, count+1)
 	for i := 0; i < count; i++ {
 		params[i] = queues[i]
@@ -56,6 +55,9 @@ func popEvent(queues []string) (*cmodel.Event, error) {
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
+	if rc == nil {
+		return nil, errors.New("get redis connection failed")
+	}
 
 	reply, err := redis.Strings(rc.Do("BRPOP", params...))
 	if err != nil {

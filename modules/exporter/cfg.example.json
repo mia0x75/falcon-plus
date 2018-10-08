@@ -36,7 +36,7 @@
 		"cluster": [
 			"transfer,test.hostname:6060",
 			"graph,test.hostname:6071",
-			"task,test.hostname:8001"
+			"exporter,test.hostname:8001"
 		]
 	}
 }

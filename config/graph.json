@@ -13,7 +13,8 @@
 	},
 	"db": {
 		"dsn": "%%MYSQL%%/graph?loc=Local&parseTime=true",
-		"max_idle": 4
+		"max_idle": 4,
+		"max_connections": 8
 	},
 	"execute_timeout": 5000,
 	"io_workers": 64,

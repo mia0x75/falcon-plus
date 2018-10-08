@@ -24,7 +24,7 @@
         "enabled": true,
         "connect_timeout": 500,
         "request_timeout": 2000,
-        "transfer_addr": "127.0.0.1:6060",
+        "transfer_addr": "127.0.0.1:6061",
         "batch": 500
     }
 }

@@ -79,8 +79,15 @@ func sendEvent(event *model.Event) {
 	// send to redis
 	redisKey := fmt.Sprintf(g.Config().Alarm.QueuePattern, event.Priority())
 	rc := g.RedisConnPool.Get()
+	if rc == nil {
+		log.Println("cannot get redis connection")
+		return
+	}
 	defer rc.Close()
-	rc.Do("LPUSH", redisKey, string(bs))
+	if _, err := rc.Do("LPUSH", redisKey, string(bs)); err != nil {
+		log.Printf("send event to redis failed, err: %v", err)
+		return
+	}
 }
 
 func CheckExpression(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {

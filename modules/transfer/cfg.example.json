@@ -1,13 +1,13 @@
 {
     "debug": true,
-    "min_step": 30,
+    "min_step": 5,
     "http": {
         "enabled": true,
-        "listen": "0.0.0.0:6060"
+        "listen": "0.0.0.0:6061"
     },
     "rpc": {
         "enabled": true,
-        "listen": "0.0.0.0:8433"
+        "listen": "0.0.0.0:6060"
     },
     "socket": {
         "enabled": true,

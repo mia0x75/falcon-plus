@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
@@ -44,6 +43,8 @@ func start_signal(pid int, cfg *g.GlobalConfig) {
 			rrdtool.Out_done_chan <- 1
 			rrdtool.FlushAll(true)
 			log.Println("rrdtool stop ok")
+
+			g.DB.Close()
 
 			log.Println(pid, "exit")
 			os.Exit(0)

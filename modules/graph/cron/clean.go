@@ -12,8 +12,12 @@ import (
 )
 
 func CleanCache() {
-
-	ticker := time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)
+	var ticker *time.Ticker
+	if g.Config().Debug {
+		ticker = time.NewTicker(time.Duration(600) * time.Second)
+	} else {
+		ticker = time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)
+	}
 	defer ticker.Stop()
 	for {
 		<-ticker.C

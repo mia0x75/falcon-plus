@@ -86,7 +86,7 @@ func Callback(event *model.Event, action *api.Action) string {
 
 	success := "success"
 	if e != nil {
-		log.Errorf("callback fail, action:%v, event:%s, error:%s", action, event.String(), e.Error())
+		log.Errorf("callback fail, req:%v, action:%v, event:%s, error:%s", req, action, event.String(), e.Error())
 		success = fmt.Sprintf("fail:%s", e.Error())
 	}
 	message := fmt.Sprintf("curl %s %s. resp: %s", action.Url, success, resp)

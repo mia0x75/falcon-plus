@@ -82,24 +82,12 @@ func UpdateIndexOne(endpoint string, metric string, tags map[string]string, dsty
 	}
 	gitem := icitem.Item
 
-	dbConn, err := g.GetDbConn("UpdateIndexIncrTask")
-	if err != nil {
-		log.Println("[ERROR] make dbConn fail", err)
-		return err
-	}
-
-	return updateIndexFromOneItem(gitem, dbConn)
+	return updateIndexFromOneItem(gitem, g.DB)
 }
 
 func updateIndexAll(updateStepInSec int64) int {
 	var ret int = 0
 	if IndexedItemCache == nil || IndexedItemCache.Size() <= 0 {
-		return ret
-	}
-
-	dbConn, err := g.GetDbConn("UpdateIndexIncrTask")
-	if err != nil {
-		log.Println("[ERROR] make dbConn fail", err)
 		return ret
 	}
 
@@ -121,13 +109,13 @@ func updateIndexAll(updateStepInSec int64) int {
 		}
 		// 并发写mysql
 		semaIndexUpdateAll.Acquire()
-		go func(gitem *cmodel.GraphItem, dbConn *sql.DB) {
+		go func(gitem *cmodel.GraphItem, db *sql.DB) {
 			defer semaIndexUpdateAll.Release()
-			err := updateIndexFromOneItem(gitem, dbConn)
+			err := updateIndexFromOneItem(gitem, db)
 			if err != nil {
 				proc.IndexUpdateAllErrorCnt.Incr()
 			}
-		}(gitem, dbConn)
+		}(gitem, g.DB)
 
 		ret++
 	}

@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"log"
 	"time"
 
 	"github.com/open-falcon/falcon-plus/common/model"
@@ -18,8 +19,11 @@ func (this *Judge) Send(items []*model.JudgeItem, resp *model.SimpleRpcResponse)
 	remain := g.Config().Remain
 	// 把当前时间的计算放在最外层，是为了减少获取时间时的系统调用开销
 	now := time.Now().Unix()
-	for _, item := range items {
+	for index, item := range items {
 		exists := g.FilterMap.Exists(item.Metric)
+		if g.Config().Debug {
+			log.Printf("data received: item -> %d, value -> %v\n", index, item)
+		}
 		if !exists {
 			continue
 		}

@@ -1,6 +1,7 @@
 package cron
 
 import (
+	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -34,13 +35,16 @@ func SendSms(sms *model.Sms) {
 	}()
 
 	url := g.Config().Api.Sms
-	r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
-	r.Param("tos", sms.Tos)
-	r.Param("content", sms.Content)
-	resp, err := r.String()
-	if err != nil {
-		log.Errorf("send sms fail, tos:%s, cotent:%s, error:%v", sms.Tos, sms.Content, err)
+	if strings.TrimSpace(url) != "" {
+		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
+		r.Param("tos", sms.Tos)
+		r.Param("content", sms.Content)
+		resp, err := r.String()
+		if err != nil {
+			log.Errorf("send sms fail, tos:%s, cotent:%s, error:%v", sms.Tos, sms.Content, err)
+		}
+		log.Debugf("send sms:%v, resp:%v, url:%s", sms, resp, url)
+	} else {
+		log.Debugf("sms url:%s is blank, SKIP", url)
 	}
-
-	log.Debugf("send sms:%v, resp:%v, url:%s", sms, resp, url)
 }

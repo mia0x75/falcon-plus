@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	proc "github.com/open-falcon/falcon-plus/modules/graph/proc"
 	nsema "github.com/toolkits/concurrent/semaphore"
@@ -41,12 +40,6 @@ func updateIndexIncr() int {
 		return ret
 	}
 
-	dbConn, err := g.GetDbConn("UpdateIndexIncrTask")
-	if err != nil {
-		log.Error("[ERROR] get dbConn fail", err)
-		return ret
-	}
-
 	keys := unIndexedItemCache.Keys()
 	for _, key := range keys {
 		icitem := unIndexedItemCache.Get(key)
@@ -54,15 +47,15 @@ func updateIndexIncr() int {
 		if icitem != nil {
 			// 并发更新mysql
 			semaUpdateIndexIncr.Acquire()
-			go func(key string, icitem *IndexCacheItem, dbConn *sql.DB) {
+			go func(key string, icitem *IndexCacheItem, db *sql.DB) {
 				defer semaUpdateIndexIncr.Release()
-				err := updateIndexFromOneItem(icitem.Item, dbConn)
+				err := updateIndexFromOneItem(icitem.Item, db)
 				if err != nil {
 					proc.IndexUpdateIncrErrorCnt.Incr()
 				} else {
 					IndexedItemCache.Put(key, icitem)
 				}
-			}(key, icitem.(*IndexCacheItem), dbConn)
+			}(key, icitem.(*IndexCacheItem), g.DB)
 			ret++
 		}
 	}

@@ -30,8 +30,9 @@ type RRDConfig struct {
 }
 
 type DBConfig struct {
-	Dsn     string `json:"dsn"`
-	MaxIdle int    `json:"max_idle"`
+	Dsn      string `json:"dsn"`
+	MaxIdle  int    `json:"max_idle"`
+	MaxConns int    `json:"max_connections"`
 }
 
 type GlobalConfig struct {
