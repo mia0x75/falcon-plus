@@ -12,7 +12,6 @@ func NetMetrics() []*model.MetricValue {
 }
 
 func CoreNetMetrics(ifacePrefix []string) []*model.MetricValue {
-
 	netIfs, err := nux.NetIfs(ifacePrefix)
 	if err != nil {
 		log.Println(err)

@@ -1,11 +1,11 @@
 package funcs
 
 import (
-	"fmt"
 	"runtime"
 	"strconv"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/nux"
 )
@@ -47,7 +47,7 @@ func cpunumTotal() uint64 {
 	ss := strconv.Itoa(num)
 	b, e := strconv.ParseUint(ss, 10, 64)
 	if e != nil {
-		fmt.Println(e)
+		log.Println(e)
 	}
 	return b
 }

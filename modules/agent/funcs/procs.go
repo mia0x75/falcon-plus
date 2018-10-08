@@ -10,7 +10,6 @@ import (
 )
 
 func ProcMetrics() (L []*model.MetricValue) {
-
 	reportProcs := g.ReportProcs()
 	sz := len(reportProcs)
 	if sz == 0 {

@@ -7,13 +7,11 @@ import (
 )
 
 func KernelMetrics() (L []*model.MetricValue) {
-
 	maxFiles, err := nux.KernelMaxFiles()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	L = append(L, GaugeValue("kernel.maxfiles", maxFiles))
 
 	maxProc, err := nux.KernelMaxProc()
@@ -21,7 +19,6 @@ func KernelMetrics() (L []*model.MetricValue) {
 		log.Println(err)
 		return
 	}
-
 	L = append(L, GaugeValue("kernel.maxproc", maxProc))
 
 	allocateFiles, err := nux.KernelAllocateFiles()
@@ -29,7 +26,6 @@ func KernelMetrics() (L []*model.MetricValue) {
 		log.Println(err)
 		return
 	}
-
 	L = append(L, GaugeValue("kernel.files.allocated", allocateFiles))
 	L = append(L, GaugeValue("kernel.files.left", maxFiles-allocateFiles))
 	return

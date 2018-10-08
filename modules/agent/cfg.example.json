@@ -59,6 +59,15 @@
 		"mem.memfree": true,
 		"mem.swaptotal": true,
 		"mem.swapused": true,
-		"mem.swapfree": true
+		"mem.swapfree": true,
+		"gpu.temperature": true,
+		"gpu.memory.total": true,
+		"gpu.memory.used": true,
+		"gpu.memory.util": true,
+		"gpu.util": true,
+		"gpu.power.usage": true,
+		"gpu.count": true,
+		"gpu.util.avg": true,
+		"gpu.memory.util.avg": true
 	}
 }

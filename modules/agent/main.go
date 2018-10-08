@@ -17,6 +17,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/open-falcon/falcon-plus/modules/agent/cron"
@@ -63,7 +64,7 @@ func main() {
 	go http.Start()
 
 	hostname, _ := g.Hostname()
-	fmt.Println("hostname: ", hostname)
+	log.Println("hostname: ", hostname)
 
 	select {}
 
