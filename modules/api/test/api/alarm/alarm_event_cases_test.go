@@ -7,7 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/chyeh/viper"
 	"github.com/elgs/jsonql"
-	"github.com/masato25/resty"
+	"github.com/go-resty/resty"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

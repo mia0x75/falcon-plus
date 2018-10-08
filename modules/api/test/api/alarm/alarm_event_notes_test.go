@@ -7,7 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/chyeh/viper"
 	"github.com/elgs/jsonql"
-	"github.com/masato25/resty"
+	"github.com/go-resty/resty"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -32,7 +32,6 @@ func TestAlarmEventNote(t *testing.T) {
 			Get(fmt.Sprintf("%s/event_note", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("event_caseId!='--'")
-		// log.Debugf("%v\n", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 2)
 	})
 	Convey("Get notes Test 1, id filter", t, func() {
@@ -45,7 +44,6 @@ func TestAlarmEventNote(t *testing.T) {
 			Get(fmt.Sprintf("%s/event_note", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query(fmt.Sprintf("event_caseId='%s'", eventId))
-		// log.Debugf("%v\n", resp.String())
 		So(len(check.([]interface{})), ShouldBeGreaterThanOrEqualTo, 1)
 	})
 	Convey("Add Note Test 1, add comment", t, func() {

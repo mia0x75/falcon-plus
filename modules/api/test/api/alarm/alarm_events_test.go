@@ -7,7 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/chyeh/viper"
 	"github.com/elgs/jsonql"
-	"github.com/masato25/resty"
+	"github.com/go-resty/resty"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -32,7 +32,6 @@ func TestAlarmEvents(t *testing.T) {
 			Post(fmt.Sprintf("%s/events", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("id!=-1")
-		// log.Debugf("%v\n", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 2)
 	})
 	Convey("Get alarms Test 2, test status filter & limit", t, func() {
