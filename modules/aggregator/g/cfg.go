@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -28,8 +28,12 @@ type ApiConfig struct {
 	Agent          string `json:"agent"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug    bool            `json:"debug"`
+	Log      *LogConfig      `json:"log"`
 	Http     *HttpConfig     `json:"http"`
 	Database *DatabaseConfig `json:"database"`
 	Api      *ApiConfig      `json:"api"`

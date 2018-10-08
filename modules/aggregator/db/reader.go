@@ -2,8 +2,8 @@ package db
 
 import (
 	"fmt"
-	"log"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 )
 
@@ -29,9 +29,7 @@ func ReadClusterMonitorItems() (M map[string]*g.Cluster, err error) {
 		}
 	}
 
-	if cfg.Debug {
-		log.Println(sql)
-	}
+	log.Debugln(sql)
 
 	rows, err := DB.Query(sql)
 	if err != nil {

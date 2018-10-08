@@ -2,8 +2,8 @@ package collector
 
 import (
 	"fmt"
-	"log"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	tlist "github.com/toolkits/container/list"
 	"github.com/toolkits/container/nmap"

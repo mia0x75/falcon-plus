@@ -2,10 +2,10 @@ package db
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/container/set"
 )

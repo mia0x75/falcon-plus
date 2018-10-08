@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -48,8 +48,12 @@ type AgentConfig struct {
 	Cleaner *CleanerConfig `json:"cleaner"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug     bool             `json:"debug"`
+	Log       *LogConfig       `json:"log"`
 	Http      *HttpConfig      `json:"http"`
 	Index     *IndexConfig     `json:"index"`
 	Collector *CollectorConfig `json:"collector"`

@@ -2,11 +2,11 @@ package http
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/kardianos/osext"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 )

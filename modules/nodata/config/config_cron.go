@@ -1,9 +1,9 @@
 package config
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
@@ -22,9 +22,7 @@ func StartNdConfigCron() {
 		start := time.Now().Unix()
 		cnt, _ := syncNdConfig()
 		end := time.Now().Unix()
-		if g.Config().Debug {
-			log.Printf("config cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
-		}
+		log.Debugf("config cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.ConfigCronCnt.Incr()

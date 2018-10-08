@@ -1,10 +1,10 @@
 package sender
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"math/rand"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	pfc "github.com/niean/goperfcounter"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"

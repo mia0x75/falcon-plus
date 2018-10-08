@@ -1,9 +1,9 @@
 package config
 
 import (
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"

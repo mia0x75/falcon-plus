@@ -2,9 +2,9 @@ package sender
 
 import (
 	"bytes"
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"

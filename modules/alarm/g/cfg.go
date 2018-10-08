@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -49,8 +49,12 @@ type HousekeeperConfig struct {
 	EventDeleteBatch   int `json:"event_delete_batch"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	LogLevel    string             `json:"log_level"`
+	Log         *LogConfig         `json:"log"`
 	Portal      *PortalConfig      `json:"portal"`
 	Http        *HttpConfig        `json:"http"`
 	Redis       *RedisConfig       `json:"redis"`

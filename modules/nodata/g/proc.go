@@ -1,8 +1,7 @@
 package g
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	nproc "github.com/toolkits/proc"
 )
 

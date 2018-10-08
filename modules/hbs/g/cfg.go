@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -13,8 +13,12 @@ type HttpConfig struct {
 	Listen  string `json:"listen"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug     bool        `json:"debug"`
+	Log       *LogConfig  `json:"log"`
 	Hosts     string      `json:"hosts"`
 	Database  string      `json:"database"`
 	MaxConns  int         `json:"max_connections"`

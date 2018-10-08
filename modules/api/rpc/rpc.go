@@ -1,12 +1,12 @@
 package rpc
 
 import (
-	"log"
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 

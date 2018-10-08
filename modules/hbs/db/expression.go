@@ -2,9 +2,9 @@ package db
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 )
 

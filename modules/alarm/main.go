@@ -32,8 +32,9 @@ func main() {
 
 	g.ParseConfig(*cfg)
 
-	g.InitLog(g.Config().LogLevel)
-	if g.Config().LogLevel != "debug" {
+	g.InitLog(g.Config().Log.Level)
+	// TODO:
+	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 

@@ -25,7 +25,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-
+	g.InitLog(g.Config().Log.Level)
 	db.Init()
 	cache.Init()
 

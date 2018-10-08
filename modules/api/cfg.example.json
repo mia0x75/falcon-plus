@@ -1,5 +1,7 @@
 {
-	"log_level": "debug",
+	"log": {
+		"level": "debug"
+	},
 	"db": {
 		"portal": "root:@tcp(127.0.0.1:3306)/portal?charset=utf8&parseTime=True&loc=Local",
 		"graph": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8&parseTime=True&loc=Local",

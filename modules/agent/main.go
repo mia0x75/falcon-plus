@@ -45,13 +45,8 @@ func main() {
 
 	g.ParseConfig(*cfg)
 
-	if g.Config().Debug {
-		g.InitLog("debug")
-	} else {
-		g.InitLog("info")
-	}
-
 	os.Setenv("FALCON_AGENT_RUNTIME", g.VERSION)
+	g.InitLog(g.Config().Log.Level)
 	g.InitLocalIp()
 	g.InitRpcClients()
 

@@ -1,8 +1,9 @@
 package cron
 
 import (
-	"log"
 	"os/exec"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 func Control(workdir, arg string) (string, error) {

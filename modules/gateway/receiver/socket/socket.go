@@ -1,9 +1,9 @@
 package socket
 
 import (
-	"log"
 	"net"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 

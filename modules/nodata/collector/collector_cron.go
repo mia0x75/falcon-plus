@@ -3,9 +3,9 @@ package collector
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/common/sdk/requests"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
@@ -26,9 +26,7 @@ func StartCollectorCron() {
 		start := time.Now().Unix()
 		cnt := collectDataOnce()
 		end := time.Now().Unix()
-		if g.Config().Debug {
-			log.Printf("collect cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
-		}
+		log.Debugf("collect cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.CollectorCronCnt.Incr()
@@ -80,9 +78,7 @@ func collectDataOnce() int {
 			if err != nil {
 				log.Printf("fetchItemAndStore fail, size:%v, error:%v", size, err)
 			}
-			if g.Config().Debug {
-				log.Printf("fetchItemAndStore keys:%v, key_size:%v, ret_size:%v", keys, keySize, size)
-			}
+			log.Debugf("fetchItemAndStore keys:%v, key_size:%v, ret_size:%v", keys, keySize, size)
 			rch <- size
 		}(fetchKeys, fetchSize)
 

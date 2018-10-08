@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/common/model"
 	cron "github.com/toolkits/cron"
 	nhttpclient "github.com/toolkits/http/httpclient"

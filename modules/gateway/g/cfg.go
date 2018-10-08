@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -35,8 +35,12 @@ type TransferConfig struct {
 	Cluster     map[string]string `json:"cluster"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug    bool            `json:"debug"`
+	Log      *LogConfig      `json:"log"`
 	Http     *HttpConfig     `json:"http"`
 	Rpc      *RpcConfig      `json:"rpc"`
 	Socket   *SocketConfig   `json:"socket"`

@@ -3,9 +3,9 @@ package cron
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/ops-common/model"
 	"github.com/open-falcon/ops-common/utils"
@@ -33,10 +33,8 @@ func heartbeat() {
 	}
 
 	heartbeatRequest := BuildHeartbeatRequest(hostname, agentDirs)
-	if g.Config().Debug {
-		log.Println("====>>>>")
-		log.Println(heartbeatRequest)
-	}
+	log.Debugln("====>>>>")
+	log.Debugln(heartbeatRequest)
 
 	bs, err := json.Marshal(heartbeatRequest)
 	if err != nil {
@@ -61,10 +59,8 @@ func heartbeat() {
 		return
 	}
 
-	if g.Config().Debug {
-		log.Println("<<<<====")
-		log.Println(heartbeatResponse)
-	}
+	log.Debugln("<<<<====")
+	log.Debugln(heartbeatResponse)
 
 	HandleHeartbeatResponse(&heartbeatResponse)
 

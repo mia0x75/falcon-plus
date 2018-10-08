@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cron "github.com/toolkits/cron"
 	nhttpclient "github.com/toolkits/http/httpclient"
 	ntime "github.com/toolkits/time"

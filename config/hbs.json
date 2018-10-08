@@ -1,5 +1,7 @@
 {
-	"debug": true,
+	"log": {
+		"level": "debug"
+	},
 	"database": "%%MYSQL%%/portal?loc=Local&parseTime=true",
 	"hosts": "",
 	"max_connections": 20,

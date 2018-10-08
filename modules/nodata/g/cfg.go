@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -40,8 +40,12 @@ type SenderConfig struct {
 	Batch          int32  `json:"batch"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug     bool             `json:"debug"`
+	Log       *LogConfig       `json:"log"`
 	Http      *HttpConfig      `json:"http"`
 	Api       *PlusAPIConfig   `json:"api"`
 	Config    *NdConfig        `json:"config"`

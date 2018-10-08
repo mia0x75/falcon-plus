@@ -1,9 +1,9 @@
 package g
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/garyburd/redigo/redis"
 )
 

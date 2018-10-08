@@ -1,10 +1,10 @@
 package rpc
 
 import (
-	"log"
 	"net"
 	"net/rpc"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 

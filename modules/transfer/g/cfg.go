@@ -2,10 +2,10 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"strings"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -60,8 +60,12 @@ type TsdbConfig struct {
 	Address     string `json:"address"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug   bool          `json:"debug"`
+	Log     *LogConfig    `json:"log"`
 	MinStep int           `json:"min_step"` //最小周期,单位sec
 	Http    *HttpConfig   `json:"http"`
 	Rpc     *RpcConfig    `json:"rpc"`

@@ -1,8 +1,7 @@
 package http
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )

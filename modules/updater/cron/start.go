@@ -3,12 +3,12 @@ package cron
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"path"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/ops-common/model"
 	"github.com/open-falcon/ops-common/utils"
 	"github.com/toolkits/file"

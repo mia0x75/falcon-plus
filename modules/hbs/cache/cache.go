@@ -1,8 +1,9 @@
 package cache
 
 import (
-	"log"
 	"time"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 func Init() {

@@ -2,12 +2,12 @@ package cron
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 	"path"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/ops-common/model"
 	f "github.com/toolkits/file"

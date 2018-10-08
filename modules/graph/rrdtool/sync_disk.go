@@ -3,10 +3,10 @@ package rrdtool
 import (
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 	"github.com/toolkits/file"

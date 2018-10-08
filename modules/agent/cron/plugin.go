@@ -1,10 +1,10 @@
 package cron
 
 import (
-	"log"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/plugins"
@@ -61,9 +61,7 @@ func syncMinePlugins() {
 		pluginDirs = resp.Plugins
 		timestamp = resp.Timestamp
 
-		if g.Config().Debug {
-			log.Println(&resp)
-		}
+		log.Debugln(&resp)
 
 		if len(pluginDirs) == 0 {
 			plugins.ClearAllPlugins()

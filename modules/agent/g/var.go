@@ -3,12 +3,12 @@ package g
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"net"
 	"strings"
 	"sync"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/slice"
 )
@@ -76,18 +76,12 @@ func SendToTransfer(metrics []*model.MetricValue) {
 		}
 	}
 
-	debug := Config().Debug
-
-	if debug {
-		log.Printf("=> <Total=%d> %v\n", len(metrics), metrics[0])
-	}
+	log.Debugf("=> <Total=%d> %v\n", len(metrics), metrics[0])
 
 	var resp model.TransferResponse
 	SendMetrics(metrics, &resp)
 
-	if debug {
-		log.Println("<=", &resp)
-	}
+	log.Debugln("<=", &resp)
 }
 
 var (

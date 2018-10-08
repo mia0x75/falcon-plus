@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )

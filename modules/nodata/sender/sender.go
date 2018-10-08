@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	tsema "github.com/toolkits/concurrent/semaphore"
@@ -44,9 +44,7 @@ func SendMockOnce() int {
 	start := time.Now().Unix()
 	cnt, _ := sendMock()
 	end := time.Now().Unix()
-	if g.Config().Debug {
-		log.Printf("sender cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
-	}
+	log.Debugf("sender cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
 
 	// statistics
 	g.SenderCronCnt.Incr()
@@ -88,9 +86,7 @@ func sendMock() (cnt int, errt error) {
 			time.Millisecond*time.Duration(connTimeout),
 			time.Millisecond*time.Duration(requTimeout))
 		if err == nil {
-			if g.Config().Debug {
-				log.Println("send items:", items)
-			}
+			log.Debugln("send items:", items)
 			cnt += cntonce
 		}
 	}

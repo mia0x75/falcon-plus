@@ -431,7 +431,7 @@ func DeleteGraphCounter(c *gin.Context) {
 
 func fetchData(hostname string, counter string, consolFun string, startTime int64, endTime int64, step int) (resp *cmodel.GraphQueryResponse, err error) {
 	qparm := grh.GenQParam(hostname, counter, consolFun, startTime, endTime, step)
-	// log.Debugf("qparm: %v", qparm)
+	log.Debugf("qparm: %v", qparm)
 	resp, err = grh.QueryOne(qparm)
 	if err != nil {
 		log.Debugf("query graph got error: %s", err.Error())

@@ -2,9 +2,9 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -39,8 +39,12 @@ type AlarmConfig struct {
 	Redis        *RedisConfig `json:"redis"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug     bool         `json:"debug"`
+	Log       *LogConfig   `json:"log"`
 	DebugHost string       `json:"debug_host"`
 	Remain    int          `json:"remain"`
 	Http      *HttpConfig  `json:"http"`

@@ -1,8 +1,7 @@
 package cron
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/ops-common/model"
 )

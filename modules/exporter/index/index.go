@@ -1,8 +1,7 @@
 package index
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 )
 

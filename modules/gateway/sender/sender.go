@@ -1,8 +1,7 @@
 package sender
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	pfc "github.com/niean/goperfcounter"
 	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"

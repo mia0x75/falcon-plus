@@ -1,5 +1,7 @@
 {
-	"debug": true,
+	"log": {
+		"level": "debug"
+	},
 	"hostname": "",
 	"desired_agent": "",
 	"server": "127.0.0.1:6031",

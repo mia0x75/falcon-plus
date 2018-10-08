@@ -23,3 +23,7 @@ func InitLog(level string) (err error) {
 	}
 	return
 }
+
+func IsDebug() bool {
+	return log.GetLevel() == log.DebugLevel
+}

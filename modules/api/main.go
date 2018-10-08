@@ -13,7 +13,6 @@ import (
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
-	"github.com/mia0x75/falcon-plus/modules/api/config"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
@@ -32,7 +31,7 @@ func main() {
 	flag.Parse()
 	cfg := *cfgTmp
 	if *version {
-		fmt.Println(config.VERSION)
+		fmt.Println(g.VERSION)
 		os.Exit(0)
 	}
 
@@ -52,7 +51,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = g.InitLog(viper.GetString("log_level"))
+	err = g.InitLog(viper.GetString("log.level"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,7 +60,8 @@ func main() {
 		log.Fatalf("db conn failed with error %s", err.Error())
 	}
 
-	if viper.GetString("log_level") != "debug" {
+	//TODO:
+	if viper.GetString("log.level") != "debug" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes := gin.Default()

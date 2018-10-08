@@ -1,9 +1,9 @@
 package index
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	Mdb "github.com/open-falcon/common/db"
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"

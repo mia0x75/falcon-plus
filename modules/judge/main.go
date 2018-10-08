@@ -23,7 +23,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-
+	g.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
 	g.InitHbsClient()
 

@@ -1,9 +1,9 @@
 package cron
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 )
 
@@ -28,9 +28,7 @@ func (this Worker) Start() {
 			case <-this.Ticker.C:
 				WorkerRun(this.ClusterItem)
 			case <-this.Quit:
-				if g.Config().Debug {
-					log.Println("[I] drop worker", this.ClusterItem)
-				}
+				log.Debugln("[I] drop worker", this.ClusterItem)
 				this.Ticker.Stop()
 				return
 			}

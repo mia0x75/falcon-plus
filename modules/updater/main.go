@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/updater/cron"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/falcon-plus/modules/updater/http"
@@ -26,6 +26,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	g.InitLog(g.Config().Log.Level)
 	g.InitGlobalVariables()
 
 	CheckDependency()

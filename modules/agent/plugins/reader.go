@@ -2,11 +2,11 @@ package plugins
 
 import (
 	"io/ioutil"
-	"log"
 	"path/filepath"
 	"strconv"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/file"
 )

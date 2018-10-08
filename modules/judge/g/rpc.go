@@ -1,12 +1,12 @@
 package g
 
 import (
-	"log"
 	"math"
 	"net/rpc"
 	"sync"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/net"
 )
 

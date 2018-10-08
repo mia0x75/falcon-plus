@@ -2,8 +2,9 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"time"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 // FIX ME: too many JOIN

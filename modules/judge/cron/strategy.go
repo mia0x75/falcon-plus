@@ -3,9 +3,9 @@ package cron
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
@@ -36,10 +36,10 @@ func rebuildStrategyMap(strategiesResponse *model.StrategiesResponse) {
 	m := make(map[string][]model.Strategy)
 	for _, hs := range strategiesResponse.HostStrategies {
 		hostname := hs.Hostname
-		if g.Config().Debug && hostname == g.Config().DebugHost {
-			log.Println(hostname, "strategies:")
+		if hostname == g.Config().DebugHost {
+			log.Debugln(hostname, "strategies:")
 			bs, _ := json.Marshal(hs.Strategies)
-			fmt.Println(string(bs))
+			log.Debugln(string(bs))
 		}
 		for _, strategy := range hs.Strategies {
 			key := fmt.Sprintf("%s/%s", hostname, strategy.Metric)

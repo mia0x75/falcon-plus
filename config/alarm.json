@@ -1,5 +1,7 @@
 {
-	"log_level": "debug",
+	"log": {
+		"level": "debug"
+	},
 	"http": {
 		"enabled": true,
 		"listen": "%%ALARM_HTTP%%"

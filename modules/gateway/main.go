@@ -24,11 +24,7 @@ func main() {
 	// global config
 	g.ParseConfig(*cfg)
 
-	if g.Config().Debug {
-		g.InitLog("debug")
-	} else {
-		g.InitLog("info")
-	}
+	g.InitLog(g.Config().Log.Level)
 
 	sender.Start()
 	receiver.Start()

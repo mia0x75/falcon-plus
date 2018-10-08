@@ -29,6 +29,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
+	g.InitLog(g.Config().Log.Level)
 	// proc
 	g.StartProc()
 

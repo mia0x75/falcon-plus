@@ -1,11 +1,11 @@
 package cache
 
 import (
-	"log"
 	"strconv"
 	"strings"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 	"github.com/toolkits/container/set"

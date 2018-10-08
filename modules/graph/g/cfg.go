@@ -2,11 +2,11 @@ package g
 
 import (
 	"encoding/json"
-	"log"
 	"strconv"
 	"sync/atomic"
 	"unsafe"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -35,9 +35,13 @@ type DBConfig struct {
 	MaxConns int    `json:"max_connections"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
+	Log            *LogConfig  `json:"log"`
 	Pid            string      `json:"pid"`
-	Debug          bool        `json:"debug"`
 	Http           *HttpConfig `json:"http"`
 	Rpc            *RpcConfig  `json:"rpc"`
 	RRD            *RRDConfig  `json:"rrd"`

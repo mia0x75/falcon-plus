@@ -1,9 +1,9 @@
 package rpc
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 	"github.com/open-falcon/falcon-plus/modules/judge/store"
@@ -21,9 +21,7 @@ func (this *Judge) Send(items []*model.JudgeItem, resp *model.SimpleRpcResponse)
 	now := time.Now().Unix()
 	for index, item := range items {
 		exists := g.FilterMap.Exists(item.Metric)
-		if g.Config().Debug {
-			log.Printf("data received: item -> %d, value -> %v\n", index, item)
-		}
+		log.Debugf("data received: item -> %d, value -> %v\n", index, item)
 		if !exists {
 			continue
 		}

@@ -1,11 +1,11 @@
 package g
 
 import (
-	"log"
 	"math/rand"
 	"sync"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/model"
 )
 

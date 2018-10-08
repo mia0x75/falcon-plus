@@ -77,7 +77,7 @@ func Start() {
 		log.Println("http.Start warning, not enabled")
 		return
 	}
-	if !g.Config().Debug {
+	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	router = gin.Default()

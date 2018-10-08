@@ -2,10 +2,10 @@ package http
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	_ "net/http/pprof"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 

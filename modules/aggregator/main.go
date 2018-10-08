@@ -46,12 +46,13 @@ func main() {
 
 	g.ParseConfig(*cfg)
 	db.Init()
+	g.InitLog(g.Config().Log.Level)
 
 	go http.Start()
 	go cron.UpdateItems()
 
 	// sdk configuration
-	sender.Debug = g.Config().Debug
+	sender.Debug = g.IsDebug()
 	sender.PostPushUrl = g.Config().Api.Agent
 
 	sender.StartSender()

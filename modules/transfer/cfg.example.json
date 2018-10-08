@@ -1,6 +1,8 @@
 {
-    "debug": true,
-    "min_step": 5,
+	"log": {
+		"level": "debug"
+	},
+	"min_step": 5,
     "http": {
         "enabled": true,
         "listen": "0.0.0.0:6061"

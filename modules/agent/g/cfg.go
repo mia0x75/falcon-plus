@@ -3,11 +3,11 @@ package g
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -87,8 +87,12 @@ type NginxConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug         bool              `json:"debug"`
+	Log           *LogConfig        `json:"log"`
 	Hostname      string            `json:"hostname"`
 	IP            string            `json:"ip"`
 	Plugin        *PluginConfig     `json:"plugin"`

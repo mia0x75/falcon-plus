@@ -1,11 +1,11 @@
 package graph
 
 import (
-	"log"
 	"testing"
 
-	"github.com/mia0x75/falcon-plus/modules/api/g"
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/spf13/viper"
 )

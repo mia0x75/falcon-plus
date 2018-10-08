@@ -2,12 +2,12 @@ package api
 
 import (
 	"container/list"
-	"log"
 	"net"
 	"net/rpc"
 	"sync"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 )
 

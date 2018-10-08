@@ -1,9 +1,9 @@
 package judge
 
 import (
-	"log"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/collector"
@@ -24,9 +24,7 @@ func StartJudgeCron() {
 		start := time.Now().Unix()
 		judge()
 		end := time.Now().Unix()
-		if g.Config().Debug {
-			log.Printf("judge cron, time %ds, start %s\n", end-start, ttime.FormatTs(start))
-		}
+		log.Debugf("judge cron, time %ds, start %s\n", end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.JudgeCronCnt.Incr()

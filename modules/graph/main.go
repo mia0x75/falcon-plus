@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
@@ -69,14 +69,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-
-	if g.Config().Debug {
-		g.InitLog("debug")
-	} else {
-		g.InitLog("info")
-		gin.SetMode(gin.ReleaseMode)
-	}
-
+	g.InitLog(g.Config().Log.Level)
 	// init db
 	g.InitDB()
 	// rrdtool init

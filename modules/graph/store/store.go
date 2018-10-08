@@ -4,9 +4,9 @@ import (
 	"container/list"
 	"errors"
 	"hash/crc32"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 )

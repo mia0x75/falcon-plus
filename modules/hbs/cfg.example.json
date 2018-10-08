@@ -1,6 +1,8 @@
 {
-    "debug": true,
-    "database": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
+	"log": {
+		"level": "debug"
+	},
+	"database": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
     "hosts": "",
     "max_connections": 20,
     "max_idle": 100,

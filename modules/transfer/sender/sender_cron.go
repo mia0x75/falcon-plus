@@ -1,10 +1,10 @@
 package sender
 
 import (
-	"log"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 	"github.com/toolkits/container/list"
 )

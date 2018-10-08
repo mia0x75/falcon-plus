@@ -1,5 +1,7 @@
 {
-	"debug": false,
+	"log": {
+		"level": "debug"
+	},
 	"http": {
 		"enable": true,
 		"listen": "0.0.0.0:8002"

@@ -3,9 +3,9 @@ package g
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"sync"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 
@@ -14,8 +14,12 @@ type HttpConfig struct {
 	Listen  string `json:"listen"`
 }
 
+type LogConfig struct {
+	Level string `json:"level"`
+}
+
 type GlobalConfig struct {
-	Debug        bool        `json:"debug"`
+	Log          *LogConfig  `json:"log"`
 	Hostname     string      `json:"hostname"`
 	DesiredAgent string      `json:"desired_agent"`
 	Server       string      `json:"server"`
