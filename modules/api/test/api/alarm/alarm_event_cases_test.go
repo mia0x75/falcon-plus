@@ -5,17 +5,21 @@ import (
 	"testing"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/chyeh/viper"
 	"github.com/elgs/jsonql"
 	"github.com/go-resty/resty"
+	"github.com/open-falcon/falcon-plus/modules/api/g"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+func init() {
+	g.ParseConfig("../cfg.example.json")
+	g.InitLog(g.Config().Log.Level)
+	if err := g.InitDB(); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
 func TestAlarmEventCase(t *testing.T) {
-	viper.AddConfigPath("../../")
-	viper.SetConfigName("cfg_test")
-	viper.ReadInConfig()
-	log.SetLevel(log.InfoLevel)
 	host := "http://localhost:8088/api/v1/alarm"
 	Apitoken := `{"name": "root", "sig": "233fdb00f99811e68a5c001500c6ca5a"}`
 	rt := resty.New()

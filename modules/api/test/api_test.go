@@ -11,7 +11,6 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -21,14 +20,11 @@ var (
 )
 
 func init() {
-	viper.AddConfigPath("../")
-	viper.AddConfigPath("./")
-	viper.SetConfigName("cfg_test")
-	viper.ReadInConfig()
-	log.SetLevel(log.DebugLevel)
-	api_host = fmt.Sprintf("http://localhost%s/api/v1", viper.GetString("listen"))
+	g.ParseConfig("../cfg.example.json")
+	g.InitLog(g.Config().Log.Level)
+	api_host = fmt.Sprintf("http://localhost%s/api/v1", g.Config().Listen)
 
-	if err := g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper()); err != nil {
+	if err := g.InitDB(); err != nil {
 		log.Fatal(err.Error())
 	}
 
