@@ -9,11 +9,13 @@ import (
 )
 
 func InitDataHistory() {
-	for {
-		funcs.UpdateCpuStat()
-		funcs.UpdateDiskStats()
-		time.Sleep(g.COLLECT_INTERVAL)
-	}
+	go func() {
+		for {
+			funcs.UpdateCpuStat()
+			funcs.UpdateDiskStats()
+			time.Sleep(g.COLLECT_INTERVAL)
+		}
+	}()
 }
 
 func Collect() {

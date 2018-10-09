@@ -27,12 +27,14 @@ func Start() {
 
 	rpc.Register(new(Judge))
 
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			log.Printf("listener.Accept occur error: %s", err)
-			continue
+	go func() {
+		for {
+			conn, err := listener.Accept()
+			if err != nil {
+				log.Printf("listener.Accept occur error: %s", err)
+				continue
+			}
+			go rpc.ServeConn(conn)
 		}
-		go rpc.ServeConn(conn)
-	}
+	}()
 }

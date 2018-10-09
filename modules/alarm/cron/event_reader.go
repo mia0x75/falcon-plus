@@ -18,14 +18,16 @@ func ReadHighEvent() {
 		return
 	}
 
-	for {
-		event, err := popEvent(queues)
-		if err != nil {
-			time.Sleep(time.Second)
-			continue
+	go func() {
+		for {
+			event, err := popEvent(queues)
+			if err != nil {
+				time.Sleep(time.Second)
+				continue
+			}
+			consume(event, true)
 		}
-		consume(event, true)
-	}
+	}()
 }
 
 func ReadLowEvent() {
@@ -34,14 +36,16 @@ func ReadLowEvent() {
 		return
 	}
 
-	for {
-		event, err := popEvent(queues)
-		if err != nil {
-			time.Sleep(time.Second)
-			continue
+	go func() {
+		for {
+			event, err := popEvent(queues)
+			if err != nil {
+				time.Sleep(time.Second)
+				continue
+			}
+			consume(event, false)
 		}
-		consume(event, false)
-	}
+	}()
 }
 
 func popEvent(queues []string) (*cmodel.Event, error) {

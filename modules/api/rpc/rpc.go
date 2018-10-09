@@ -24,13 +24,15 @@ func Start() {
 	} else {
 		log.Println("listening", addr)
 	}
-	for {
-		conn, err := l.Accept()
-		if err != nil {
-			log.Println("listener accept fail:", err)
-			time.Sleep(time.Duration(100) * time.Millisecond)
-			continue
+	go func() {
+		for {
+			conn, err := l.Accept()
+			if err != nil {
+				log.Println("listener accept fail:", err)
+				time.Sleep(time.Duration(100) * time.Millisecond)
+				continue
+			}
+			go server.ServeCodec(jsonrpc.NewServerCodec(conn))
 		}
-		go server.ServeCodec(jsonrpc.NewServerCodec(conn))
-	}
+	}()
 }

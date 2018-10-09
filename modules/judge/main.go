@@ -4,7 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/judge/cron"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 	"github.com/open-falcon/falcon-plus/modules/judge/http"
@@ -29,11 +32,21 @@ func main() {
 
 	store.InitHistoryBigMap()
 
-	go http.Start()
-	go rpc.Start()
+	http.Start()
+	rpc.Start()
 
-	go cron.SyncStrategies()
-	go cron.CleanStale()
+	cron.SyncStrategies()
+	cron.CleanStale()
+
+	log.Infoln("service ready ...")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		fmt.Println()
+		os.Exit(0)
+	}()
 
 	select {}
 }

@@ -4,7 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/exporter/collector"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/http"
@@ -37,9 +40,18 @@ func main() {
 	index.Start()
 	// collector
 	collector.Start()
-
 	// http
 	http.Start()
+
+	log.Infoln("service ready ...")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		fmt.Println()
+		os.Exit(0)
+	}()
 
 	select {}
 }

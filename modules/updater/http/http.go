@@ -61,6 +61,10 @@ func determineWorkingDirectory() string {
 }
 
 func Start() {
+	go startHttpServer()
+}
+
+func startHttpServer() {
 	if !g.Config().Http.Enabled {
 		return
 	}
@@ -69,10 +73,6 @@ func Start() {
 	if addr == "" {
 		return
 	}
-	//s := &http.Server{
-	//	Addr:           addr,
-	//	MaxHeaderBytes: 1 << 30,
-	//}
 	log.Println("http listening", addr)
 	err := http.ListenAndServe(addr, nil)
 	log.Fatalln(err)

@@ -12,14 +12,16 @@ import (
 )
 
 func ConsumeIM() {
-	for {
-		L := redi.PopAllIM()
-		if len(L) == 0 {
-			time.Sleep(time.Millisecond * 200)
-			continue
+	go func() {
+		for {
+			L := redi.PopAllIM()
+			if len(L) == 0 {
+				time.Sleep(time.Millisecond * 200)
+				continue
+			}
+			SendIMList(L)
 		}
-		SendIMList(L)
-	}
+	}()
 }
 
 func SendIMList(L []*model.IM) {

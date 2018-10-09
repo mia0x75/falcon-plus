@@ -18,6 +18,6 @@ func Start() {
 		StartIndexDeleteTask()
 		log.Println("index.Start warning, index cleaner enable")
 	}
-	StartIndexUpdateAllTask()
+	go StartIndexUpdateAllTask()
 	log.Println("index.Start ok")
 }

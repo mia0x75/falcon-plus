@@ -14,27 +14,33 @@ import (
 )
 
 func CombineSms() {
-	for {
-		// 每分钟读取处理一次
-		time.Sleep(time.Minute)
-		combineSms()
-	}
+	go func() {
+		for {
+			// 每分钟读取处理一次
+			time.Sleep(time.Minute)
+			combineSms()
+		}
+	}()
 }
 
 func CombineMail() {
-	for {
-		// 每分钟读取处理一次
-		time.Sleep(time.Minute)
-		combineMail()
-	}
+	go func() {
+		for {
+			// 每分钟读取处理一次
+			time.Sleep(time.Minute)
+			combineMail()
+		}
+	}()
 }
 
 func CombineIM() {
-	for {
-		// 每分钟读取处理一次
-		time.Sleep(time.Minute)
-		combineIM()
-	}
+	go func() {
+		for {
+			// 每分钟读取处理一次
+			time.Sleep(time.Minute)
+			combineIM()
+		}
+	}()
 }
 
 func combineMail() {

@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/alarm/cron"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/http"
@@ -35,16 +36,18 @@ func main() {
 	model.InitDatabase()
 	cron.InitSenderWorker()
 
-	go http.Start()
-	go cron.ReadHighEvent()
-	go cron.ReadLowEvent()
-	go cron.CombineSms()
-	go cron.CombineMail()
-	go cron.CombineIM()
-	go cron.ConsumeIM()
-	go cron.ConsumeSms()
-	go cron.ConsumeMail()
-	go cron.CleanExpiredEvent()
+	http.Start()
+	cron.ReadHighEvent()
+	cron.ReadLowEvent()
+	cron.CombineSms()
+	cron.CombineMail()
+	cron.CombineIM()
+	cron.ConsumeIM()
+	cron.ConsumeSms()
+	cron.ConsumeMail()
+	cron.CleanExpiredEvent()
+
+	log.Infoln("service ready ...")
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

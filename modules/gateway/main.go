@@ -4,7 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 	"github.com/open-falcon/falcon-plus/modules/gateway/http"
 	"github.com/open-falcon/falcon-plus/modules/gateway/receiver"
@@ -23,14 +26,24 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-
 	g.InitLog(g.Config().Log.Level)
 
-	sender.Start()
+	// receiver
 	receiver.Start()
-
+	// sender
+	sender.Start()
 	// http
 	http.Start()
+
+	log.Infoln("service ready ...")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		fmt.Println()
+		os.Exit(0)
+	}()
 
 	select {}
 }

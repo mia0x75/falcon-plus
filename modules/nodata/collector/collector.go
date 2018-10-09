@@ -22,7 +22,7 @@ func Start() {
 		return
 	}
 
-	StartCollectorCron()
+	go StartCollectorCron()
 	log.Println("collector.Start ok")
 }
 

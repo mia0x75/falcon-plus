@@ -58,6 +58,10 @@ func AutoRender(w http.ResponseWriter, data interface{}, err error) {
 }
 
 func Start() {
+	go startHttpServer()
+}
+
+func startHttpServer() {
 	if !g.Config().Http.Enabled {
 		return
 	}

@@ -18,10 +18,10 @@ func Start() {
 	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	r := gin.Default()
-	r.GET("/version", Version)
-	r.GET("/health", Health)
-	r.GET("/workdir", Workdir)
+	routes := gin.Default()
+	routes.GET("/version", Version)
+	routes.GET("/health", Health)
+	routes.GET("/workdir", Workdir)
 	log.Println("http listening", addr)
-	r.Run(addr)
+	go routes.Run(addr)
 }

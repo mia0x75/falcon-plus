@@ -12,14 +12,16 @@ import (
 )
 
 func ConsumeSms() {
-	for {
-		L := redi.PopAllSms()
-		if len(L) == 0 {
-			time.Sleep(time.Millisecond * 200)
-			continue
+	go func() {
+		for {
+			L := redi.PopAllSms()
+			if len(L) == 0 {
+				time.Sleep(time.Millisecond * 200)
+				continue
+			}
+			SendSmsList(L)
 		}
-		SendSmsList(L)
-	}
+	}()
 }
 
 func SendSmsList(L []*model.Sms) {

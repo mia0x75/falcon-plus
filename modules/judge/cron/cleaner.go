@@ -7,10 +7,12 @@ import (
 )
 
 func CleanStale() {
-	for {
-		time.Sleep(time.Hour * 5)
-		cleanStale()
-	}
+	go func() {
+		for {
+			time.Sleep(time.Hour * 5)
+			cleanStale()
+		}
+	}()
 }
 
 func cleanStale() {

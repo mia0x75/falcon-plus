@@ -13,12 +13,14 @@ import (
 )
 
 func Heartbeat() {
-	SleepRandomDuration()
-	for {
-		heartbeat()
-		d := time.Duration(g.Config().Interval) * time.Second
-		time.Sleep(d)
-	}
+	go func() {
+		SleepRandomDuration()
+		for {
+			heartbeat()
+			d := time.Duration(g.Config().Interval) * time.Second
+			time.Sleep(d)
+		}
+	}()
 }
 
 func heartbeat() {

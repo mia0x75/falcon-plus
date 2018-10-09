@@ -5,6 +5,6 @@ import (
 )
 
 func Start() {
-	StartJudgeCron()
+	go StartJudgeCron()
 	log.Println("judge.Start ok")
 }

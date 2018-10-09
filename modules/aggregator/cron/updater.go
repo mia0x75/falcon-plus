@@ -8,11 +8,13 @@ import (
 )
 
 func UpdateItems() {
-	for {
-		updateItems()
-		d := time.Duration(g.Config().Database.Interval) * time.Second
-		time.Sleep(d)
-	}
+	go func() {
+		for {
+			updateItems()
+			d := time.Duration(g.Config().Database.Interval) * time.Second
+			time.Sleep(d)
+		}
+	}()
 }
 
 func updateItems() {

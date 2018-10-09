@@ -12,14 +12,16 @@ import (
 )
 
 func ConsumeMail() {
-	for {
-		L := redi.PopAllMail()
-		if len(L) == 0 {
-			time.Sleep(time.Millisecond * 200)
-			continue
+	go func() {
+		for {
+			L := redi.PopAllMail()
+			if len(L) == 0 {
+				time.Sleep(time.Millisecond * 200)
+				continue
+			}
+			SendMailList(L)
 		}
-		SendMailList(L)
-	}
+	}()
 }
 
 func SendMailList(L []*model.Mail) {

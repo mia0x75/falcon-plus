@@ -72,10 +72,12 @@ func (this *SafeAgents) Keys() []string {
 
 func DeleteStaleAgents() {
 	duration := time.Hour * time.Duration(24)
-	for {
-		time.Sleep(duration)
-		deleteStaleAgents()
-	}
+	go func() {
+		for {
+			time.Sleep(duration)
+			deleteStaleAgents()
+		}
+	}()
 }
 
 func deleteStaleAgents() {
