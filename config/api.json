@@ -2,13 +2,32 @@
 	"log": {
 		"level": "debug"
 	},
-	"db": {
-		"portal": "%%MYSQL%%/portal?charset=utf8&parseTime=True&loc=Local",
-		"graph": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
-		"uic": "%%MYSQL%%/uic?charset=utf8&parseTime=True&loc=Local",
-		"dashboard": "%%MYSQL%%/dashboard?charset=utf8&parseTime=True&loc=Local",
-		"alarms": "%%MYSQL%%/alarms?charset=utf8&parseTime=True&loc=Local",
-		"db_bug": true
+	"databases": {
+		"portal": {
+			"addr": "%%MYSQL%%/portal?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"graph": {
+			"addr": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"uic": {
+			"addr": "%%MYSQL%%/uic?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"dashboard": {
+			"addr": "%%MYSQL%%/dashboard?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"alarms": {
+			"addr": "%%MYSQL%%/alarms?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		}
 	},
 	"graphs": {
 		"cluster": {
@@ -23,7 +42,11 @@
 	"metric_list_file": "./api/data/metric",
 	"rpc": {
 		"enabled": true,
-		"addr": "0.0.0.0:6040"
+		"listen": "0.0.0.0:6040"
+	},
+	"statsd": {
+		"enabled": true,
+		"port": 8089
 	},
 	"listen": "%%API_HTTP%%",
 	"access_control": true,

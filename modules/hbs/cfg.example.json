@@ -2,10 +2,12 @@
 	"log": {
 		"level": "debug"
 	},
-	"database": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
+	"database": {
+		"addr": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
+		"max_connections": 20,
+		"max_idle": 10
+	},
 	"hosts": "",
-	"max_connections": 20,
-	"max_idle": 100,
 	"listen": ":6030",
 	"trustable": [
 		""

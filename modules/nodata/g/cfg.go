@@ -20,10 +20,11 @@ type PlusAPIConfig struct {
 	RequestTimeout int32  `json:"request_timeout"`
 }
 
-type NdConfig struct {
-	Enabled bool   `json:"enabled"`
-	Dsn     string `json:"dsn"`
-	MaxIdle int32  `json:"max_idle"`
+type DatabaseConfig struct {
+	Enabled        bool   `json:"enabled"`
+	Addr           string `json:"addr"`
+	MaxIdle        int    `json:"max_idle"`
+	MaxConnections int    `json:"max_connections"`
 }
 
 type CollectorConfig struct {
@@ -48,7 +49,7 @@ type GlobalConfig struct {
 	Log       *LogConfig       `json:"log"`
 	Http      *HttpConfig      `json:"http"`
 	Api       *PlusAPIConfig   `json:"api"`
-	Config    *NdConfig        `json:"config"`
+	Database  *DatabaseConfig  `json:"database"`
 	Collector *CollectorConfig `json:"collector"`
 	Sender    *SenderConfig    `json:"sender"`
 }

@@ -8,8 +8,9 @@
 	},
 	"index": {
 		"enable": false,
-		"dsn": "root:root@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
+		"addr": "root:root@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
 		"max_idle": 4,
+		"max_connections": 8,
 		"auto_delete": false,
 		"cluster": {
 			"test.hostname01:6071": "0 0 0 ? * 0-5",

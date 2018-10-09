@@ -32,10 +32,10 @@
 		"api": "http://127.0.0.1:8080",
 		"token": "default-token-used-in-server-side"
 	},
-	"portal": {
+	"database": {
 		"addr": "root:@tcp(127.0.0.1:3306)/alarms?charset=utf8&loc=Asia%2FChongqing",
-		"idle": 10,
-		"max": 100
+		"max_idle": 4,
+		"max_connections": 8
 	},
 	"worker": {
 		"im": 10,

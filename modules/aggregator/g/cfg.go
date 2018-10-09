@@ -14,10 +14,11 @@ type HttpConfig struct {
 }
 
 type DatabaseConfig struct {
-	Addr     string `json:"addr"`
-	Idle     int    `json:"idle"`
-	Ids      []int  `json:"ids"`
-	Interval int64  `json:"interval"`
+	Addr           string `json:"addr"`
+	MaxIdle        int    `json:"max_idle"`
+	MaxConnections int    `json:"max_connections"`
+	Ids            []int  `json:"ids"`
+	Interval       int64  `json:"interval"`
 }
 
 type ApiConfig struct {

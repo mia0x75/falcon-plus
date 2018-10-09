@@ -17,7 +17,7 @@ var (
 )
 
 func Start() {
-	if !g.Config().Config.Enabled {
+	if !g.Config().Database.Enabled {
 		log.Println("config.Start warning, not enabled")
 		return
 	}

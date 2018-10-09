@@ -2,77 +2,26 @@ package service
 
 import (
 	"database/sql"
-	"sync"
 
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
-const (
-	dbBaseConnName = "db.base"
-)
-
-var (
-	dbLock    = sync.RWMutex{}
-	dbConnMap = make(map[string]*sql.DB)
-)
+var DB *sql.DB
 
 func InitDB() {
-	_, err := GetDbConn(dbBaseConnName)
-	if err != nil {
-		log.Fatalln("config.InitDB error", err)
-		return // never go here
-	}
-
-	log.Println("config.InitDB ok")
-}
-
-func GetBaseConn() (c *sql.DB, e error) {
-	return GetDbConn(dbBaseConnName)
-}
-
-func GetDbConn(connName string) (c *sql.DB, e error) {
-	dbLock.Lock()
-	defer dbLock.Unlock()
-
 	var err error
-	var dbConn *sql.DB
-	dbConn = dbConnMap[connName]
-	if dbConn == nil {
-		dbConn, err = makeDbConn()
-		if err != nil {
-			closeDbConn(dbConn)
-			return nil, err
-		}
-		dbConnMap[connName] = dbConn
-	}
-
-	err = dbConn.Ping()
+	DB, err = sql.Open("mysql", g.Config().Database.Addr)
 	if err != nil {
-		closeDbConn(dbConn)
-		delete(dbConnMap, connName)
-		return nil, err
+		log.Fatalln("open db fail:", err)
 	}
 
-	return dbConn, err
-}
+	DB.SetMaxOpenConns(g.Config().Database.MaxConnections)
+	DB.SetMaxIdleConns(g.Config().Database.MaxIdle)
 
-// internal
-func makeDbConn() (conn *sql.DB, err error) {
-	conn, err = sql.Open("mysql", g.Config().Config.Dsn)
+	err = DB.Ping()
 	if err != nil {
-		return nil, err
-	}
-
-	conn.SetMaxIdleConns(int(g.Config().Config.MaxIdle))
-	err = conn.Ping()
-
-	return conn, err
-}
-
-func closeDbConn(conn *sql.DB) {
-	if conn != nil {
-		conn.Close()
+		log.Fatalln("ping db fail:", err)
 	}
 }

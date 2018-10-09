@@ -32,10 +32,10 @@ type ApiConfig struct {
 	IM        string `json:"im"`
 }
 
-type PortalConfig struct {
-	Addr string `json:"addr"`
-	Idle int    `json:"idle"`
-	Max  int    `json:"max"`
+type DatabaseConfig struct {
+	Addr           string `json:"addr"`
+	MaxIdle        int    `json:"max_idle"`
+	MaxConnections int    `json:"max_connections"`
 }
 
 type WorkerConfig struct {
@@ -55,7 +55,7 @@ type LogConfig struct {
 
 type GlobalConfig struct {
 	Log         *LogConfig         `json:"log"`
-	Portal      *PortalConfig      `json:"portal"`
+	Database    *DatabaseConfig    `json:"database"`
 	Http        *HttpConfig        `json:"http"`
 	Redis       *RedisConfig       `json:"redis"`
 	Api         *ApiConfig         `json:"api"`

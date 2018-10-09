@@ -12,10 +12,11 @@
 		"addr": "http://127.0.0.1:8080",
 		"token": "default-token-used-in-server-side"
 	},
-	"config": {
+	"database": {
 		"enabled": true,
 		"dsn": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true&wait_timeout=604800",
-		"max_idle": 4
+		"max_idle": 4,
+		"max_connections": 8
 	},
 	"collector": {
 		"enabled": true,

@@ -13,8 +13,8 @@
 	"rrd": {
 		"storage": "./data/6070"
 	},
-	"db": {
-		"dsn": "root:@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
+	"database": {
+		"addr": "root:@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8
 	},

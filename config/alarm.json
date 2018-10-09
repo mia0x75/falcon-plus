@@ -32,10 +32,10 @@
 		"api": "http://%%API_HTTP%%",
 		"token": "%%API_DEFAULT_TOKEN%%"
 	},
-	"portal": {
+	"database": {
 		"addr": "%%MYSQL%%/alarms?charset=utf8&loc=Asia%2FChongqing",
-		"idle": 10,
-		"max": 100
+		"max_idle": 4,
+		"max_connections": 8
 	},
 	"worker": {
 		"im": 10,

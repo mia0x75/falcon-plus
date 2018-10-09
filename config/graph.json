@@ -13,8 +13,8 @@
 	"rrd": {
 		"storage": "./data/6070"
 	},
-	"db": {
-		"dsn": "%%MYSQL%%/graph?loc=Local&parseTime=true",
+	"database": {
+		"addr": "%%MYSQL%%/graph?loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8
 	},

@@ -16,13 +16,7 @@ func GetHostsFromGroup(grpName string) map[string]int {
 		" INNER JOIN host ON host.id=gh.host_id AND (host.maintain_begin > %d OR host.maintain_end < %d)"+
 		" INNER JOIN grp ON grp.id=gh.grp_id AND grp.grp_name='%s'", now, now, grpName)
 
-	dbConn, err := GetDbConn("nodata.host")
-	if err != nil {
-		log.Println("db.get_conn error, host", err)
-		return hosts
-	}
-
-	rows, err := dbConn.Query(q)
+	rows, err := DB.Query(q)
 	if err != nil {
 		log.Println("[ERROR]", err)
 		return hosts

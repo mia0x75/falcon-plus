@@ -20,18 +20,18 @@ func InitDB() {
 	}
 }
 
-func GetDbConn() (conn *sql.DB, err error) {
-	conn, err = sql.Open("mysql", g.Config().Index.Dsn)
+func GetDbConn() (db *sql.DB, err error) {
+	db, err = sql.Open("mysql", g.Config().Index.Addr)
 	if err != nil {
 		return nil, err
 	}
 
-	conn.SetMaxIdleConns(g.Config().Index.MaxIdle)
+	db.SetMaxIdleConns(g.Config().Index.MaxIdle)
+	db.SetMaxOpenConns(g.Config().Index.MaxConnections)
 
-	err = conn.Ping()
+	err = db.Ping()
 	if err != nil {
-		conn.Close()
+		db.Close()
 	}
-
-	return conn, err
+	return
 }

@@ -34,48 +34,58 @@ func SetLogLevel(loggerlevel bool) {
 
 func InitDB() (err error) {
 	var p *sql.DB
-	portal, err := gorm.Open("mysql", Config().DB.Portal)
-	portal.Dialect().SetDB(p)
+	portald, err := gorm.Open("mysql", Config().Databases.Portal.Addr)
+	portald.Dialect().SetDB(p)
 	if err != nil {
 		return fmt.Errorf("connect to portal: %s", err.Error())
 	}
-	portal.SingularTable(true)
-	dbp.Falcon = portal
+	portald.SingularTable(true)
+	portald.DB().SetMaxIdleConns(Config().Databases.Portal.MaxIdle)
+	portald.DB().SetMaxOpenConns(Config().Databases.Portal.MaxConnections)
+	dbp.Falcon = portald
 
 	var g *sql.DB
-	graphd, err := gorm.Open("mysql", Config().DB.Graph)
+	graphd, err := gorm.Open("mysql", Config().Databases.Graph.Addr)
 	graphd.Dialect().SetDB(g)
 	if err != nil {
 		return fmt.Errorf("connect to graph: %s", err.Error())
 	}
 	graphd.SingularTable(true)
+	graphd.DB().SetMaxIdleConns(Config().Databases.Graph.MaxIdle)
+	graphd.DB().SetMaxOpenConns(Config().Databases.Graph.MaxConnections)
 	dbp.Graph = graphd
 
 	var u *sql.DB
-	uicd, err := gorm.Open("mysql", Config().DB.Uic)
+	uicd, err := gorm.Open("mysql", Config().Databases.Uic.Addr)
 	uicd.Dialect().SetDB(u)
 	if err != nil {
 		return fmt.Errorf("connect to uic: %s", err.Error())
 	}
 	uicd.SingularTable(true)
+	uicd.DB().SetMaxIdleConns(Config().Databases.Uic.MaxIdle)
+	uicd.DB().SetMaxOpenConns(Config().Databases.Uic.MaxConnections)
 	dbp.Uic = uicd
 
 	var d *sql.DB
-	dashd, err := gorm.Open("mysql", Config().DB.Dashboard)
+	dashd, err := gorm.Open("mysql", Config().Databases.Dashboard.Addr)
 	dashd.Dialect().SetDB(d)
 	if err != nil {
 		return fmt.Errorf("connect to dashboard: %s", err.Error())
 	}
 	dashd.SingularTable(true)
+	dashd.DB().SetMaxIdleConns(Config().Databases.Dashboard.MaxIdle)
+	dashd.DB().SetMaxOpenConns(Config().Databases.Dashboard.MaxConnections)
 	dbp.Dashboard = dashd
 
 	var alm *sql.DB
-	almd, err := gorm.Open("mysql", Config().DB.Alarms)
+	almd, err := gorm.Open("mysql", Config().Databases.Alarms.Addr)
 	almd.Dialect().SetDB(alm)
 	if err != nil {
 		return fmt.Errorf("connect to alarms: %s", err.Error())
 	}
 	almd.SingularTable(true)
+	almd.DB().SetMaxIdleConns(Config().Databases.Alarms.MaxIdle)
+	almd.DB().SetMaxOpenConns(Config().Databases.Alarms.MaxConnections)
 	dbp.Alarm = almd
 
 	return

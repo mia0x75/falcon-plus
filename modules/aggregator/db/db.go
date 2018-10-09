@@ -10,14 +10,15 @@ import (
 
 var DB *sql.DB
 
-func Init() {
+func InitDB() {
 	var err error
 	DB, err = sql.Open("mysql", g.Config().Database.Addr)
 	if err != nil {
 		log.Fatalln("open db fail:", err)
 	}
 
-	DB.SetMaxIdleConns(g.Config().Database.Idle)
+	DB.SetMaxIdleConns(g.Config().Database.MaxIdle)
+	DB.SetMaxOpenConns(g.Config().Database.MaxConnections)
 
 	err = DB.Ping()
 	if err != nil {

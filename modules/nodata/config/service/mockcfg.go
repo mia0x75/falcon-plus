@@ -25,14 +25,8 @@ type MockCfg struct {
 func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 	ret := make(map[string]*cmodel.NodataConfig)
 
-	dbConn, err := GetDbConn("nodata.mockcfg")
-	if err != nil {
-		log.Println("db.get_conn error, mockcfg", err)
-		return ret
-	}
-
 	q := fmt.Sprintf("SELECT id,name,obj,obj_type,metric,tags,dstype,step,mock FROM mockcfg")
-	rows, err := dbConn.Query(q)
+	rows, err := DB.Query(q)
 	if err != nil {
 		log.Println("db.query error, mockcfg", err)
 		return ret

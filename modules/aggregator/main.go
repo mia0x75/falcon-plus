@@ -45,7 +45,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	db.Init()
+	db.InitDB()
 	g.InitLog(g.Config().Log.Level)
 
 	go http.Start()

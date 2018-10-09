@@ -2,10 +2,12 @@
 	"log": {
 		"level": "debug"
 	},
-	"database": "%%MYSQL%%/portal?loc=Local&parseTime=true",
+	"database": {
+		"addr": "%%MYSQL%%/portal?loc=Local&parseTime=true",
+		"max_idle": 4,
+		"max_connections": 8
+	},
 	"hosts": "",
-	"max_connections": 20,
-	"max_idle": 15,
 	"listen": ":6030",
 	"trustable": [
 		""

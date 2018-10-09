@@ -29,8 +29,8 @@ type RRDConfig struct {
 	Storage string `json:"storage"`
 }
 
-type DBConfig struct {
-	Dsn      string `json:"dsn"`
+type DatabaseConfig struct {
+	Addr     string `json:"addr"`
 	MaxIdle  int    `json:"max_idle"`
 	MaxConns int    `json:"max_connections"`
 }
@@ -40,14 +40,14 @@ type LogConfig struct {
 }
 
 type GlobalConfig struct {
-	Log            *LogConfig  `json:"log"`
-	Pid            string      `json:"pid"`
-	Http           *HttpConfig `json:"http"`
-	Rpc            *RpcConfig  `json:"rpc"`
-	RRD            *RRDConfig  `json:"rrd"`
-	DB             *DBConfig   `json:"db"`
-	CallTimeout    int32       `json:"execute_timeout"`
-	IOWorkerNum    int         `json:"io_workers"`
+	Log            *LogConfig      `json:"log"`
+	Pid            string          `json:"pid"`
+	Http           *HttpConfig     `json:"http"`
+	Rpc            *RpcConfig      `json:"rpc"`
+	RRD            *RRDConfig      `json:"rrd"`
+	Database       *DatabaseConfig `json:"database"`
+	CallTimeout    int32           `json:"execute_timeout"`
+	IOWorkerNum    int             `json:"io_workers"`
 	FirstBytesSize int
 	Migrate        struct {
 		Concurrency int               `json:"concurrency"` //number of multiple worker per node

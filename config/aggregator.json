@@ -8,7 +8,8 @@
 	},
 	"database": {
 		"addr": "%%MYSQL%%/portal?loc=Local&parseTime=true",
-		"idle": 10,
+		"max_idle": 4,
+		"max_connections": 8,
 		"ids": [
 			1,
 			-1

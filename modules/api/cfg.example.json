@@ -2,12 +2,32 @@
 	"log": {
 		"level": "debug"
 	},
-	"db": {
-		"portal": "root:@tcp(127.0.0.1:3306)/portal?charset=utf8&parseTime=True&loc=Local",
-		"graph": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8&parseTime=True&loc=Local",
-		"uic": "root:@tcp(127.0.0.1:3306)/uic?charset=utf8&parseTime=True&loc=Local",
-		"dashboard": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8&parseTime=True&loc=Local",
-		"alarms": "root:@tcp(127.0.0.1:3306)/alarms?charset=utf8&parseTime=True&loc=Local"
+	"databases": {
+		"portal": {
+			"addr": "root:@tcp(127.0.0.1:3306)/portal?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"graph": {
+			"addr": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"uic": {
+			"addr": "root:@tcp(127.0.0.1:3306)/uic?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"dashboard": {
+			"addr": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		},
+		"alarms": {
+			"addr": "root:@tcp(127.0.0.1:3306)/alarms?charset=utf8&parseTime=True&loc=Local",
+			"max_idle": 4,
+			"max_connections": 8
+		}
 	},
 	"graphs": {
 		"cluster": {
@@ -23,7 +43,7 @@
 	"metric_list_file": "./api/data/metric",
 	"rpc": {
 		"enabled": true,
-		"addr": "0.0.0.0:6040"
+		"listen": "0.0.0.0:6040"
 	},
 	"statsd": {
 		"enabled": true,

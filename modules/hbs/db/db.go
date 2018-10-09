@@ -12,13 +12,13 @@ var DB *sql.DB
 
 func Init() {
 	var err error
-	DB, err = sql.Open("mysql", g.Config().Database)
+	DB, err = sql.Open("mysql", g.Config().Database.Addr)
 	if err != nil {
 		log.Fatalln("open db fail:", err)
 	}
 
-	DB.SetMaxOpenConns(g.Config().MaxConns)
-	DB.SetMaxIdleConns(g.Config().MaxIdle)
+	DB.SetMaxOpenConns(g.Config().Database.MaxConns)
+	DB.SetMaxIdleConns(g.Config().Database.MaxIdle)
 
 	err = DB.Ping()
 	if err != nil {
