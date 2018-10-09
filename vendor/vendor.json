@@ -15,12 +15,6 @@
 			"revisionTime": "2018-09-25T19:35:18Z"
 		},
 		{
-			"checksumSHA1": "B2NOeRnPI2A5ZTaujt3xb4mPvkU=",
-			"path": "github.com/amalfra/gin-statsd/middleware",
-			"revision": "de58afc5f8627c3b29b9eb08c70d72daf7481943",
-			"revisionTime": "2018-07-15T16:13:04Z"
-		},
-		{
 			"checksumSHA1": "skbVWA35zzQ+Yml14zyULI1OPic=",
 			"path": "github.com/astaxie/beego/orm",
 			"revision": "053a075344c118a5cc41981b29ef612bb53d20ca",
