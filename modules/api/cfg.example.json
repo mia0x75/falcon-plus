@@ -25,6 +25,10 @@
 		"enabled": true,
 		"addr": "0.0.0.0:6040"
 	},
+	"statsd": {
+		"enabled": true,
+		"port": 8089
+	},
 	"listen": ":8080",
 	"access_control": true,
 	"signup_disable": false,

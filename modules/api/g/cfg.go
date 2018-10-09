@@ -27,7 +27,12 @@ type GraphsConfig struct {
 
 type RpcConfig struct {
 	Enabled bool   `json:"enabled"`
-	Address string `json:"addr"`
+	Listen  string `json:"listen"`
+}
+
+type StatsdConfig struct {
+	Enabled bool `json:"enabled"`
+	Port    int  `json:"port"`
 }
 
 type LogConfig struct {
@@ -45,6 +50,7 @@ type GlobalConfig struct {
 	GenDocPath     string        `json:"gen_doc_path"`
 	MetricListFile string        `json:"metric_list_file"`
 	Rpc            *RpcConfig    `json:"rpc"`
+	Statsd         *StatsdConfig `json:"statsd"`
 	DB             *DbConfig     `json:"db"`
 	Graphs         *GraphsConfig `json:"graphs"`
 }

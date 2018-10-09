@@ -35,22 +35,22 @@ var (
 	GraphNodeRing *rings.ConsistentHashNodeRing
 )
 
-func Start(addrs map[string]string) {
-	clusterMap = addrs
+func Start() {
+	addrs := g.Config().Graphs.Cluster
 	connTimeout = int32(g.Config().Graphs.ConnectTimeout)
 	callTimeout = int32(g.Config().Graphs.ExecuteTimeout)
-	for c := range clusterMap {
+	for c := range addrs {
 		gcluster = append(gcluster, c)
 	}
 	defer func() {
 		if r := recover(); r != nil {
 			log.Error("graph got painc")
 			log.Error(fmt.Sprintf("%s", r))
-			Start(clusterMap)
+			Start()
 		}
 	}()
-	initNodeRings(clusterMap)
-	initConnPools(clusterMap)
+	initNodeRings(addrs)
+	initConnPools(addrs)
 	log.Println("graph.Start ok")
 }
 

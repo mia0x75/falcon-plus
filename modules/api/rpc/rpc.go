@@ -11,9 +11,12 @@ import (
 )
 
 func Start() {
-	addr := g.Config().Rpc.Address
+	if !g.Config().Rpc.Enabled {
+		return
+	}
+
+	addr := g.Config().Rpc.Listen
 	server := rpc.NewServer()
-	// server.Register(new(filter.Filter))
 	server.Register(new(GraphRpc))
 	l, e := net.Listen("tcp", addr)
 	if e != nil {
