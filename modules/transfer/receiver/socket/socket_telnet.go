@@ -72,7 +72,6 @@ func socketTelnetHandle(conn net.Conn) {
 	}
 
 	return
-
 }
 
 // example: endpoint counter timestamp value [type] [step]

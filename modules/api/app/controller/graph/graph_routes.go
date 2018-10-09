@@ -30,5 +30,4 @@ func Routes(r *gin.Engine) {
 	grfanaapi.GET("/grafana/metrics/find", GrafanaMainQuery)
 	grfanaapi.POST("/grafana/render", GrafanaRender)
 	grfanaapi.GET("/grafana/render", GrafanaRender)
-
 }

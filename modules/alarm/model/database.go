@@ -7,7 +7,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/model/event"
 )
 
-func InitDatabase() {
+func InitDB() {
 	// set default database
 	config := g.Config()
 	orm.RegisterDataBase("default", "mysql", config.Database.Addr, config.Database.MaxIdle, config.Database.MaxConnections)

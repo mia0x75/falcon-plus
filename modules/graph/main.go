@@ -28,12 +28,6 @@ func start_signal(pid int, cfg *g.GlobalConfig) {
 		switch s {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
 			log.Println("graceful shut down")
-			if cfg.Http.Enabled {
-				http.Close_chan <- 1
-				<-http.Close_done_chan
-			}
-			log.Println("http stop ok")
-
 			if cfg.Rpc.Enabled {
 				api.Close_chan <- 1
 				<-api.Close_done_chan
@@ -77,12 +71,14 @@ func main() {
 	// rrdtool before api for disable loopback connection
 	rrdtool.Start()
 	// start api
-	go api.Start()
+	api.Start()
 	// start indexing
 	index.Start()
 	// start http server
-	go http.Start()
-	go cron.CleanCache()
+	http.Start()
+	cron.CleanCache()
+
+	log.Infoln("service ready ...")
 
 	start_signal(os.Getpid(), g.Config())
 }

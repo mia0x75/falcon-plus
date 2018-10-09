@@ -57,7 +57,6 @@ func (this *SingleConnRpcClient) insureConn() {
 }
 
 func (this *SingleConnRpcClient) Call(method string, args interface{}, reply interface{}) error {
-
 	this.Lock()
 	defer this.Unlock()
 

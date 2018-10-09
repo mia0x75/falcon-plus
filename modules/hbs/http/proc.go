@@ -45,5 +45,4 @@ func configProcRoutes() {
 		hostname := r.URL.Path[len("/plugins/"):]
 		RenderDataJson(w, cache.GetPlugins(hostname))
 	})
-
 }

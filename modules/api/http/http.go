@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
-	statsd "github.com/amalfra/gin-statsd/middleware"
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
@@ -26,12 +25,7 @@ func Start() {
 	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	log.Printf("%+v", g.Config().Statsd)
 	routes := gin.Default()
-	if g.Config().Statsd.Enabled {
-		log.Println("start gin-statsd ...")
-		routes.Use(statsd.New(statsd.Options{Port: g.Config().Statsd.Port}))
-	}
 	if g.Config().GenDoc {
 		yaag.Init(&yaag.Config{
 			On:       true,

@@ -17,7 +17,7 @@ func UdpMetrics() []*model.MetricValue {
 	ret := make([]*model.MetricValue, count)
 	i := 0
 	for key, val := range udp {
-		ret[i] = CounterValue("snmp.Udp."+key, val)
+		ret[i] = CounterValue("snmp.udp."+key, val)
 		i++
 	}
 

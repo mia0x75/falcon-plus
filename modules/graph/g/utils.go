@@ -25,6 +25,7 @@ func IsRrdFileExist(filename string) bool {
 func FormRrdCacheKey(md5 string, dsType string, step int) string {
 	return md5 + "_" + dsType + "_" + strconv.Itoa(step)
 }
+
 func SplitRrdCacheKey(ckey string) (md5 string, dsType string, step int, err error) {
 	ckey_slice := strings.Split(ckey, "_")
 	if len(ckey_slice) != 3 {
@@ -47,7 +48,6 @@ func SplitRrdCacheKey(ckey string) (md5 string, dsType string, step int, err err
 
 // 判断是否为有效字符串(不包含指定字符和多字节字符)
 func IsValidString(str string) bool {
-
 	r := []rune(str)
 	// 允许多字节字符，这样可以保持继续支持中文counter
 	// if len(r) != len(str) {

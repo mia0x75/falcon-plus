@@ -12,6 +12,10 @@ import (
 )
 
 func CleanCache() {
+	go clean()
+}
+
+func clean() {
 	var ticker *time.Ticker
 	//TODO: Move g.CLEAN_CACHE to cfg
 	ticker = time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)

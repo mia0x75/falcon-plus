@@ -18,5 +18,4 @@ func configProcRoutes() {
 		ret["data"] = proc.GetAll()
 		JSONR(c, 200, ret)
 	})
-
 }

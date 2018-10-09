@@ -162,7 +162,7 @@ func InsertEvent(eve *coommonModel.Event) {
 			).Exec()
 		}
 	}
-	log.Debug(fmt.Sprintf("%v, %v", sqlLog, errRes))
+	log.Debugf("%v, %v", sqlLog, errRes)
 	//insert case
 	insertEvent(q, eve)
 }

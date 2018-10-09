@@ -36,7 +36,6 @@ func QueryGroupTemplates() (map[int][]int, error) {
 
 // 获取所有的策略模板列表
 func QueryTemplates() (map[int]*model.Template, error) {
-
 	templates := make(map[int]*model.Template)
 
 	sql := "select id, tpl_name, parent_id, action_id, create_user from tpl"

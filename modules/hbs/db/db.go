@@ -10,7 +10,7 @@ import (
 
 var DB *sql.DB
 
-func Init() {
+func InitDB() {
 	var err error
 	DB, err = sql.Open("mysql", g.Config().Database.Addr)
 	if err != nil {

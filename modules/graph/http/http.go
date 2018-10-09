@@ -19,14 +19,7 @@ type Dto struct {
 	Data interface{} `json:"data"`
 }
 
-var Close_chan, Close_done_chan chan int
 var router *gin.Engine
-
-func init() {
-	Close_chan = make(chan int, 1)
-	Close_done_chan = make(chan int, 1)
-
-}
 
 func RenderJson(w http.ResponseWriter, v interface{}) {
 	bs, err := json.Marshal(v)
@@ -103,12 +96,4 @@ func Start() {
 		return
 	}
 	go router.Run(addr)
-
-	select {
-	case <-Close_chan:
-		log.Info("http recv sigout and exit...")
-		Close_done_chan <- 1
-		return
-	}
-
 }

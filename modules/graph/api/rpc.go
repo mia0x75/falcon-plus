@@ -21,6 +21,7 @@ func (l *conn_list) insert(c net.Conn) *list.Element {
 	defer l.Unlock()
 	return l.list.PushBack(c)
 }
+
 func (l *conn_list) remove(e *list.Element) net.Conn {
 	l.Lock()
 	defer l.Unlock()
@@ -37,6 +38,10 @@ func init() {
 }
 
 func Start() {
+	go start()
+}
+
+func start() {
 	if !g.Config().Rpc.Enabled {
 		log.Println("rpc.Start warning, not enabled")
 		return
@@ -95,5 +100,4 @@ func Start() {
 
 		return
 	}
-
 }

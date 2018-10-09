@@ -33,7 +33,7 @@ func main() {
 	g.ParseConfig(*cfg)
 	g.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
-	model.InitDatabase()
+	model.InitDB()
 	cron.InitSenderWorker()
 
 	http.Start()

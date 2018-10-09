@@ -66,5 +66,4 @@ func configInfoRoutes() {
 
 		w.Write([]byte(strings.Join(arr, "")))
 	})
-
 }

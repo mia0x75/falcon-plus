@@ -15,7 +15,6 @@ import (
 )
 
 func HandleCallback(event *model.Event, action *api.Action) {
-
 	teams := action.Uic
 	phones := []string{}
 	mails := []string{}
@@ -48,7 +47,6 @@ func HandleCallback(event *model.Event, action *api.Action) {
 			redi.WriteMail(mails, message, message)
 		}
 	}
-
 }
 
 func Callback(event *model.Event, action *api.Action) string {
