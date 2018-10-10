@@ -2,7 +2,7 @@
 workspace=$(cd $(dirname $0) && pwd)
 cd $workspace
 
-module=task
+module=exporter
 app=falcon-$module
 conf=cfg.json
 pidfile=var/app.pid

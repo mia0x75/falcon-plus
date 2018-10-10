@@ -61,7 +61,7 @@ func collect() {
 
 func _collect() {
 	clientGet := nhttpclient.GetHttpClient("collector.get", 10*time.Second, 20*time.Second)
-	tags := "type=statistics,pdl=falcon"
+	tags := "type=statistics"
 	for _, host := range g.Config().Collector.Cluster {
 		ts := time.Now().Unix()
 		jsonList := make([]*cmodel.JsonMetaData, 0)
@@ -156,7 +156,7 @@ func _collectorAlive() error {
 
 	var jmdCnt cmodel.JsonMetaData
 	jmdCnt.Endpoint = hostname
-	jmdCnt.Metric = "falcon.task.alive"
+	jmdCnt.Metric = "exporter.alive"
 	jmdCnt.Timestamp = time.Now().Unix()
 	jmdCnt.Step = 60
 	jmdCnt.Value = 0
@@ -167,7 +167,7 @@ func _collectorAlive() error {
 	jsonList = append(jsonList, &jmdCnt)
 	err = sendToTransfer(jsonList, destUrl)
 	if err != nil {
-		log.Println("send task.alive failed,", err)
+		log.Println("send exporter.alive failed,", err)
 		return err
 	}
 

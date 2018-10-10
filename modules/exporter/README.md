@@ -1,32 +1,11 @@
 ## Introduction
 
-task是监控系统一个必要的辅助模块。有些功能，不适合与监控的核心业务耦合、无高可用要求、但又必不可少，我们把这部分功能拿出来 放到定时任务task模块中。 定时任务，要求单机部署，整套falcon系统中应该只有一个定时任务的服务实例。部署定时任务的服务器上，应该安装了falcon-agent、开放了1988的数据推送接口。
+exporter是监控系统一个必要的辅助模块。有些功能，不适合与监控的核心业务耦合、无高可用要求、但又必不可少，我们把这部分功能拿出来 放到定时任务exporter模块中。 定时任务，要求单机部署，整套falcon系统中应该只有一个定时任务的服务实例。部署定时任务的服务器上，应该安装了falcon-agent、开放了1988的数据推送接口。
 
 定时任务，实现了如下几个功能：
 
 + index更新。包括图表索引的全量更新和垃圾索引清理(是否自动清理，由配置决定)。
-+ falcon组件[自监控](http://book.open-falcon.com/zh/practice/monitor.html)数据采集。当前，定时任务了采集了 transfer、graph、task等组建的状态数据。
-
-## Build
-
-我们提供了[最新的release包](https://github.com/open-falcon/task/releases)，你可以直接从这里下载。或者，你也可以按照如下方式进行源码编译，
-
-```bash
-# set $GOPATH and $GOROOT
-
-# update dependencies
-# cd $GOPATH/src/github.com/open-falcon/common && git pull
-
-mkdir -p $GOPATH/src/github.com/open-falcon
-cd $GOPATH/src/github.com/open-falcon
-git clone https://github.com/open-falcon/task.git
-
-cd task
-go get ./...
-./control build
-./control pack
-```
-最后一步会pack出一个tar.gz的安装包，拿着这个包去部署服务即可。
++ falcon组件[自监控](http://book.open-falcon.com/zh/practice/monitor.html)数据采集。当前，定时任务了采集了 transfer、graph、exporter等组建的状态数据。
 
 ## Deploy
 服务部署，包括配置修改、启动服务、检验服务、停止服务等。这之前，需要将安装包解压到服务的部署目录下。
@@ -54,7 +33,7 @@ curl -s "127.0.0.1:8002/health"
     debug: true/false, 如果为true，日志中会打印debug信息
 
     http
-        - enable: true/false, 表示是否开启该http端口，该端口为控制端口，主要用来对task发送控制命令、统计命令、debug命令等
+        - enable: true/false, 表示是否开启该http端口，该端口为控制端口，主要用来对exporter发送控制命令、统计命令、debug命令等
         - listen: 表示http-server监听的端口
 
     index
@@ -73,18 +52,15 @@ curl -s "127.0.0.1:8002/health"
         - enable: true/false, 表示是否开启falcon的自身状态采集任务
         - destUrl: 监控数据的push地址,默认为本机的1988接口
         - srcUrlFmt: 监控数据采集的url格式, %s将由机器名或域名替换
-        - cluster: falcon后端服务列表，用具体的"module,hostname:port"表示，module取值可以为graph、transfer、task等
+        - cluster: falcon后端服务列表，用具体的"module,hostname:port"表示，module取值可以为graph、transfer、exporter等
 
 ## 补充说明
-### 关于自监控报警
-因为多点监控的需求，自版本v0.0.10开始，我们将自监控报警功能 从Task模块移除。关于Open-Falcon自监控的详情，请参见[这里](http://book.open-falcon.com/zh/practice/monitor.html)。
-
 ### 关于过期索引清除
 监控数据停止上报后，该数据对应的索引也会停止更新、变为过期索引。过期索引，影响视听，部分用户希望删除之。
 
-我们原来的方案，是: 通过task模块，有数据上报的索引、每天被更新一次，7天未被更新的索引、清除之。但是，很多用户不能正确配置graph实例的http接口，导致正常上报的监控数据的索引 无法被更新；7天后，合法索引被task模块误删除。
+我们原来的方案，是: 通过exporter模块，有数据上报的索引、每天被更新一次，7天未被更新的索引、清除之。但是，很多用户不能正确配置graph实例的http接口，导致正常上报的监控数据的索引 无法被更新；7天后，合法索引被exporter模块误删除。
 
-为了解决上述问题，我们在默认配置里面，停掉了task模块自动删除过期索引的功能(autoDelete=false)；如果你确定配置的index.cluster正确无误，可以自行打开该功能。
+exporter模块自动删除过期索引的功能(autoDelete=false)；如果你确定配置的index.cluster正确无误，可以自行打开该功能。
 
 当然，我们提供了更安全的、手动删除过期索引的方法。用户按需触发索引删除操作，具体步骤为:
 

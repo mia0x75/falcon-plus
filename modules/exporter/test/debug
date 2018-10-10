@@ -5,7 +5,7 @@ testdir=$(cd $(dirname $0)/; pwd)
 workdir=$(dirname $testdir)
 cd $workdir
 
-module=task
+module=exporter
 app=falcon-$module
 pidfile=var/app.pid
 logfile=var/app.log
