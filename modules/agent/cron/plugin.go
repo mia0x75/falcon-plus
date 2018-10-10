@@ -27,17 +27,13 @@ func SyncMinePlugins() {
 }
 
 func syncMinePlugins() {
-
 	var (
 		timestamp  int64 = -1
 		pluginDirs []string
 	)
 
-	duration := time.Duration(g.Config().Heartbeat.Interval) * time.Second
-
-	for {
-		time.Sleep(duration)
-
+	d := time.Duration(g.Config().Heartbeat.Interval) * time.Second
+	for range time.Tick(d) {
 		hostname, err := g.Hostname()
 		if err != nil {
 			continue

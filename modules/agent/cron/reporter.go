@@ -11,12 +11,13 @@ import (
 
 func ReportAgentStatus() {
 	if g.Config().Heartbeat.Enabled && len(g.Config().Heartbeat.Addrs) > 0 {
-		go reportAgentStatus(time.Duration(g.Config().Heartbeat.Interval) * time.Second)
+		go reportAgentStatus()
 	}
 }
 
-func reportAgentStatus(interval time.Duration) {
-	for {
+func reportAgentStatus() {
+	d := time.Duration(g.Config().Heartbeat.Interval) * time.Second
+	for range time.Tick(d) {
 		hostname, err := g.Hostname()
 		if err != nil {
 			hostname = fmt.Sprintf("error:%s", err.Error())
@@ -33,9 +34,9 @@ func reportAgentStatus(interval time.Duration) {
 		var resp model.SimpleRpcResponse
 		err = g.HbsClient.Call("Agent.ReportStatus", req, &resp)
 		if err != nil || resp.Code != 0 {
-			log.Println("call Agent.ReportStatus fail:", err, "Request:", req, "Response:", resp)
+			log.Errorf("call Agent.ReportStatus fail: %v Request: %v Response: %v\n", err, req, resp)
+		} else {
+			log.Debugf("call Agent.ReportStatus success. Request: %v Response: %v\n", req, resp)
 		}
-
-		time.Sleep(interval)
 	}
 }

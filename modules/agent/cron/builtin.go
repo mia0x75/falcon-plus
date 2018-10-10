@@ -20,11 +20,8 @@ func syncBuiltinMetrics() {
 	var timestamp int64 = -1
 	var checksum string = "nil"
 
-	duration := time.Duration(g.Config().Heartbeat.Interval) * time.Second
-
-	for {
-		time.Sleep(duration)
-
+	d := time.Duration(g.Config().Heartbeat.Interval) * time.Second
+	for range time.Tick(d) {
 		var ports = []int64{}
 		var paths = []string{}
 		var procs = make(map[string]map[int]string)

@@ -10,10 +10,10 @@ import (
 
 func InitDataHistory() {
 	go func() {
-		for {
+		d := time.Duration(g.COLLECT_INTERVAL) * time.Second
+		for range time.Tick(d) {
 			funcs.UpdateCpuStat()
 			funcs.UpdateDiskStats()
-			time.Sleep(g.COLLECT_INTERVAL)
 		}
 	}()
 }
@@ -33,11 +33,8 @@ func Collect() {
 }
 
 func collect(sec int64, fns []func() []*model.MetricValue) {
-	t := time.NewTicker(time.Second * time.Duration(sec))
-	defer t.Stop()
-	for {
-		<-t.C
-
+	d := time.Second * time.Duration(sec)
+	for range time.Tick(d) {
 		hostname, err := g.Hostname()
 		if err != nil {
 			continue
