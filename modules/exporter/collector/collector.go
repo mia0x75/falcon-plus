@@ -146,10 +146,14 @@ func _collect() {
 }
 
 func _collectorAlive() error {
-	hostname, err := os.Hostname()
-	if err != nil {
-		log.Println("get hostname failed,", err)
-		return err
+	var err error
+	hostname := g.Config().Host
+	if hostname == "" {
+		hostname, err = os.Hostname()
+		if err != nil {
+			log.Println("get hostname failed,", err)
+			return err
+		}
 	}
 
 	var jmdCnt cmodel.JsonMetaData

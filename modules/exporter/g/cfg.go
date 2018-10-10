@@ -59,6 +59,7 @@ type GlobalConfig struct {
 	Index     *IndexConfig     `json:"index"`
 	Collector *CollectorConfig `json:"collector"`
 	Agent     *AgentConfig     `json:"agent"`
+	Host      string           `json:"host"`
 }
 
 var (
