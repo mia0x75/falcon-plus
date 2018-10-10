@@ -208,7 +208,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 				if ts >= start_ts && ts <= end_ts {
 					cache = append(cache, &cmodel.RRDData{Timestamp: ts, Value: val})
 				}
-				ts = ts + int64(step)
+				ts += int64(step)
 			}
 		} else if dsType == g.GAUGE {
 			for ts <= itemEndTs {
@@ -223,7 +223,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 				if ts >= start_ts && ts <= end_ts {
 					cache = append(cache, &cmodel.RRDData{Timestamp: ts, Value: val})
 				}
-				ts = ts + int64(step)
+				ts += int64(step)
 			}
 		}
 		cache_size := len(cache)
@@ -257,7 +257,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 			}
 
 			// merge cached items to result
-			rrdDataIdx += 1
+			rrdDataIdx++
 			for cacheIdx := 0; cacheIdx < cache_size; cacheIdx++ {
 				if rrdDataIdx < rrdDataSize {
 					if !math.IsNaN(float64(cache[cacheIdx].Value)) {
@@ -274,7 +274,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 		// fmt result
 		ret_size := int((end_ts - start_ts) / int64(step))
 		if dsType == g.GAUGE {
-			ret_size += 1
+			ret_size++
 		}
 		ret := make([]*cmodel.RRDData, ret_size, ret_size)
 		mergedIdx := 0

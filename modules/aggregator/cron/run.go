@@ -88,7 +88,7 @@ func WorkerRun(item *g.Cluster) {
 		log.Debugf("[D] hostname:%s  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
 		numerator += numeratorVal
 		denominator += denominatorVal
-		validCount += 1
+		validCount++
 	}
 
 	if !needComputeNumerator {

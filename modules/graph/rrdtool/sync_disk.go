@@ -51,7 +51,7 @@ func syncDisk() {
 		case <-ticker.C:
 			idx = idx % store.GraphItems.Size
 			FlushRRD(idx, false)
-			idx += 1
+			idx++
 		case <-Out_done_chan:
 			log.Println("cron recv sigout and exit...")
 			return
