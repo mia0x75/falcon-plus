@@ -243,10 +243,10 @@
 			"revisionTime": "2018-10-10T09:59:28Z"
 		},
 		{
-			"checksumSHA1": "Gi5FqdMPaxiBEFeI8p92Bss/d24=",
+			"checksumSHA1": "fGGzkd7qsPvFhBmhpDXOBboF3UI=",
 			"path": "github.com/mia0x75/goperfcounter",
-			"revision": "0add7145bff43e4af7ec019540de6e636f22b9f5",
-			"revisionTime": "2018-10-10T09:57:46Z"
+			"revision": "9f099c21be66721591c349950ff32f430bddbb55",
+			"revisionTime": "2018-10-10T13:24:25Z"
 		},
 		{
 			"checksumSHA1": "gS5wdfbttHTrMDjINxMV72ga1nY=",
@@ -491,44 +491,50 @@
 		{
 			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
 			"path": "golang.org/x/crypto/bcrypt",
-			"revision": "614d502a4dac94afa3a6ce146bd1736da82514c6",
-			"revisionTime": "2018-07-28T08:01:47Z"
+			"revision": "7c1a557ab941a71c619514f229f0b27ccb0c27cf",
+			"revisionTime": "2018-10-02T14:18:56Z"
 		},
 		{
 			"checksumSHA1": "oVPHWesOmZ02vLq2fglGvf+AMgk=",
 			"path": "golang.org/x/crypto/blowfish",
-			"revision": "614d502a4dac94afa3a6ce146bd1736da82514c6",
-			"revisionTime": "2018-07-28T08:01:47Z"
+			"revision": "7c1a557ab941a71c619514f229f0b27ccb0c27cf",
+			"revisionTime": "2018-10-02T14:18:56Z"
 		},
 		{
 			"checksumSHA1": "BGm8lKZmvJbf/YOJLeL1rw2WVjA=",
 			"path": "golang.org/x/crypto/ssh/terminal",
-			"revision": "614d502a4dac94afa3a6ce146bd1736da82514c6",
-			"revisionTime": "2018-07-28T08:01:47Z"
+			"revision": "7c1a557ab941a71c619514f229f0b27ccb0c27cf",
+			"revisionTime": "2018-10-02T14:18:56Z"
 		},
 		{
 			"checksumSHA1": "/yo2FIWZX5FozwxE8ZZol2ekbxE=",
 			"path": "golang.org/x/net/publicsuffix",
-			"revision": "161cd47e91fd58ac17490ef4d742dc98bb4cf60e",
-			"revisionTime": "2018-09-06T07:10:30Z"
+			"revision": "146acd28ed5894421fb5aac80ca93bc1b1f46f87",
+			"revisionTime": "2018-10-04T22:16:49Z"
 		},
 		{
-			"checksumSHA1": "ZerpiXZfy0zb96H+zhsChN+1iYA=",
+			"checksumSHA1": "PWQLrPh5tzplI/R8onRIGme8wGk=",
 			"path": "golang.org/x/sys/unix",
-			"revision": "11551d06cbcc94edc80a0facaccbda56473c19c1",
-			"revisionTime": "2018-08-23T14:12:18Z"
+			"revision": "4497e2df6f9e69048a54498c7affbbec3294ad47",
+			"revisionTime": "2018-10-05T07:04:52Z"
 		},
 		{
-			"checksumSHA1": "apLcjhTfa/nKhpXTXjpfIZxVTKQ=",
+			"checksumSHA1": "Y7nctMxT58lRM78VtElPerhcnEs=",
 			"path": "golang.org/x/sys/windows",
-			"revision": "11551d06cbcc94edc80a0facaccbda56473c19c1",
-			"revisionTime": "2018-08-23T14:12:18Z"
+			"revision": "4497e2df6f9e69048a54498c7affbbec3294ad47",
+			"revisionTime": "2018-10-05T07:04:52Z"
 		},
 		{
 			"checksumSHA1": "LiyXfqOzaeQ8vgYZH3t2hUEdVTw=",
 			"path": "google.golang.org/appengine/cloudsql",
 			"revision": "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06",
 			"revisionTime": "2018-09-18T20:26:59Z"
+		},
+		{
+			"checksumSHA1": "o5Skl9YjZqmvEEqWie3f3oY0Kow=",
+			"path": "gopkg.in/alexcesaro/statsd.v2",
+			"revision": "7fea3f0d2fab1ad973e641e51dba45443a311a90",
+			"revisionTime": "2016-03-20T18:21:10Z"
 		},
 		{
 			"checksumSHA1": "P/k5ZGf0lEBgpKgkwy++F7K1PSg=",
@@ -573,5 +579,5 @@
 			"revisionTime": "2018-03-28T19:50:20Z"
 		}
 	],
-	"rootPath": "github.com/mia0x75/falcon-plus"
+	"rootPath": "github.com/open-falcon/falcon-plus"
 }

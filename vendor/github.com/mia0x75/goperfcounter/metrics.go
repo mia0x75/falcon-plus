@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/mia0x75/go-metrics"
-	"github.com/niean/goperfcounter/base"
+	"github.com/mia0x75/goperfcounter/base"
 )
 
 var (
