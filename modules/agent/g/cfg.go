@@ -51,6 +51,7 @@ type CollectorConfig struct {
 type SystemConfig struct {
 	IfacePrefix []string `json:"iface_prefix"`
 	MountPoint  []string `json:"mount_point"`
+	Interval    int      `json:"interval"`
 }
 
 type MySQLConfig struct {
@@ -80,11 +81,13 @@ type MongoDBConfig struct {
 }
 
 type JmxConfig struct {
-	Enabled bool `json:"enabled"`
+	Enabled  bool `json:"enabled"`
+	Interval int  `json:"interval"`
 }
 
 type NginxConfig struct {
-	Enabled bool `json:"enabled"`
+	Enabled  bool `json:"enabled"`
+	Interval int  `json:"interval"`
 }
 
 type LogConfig struct {
