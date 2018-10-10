@@ -21,8 +21,8 @@ const (
 	GAUGE        = "GAUGE"
 	COUNTER      = "COUNTER"
 	DERIVE       = "DERIVE"
-	DEFAULT_STEP = 60
-	MIN_STEP     = 30
+	DEFAULT_STEP = 5
+	MIN_STEP     = 5
 )
 
 func init() {
