@@ -27,6 +27,7 @@ func main() {
 	// global config
 	g.ParseConfig(*cfg)
 	g.InitLog(g.Config().Log.Level)
+	g.InitPFC()
 
 	// receiver
 	receiver.Start()

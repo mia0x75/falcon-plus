@@ -1,4 +1,5 @@
 {
+	"host": "127.0.0.1",
 	"log": {
 		"level": "debug"
 	},
@@ -25,6 +26,23 @@
 		"max_idle": 32,
 		"cluster": {
 			"t1": "127.0.0.1:8433"
+		}
+	},
+	"pfc": {
+		"hostname": "127.0.0.1",
+		"step": 5,
+		"tags": "service=gateway",
+		"bases": [
+			"debug",
+			"runtime"
+		],
+		"push": {
+			"enabled": true,
+			"api": "http://127.0.0.1:6050/api/push"
+		},
+		"http": {
+			"enabled": true,
+			"listen": "0.0.0.0:2015"
 		}
 	}
 }

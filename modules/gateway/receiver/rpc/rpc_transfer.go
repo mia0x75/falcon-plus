@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	pfc "github.com/niean/goperfcounter"
+	pfc "github.com/mia0x75/goperfcounter"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"

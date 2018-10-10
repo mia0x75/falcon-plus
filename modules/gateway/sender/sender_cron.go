@@ -3,7 +3,7 @@ package sender
 import (
 	"time"
 
-	pfc "github.com/niean/goperfcounter"
+	pfc "github.com/mia0x75/goperfcounter"
 )
 
 const (

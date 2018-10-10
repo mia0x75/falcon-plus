@@ -2,7 +2,7 @@ package sender
 
 import (
 	log "github.com/Sirupsen/logrus"
-	pfc "github.com/niean/goperfcounter"
+	pfc "github.com/mia0x75/goperfcounter"
 	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
