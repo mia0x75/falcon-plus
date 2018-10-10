@@ -81,7 +81,7 @@ func _collect() {
 		hostName := hostNamePortList[0]
 		hostPort := hostNamePortList[1]
 
-		myTags := tags + ",module=" + hostModule + ",port=" + hostPort
+		myTags := tags + ",port=" + hostPort
 		srcUrl := fmt.Sprintf(srcUrlFmt, hostNamePort)
 		reqGet, _ := http.NewRequest("GET", srcUrl, nil)
 		reqGet.Header.Set("Connection", "close")
@@ -114,7 +114,7 @@ func _collect() {
 			if item["Cnt"] != nil {
 				var jmdCnt cmodel.JsonMetaData
 				jmdCnt.Endpoint = hostName
-				jmdCnt.Metric = itemName
+				jmdCnt.Metric = fmt.Sprintf("%s.%s", hostModule, itemName)
 				jmdCnt.Timestamp = ts
 				jmdCnt.Step = 60
 				jmdCnt.Value = int64(item["Cnt"].(float64))
@@ -126,7 +126,7 @@ func _collect() {
 			if item["Qps"] != nil {
 				var jmdQps cmodel.JsonMetaData
 				jmdQps.Endpoint = hostName
-				jmdQps.Metric = itemName + ".Qps"
+				jmdQps.Metric = fmt.Sprintf("%s.%s.Qps", hostModule, itemName)
 				jmdQps.Timestamp = ts
 				jmdQps.Step = 60
 				jmdQps.Value = int64(item["Qps"].(float64))
