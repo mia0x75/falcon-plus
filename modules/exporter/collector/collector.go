@@ -61,7 +61,6 @@ func collect() {
 
 func _collect() {
 	clientGet := nhttpclient.GetHttpClient("collector.get", 10*time.Second, 20*time.Second)
-	tags := "type=statistics"
 	for _, host := range g.Config().Collector.Cluster {
 		ts := time.Now().Unix()
 		jsonList := make([]*cmodel.JsonMetaData, 0)
@@ -81,7 +80,7 @@ func _collect() {
 		hostName := hostNamePortList[0]
 		hostPort := hostNamePortList[1]
 
-		myTags := tags + ",port=" + hostPort
+		tags := "port=" + hostPort
 		srcUrl := fmt.Sprintf(srcUrlFmt, hostNamePort)
 		reqGet, _ := http.NewRequest("GET", srcUrl, nil)
 		reqGet.Header.Set("Connection", "close")
@@ -110,28 +109,27 @@ func _collect() {
 				continue
 			}
 			itemName := item["Name"].(string)
-
 			if item["Cnt"] != nil {
 				var jmdCnt cmodel.JsonMetaData
 				jmdCnt.Endpoint = hostName
-				jmdCnt.Metric = fmt.Sprintf("%s.%s", hostModule, itemName)
+				jmdCnt.Metric = fmt.Sprintf("%s.stats.%s", hostModule, itemName)
 				jmdCnt.Timestamp = ts
 				jmdCnt.Step = 60
 				jmdCnt.Value = int64(item["Cnt"].(float64))
 				jmdCnt.CounterType = "GAUGE"
-				jmdCnt.Tags = myTags
+				jmdCnt.Tags = tags
 				jsonList = append(jsonList, &jmdCnt)
 			}
 
 			if item["Qps"] != nil {
 				var jmdQps cmodel.JsonMetaData
 				jmdQps.Endpoint = hostName
-				jmdQps.Metric = fmt.Sprintf("%s.%s.Qps", hostModule, itemName)
+				jmdQps.Metric = fmt.Sprintf("%s.stats.%s.Qps", hostModule, itemName)
 				jmdQps.Timestamp = ts
 				jmdQps.Step = 60
 				jmdQps.Value = int64(item["Qps"].(float64))
 				jmdQps.CounterType = "GAUGE"
-				jmdQps.Tags = myTags
+				jmdQps.Tags = tags
 				jsonList = append(jsonList, &jmdQps)
 			}
 		}
