@@ -1,7 +1,7 @@
 // +build cgo
 // +build !appengine
 
-package base
+package metrics
 
 import "runtime"
 

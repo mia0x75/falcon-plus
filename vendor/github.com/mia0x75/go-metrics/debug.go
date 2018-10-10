@@ -1,35 +1,29 @@
-package base
+package metrics
 
 import (
 	"runtime/debug"
 	"time"
-
-	"github.com/niean/go-metrics-lite"
 )
 
 var (
 	debugMetrics struct {
 		GCStats struct {
-			LastGC     metrics.Gauge
-			NumGC      metrics.Gauge
-			Pause      metrics.Histogram
-			PauseTotal metrics.Gauge
+			LastGC Gauge
+			NumGC  Gauge
+			Pause  Histogram
+			//PauseQuantiles Histogram
+			PauseTotal Gauge
 		}
-		ReadGCStats metrics.Histogram
+		ReadGCStats Timer
 	}
-	gcStats = debug.GCStats{Pause: make([]time.Duration, 11)}
+	gcStats debug.GCStats
 )
-
-func RegisterAndCaptureDebugGCStats(r metrics.Registry, d time.Duration) {
-	registerDebugGCStats(r)
-	go captureDebugGCStats(r, d)
-}
 
 // Capture new values for the Go garbage collector statistics exported in
 // debug.GCStats.  This is designed to be called as a goroutine.
-func captureDebugGCStats(r metrics.Registry, d time.Duration) {
+func CaptureDebugGCStats(r Registry, d time.Duration) {
 	for _ = range time.Tick(d) {
-		captureDebugGCStatsOnce(r)
+		CaptureDebugGCStatsOnce(r)
 	}
 }
 
@@ -41,11 +35,11 @@ func captureDebugGCStats(r metrics.Registry, d time.Duration) {
 // Be careful (but much less so) with this because debug.ReadGCStats calls
 // the C function runtime·lock(runtime·mheap) which, while not a stop-the-world
 // operation, isn't something you want to be doing all the time.
-func captureDebugGCStatsOnce(r metrics.Registry) {
+func CaptureDebugGCStatsOnce(r Registry) {
 	lastGC := gcStats.LastGC
 	t := time.Now()
 	debug.ReadGCStats(&gcStats)
-	debugMetrics.ReadGCStats.Update(int64(time.Since(t)))
+	debugMetrics.ReadGCStats.UpdateSince(t)
 
 	debugMetrics.GCStats.LastGC.Update(int64(gcStats.LastGC.UnixNano()))
 	debugMetrics.GCStats.NumGC.Update(int64(gcStats.NumGC))
@@ -59,16 +53,24 @@ func captureDebugGCStatsOnce(r metrics.Registry) {
 // Register metrics for the Go garbage collector statistics exported in
 // debug.GCStats.  The metrics are named by their fully-qualified Go symbols,
 // i.e. debug.GCStats.PauseTotal.
-func registerDebugGCStats(r metrics.Registry) {
-	debugMetrics.GCStats.LastGC = metrics.NewGauge()
-	debugMetrics.GCStats.NumGC = metrics.NewGauge()
-	debugMetrics.GCStats.Pause = metrics.NewHistogram(metrics.NewExpDecaySample(1028, 0.015))
-	debugMetrics.GCStats.PauseTotal = metrics.NewGauge()
-	debugMetrics.ReadGCStats = metrics.NewHistogram(metrics.NewExpDecaySample(1028, 0.015))
+func RegisterDebugGCStats(r Registry) {
+	debugMetrics.GCStats.LastGC = NewGauge()
+	debugMetrics.GCStats.NumGC = NewGauge()
+	debugMetrics.GCStats.Pause = NewHistogram(NewExpDecaySample(1028, 0.015))
+	//debugMetrics.GCStats.PauseQuantiles = NewHistogram(NewExpDecaySample(1028, 0.015))
+	debugMetrics.GCStats.PauseTotal = NewGauge()
+	debugMetrics.ReadGCStats = NewTimer()
 
 	r.Register("debug.GCStats.LastGC", debugMetrics.GCStats.LastGC)
 	r.Register("debug.GCStats.NumGC", debugMetrics.GCStats.NumGC)
 	r.Register("debug.GCStats.Pause", debugMetrics.GCStats.Pause)
+	//r.Register("debug.GCStats.PauseQuantiles", debugMetrics.GCStats.PauseQuantiles)
 	r.Register("debug.GCStats.PauseTotal", debugMetrics.GCStats.PauseTotal)
 	r.Register("debug.ReadGCStats", debugMetrics.ReadGCStats)
+}
+
+// Allocate an initial slice for gcStats.Pause to avoid allocations during
+// normal operation.
+func init() {
+	gcStats.Pause = make([]time.Duration, 11)
 }

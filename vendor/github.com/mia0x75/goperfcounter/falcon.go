@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/niean/go-metrics-lite"
+	"github.com/mia0x75/go-metrics"
 	bhttp "github.com/niean/gotools/http/httpclient/beego"
 )
 
@@ -97,29 +97,28 @@ func _falconMetric(r metrics.Registry) []*MetricValue {
 }
 
 func gaugeMetricValue(metric metrics.Gauge, metricName, endpoint, oldtags string, step, ts int64) []*MetricValue {
-	tags := getTags(metricName, oldtags)
-	c := newMetricValue(endpoint, "value", metric.Value(), step, GAUGE, tags, ts)
+	tags := "type=value"
+	c := newMetricValue(endpoint, metricName, metric.Value(), step, GAUGE, tags, ts)
 	return []*MetricValue{c}
 }
 
 func gaugeFloat64MetricValue(metric metrics.GaugeFloat64, metricName, endpoint, oldtags string, step, ts int64) []*MetricValue {
-	tags := getTags(metricName, oldtags)
-	c := newMetricValue(endpoint, "value", metric.Value(), step, GAUGE, tags, ts)
+	tags := "type=value"
+	c := newMetricValue(endpoint, metricName, metric.Value(), step, GAUGE, tags, ts)
 	return []*MetricValue{c}
 }
 
 func counterMetricValue(metric metrics.Counter, metricName, endpoint, oldtags string, step, ts int64) []*MetricValue {
-	tags := getTags(metricName, oldtags)
-	c1 := newMetricValue(endpoint, "count", metric.Count(), step, GAUGE, tags, ts)
+	tags := "type=count"
+	c1 := newMetricValue(endpoint, metricName, metric.Count(), step, GAUGE, tags, ts)
 	return []*MetricValue{c1}
 }
 
 func meterMetricValue(metric metrics.Meter, metricName, endpoint, oldtags string, step, ts int64) []*MetricValue {
 	data := make([]*MetricValue, 0)
-	tags := getTags(metricName, oldtags)
 
-	c1 := newMetricValue(endpoint, "rate", metric.RateStep(), step, GAUGE, tags, ts)
-	c2 := newMetricValue(endpoint, "sum", metric.Count(), step, GAUGE, tags, ts)
+	c1 := newMetricValue(endpoint, metricName, metric.RateStep(), step, GAUGE, "type=rate", ts)
+	c2 := newMetricValue(endpoint, metricName, metric.Count(), step, GAUGE, "type=sum", ts)
 	data = append(data, c1, c2)
 
 	return data
@@ -127,7 +126,6 @@ func meterMetricValue(metric metrics.Meter, metricName, endpoint, oldtags string
 
 func histogramMetricValue(metric metrics.Histogram, metricName, endpoint, oldtags string, step, ts int64) []*MetricValue {
 	data := make([]*MetricValue, 0)
-	tags := getTags(metricName, oldtags)
 
 	values := make(map[string]interface{})
 	ps := metric.Percentiles([]float64{0.75, 0.95, 0.99})
@@ -138,7 +136,7 @@ func histogramMetricValue(metric metrics.Histogram, metricName, endpoint, oldtag
 	values["95th"] = ps[1]
 	values["99th"] = ps[2]
 	for key, val := range values {
-		c := newMetricValue(endpoint, key, val, step, GAUGE, tags, ts)
+		c := newMetricValue(endpoint, metricName, val, step, GAUGE, "type="+key, ts)
 		data = append(data, c)
 	}
 
@@ -155,13 +153,6 @@ func newMetricValue(endpoint, metric string, value interface{}, step int64, t, t
 		Tags:      tags,
 		Timestamp: ts,
 	}
-}
-
-func getTags(name string, tags string) string {
-	if tags == "" {
-		return fmt.Sprintf("name=%s", name)
-	}
-	return fmt.Sprintf("%s,name=%s", tags, name)
 }
 
 //

@@ -1,6 +1,6 @@
 // +build go1.5
 
-package base
+package metrics
 
 import "runtime"
 
