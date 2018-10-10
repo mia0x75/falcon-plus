@@ -20,8 +20,7 @@ var (
 
 // 启动索引的 异步、增量更新 任务, 每隔一定时间，刷新cache中的数据到数据库中
 func StartIndexUpdateIncrTask() {
-	for {
-		time.Sleep(IndexUpdateIncrTaskSleepInterval)
+	for range time.Tick(IndexUpdateIncrTaskSleepInterval) {
 		startTs := time.Now().Unix()
 		cnt := updateIndexIncr()
 		endTs := time.Now().Unix()

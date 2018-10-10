@@ -15,10 +15,9 @@ import (
 func Heartbeat() {
 	go func() {
 		SleepRandomDuration()
-		for {
+		d := time.Duration(g.Config().Interval) * time.Second
+		for range time.Tick(d) {
 			heartbeat()
-			d := time.Duration(g.Config().Interval) * time.Second
-			time.Sleep(d)
 		}
 	}()
 }

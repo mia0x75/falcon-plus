@@ -15,9 +15,9 @@ import (
 
 func CombineSms() {
 	go func() {
-		for {
-			// 每分钟读取处理一次
-			time.Sleep(time.Minute)
+		d := time.Duration(1) * time.Minute
+		// 每分钟读取处理一次
+		for range time.Tick(d) {
 			combineSms()
 		}
 	}()
@@ -25,9 +25,9 @@ func CombineSms() {
 
 func CombineMail() {
 	go func() {
-		for {
-			// 每分钟读取处理一次
-			time.Sleep(time.Minute)
+		d := time.Duration(1) * time.Minute
+		// 每分钟读取处理一次
+		for range time.Tick(d) {
 			combineMail()
 		}
 	}()
@@ -35,9 +35,9 @@ func CombineMail() {
 
 func CombineIM() {
 	go func() {
-		for {
-			// 每分钟读取处理一次
-			time.Sleep(time.Minute)
+		d := time.Duration(1) * time.Minute
+		// 每分钟读取处理一次
+		for range time.Tick(d) {
 			combineIM()
 		}
 	}()

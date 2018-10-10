@@ -43,8 +43,8 @@ func Init() {
 }
 
 func LoopInit() {
-	for {
-		time.Sleep(time.Minute)
+	d := time.Duration(1) * time.Minute
+	for range time.Tick(d) {
 		GroupPlugins.Init()
 		GroupTemplates.Init()
 		HostGroupsMap.Init()

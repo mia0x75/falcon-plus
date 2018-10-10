@@ -9,15 +9,14 @@ import (
 
 func CleanExpiredEvent() {
 	go func() {
-		for {
+		d := time.Duration(10) * time.Minute
+		for range time.Tick(d) {
 			retention_days := g.Config().Housekeeper.EventRetentionDays
 			delete_batch := g.Config().Housekeeper.EventDeleteBatch
 
 			now := time.Now()
 			before := now.Add(time.Duration(-retention_days*24) * time.Hour)
 			eventmodel.DeleteEventOlder(before, delete_batch)
-
-			time.Sleep(time.Minute * 10)
 		}
 	}()
 }

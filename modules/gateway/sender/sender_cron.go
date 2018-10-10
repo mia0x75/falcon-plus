@@ -16,8 +16,7 @@ func startSenderCron() {
 }
 
 func startProcCron() {
-	for {
-		time.Sleep(DefaultProcCronPeriod)
+	for range time.Tick(DefaultProcCronPeriod) {
 		refreshSendingCacheSize()
 	}
 }

@@ -71,10 +71,9 @@ func (this *SafeAgents) Keys() []string {
 }
 
 func DeleteStaleAgents() {
-	duration := time.Hour * time.Duration(24)
 	go func() {
-		for {
-			time.Sleep(duration)
+		d := time.Hour * time.Duration(24)
+		for range time.Tick(d) {
 			deleteStaleAgents()
 		}
 	}()
@@ -100,9 +99,8 @@ func deleteStaleAgents() {
 // CheckAgentHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
 /*
 func CheckAgentHbs() {
-	duration := time.Second * time.Duration(g.Config().AgentMaxIdle)
-	for {
-		time.Sleep(duration)
+	d := time.Second * time.Duration(g.Config().AgentMaxIdle)
+	for range time.Tick(d) {
 		checkAgentHbs()
 	}
 }

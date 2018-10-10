@@ -21,15 +21,13 @@ func startSenderCron() {
 }
 
 func startProcCron() {
-	for {
-		time.Sleep(DefaultProcCronPeriod)
+	for range time.Tick(DefaultProcCronPeriod) {
 		refreshSendingCacheSize()
 	}
 }
 
 func startLogCron() {
-	for {
-		time.Sleep(DefaultLogCronPeriod)
+	for range time.Tick(DefaultLogCronPeriod) {
 		logConnPoolsProc()
 	}
 }

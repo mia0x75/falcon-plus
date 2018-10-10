@@ -9,10 +9,9 @@ import (
 
 func UpdateItems() {
 	go func() {
-		for {
+		d := time.Duration(g.Config().Database.Interval) * time.Second
+		for range time.Tick(d) {
 			updateItems()
-			d := time.Duration(g.Config().Database.Interval) * time.Second
-			time.Sleep(d)
 		}
 	}()
 }

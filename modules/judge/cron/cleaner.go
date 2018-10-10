@@ -8,8 +8,8 @@ import (
 
 func CleanStale() {
 	go func() {
-		for {
-			time.Sleep(time.Hour * 5)
+		d := time.Duration(5) * time.Hour
+		for range time.Tick(d) {
 			cleanStale()
 		}
 	}()

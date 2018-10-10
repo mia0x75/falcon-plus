@@ -11,13 +11,12 @@ import (
 )
 
 func SyncStrategies() {
-	duration := time.Duration(g.Config().Hbs.Interval) * time.Second
 	go func() {
-		for {
+		d := time.Duration(g.Config().Hbs.Interval) * time.Second
+		for range time.Tick(d) {
 			syncStrategies()
 			syncExpression()
 			syncFilter()
-			time.Sleep(duration)
 		}
 	}()
 }

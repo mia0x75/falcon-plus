@@ -134,8 +134,7 @@ func GetCounterFromCache(endpointId int64, counter string) (dsType string, step 
 
 // 更新 cache的统计信息
 func startCacheProcUpdateTask() {
-	for {
-		time.Sleep(DefaultCacheProcUpdateTaskSleepInterval)
+	for range time.Tick(DefaultCacheProcUpdateTaskSleepInterval) {
 		proc.IndexedItemCacheCnt.SetCnt(int64(IndexedItemCache.Size()))
 		proc.UnIndexedItemCacheCnt.SetCnt(int64(unIndexedItemCache.Size()))
 		proc.EndpointCacheCnt.SetCnt(int64(dbEndpointCache.Size()))
