@@ -49,7 +49,7 @@ func NetstatMetrics() (L []*model.MetricValue) {
 		if _, ok := USES[key]; !ok {
 			continue
 		}
-		L = append(L, CounterValue("TCP."+key, val))
+		L = append(L, CounterValue("net.tcp."+key, val))
 	}
 
 	return
