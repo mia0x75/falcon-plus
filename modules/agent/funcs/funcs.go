@@ -58,12 +58,6 @@ func BuildMappers() {
 		},
 		{
 			Fs: []func() []*model.MetricValue{
-				GpuMetrics,
-			},
-			Interval: interval,
-		},
-		{
-			Fs: []func() []*model.MetricValue{
 				MySQLMetrics,
 			},
 			Interval: interval,
