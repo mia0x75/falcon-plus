@@ -2,7 +2,9 @@ package g
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
+	"strings"
 	"sync/atomic"
 	"unsafe"
 
@@ -101,6 +103,14 @@ func ParseConfig(cfg string) {
 
 	// 需要md5的前多少位参与ioWorker的分片计算
 	c.FirstBytesSize = len(strconv.FormatInt(int64(c.IOWorkerNum), 16))
+
+	c.PerfCounter.Debug = c.Log.Level == "debug"
+	port := strings.Split(c.Http.Listen, ":")[1]
+	if c.PerfCounter.Tags == "" {
+		c.PerfCounter.Tags = fmt.Sprintf("port=%s", port)
+	} else {
+		c.PerfCounter.Tags = fmt.Sprintf("%s,port=%s", c.PerfCounter.Tags, port)
+	}
 
 	// set config
 	atomic.StorePointer(&ptr, unsafe.Pointer(&c))

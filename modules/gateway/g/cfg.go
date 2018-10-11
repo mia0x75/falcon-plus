@@ -2,6 +2,8 @@ package g
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
@@ -90,6 +92,12 @@ func ParseConfig(cfg string) {
 	configLock.Lock()
 	defer configLock.Unlock()
 	c.PerfCounter.Debug = c.Log.Level == "debug"
+	port := strings.Split(c.Http.Listen, ":")[1]
+	if c.PerfCounter.Tags == "" {
+		c.PerfCounter.Tags = fmt.Sprintf("port=%s", port)
+	} else {
+		c.PerfCounter.Tags = fmt.Sprintf("%s,port=%s", c.PerfCounter.Tags, port)
+	}
 	config = &c
 
 	log.Debugln("read config file:", cfg, "successfully")

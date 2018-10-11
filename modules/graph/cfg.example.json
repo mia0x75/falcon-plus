@@ -31,7 +31,8 @@
 	"pfc": {
 		"hostname": "127.0.0.1",
 		"step": 5,
-		"tags": "service=graph",
+		"prefix": "graph",
+		"tags": "",
 		"bases": [
 			"debug",
 			"runtime"

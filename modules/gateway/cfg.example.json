@@ -31,7 +31,8 @@
 	"pfc": {
 		"hostname": "127.0.0.1",
 		"step": 5,
-		"tags": "service=gateway",
+		"prefix": "gateway",
+		"tags": "",
 		"bases": [
 			"debug",
 			"runtime"
