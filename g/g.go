@@ -106,15 +106,15 @@ func init() {
 	// Modules are deployed in this order
 	AllModulesInOrder = []string{
 		"graph",
-		"hbs",
+		"alarm",
 		"judge",
+		"api",
 		"transfer",
 		"nodata",
 		"aggregator",
+		"hbs",
 		"agent",
 		"gateway",
-		"api",
-		"alarm",
 		"updater",
 		"exporter",
 	}
