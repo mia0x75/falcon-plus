@@ -10,10 +10,7 @@
 		"addr": "%%MYSQL%%/portal?loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
-		"ids": [
-			1,
-			-1
-		],
+		"ids": [1, -1],
 		"interval": 55
 	},
 	"api": {

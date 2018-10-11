@@ -12,9 +12,9 @@
 		"addr": "http://%%API_HTTP%%",
 		"token": "%%API_DEFAULT_TOKEN%%"
 	},
-	"config": {
+	"database": {
 		"enabled": true,
-		"dsn": "%%MYSQL%%/portal?loc=Local&parseTime=true&wait_timeout=604800",
+		"addr": "%%MYSQL%%/portal?loc=Local&parseTime=true&wait_timeout=604800",
 		"max_idle": 4,
 		"max_connections": 8
 	},

@@ -9,9 +9,7 @@
 	},
 	"hosts": "",
 	"listen": ":6030",
-	"trustable": [
-		""
-	],
+	"trustable": [""],
 	"http": {
 		"enabled": true,
 		"listen": "%%HBS_HTTP%%"
