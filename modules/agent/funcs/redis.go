@@ -22,6 +22,9 @@ func NewRedis() *redis.Client {
 var tags string
 
 func RedisMetrics() (L []*model.MetricValue) {
+	if g.Config().Collector.Redis == nil {
+		return nil
+	}
 	if !g.Config().Collector.Redis.Enabled {
 		return nil
 	}

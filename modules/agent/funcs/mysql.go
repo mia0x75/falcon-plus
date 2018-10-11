@@ -329,9 +329,13 @@ func GetIsReadOnly(db *sql.DB) (int, error) {
 }
 
 func MySQLMetrics() (L []*model.MetricValue) {
+	if g.Config().Collector.MySQL == nil {
+		return nil
+	}
 	if !g.Config().Collector.MySQL.Enabled {
 		return nil
 	}
+
 	Tag = GetTag()
 	db, err := sql.Open("mysql",
 		fmt.Sprintf("%s:%s@tcp(%s:%d)/mysql",
