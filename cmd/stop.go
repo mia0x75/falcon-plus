@@ -28,7 +28,9 @@ func stop(c *cobra.Command, args []string) error {
 		args = g.AllModulesInOrder
 	}
 
-	for _, moduleName := range args {
+	l := len(args) - 1
+	for i := l; i >= 0; i-- {
+		moduleName := args[i]
 		if !g.HasModule(moduleName) {
 			return fmt.Errorf("%s doesn't exist", moduleName)
 		}
