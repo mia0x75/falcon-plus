@@ -23,12 +23,12 @@ type DatabasesConfig struct {
 }
 
 type GraphsConfig struct {
-	MaxConnections int `json:"max_connections"`
-	MaxIdle        int `json:"max_idle"`
-	ConnectTimeout int `json:"connect_timeout"`
-	ExecuteTimeout int `json:"execute_timeout"`
-	Replicas       int `json:"replicas"`
-	Cluster        map[string]string
+	MaxConnections int               `json:"max_connections"`
+	MaxIdle        int               `json:"max_idle"`
+	ConnectTimeout int               `json:"connect_timeout"`
+	ExecuteTimeout int               `json:"execute_timeout"`
+	Replicas       int               `json:"replicas"`
+	Cluster        map[string]string `json:"cluster"`
 }
 
 type RpcConfig struct {

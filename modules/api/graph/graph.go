@@ -37,6 +37,7 @@ var (
 
 func Start() {
 	addrs := g.Config().Graphs.Cluster
+	clusterMap = addrs
 	connTimeout = int32(g.Config().Graphs.ConnectTimeout)
 	callTimeout = int32(g.Config().Graphs.ExecuteTimeout)
 	for c := range addrs {
@@ -354,7 +355,6 @@ func selectPoolByPK(pk string) (rpool *connp.ConnPool, raddr string, rerr error)
 	if err != nil {
 		return nil, "", err
 	}
-
 	addr, found := clusterMap[node]
 	if !found {
 		return nil, "", errors.New("node not found")
@@ -371,7 +371,6 @@ func selectPoolByPK(pk string) (rpool *connp.ConnPool, raddr string, rerr error)
 
 // internal functions
 func initConnPools(clusterMap map[string]string) {
-
 	// TODO 为了得到Slice,这里做的太复杂了
 	graphInstances := nset.NewSafeSet()
 	for _, address := range clusterMap {
