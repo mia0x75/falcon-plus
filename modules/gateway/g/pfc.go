@@ -1,5 +1,0 @@
-package g
-
-func InitPFC() {
-
-}

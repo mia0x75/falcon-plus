@@ -66,7 +66,7 @@ gateway组件，部署于分区中。单个gateway实例的转发能力，为 {1
 }
 ```
 
-从版本**v0.0.11**后，gateway组件引入了golang业务监控组件[GoPerfcounter](https://github.com/mia0x75/goperfcounter)。GoPerfcounter会主动将gateway的内部状态数据，push给本地的falcon-agent，其配置文件`perfcounter.json`内容如下，含义见[这里](https://github.com/mia0x75/goperfcounter/blob/master/README.md#配置)
+从版本**v0.0.11**后，gateway组件引入了golang业务监控组件[GoPerfcounter](https://github.com/mia0x75/gopfc)。GoPerfcounter会主动将gateway的内部状态数据，push给本地的falcon-agent，其配置文件内容如下，含义见[这里](https://github.com/mia0x75/gopfc/blob/master/README.md#配置)
 
 ```
 {

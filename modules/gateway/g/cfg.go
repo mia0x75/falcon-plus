@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
+	pfcg "github.com/mia0x75/gopfc/g"
 	"github.com/toolkits/file"
 )
 
@@ -39,25 +40,6 @@ type LogConfig struct {
 	Level string `json:"level"`
 }
 
-type PfcPushConfig struct {
-	Enabled bool   `json:"enabled"`
-	API     string `json:"api"`
-}
-
-type PfcHttpConfig struct {
-	Enabled bool   `json:"enabled"`
-	Listen  string `json:"listen"`
-}
-
-type PerfCounterConfig struct {
-	Hostname string         `json:"hostname"`
-	Step     int            `json:"step"`
-	Tags     string         `json:"tags"`
-	Bases    []string       `json:"bases"`
-	Push     *PfcPushConfig `json:"push"`
-	Http     *PfcHttpConfig `json:"http"`
-}
-
 type GlobalConfig struct {
 	Log         *LogConfig         `json:"log"`
 	Http        *HttpConfig        `json:"http"`
@@ -65,7 +47,7 @@ type GlobalConfig struct {
 	Socket      *SocketConfig      `json:"socket"`
 	Transfer    *TransferConfig    `json:"transfer"`
 	Host        string             `json:"host"`
-	PerfCounter *PerfCounterConfig `json:"pfc"`
+	PerfCounter *pfcg.GlobalConfig `json:"pfc"`
 }
 
 var (
@@ -107,6 +89,7 @@ func ParseConfig(cfg string) {
 
 	configLock.Lock()
 	defer configLock.Unlock()
+	c.PerfCounter.Debug = c.Log.Level == "debug"
 	config = &c
 
 	log.Debugln("read config file:", cfg, "successfully")

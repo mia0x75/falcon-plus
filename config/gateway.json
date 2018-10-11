@@ -26,5 +26,22 @@
 		"cluster": {
 			"t1": "%%TRANSFER_RPC%%"
 		}
+	},
+	"pfc": {
+		"hostname": "127.0.0.1",
+		"step": 5,
+		"tags": "service=gateway",
+		"bases": [
+			"debug",
+			"runtime"
+		],
+		"push": {
+			"enabled": true,
+			"api": "http://127.0.0.1:6050/api/push"
+		},
+		"http": {
+			"enabled": true,
+			"listen": "0.0.0.0:2015"
+		}
 	}
 }

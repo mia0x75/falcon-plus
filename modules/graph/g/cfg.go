@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	log "github.com/Sirupsen/logrus"
+	pfcg "github.com/mia0x75/gopfc/g"
 	"github.com/toolkits/file"
 )
 
@@ -55,6 +56,7 @@ type GlobalConfig struct {
 		Replicas    int               `json:"replicas"`
 		Cluster     map[string]string `json:"cluster"`
 	} `json:"migrate"`
+	PerfCounter *pfcg.GlobalConfig `json:"pfc"`
 }
 
 var (

@@ -243,10 +243,10 @@
 			"revisionTime": "2018-10-10T09:59:28Z"
 		},
 		{
-			"checksumSHA1": "fGGzkd7qsPvFhBmhpDXOBboF3UI=",
-			"path": "github.com/mia0x75/goperfcounter",
-			"revision": "9f099c21be66721591c349950ff32f430bddbb55",
-			"revisionTime": "2018-10-10T13:24:25Z"
+			"checksumSHA1": "CVEN4to8B0g1zTxa9tlKu8vM4Go=",
+			"path": "github.com/mia0x75/gopfc",
+			"revision": "f8dfb3a189565c4275ef8ed93ba30b69f4021a98",
+			"revisionTime": "2018-10-11T01:37:35Z"
 		},
 		{
 			"checksumSHA1": "gS5wdfbttHTrMDjINxMV72ga1nY=",

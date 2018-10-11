@@ -1,38 +1,38 @@
-GoPerfcounter
+gopfc
 ==========
 
-goperfcounter用于golang应用的业务监控。goperfcounter需要和开源监控系统[Open-Falcon](http://book.open-falcon.com/zh/index.html)一起使用。
+gopfc用于golang应用的业务监控。gopfc需要和开源监控系统[Open-Falcon](http://book.open-falcon.com/zh/index.html)一起使用。
 
 概述
 -----
-使用goperfcounter进行golang应用的监控，大体如下: 
+使用gopfc进行golang应用的监控，大体如下: 
 
-1. 用户在其golang应用代码中，调用goperfcounter提供的统计函数；统计函数被调用时，perfcounter会生成统计记录、并保存在内存中
-2. goperfcounter会自动的、定期的将这些统计记录push给Open-Falcon的收集器([agent](https://github.com/open-falcon/agent)或[transfer](https://github.com/open-falcon/transfer))
+1. 用户在其golang应用代码中，调用gopfc提供的统计函数；统计函数被调用时，perfcounter会生成统计记录、并保存在内存中
+2. gopfc会自动的、定期的将这些统计记录push给Open-Falcon的收集器([agent](https://github.com/open-falcon/agent)或[transfer](https://github.com/open-falcon/transfer))
 3. 用户在Open-Falcon中，查看统计数据的绘图曲线、设置实时报警
 
-另外，goperfcounter提供了golang应用的基础监控，包括runtime指标、debug指标等。默认情况下，基础监控是关闭的，用户可以通过[配置文件](#配置)来开启此功能。
+另外，gopfc提供了golang应用的基础监控，包括runtime指标、debug指标等。默认情况下，基础监控是关闭的，用户可以通过[配置文件](#配置)来开启此功能。
 
 安装
 -----
 
-在golang项目中使用goperfcounter时，需要进行安装，操作如下
+在golang项目中使用gopfc时，需要进行安装，操作如下
 
 ```bash
-go get github.com/niean/goperfcounter
+go get github.com/mia0x75/gopfc
 
 ```
 
 使用
 -----
 
-用户需要引入goperfcounter包，需要在代码片段中调用goperfcounter的[API](#API)。比如，用户想要统计函数的出错次数，可以调用`Meter`方法。
+用户需要引入gopfc包，需要在代码片段中调用gopfc的[API](#API)。比如，用户想要统计函数的出错次数，可以调用`Meter`方法。
 
 ```go
 package xxx
 
 import (
-	pfc "github.com/niean/goperfcounter"
+	pfc "github.com/mia0x75/gopfc"
 )
 
 func foo() {
@@ -48,7 +48,7 @@ func bar() error {
 
 ```
 
-这个调用主要会产生2个Open-Falcon统计指标，如下。其中，`timestamp `和`value`是监控数据的取值；`endpoint`默认为服务器`Hostname()`，可以通过配置文件设置；`step`默认为60s，可以通过配置文件设置；`tags`中包含一个`name=bar.called.error`的标签(`bar.called.error`为用户自定义的统计器名称)，其他`tags`标签可以通过配置文件设置；`counterType `和`metric`由goperfcounter决定。
+这个调用主要会产生2个Open-Falcon统计指标，如下。其中，`timestamp `和`value`是监控数据的取值；`endpoint`默认为服务器`Hostname()`，可以通过配置文件设置；`step`默认为60s，可以通过配置文件设置；`tags`中包含一个`name=bar.called.error`的标签(`bar.called.error`为用户自定义的统计器名称)，其他`tags`标签可以通过配置文件设置；`counterType `和`metric`由gopfc决定。
 
 ```python
 {
@@ -75,7 +75,7 @@ func bar() error {
 
 配置
 ----
-默认情况下，goperfcounter不需要进行配置。如果用户需要定制goperfcounter的行为，可以通过配置文件来进行。配置文件需要满足以下的条件:
+默认情况下，gopfc不需要进行配置。如果用户需要定制gopfc的行为，可以通过配置文件来进行。配置文件需要满足以下的条件:
 
 + 配置文件必须和golang二进制文件应用文件，在同一目录
 + 配置文件命名，必须为```perfcounter.json```
@@ -114,14 +114,14 @@ API
 |Gauge|`// 统计队列长度` <br/>`Gauge("queueSize", int64(len(myQueueList))) ` <br/> `GaugeFloat64("queueSize", float64(len(myQueueList)))`|Gauge用于记录瞬时值。支持int64、float64类型|
 |Histogram|`// 统计线程并发度` <br/>`Histogram("processNum", int64(326)) `| Histogram用于计算统计分布。输出最大值、最小值、平均值、75th、95th、99th等|
 
-更详细的API介绍，请移步到[这里](https://github.com/niean/goperfcounter/blob/master/doc/API.md)。
+更详细的API介绍，请移步到[这里](https://github.com/mia0x75/gopfc/blob/master/doc/API.md)。
 
 
 
 数据上报
 ----
 
-goperfcounter会将各种统计器的统计结果，定时发送到Open-Falcon。每种统计器，会被转换成不同的Open-Falcon指标项，转换关系如下。每条数据，至少包含一个```name=XXX```的tag，```XXX```是用户定义的统计器名称。
+gopfc会将各种统计器的统计结果，定时发送到Open-Falcon。每种统计器，会被转换成不同的Open-Falcon指标项，转换关系如下。每条数据，至少包含一个```name=XXX```的tag，```XXX```是用户定义的统计器名称。
 
 <table>
 <tr>
@@ -174,7 +174,7 @@ goperfcounter会将各种统计器的统计结果，定时发送到Open-Falcon�
 Bench
 ----
 
-请移步到[这里](https://github.com/niean/goperfcounter/blob/master/doc/BENCH.md)
+请移步到[这里](https://github.com/mia0x75/gopfc/blob/master/doc/BENCH.md)
 
 
 TODO

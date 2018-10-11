@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	pfc "github.com/mia0x75/goperfcounter"
+	pfc "github.com/mia0x75/gopfc/metric"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/index"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"

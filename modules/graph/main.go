@@ -8,6 +8,8 @@ import (
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
+	pfc "github.com/mia0x75/gopfc"
+	pfcg "github.com/mia0x75/gopfc/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
@@ -66,6 +68,12 @@ func main() {
 	g.InitLog(g.Config().Log.Level)
 	// init db
 	g.InitDB()
+	if g.Config().PerfCounter != nil {
+		log.Debugf("pfc config: %v", g.Config().PerfCounter)
+		pfcg.PFCWithConfig(g.Config().PerfCounter)
+		pfc.Start()
+	}
+
 	// rrdtool init
 	rrdtool.InitChannel()
 	// rrdtool before api for disable loopback connection

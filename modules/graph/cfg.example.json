@@ -27,5 +27,22 @@
 		"cluster": {
 			"graph-00" : "127.0.0.1:6070"
 		}
+	},
+	"pfc": {
+		"hostname": "127.0.0.1",
+		"step": 5,
+		"tags": "service=graph",
+		"bases": [
+			"debug",
+			"runtime"
+		],
+		"push": {
+			"enabled": true,
+			"api": "http://127.0.0.1:6050/api/push"
+		},
+		"http": {
+			"enabled": true,
+			"listen": "0.0.0.0:2025"
+		}
 	}
 }
