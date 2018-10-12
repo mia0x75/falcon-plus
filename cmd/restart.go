@@ -31,7 +31,7 @@ func restart(c *cobra.Command, args []string) error {
 			return err
 		}
 		if strings.Contains(moduleName, "graph") {
-			time.Sleep(2 * time.Second)
+			time.Sleep(5 * time.Second)
 		} else {
 			time.Sleep(1 * time.Second)
 		}
