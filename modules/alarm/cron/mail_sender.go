@@ -13,10 +13,10 @@ import (
 
 func ConsumeMail() {
 	go func() {
-		for {
+		d := time.Duration(1) * time.Second
+		for range time.Tick(d) {
 			L := redi.PopAllMail()
 			if len(L) == 0 {
-				time.Sleep(time.Millisecond * 200)
 				continue
 			}
 			SendMailList(L)
@@ -37,6 +37,7 @@ func SendMail(mail *model.Mail) {
 	}()
 
 	url := g.Config().Api.Mail
+	log.Debugf("send mail via %s", url)
 	if strings.TrimSpace(url) != "" {
 		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
 		r.Param("tos", mail.Tos)

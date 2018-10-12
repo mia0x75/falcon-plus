@@ -13,10 +13,10 @@ import (
 
 func ConsumeIM() {
 	go func() {
-		for {
+		d := time.Duration(1) * time.Second
+		for range time.Tick(d) {
 			L := redi.PopAllIM()
 			if len(L) == 0 {
-				time.Sleep(time.Millisecond * 200)
 				continue
 			}
 			SendIMList(L)
@@ -37,6 +37,7 @@ func SendIM(im *model.IM) {
 	}()
 
 	url := g.Config().Api.IM
+	log.Debugf("send im via %s", url)
 	if strings.TrimSpace(url) != "" {
 		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
 		r.Param("tos", im.Tos)

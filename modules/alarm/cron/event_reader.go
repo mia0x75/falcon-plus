@@ -19,10 +19,10 @@ func ReadHighEvent() {
 	}
 
 	go func() {
-		for {
+		d := time.Duration(1) * time.Second
+		for range time.Tick(d) {
 			event, err := popEvent(queues)
 			if err != nil {
-				time.Sleep(time.Second)
 				continue
 			}
 			consume(event, true)
@@ -37,10 +37,10 @@ func ReadLowEvent() {
 	}
 
 	go func() {
-		for {
+		d := time.Duration(1) * time.Second
+		for range time.Tick(d) {
 			event, err := popEvent(queues)
 			if err != nil {
-				time.Sleep(time.Second)
 				continue
 			}
 			consume(event, false)
