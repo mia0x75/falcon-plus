@@ -37,7 +37,6 @@ func SendSms(sms *model.Sms) {
 	}()
 
 	url := g.Config().Api.Sms
-	log.Debugf("send sms via %s", url)
 	if strings.TrimSpace(url) != "" {
 		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
 		r.Param("tos", sms.Tos)

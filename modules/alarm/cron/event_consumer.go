@@ -51,7 +51,6 @@ func consumeHighEvents(event *cmodel.Event, action *api.Action) {
 
 	redi.WriteIM(ims, imContent)
 	redi.WriteMail(mails, smsContent, mailContent)
-
 }
 
 // 低优先级的做报警合并

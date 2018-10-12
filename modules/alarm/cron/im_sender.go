@@ -37,7 +37,6 @@ func SendIM(im *model.IM) {
 	}()
 
 	url := g.Config().Api.IM
-	log.Debugf("send im via %s", url)
 	if strings.TrimSpace(url) != "" {
 		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
 		r.Param("tos", im.Tos)

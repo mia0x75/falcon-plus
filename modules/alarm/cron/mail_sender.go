@@ -37,7 +37,6 @@ func SendMail(mail *model.Mail) {
 	}()
 
 	url := g.Config().Api.Mail
-	log.Debugf("send mail via %s", url)
 	if strings.TrimSpace(url) != "" {
 		r := httplib.Post(url).SetTimeout(5*time.Second, 30*time.Second)
 		r.Param("tos", mail.Tos)
