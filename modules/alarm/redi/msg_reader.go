@@ -9,15 +9,9 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/model"
 )
 
-const (
-	IM_QUEUE_NAME   = "/im"
-	SMS_QUEUE_NAME  = "/sms"
-	MAIL_QUEUE_NAME = "/mail"
-)
-
 func PopAllSms() []*model.Sms {
 	ret := []*model.Sms{}
-	queue := SMS_QUEUE_NAME
+	queue := g.SMS_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -50,7 +44,7 @@ func PopAllSms() []*model.Sms {
 
 func PopAllIM() []*model.IM {
 	ret := []*model.IM{}
-	queue := IM_QUEUE_NAME
+	queue := g.IM_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -83,7 +77,7 @@ func PopAllIM() []*model.IM {
 
 func PopAllMail() []*model.Mail {
 	ret := []*model.Mail{}
-	queue := MAIL_QUEUE_NAME
+	queue := g.MAIL_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()

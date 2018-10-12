@@ -29,8 +29,8 @@ func WriteSmsModel(sms *model.Sms) {
 		return
 	}
 
-	log.Debugf("write sms to queue, sms:%v, queue:%s", sms, SMS_QUEUE_NAME)
-	lpush(SMS_QUEUE_NAME, string(bs))
+	log.Debugf("write sms to queue, sms:%v, queue:%s", sms, g.SMS_QUEUE_NAME)
+	lpush(g.SMS_QUEUE_NAME, string(bs))
 }
 
 func WriteIMModel(im *model.IM) {
@@ -44,8 +44,8 @@ func WriteIMModel(im *model.IM) {
 		return
 	}
 
-	log.Debugf("write im to queue, im:%v, queue:%s", im, IM_QUEUE_NAME)
-	lpush(IM_QUEUE_NAME, string(bs))
+	log.Debugf("write im to queue, im:%v, queue:%s", im, g.IM_QUEUE_NAME)
+	lpush(g.IM_QUEUE_NAME, string(bs))
 }
 
 func WriteMailModel(mail *model.Mail) {
@@ -59,8 +59,8 @@ func WriteMailModel(mail *model.Mail) {
 		return
 	}
 
-	log.Debugf("write mail to queue, mail:%v, queue:%s", mail, MAIL_QUEUE_NAME)
-	lpush(MAIL_QUEUE_NAME, string(bs))
+	log.Debugf("write mail to queue, mail:%v, queue:%s", mail, g.MAIL_QUEUE_NAME)
+	lpush(g.MAIL_QUEUE_NAME, string(bs))
 }
 
 func WriteSms(tos []string, content string) {
