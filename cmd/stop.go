@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/open-falcon/falcon-plus/g"
 	"github.com/spf13/cobra"
@@ -48,6 +49,7 @@ func stop(c *cobra.Command, args []string) error {
 			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
 			continue
 		}
+		time.Sleep(2 * time.Second)
 		return err
 	}
 	return nil

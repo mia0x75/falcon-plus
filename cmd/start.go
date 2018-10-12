@@ -123,7 +123,7 @@ func start(c *cobra.Command, args []string) error {
 			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
 			continue
 		}
-
+		time.Sleep(2 * time.Second)
 		return fmt.Errorf("[%s] failed to start", g.ModuleApps[moduleName])
 	}
 	return nil
