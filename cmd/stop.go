@@ -45,14 +45,14 @@ func stop(c *cobra.Command, args []string) error {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
-		if err == nil {
-			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
-			continue
-		}
 		if strings.Contains(moduleName, "graph") {
 			time.Sleep(5 * time.Second)
 		} else {
 			time.Sleep(1 * time.Second)
+		}
+		if err == nil {
+			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
+			continue
 		}
 		return err
 	}

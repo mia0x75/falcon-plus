@@ -119,14 +119,14 @@ func start(c *cobra.Command, args []string) error {
 			return err
 		}
 
-		if isStarted(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
-			continue
-		}
 		if strings.Contains(moduleName, "graph") {
 			time.Sleep(5 * time.Second)
 		} else {
 			time.Sleep(1 * time.Second)
+		}
+		if isStarted(moduleName) {
+			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
+			continue
 		}
 		return fmt.Errorf("[%s] failed to start", g.ModuleApps[moduleName])
 	}
