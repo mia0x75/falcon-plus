@@ -8,7 +8,7 @@ import (
 
 func GenerateUUID() string {
 	sig := ""
-	if id, err := uuid.NewV1(); err != nil {
+	if id, err := uuid.NewV1(); err == nil {
 		sig = id.String()
 		sig = strings.Replace(sig, "-", "", -1)
 	}
