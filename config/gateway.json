@@ -24,7 +24,7 @@
 		"max_connections": 32,
 		"max_idle": 32,
 		"cluster": {
-			"t1": "%%TRANSFER_RPC%%"
+			"transfer-00": "%%TRANSFER_RPC%%"
 		}
 	},
 	"pfc": {
@@ -38,7 +38,7 @@
 		],
 		"push": {
 			"enabled": true,
-			"api": "http://127.0.0.1:6050/api/push"
+			"api": "http://%%GATEWAY_HTTP%%/api/push"
 		},
 		"http": {
 			"enabled": true,

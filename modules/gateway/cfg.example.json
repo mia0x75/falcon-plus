@@ -25,7 +25,7 @@
 		"max_connections": 32,
 		"max_idle": 32,
 		"cluster": {
-			"t1": "127.0.0.1:8433"
+			"transfer-00": "127.0.0.1:8433"
 		}
 	},
 	"pfc": {

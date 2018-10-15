@@ -14,7 +14,7 @@
 	},
 	"hbs": {
 		"servers": [
-			"%%HBS_RPC%%"
+			"%%HBS_HTTP%%"
 		],
 		"timeout": 300,
 		"interval": 60

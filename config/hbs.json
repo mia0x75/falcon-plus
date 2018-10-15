@@ -8,7 +8,9 @@
 		"max_connections": 8
 	},
 	"hosts": "",
-	"listen": ":6030",
+	"rpc": {
+		"listen": "%%HBS_RPC%%"
+	},
 	"trustable": [""],
 	"http": {
 		"enabled": true,
