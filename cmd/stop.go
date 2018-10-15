@@ -33,7 +33,8 @@ func stop(c *cobra.Command, args []string) error {
 	for i := l; i >= 0; i-- {
 		moduleName := args[i]
 		if !g.HasModule(moduleName) {
-			return fmt.Errorf("%s doesn't exist", moduleName)
+			fmt.Print("[", g.ModuleApps[moduleName], "] absent\n")
+			continue
 		}
 
 		if !g.IsRunning(moduleName) {
@@ -53,8 +54,9 @@ func stop(c *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
 			continue
+		} else {
+			fmt.Print("[", g.ModuleApps[moduleName], "] error\n")
 		}
-		return err
 	}
 	return nil
 }

@@ -65,19 +65,6 @@ func execModule(co bool, name string) error {
 	return cmd.Start()
 }
 
-func checkStartReq(name string) error {
-	if !g.HasModule(name) {
-		return fmt.Errorf("%s doesn't exist", name)
-	}
-
-	if !g.HasCfg(name) {
-		r := g.Rel(g.Cfg(name))
-		return fmt.Errorf("expect config file: %s", r)
-	}
-
-	return nil
-}
-
 func isStarted(name string) bool {
 	ticker := time.NewTicker(time.Millisecond * 100)
 	defer ticker.Stop()
@@ -105,8 +92,14 @@ func start(c *cobra.Command, args []string) error {
 	}
 
 	for _, moduleName := range args {
-		if err := checkStartReq(moduleName); err != nil {
-			return err
+		if !g.HasModule(moduleName) {
+			fmt.Print("[", g.ModuleApps[moduleName], "] absent\n")
+			continue
+		}
+
+		if !g.HasCfg(moduleName) {
+			fmt.Print("[", g.ModuleApps[moduleName], "] missing cfg\n")
+			continue
 		}
 
 		// Skip starting if the module is already running
@@ -116,7 +109,8 @@ func start(c *cobra.Command, args []string) error {
 		}
 
 		if err := execModule(ConsoleOutputFlag, moduleName); err != nil {
-			return err
+			fmt.Print("[", g.ModuleApps[moduleName], "] error\n")
+			continue
 		}
 
 		if strings.Contains(moduleName, "graph") {
@@ -128,7 +122,7 @@ func start(c *cobra.Command, args []string) error {
 			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
 			continue
 		}
-		return fmt.Errorf("[%s] failed to start", g.ModuleApps[moduleName])
+		fmt.Print("[", g.ModuleApps[moduleName], "] ", "failed\n")
 	}
 	return nil
 }

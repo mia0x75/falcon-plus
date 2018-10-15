@@ -27,17 +27,13 @@ func restart(c *cobra.Command, args []string) error {
 	}
 
 	for _, moduleName := range args {
-		if err := stop(c, []string{moduleName}); err != nil {
-			return err
-		}
+		stop(c, []string{moduleName})
 		if strings.Contains(moduleName, "graph") {
 			time.Sleep(5 * time.Second)
 		} else {
 			time.Sleep(1 * time.Second)
 		}
-		if err := start(c, []string{moduleName}); err != nil {
-			return err
-		}
+		start(c, []string{moduleName})
 	}
 	return nil
 }
