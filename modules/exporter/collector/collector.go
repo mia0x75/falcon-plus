@@ -20,11 +20,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
 
-var (
-	collectorCron = cron.New()
-	srcUrlFmt     = "http://%s/statistics/all"
-	destUrl       = "http://127.0.0.1:1988/v1/push"
-)
+var collectorCron = cron.New()
 
 func Start() {
 	if !g.Config().Collector.Enable {
@@ -33,11 +29,11 @@ func Start() {
 	}
 
 	// init url
-	if g.Config().Collector.DestUrl != "" {
-		destUrl = g.Config().Collector.DestUrl
+	if g.Config().Collector.Agent == "" {
+		return
 	}
-	if g.Config().Collector.SrcUrlFmt != "" {
-		srcUrlFmt = g.Config().Collector.SrcUrlFmt
+	if g.Config().Collector.UrlPattern == "" {
+		return
 	}
 	// start
 	go startCollectorCron()
@@ -81,7 +77,7 @@ func _collect() {
 		hostPort := hostNamePortList[1]
 
 		tags := "port=" + hostPort
-		srcUrl := fmt.Sprintf(srcUrlFmt, hostNamePort)
+		srcUrl := fmt.Sprintf(g.Config().Collector.UrlPattern, hostNamePort)
 		reqGet, _ := http.NewRequest("GET", srcUrl, nil)
 		reqGet.Header.Set("Connection", "close")
 		getResp, err := clientGet.Do(reqGet)
@@ -135,7 +131,7 @@ func _collect() {
 		}
 
 		// format result
-		err = sendToTransfer(jsonList, destUrl)
+		err = sendToTransfer(jsonList, g.Config().Collector.Agent)
 		if err != nil {
 			log.Println(hostNamePort, "send to transfer error,", err.Error())
 		}
@@ -167,7 +163,7 @@ func _collectorAlive() error {
 
 	jsonList := make([]*cmodel.JsonMetaData, 0)
 	jsonList = append(jsonList, &jmdCnt)
-	err = sendToTransfer(jsonList, destUrl)
+	err = sendToTransfer(jsonList, g.Config().Collector.Agent)
 	if err != nil {
 		log.Println("send exporter.alive failed,", err)
 		return err

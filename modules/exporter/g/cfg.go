@@ -23,10 +23,10 @@ type IndexConfig struct {
 }
 
 type CollectorConfig struct {
-	Enable    bool     `json:"enable"`
-	DestUrl   string   `json:"agent"`
-	SrcUrlFmt string   `json:"url_pattern"`
-	Cluster   []string `json:"cluster"`
+	Enable     bool     `json:"enable"`
+	Agent      string   `json:"agent"`
+	UrlPattern string   `json:"url_pattern"`
+	Cluster    []string `json:"cluster"`
 }
 
 type PluginConfig struct {
