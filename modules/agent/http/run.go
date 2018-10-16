@@ -8,7 +8,7 @@ import (
 	"github.com/toolkits/sys"
 )
 
-func configRunRoutes() {
+func SetupRunRoutes() {
 	http.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
 		if !g.Config().Http.Backdoor {
 			w.Write([]byte("/run disabled"))

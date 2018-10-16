@@ -1,7 +1,6 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 	_ "net/http/pprof"
 
@@ -9,19 +8,14 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
-type Dto struct {
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+func SetupRoutes() {
+	SetupCommonRoutes()
+	SetupProcHttpRoutes()
+	SetupDebugHttpRoutes()
 }
 
 func Start() {
 	go startHttpServer()
-}
-
-func configRoutes() {
-	configCommonRoutes()
-	configProcHttpRoutes()
-	configDebugHttpRoutes()
 }
 
 func startHttpServer() {
@@ -34,7 +28,7 @@ func startHttpServer() {
 		return
 	}
 
-	configRoutes()
+	SetupRoutes()
 
 	s := &http.Server{
 		Addr:           addr,
@@ -43,30 +37,4 @@ func startHttpServer() {
 
 	log.Println("http.startHttpServer ok, listening", addr)
 	log.Fatalln(s.ListenAndServe())
-}
-
-func RenderJson(w http.ResponseWriter, v interface{}) {
-	bs, err := json.Marshal(v)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Write(bs)
-}
-
-func RenderDataJson(w http.ResponseWriter, data interface{}) {
-	RenderJson(w, Dto{Msg: "success", Data: data})
-}
-
-func RenderMsgJson(w http.ResponseWriter, msg string) {
-	RenderJson(w, map[string]string{"msg": msg})
-}
-
-func AutoRender(w http.ResponseWriter, data interface{}, err error) {
-	if err != nil {
-		RenderMsgJson(w, err.Error())
-		return
-	}
-	RenderDataJson(w, data)
 }

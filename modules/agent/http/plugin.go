@@ -10,7 +10,7 @@ import (
 	"github.com/toolkits/file"
 )
 
-func configPluginRoutes() {
+func SetupPluginRoutes() {
 	http.HandleFunc("/plugin/update", func(w http.ResponseWriter, r *http.Request) {
 		if !g.Config().Plugin.Enabled {
 			w.Write([]byte("plugin not enabled"))

@@ -8,7 +8,7 @@ import (
 	"github.com/toolkits/sys"
 )
 
-func configKernelRoutes() {
+func SetupKernelRoutes() {
 	http.HandleFunc("/proc/kernel/hostname", func(w http.ResponseWriter, r *http.Request) {
 		data, err := g.Hostname()
 		AutoRender(w, data, err)

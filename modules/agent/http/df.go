@@ -8,7 +8,7 @@ import (
 	"github.com/toolkits/nux"
 )
 
-func configDfRoutes() {
+func SetupDfRoutes() {
 	http.HandleFunc("/page/df", func(w http.ResponseWriter, r *http.Request) {
 		mountPoints, err := nux.ListMountPoint()
 		if err != nil {

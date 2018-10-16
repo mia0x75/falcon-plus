@@ -8,7 +8,7 @@ import (
 	trpc "github.com/open-falcon/falcon-plus/modules/gateway/receiver/rpc"
 )
 
-func configApiHttpRoutes() {
+func SetupAPIRoutes() {
 	http.HandleFunc("/api/push", func(w http.ResponseWriter, req *http.Request) {
 		if req.ContentLength == 0 {
 			http.Error(w, "blank body", http.StatusBadRequest)

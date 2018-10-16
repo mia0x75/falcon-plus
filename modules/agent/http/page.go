@@ -10,7 +10,7 @@ import (
 	"github.com/toolkits/file"
 )
 
-func configPageRoutes() {
+func SetupPageRoutes() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/") {
 			f := filepath.Join(g.Config().Http.Root, "/public", r.URL.Path, "index.html")

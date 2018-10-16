@@ -28,6 +28,6 @@ func api_push_datapoints(rw http.ResponseWriter, req *http.Request) {
 	RenderDataJson(rw, reply)
 }
 
-func configApiRoutes() {
+func SetupApiRoutes() {
 	http.HandleFunc("/api/push", api_push_datapoints)
 }

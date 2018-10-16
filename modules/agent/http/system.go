@@ -9,7 +9,7 @@ import (
 	"github.com/toolkits/nux"
 )
 
-func configSystemRoutes() {
+func SetupSystemRoutes() {
 	http.HandleFunc("/system/date", func(w http.ResponseWriter, req *http.Request) {
 		RenderDataJson(w, time.Now().Format("2006-01-02 15:04:05"))
 	})

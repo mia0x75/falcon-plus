@@ -6,7 +6,7 @@ import (
 	"github.com/toolkits/nux"
 )
 
-func configMemoryRoutes() {
+func SetupMemoryRoutes() {
 	http.HandleFunc("/page/memory", func(w http.ResponseWriter, r *http.Request) {
 		mem, err := nux.MemInfo()
 		if err != nil {

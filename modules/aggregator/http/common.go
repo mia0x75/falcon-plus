@@ -8,7 +8,7 @@ import (
 	"github.com/toolkits/file"
 )
 
-func configCommonRoutes() {
+func SetupCommonRoutes() {
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("ok"))
 	})

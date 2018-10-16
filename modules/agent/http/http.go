@@ -1,7 +1,6 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 	_ "net/http/pprof"
 
@@ -9,52 +8,19 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
-type Dto struct {
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
-}
-
-func init() {
-	configAdminRoutes()
-	configCpuRoutes()
-	configDfRoutes()
-	configHealthRoutes()
-	configIoStatRoutes()
-	configKernelRoutes()
-	configMemoryRoutes()
-	configPageRoutes()
-	configPluginRoutes()
-	configPushRoutes()
-	configRunRoutes()
-	configSystemRoutes()
-}
-
-func RenderJson(w http.ResponseWriter, v interface{}) {
-	bs, err := json.Marshal(v)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Write(bs)
-}
-
-func RenderDataJson(w http.ResponseWriter, data interface{}) {
-	RenderJson(w, Dto{Msg: "success", Data: data})
-}
-
-func RenderMsgJson(w http.ResponseWriter, msg string) {
-	RenderJson(w, map[string]string{"msg": msg})
-}
-
-func AutoRender(w http.ResponseWriter, data interface{}, err error) {
-	if err != nil {
-		RenderMsgJson(w, err.Error())
-		return
-	}
-
-	RenderDataJson(w, data)
+func SetupRoutes() {
+	SetupAdminRoutes()
+	SetupCpuRoutes()
+	SetupDfRoutes()
+	SetupHealthRoutes()
+	SetupIoStatRoutes()
+	SetupKernelRoutes()
+	SetupMemoryRoutes()
+	SetupPageRoutes()
+	SetupPluginRoutes()
+	SetupPushRoutes()
+	SetupRunRoutes()
+	SetupSystemRoutes()
 }
 
 func Start() {
@@ -71,6 +37,8 @@ func startHttpServer() {
 		Addr:           addr,
 		MaxHeaderBytes: 1 << 30,
 	}
+
+	SetupRoutes()
 
 	log.Println("listening", addr)
 	log.Fatalln(s.ListenAndServe())

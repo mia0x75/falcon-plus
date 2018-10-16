@@ -10,7 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/sender"
 )
 
-func configProcHttpRoutes() {
+func SetupProcHttpRoutes() {
 	// TO BE DISCARDed
 	http.HandleFunc("/counter/all", func(w http.ResponseWriter, r *http.Request) {
 		RenderDataJson(w, make([]interface{}, 0))

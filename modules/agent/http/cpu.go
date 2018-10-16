@@ -9,7 +9,7 @@ import (
 	"github.com/toolkits/nux"
 )
 
-func configCpuRoutes() {
+func SetupCpuRoutes() {
 	http.HandleFunc("/proc/cpu/num", func(w http.ResponseWriter, r *http.Request) {
 		RenderDataJson(w, runtime.NumCPU())
 	})

@@ -8,7 +8,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 )
 
-func configProcRoutes() {
+func SetupProcRoutes() {
 	http.HandleFunc("/expressions", func(w http.ResponseWriter, r *http.Request) {
 		RenderDataJson(w, cache.ExpressionCache.Get())
 	})

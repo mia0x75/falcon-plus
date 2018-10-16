@@ -1,12 +1,21 @@
 package http
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
+var routes *gin.Engine
+
+func SetupRoutes() {
+	SetupCommonRoutes()
+}
+
 func Start() {
+	go startHttpServer()
+}
+
+func startHttpServer() {
 	if !g.Config().Http.Enabled {
 		return
 	}
@@ -18,10 +27,9 @@ func Start() {
 	if !g.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	routes := gin.Default()
-	routes.GET("/version", Version)
-	routes.GET("/health", Health)
-	routes.GET("/workdir", Workdir)
-	log.Println("http listening", addr)
+	routes = gin.Default()
+
+	SetupRoutes()
+
 	go routes.Run(addr)
 }

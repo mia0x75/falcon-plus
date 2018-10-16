@@ -6,7 +6,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 )
 
-func configProcRoutes() {
+func SetupProcRoutes() {
 	http.HandleFunc("/items", func(w http.ResponseWriter, r *http.Request) {
 		items, err := db.ReadClusterMonitorItems()
 		if err != nil {

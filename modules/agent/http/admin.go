@@ -9,7 +9,7 @@ import (
 	"github.com/toolkits/file"
 )
 
-func configAdminRoutes() {
+func SetupAdminRoutes() {
 	http.HandleFunc("/exit", func(w http.ResponseWriter, r *http.Request) {
 		if g.IsTrustable(r.RemoteAddr) {
 			w.Write([]byte("exiting..."))

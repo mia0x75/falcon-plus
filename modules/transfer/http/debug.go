@@ -8,7 +8,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/transfer/sender"
 )
 
-func configDebugHttpRoutes() {
+func SetupDebugHttpRoutes() {
 	// conn pools
 	http.HandleFunc("/debug/connpool/", func(w http.ResponseWriter, r *http.Request) {
 		urlParam := r.URL.Path[len("/debug/connpool/"):]
