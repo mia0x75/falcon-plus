@@ -15,10 +15,6 @@ func SyncMinePlugins() {
 		return
 	}
 
-	if !g.Config().Heartbeat.Enabled {
-		return
-	}
-
 	if len(g.Config().Heartbeat.Addrs) == 0 {
 		return
 	}

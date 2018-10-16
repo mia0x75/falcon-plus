@@ -19,10 +19,6 @@ func InitDataHistory() {
 }
 
 func Collect() {
-	if !g.Config().Transfer.Enabled {
-		return
-	}
-
 	if len(g.Config().Transfer.Addrs) == 0 {
 		return
 	}

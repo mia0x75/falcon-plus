@@ -11,7 +11,7 @@ import (
 )
 
 func SyncBuiltinMetrics() {
-	if g.Config().Heartbeat.Enabled && len(g.Config().Heartbeat.Addrs) > 0 {
+	if len(g.Config().Heartbeat.Addrs) > 0 {
 		go syncBuiltinMetrics()
 	}
 }

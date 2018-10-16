@@ -62,10 +62,6 @@ func Start() {
 }
 
 func startHttpServer() {
-	if !g.Config().Http.Enabled {
-		return
-	}
-
 	addr := g.Config().Http.Listen
 	if addr == "" {
 		return

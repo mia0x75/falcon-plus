@@ -16,19 +16,15 @@ import (
 var LocalIp string
 
 func InitLocalIp() {
-	if Config().Heartbeat.Enabled {
-		for _, addr := range Config().Heartbeat.Addrs {
-			conn, err := net.DialTimeout("tcp", addr, time.Second*10)
-			if err != nil {
-				log.Println(fmt.Sprintf("connect to heartbeat server %s failed", addr))
-			} else {
-				defer conn.Close()
-				LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
-				break
-			}
+	for _, addr := range Config().Heartbeat.Addrs {
+		conn, err := net.DialTimeout("tcp", addr, time.Second*10)
+		if err != nil {
+			log.Println(fmt.Sprintf("connect to heartbeat server %s failed", addr))
+		} else {
+			defer conn.Close()
+			LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
+			break
 		}
-	} else {
-		log.Println("hearbeat is not enabled, can't get localip")
 	}
 }
 
@@ -37,11 +33,13 @@ var (
 )
 
 func InitRpcClients() {
-	if Config().Heartbeat.Enabled && len(Config().Heartbeat.Addrs) > 0 {
+	if len(Config().Heartbeat.Addrs) > 0 {
 		HbsClient = &SingleConnRpcClient{
 			RpcServers: Config().Heartbeat.Addrs,
 			Timeout:    time.Duration(Config().Heartbeat.Timeout) * time.Millisecond,
 		}
+	} else {
+		// TODO: panic
 	}
 }
 

@@ -19,21 +19,18 @@ type PluginConfig struct {
 }
 
 type HeartbeatConfig struct {
-	Enabled  bool     `json:"enabled"`
 	Addrs    []string `json:"addrs"`
 	Interval int      `json:"interval"`
 	Timeout  int      `json:"timeout"`
 }
 
 type TransferConfig struct {
-	Enabled  bool     `json:"enabled"`
 	Addrs    []string `json:"addrs"`
 	Interval int      `json:"interval"`
 	Timeout  int      `json:"timeout"`
 }
 
 type HttpConfig struct {
-	Enabled  bool   `json:"enabled"`
 	Listen   string `json:"listen"`
 	Backdoor bool   `json:"backdoor"`
 	Root     string `json:"root"`
