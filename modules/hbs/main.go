@@ -27,7 +27,9 @@ func main() {
 
 	g.ParseConfig(*cfg)
 	g.InitLog(g.Config().Log.Level)
-	db.InitDB()
+	if err := db.InitDB(); err != nil {
+		os.Exit(0)
+	}
 	cache.Init()
 
 	cache.DeleteStaleAgents()

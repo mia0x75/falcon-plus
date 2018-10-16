@@ -32,8 +32,10 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	db.InitDB()
 	g.InitLog(g.Config().Log.Level)
+	if err := db.InitDB(); err != nil {
+		os.Exit(0)
+	}
 
 	http.Start()
 	cron.UpdateItems()

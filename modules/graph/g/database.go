@@ -9,8 +9,7 @@ import (
 
 var DB *sql.DB
 
-func InitDB() {
-	var err error
+func InitDB() (err error) {
 	DB, err = sql.Open("mysql", Config().Database.Addr)
 	if err != nil {
 		log.Fatalln("open db fail:", err)
@@ -23,4 +22,5 @@ func InitDB() {
 	if err != nil {
 		log.Fatalln("ping db fail:", err)
 	}
+	return
 }

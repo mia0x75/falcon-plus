@@ -67,7 +67,9 @@ func main() {
 	g.ParseConfig(*cfg)
 	g.InitLog(g.Config().Log.Level)
 	// init db
-	g.InitDB()
+	if err := g.InitDB(); err != nil {
+		os.Exit(0)
+	}
 	if g.Config().PerfCounter != nil {
 		log.Debugf("pfc config: %v", g.Config().PerfCounter)
 		pfcg.PFCWithConfig(g.Config().PerfCounter)

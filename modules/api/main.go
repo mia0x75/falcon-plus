@@ -30,14 +30,9 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	var err error
-	err = g.InitLog(g.Config().Log.Level)
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = g.InitDB()
-	if err != nil {
-		log.Fatalf("db conn failed with error %s", err.Error())
+	g.InitLog(g.Config().Log.Level)
+	if err := g.InitDB(); err != nil {
+		os.Exit(0)
 	}
 
 	rpc.Start()

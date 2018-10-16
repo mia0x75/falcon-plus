@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
@@ -22,7 +23,10 @@ func Start() {
 		return
 	}
 
-	service.InitDB()
+	err := service.InitDB()
+	if err != nil {
+		os.Exit(0)
+	}
 	StartNdConfigCron()
 	log.Println("config.Start ok")
 }
