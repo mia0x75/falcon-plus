@@ -12,9 +12,6 @@ import (
 
 func SetupProcHttpRoutes() {
 	// counters
-	http.HandleFunc("/proc/counters", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, g.GetAllCounters())
-	})
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
 		RenderDataJson(w, g.GetAllCounters())
 	})

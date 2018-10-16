@@ -10,7 +10,7 @@ import (
 
 func SetupRoutes() {
 	SetupCommonRoutes()
-	SetupInfoRoutes()
+	SetupProcRoutes()
 }
 
 func Start() {

@@ -15,7 +15,7 @@ rpcprex="127.0.0.1:6070"
 
 ## statistics
 function counter(){
-    curl -s "$httpprex/counter/all" | python -m json.tool
+    curl -s "$httpprex/statistics/all" | python -m json.tool
 }
 
 ## config

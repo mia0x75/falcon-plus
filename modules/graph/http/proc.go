@@ -6,12 +6,7 @@ import (
 )
 
 func SetupProcRoutes() {
-	// counter
-	routes.GET("/counter/all", func(c *gin.Context) {
-		JSONR(c, 200, proc.GetAll())
-	})
-
-	// compatible with falcon task monitor
+	// statistics
 	routes.GET("/statistics/all", func(c *gin.Context) {
 		ret := make(map[string]interface{})
 		ret["msg"] = "success"

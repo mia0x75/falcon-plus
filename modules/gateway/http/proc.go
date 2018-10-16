@@ -11,10 +11,6 @@ import (
 )
 
 func SetupProcHttpRoutes() {
-	// TO BE DISCARDed
-	http.HandleFunc("/counter/all", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, make([]interface{}, 0))
-	})
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
 		RenderDataJson(w, make([]interface{}, 0))
 	})
