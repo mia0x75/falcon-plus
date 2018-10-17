@@ -148,7 +148,7 @@ func CreateExrpession(c *gin.Context) {
 		return
 	}
 	tx.Commit()
-	h.JSONR(c, "expression created")
+	h.JSONR(c, expression)
 	return
 }
 

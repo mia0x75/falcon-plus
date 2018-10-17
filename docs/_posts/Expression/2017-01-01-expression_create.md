@@ -36,4 +36,18 @@ layout: default
 ### Response
 
 ```Status: 200```
-```{"message":"expression created"}```
+```
+{
+  "id": 5,
+  "expression": "each(metric=agent.alive endpoint=docker-agent)",
+  "func": "all(#3)",
+  "op": "==",
+  "right_value": "0",
+  "max_step": 3,
+  "priority": 2,
+  "note": "this is a test exp",
+  "action_id": 177,
+  "create_user": "root",
+  "pause": 1
+}
+```
