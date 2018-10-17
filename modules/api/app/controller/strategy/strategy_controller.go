@@ -94,7 +94,7 @@ func CreateStrategy(c *gin.Context) {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, "stragtegy created")
+	h.JSONR(c, strategy)
 	return
 }
 
