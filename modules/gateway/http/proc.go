@@ -12,16 +12,16 @@ import (
 
 func SetupProcHttpRoutes() {
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, make([]interface{}, 0))
+		cutils.RenderDataJson(w, make([]interface{}, 0))
 	})
 
 	// proc
 	http.HandleFunc("/proc/counters", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, make([]interface{}, 0))
+		cutils.RenderDataJson(w, make([]interface{}, 0))
 	})
 
 	http.HandleFunc("/proc/transfer/pools", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, sender.SenderConnPools.Proc())
+		cutils.RenderDataJson(w, sender.SenderConnPools.Proc())
 	})
 
 	http.HandleFunc("/proc/transfer/send", func(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +29,7 @@ func SetupProcHttpRoutes() {
 		for _, p := range sender.TransferSendCnt {
 			ret = append(ret, p.Get())
 		}
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 
 	http.HandleFunc("/proc/transfer/sendfail", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func SetupProcHttpRoutes() {
 		for _, p := range sender.TransferSendFailCnt {
 			ret = append(ret, p.Get())
 		}
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 
 	// trace
@@ -59,7 +59,7 @@ func SetupProcHttpRoutes() {
 			}
 		}
 		g.RecvDataTrace.SetPK(cutils.PK(endpoint, metric, tags))
-		RenderDataJson(w, g.RecvDataTrace.GetAllTraced())
+		cutils.RenderDataJson(w, g.RecvDataTrace.GetAllTraced())
 	})
 
 	// filter
@@ -75,7 +75,7 @@ func SetupProcHttpRoutes() {
 		threadholdStr := args[3]
 		threadhold, err := strconv.ParseFloat(threadholdStr, 64)
 		if err != nil {
-			RenderDataJson(w, "bad threadhold")
+			cutils.RenderDataJson(w, "bad threadhold")
 			return
 		}
 
@@ -92,10 +92,10 @@ func SetupProcHttpRoutes() {
 
 		err = g.RecvDataFilter.SetFilter(cutils.PK(endpoint, metric, tags), opt, threadhold)
 		if err != nil {
-			RenderDataJson(w, err.Error())
+			cutils.RenderDataJson(w, err.Error())
 			return
 		}
 
-		RenderDataJson(w, g.RecvDataFilter.GetAllFiltered())
+		cutils.RenderDataJson(w, g.RecvDataFilter.GetAllFiltered())
 	})
 }

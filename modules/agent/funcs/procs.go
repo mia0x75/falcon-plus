@@ -4,12 +4,12 @@ import (
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/nux"
 )
 
-func ProcMetrics() (L []*model.MetricValue) {
+func ProcMetrics() (L []*cmodel.MetricValue) {
 	reportProcs := g.ReportProcs()
 	sz := len(reportProcs)
 	if sz == 0 {

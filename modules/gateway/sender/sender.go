@@ -3,7 +3,7 @@ package sender
 import (
 	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
-	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
+	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 	nlist "github.com/toolkits/container/list"
@@ -16,7 +16,7 @@ const (
 
 var (
 	SenderQueue     = nlist.NewSafeListLimited(DefaultSendQueueMaxSize)
-	SenderConnPools *backend.SafeRpcConnPools
+	SenderConnPools *cpools.SafeRpcConnPools
 
 	TransferMap         = make(map[string]string, 0)
 	TransferHostnames   = make([]string, 0)
@@ -66,6 +66,6 @@ func initConnPools() {
 	}
 
 	// init conn pools
-	SenderConnPools = backend.CreateSafeJsonrpcConnPools(int(cfg.Transfer.MaxConns), int(cfg.Transfer.MaxIdle),
+	SenderConnPools = cpools.CreateSafeJsonrpcConnPools(int(cfg.Transfer.MaxConns), int(cfg.Transfer.MaxIdle),
 		int(cfg.Transfer.ConnTimeout), int(cfg.Transfer.CallTimeout), addrs)
 }

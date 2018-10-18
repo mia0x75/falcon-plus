@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/collector"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config"
 	"github.com/open-falcon/falcon-plus/modules/nodata/sender"
@@ -18,7 +19,7 @@ func SetupDebugHttpRoutes() {
 		ret := make(map[string]int, 0)
 		ret["cnt"] = cnt
 		ret["time"] = int(end - start)
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 
 	http.HandleFunc("/debug/config/sync", func(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +30,7 @@ func SetupDebugHttpRoutes() {
 		ret := make(map[string]int, 0)
 		ret["cnt"] = cnt
 		ret["time"] = int(end - start)
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 
 	http.HandleFunc("/debug/sender/send", func(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +41,6 @@ func SetupDebugHttpRoutes() {
 		ret := make(map[string]int, 0)
 		ret["cnt"] = cnt
 		ret["time"] = int(end - start)
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 }

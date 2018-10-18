@@ -13,15 +13,12 @@ import (
 func SetupProcHttpRoutes() {
 	// counter
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
-		ret := make(map[string]interface{})
-		ret["msg"] = "success"
-		ret["data"] = proc.GetAll()
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, proc.GetAll())
 	})
 
 	// step
 	http.HandleFunc("/proc/step", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, map[string]interface{}{"min_step": sender.MinStep})
+		cutils.RenderDataJson(w, map[string]interface{}{"min_step": sender.MinStep})
 	})
 
 	// trace
@@ -43,7 +40,7 @@ func SetupProcHttpRoutes() {
 			}
 		}
 		proc.RecvDataTrace.SetPK(cutils.PK(endpoint, metric, tags))
-		RenderDataJson(w, proc.RecvDataTrace.GetAllTraced())
+		cutils.RenderDataJson(w, proc.RecvDataTrace.GetAllTraced())
 	})
 
 	// filter
@@ -59,7 +56,7 @@ func SetupProcHttpRoutes() {
 		threadholdStr := args[3]
 		threadhold, err := strconv.ParseFloat(threadholdStr, 64)
 		if err != nil {
-			RenderDataJson(w, "bad threadhold")
+			cutils.RenderDataJson(w, "bad threadhold")
 			return
 		}
 
@@ -76,10 +73,10 @@ func SetupProcHttpRoutes() {
 
 		err = proc.RecvDataFilter.SetFilter(cutils.PK(endpoint, metric, tags), opt, threadhold)
 		if err != nil {
-			RenderDataJson(w, err.Error())
+			cutils.RenderDataJson(w, err.Error())
 			return
 		}
 
-		RenderDataJson(w, proc.RecvDataFilter.GetAllFiltered())
+		cutils.RenderDataJson(w, proc.RecvDataFilter.GetAllFiltered())
 	})
 }

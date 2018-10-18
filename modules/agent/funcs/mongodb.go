@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -507,7 +507,7 @@ func NewMongoDB() *mgo.Session {
 
 var mgoTags string
 
-func MongoDBMetrics() (L []*model.MetricValue) {
+func MongoDBMetrics() (L []*cmodel.MetricValue) {
 	if g.Config().Collector.MongoDB == nil {
 		return nil
 	}
@@ -527,7 +527,7 @@ func MongoDBMetrics() (L []*model.MetricValue) {
 	return
 }
 
-func MongoDBAlive() *model.MetricValue {
+func MongoDBAlive() *cmodel.MetricValue {
 	if g.Config().Collector.MongoDB != nil {
 		if g.Config().Collector.MongoDB.Enabled {
 			return GaugeValue("mongodb.alive", 1, mgoTags)
@@ -538,7 +538,7 @@ func MongoDBAlive() *model.MetricValue {
 	return nil
 }
 
-func MongoDBStatInfo(session *mgo.Session) (L []*model.MetricValue) {
+func MongoDBStatInfo(session *mgo.Session) (L []*cmodel.MetricValue) {
 	var serverStatus = GetServerStatus(session)
 	fmt.Println(serverStatus.Version)
 	fmt.Println(serverStatus.Uptime)

@@ -2,7 +2,7 @@ package funcs
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/nux"
 )
 
@@ -32,7 +32,7 @@ var USES = map[string]struct{}{
 	"TCPMinTTLDrop":      {},
 }
 
-func NetstatMetrics() (L []*model.MetricValue) {
+func NetstatMetrics() (L []*cmodel.MetricValue) {
 	tcpExts, err := nux.Netstat("TcpExt")
 
 	if err != nil {

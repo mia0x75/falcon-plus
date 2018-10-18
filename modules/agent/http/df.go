@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/toolkits/core"
 	"github.com/toolkits/nux"
 )
@@ -12,7 +13,7 @@ func SetupDfRoutes() {
 	http.HandleFunc("/page/df", func(w http.ResponseWriter, r *http.Request) {
 		mountPoints, err := nux.ListMountPoint()
 		if err != nil {
-			RenderMsgJson(w, err.Error())
+			cutils.RenderMsgJson(w, err.Error())
 			return
 		}
 
@@ -38,6 +39,6 @@ func SetupDfRoutes() {
 			}
 		}
 
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 }

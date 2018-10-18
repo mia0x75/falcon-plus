@@ -6,27 +6,28 @@ import (
 	"runtime"
 	"time"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/toolkits/nux"
 )
 
 func SetupSystemRoutes() {
 	http.HandleFunc("/system/date", func(w http.ResponseWriter, req *http.Request) {
-		RenderDataJson(w, time.Now().Format("2006-01-02 15:04:05"))
+		cutils.RenderDataJson(w, time.Now().Format("2006-01-02 15:04:05"))
 	})
 
 	http.HandleFunc("/page/system/uptime", func(w http.ResponseWriter, req *http.Request) {
 		days, hours, mins, err := nux.SystemUptime()
-		AutoRender(w, fmt.Sprintf("%d days %d hours %d minutes", days, hours, mins), err)
+		cutils.AutoRender(w, fmt.Sprintf("%d days %d hours %d minutes", days, hours, mins), err)
 	})
 
 	http.HandleFunc("/proc/system/uptime", func(w http.ResponseWriter, req *http.Request) {
 		days, hours, mins, err := nux.SystemUptime()
 		if err != nil {
-			RenderMsgJson(w, err.Error())
+			cutils.RenderMsgJson(w, err.Error())
 			return
 		}
 
-		RenderDataJson(w, map[string]interface{}{
+		cutils.RenderDataJson(w, map[string]interface{}{
 			"days":  days,
 			"hours": hours,
 			"mins":  mins,
@@ -37,7 +38,7 @@ func SetupSystemRoutes() {
 		cpuNum := runtime.NumCPU()
 		load, err := nux.LoadAvg()
 		if err != nil {
-			RenderMsgJson(w, err.Error())
+			cutils.RenderMsgJson(w, err.Error())
 			return
 		}
 
@@ -46,11 +47,11 @@ func SetupSystemRoutes() {
 			{load.Avg5min, int64(load.Avg5min * 100.0 / float64(cpuNum))},
 			{load.Avg15min, int64(load.Avg15min * 100.0 / float64(cpuNum))},
 		}
-		RenderDataJson(w, ret)
+		cutils.RenderDataJson(w, ret)
 	})
 
 	http.HandleFunc("/proc/system/loadavg", func(w http.ResponseWriter, req *http.Request) {
 		data, err := nux.LoadAvg()
-		AutoRender(w, data, err)
+		cutils.AutoRender(w, data, err)
 	})
 }

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/slice"
 )
 
@@ -43,7 +43,7 @@ func InitRpcClients() {
 	}
 }
 
-func SendToTransfer(metrics []*model.MetricValue) {
+func SendToTransfer(metrics []*cmodel.MetricValue) {
 	if len(metrics) == 0 {
 		return
 	}
@@ -73,10 +73,13 @@ func SendToTransfer(metrics []*model.MetricValue) {
 			}
 		}
 	}
+	for _, m := range metrics {
+		log.Debugf("=> Metric %v\n", m)
+	}
 
 	log.Debugf("=> <Total=%d> %v\n", len(metrics), metrics[0])
 
-	var resp model.TransferResponse
+	var resp cmodel.TransferResponse
 	SendMetrics(metrics, &resp)
 
 	log.Debugln("<=", &resp)

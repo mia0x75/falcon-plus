@@ -11,16 +11,16 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/sys"
 )
 
 var timeout = 30
 
-func DuMetrics() (L []*model.MetricValue) {
+func DuMetrics() (L []*cmodel.MetricValue) {
 	paths := g.DuPaths()
-	result := make(chan *model.MetricValue, len(paths))
+	result := make(chan *cmodel.MetricValue, len(paths))
 	var wg sync.WaitGroup
 
 	for _, path := range paths {

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-redis/redis"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -21,7 +21,7 @@ func NewRedis() *redis.Client {
 
 var tags string
 
-func RedisMetrics() (L []*model.MetricValue) {
+func RedisMetrics() (L []*cmodel.MetricValue) {
 	if g.Config().Collector.Redis == nil {
 		return nil
 	}
@@ -41,7 +41,7 @@ func RedisMetrics() (L []*model.MetricValue) {
 	return
 }
 
-func RedisAlive() *model.MetricValue {
+func RedisAlive() *cmodel.MetricValue {
 	if g.Config().Collector.Redis != nil {
 		if g.Config().Collector.Redis.Enabled {
 			return GaugeValue("redis.alive", 1, tags)
@@ -52,7 +52,7 @@ func RedisAlive() *model.MetricValue {
 	return nil
 }
 
-func RedisStatInfo(client *redis.Client) (L []*model.MetricValue) {
+func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	monitorKeys := map[string]string{
 		//"redis_alive":                    "GAUGE",   // 当前Redis是否存活，ping监控socket_time默认500ms
 		"connected_clients":              "GAUGE", // 当前已连接的客户端个数
@@ -201,7 +201,7 @@ func RedisStatInfo(client *redis.Client) (L []*model.MetricValue) {
 	return
 }
 
-func RedisCmdStatInfo(client *redis.Client) (L []*model.MetricValue) {
+func RedisCmdStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	// r := client.Do("info commandstats")
 	// r, _ := redis.String(conn.Do("info", "Commandstats"))
 	// r = strings.Replace(string(r), "\r\n", "\n", -1)

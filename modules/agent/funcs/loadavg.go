@@ -2,18 +2,18 @@ package funcs
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/nux"
 )
 
-func LoadAvgMetrics() []*model.MetricValue {
+func LoadAvgMetrics() []*cmodel.MetricValue {
 	load, err := nux.LoadAvg()
 	if err != nil {
 		log.Println(err)
 		return nil
 	}
 
-	return []*model.MetricValue{
+	return []*cmodel.MetricValue{
 		GaugeValue("load.1min", load.Avg1min),
 		GaugeValue("load.5min", load.Avg5min),
 		GaugeValue("load.15min", load.Avg15min),

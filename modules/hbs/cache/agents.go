@@ -8,13 +8,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 )
 
 type SafeAgents struct {
 	sync.RWMutex
-	M map[string]*model.AgentUpdateInfo
+	M map[string]*cmodel.AgentUpdateInfo
 }
 
 var (
@@ -22,11 +22,11 @@ var (
 )
 
 func NewSafeAgents() *SafeAgents {
-	return &SafeAgents{M: make(map[string]*model.AgentUpdateInfo)}
+	return &SafeAgents{M: make(map[string]*cmodel.AgentUpdateInfo)}
 }
 
-func (this *SafeAgents) Put(req *model.AgentReportRequest) {
-	val := &model.AgentUpdateInfo{
+func (this *SafeAgents) Put(req *cmodel.AgentReportRequest) {
+	val := &cmodel.AgentUpdateInfo{
 		LastUpdate:    time.Now().Unix(),
 		ReportRequest: req,
 	}
@@ -44,7 +44,7 @@ func (this *SafeAgents) Put(req *model.AgentReportRequest) {
 	this.Unlock()
 }
 
-func (this *SafeAgents) Get(hostname string) (*model.AgentUpdateInfo, bool) {
+func (this *SafeAgents) Get(hostname string) (*cmodel.AgentUpdateInfo, bool) {
 	this.RLock()
 	defer this.RUnlock()
 	val, exists := this.M[hostname]

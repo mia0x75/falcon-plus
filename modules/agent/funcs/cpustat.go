@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/nux"
 )
 
@@ -163,9 +163,9 @@ func CpuPrepared() bool {
 	return procStatHistory[1] != nil
 }
 
-func CpuMetrics() []*model.MetricValue {
+func CpuMetrics() []*cmodel.MetricValue {
 	if !CpuPrepared() {
-		return []*model.MetricValue{}
+		return []*cmodel.MetricValue{}
 	}
 
 	cpunum := GaugeValue("cpu.num", cpunumTotal())
@@ -181,5 +181,5 @@ func CpuMetrics() []*model.MetricValue {
 	steal := GaugeValue("cpu.steal", CpuSteal())
 	guest := GaugeValue("cpu.guest", CpuGuest())
 	switches := CounterValue("cpu.switches", CurrentCpuSwitches())
-	return []*model.MetricValue{cpunum, idle, busy, user, nice, system, iowait, irq, softirq, steal, guest, switches}
+	return []*cmodel.MetricValue{cpunum, idle, busy, user, nice, system, iowait, irq, softirq, steal, guest, switches}
 }

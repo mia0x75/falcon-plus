@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/utils"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )
 
 type Function interface {
-	Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool)
+	Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool)
 }
 
 type MaxFunction struct {
@@ -28,7 +28,7 @@ type DeviationFunction struct {
 	RightValue float64
 }
 
-func (this MaxFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this MaxFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -53,7 +53,7 @@ type MinFunction struct {
 	RightValue float64
 }
 
-func (this MinFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this MinFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -78,7 +78,7 @@ type AllFunction struct {
 	RightValue float64
 }
 
-func (this AllFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this AllFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -104,7 +104,7 @@ type LookupFunction struct {
 	RightValue float64
 }
 
-func (this LookupFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this LookupFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -132,7 +132,7 @@ type SumFunction struct {
 	RightValue float64
 }
 
-func (this SumFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this SumFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -155,7 +155,7 @@ type AvgFunction struct {
 	RightValue float64
 }
 
-func (this AvgFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this AvgFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -179,7 +179,7 @@ type DiffFunction struct {
 }
 
 // 只要有一个点的diff触发阈值，就报警
-func (this DiffFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this DiffFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	// 此处this.Limit要+1，因为通常说diff(#3)，是当前点与历史的3个点相比较
 	// 然而最新点已经在linkedlist的第一个位置，所以……
 	vs, isEnough = L.HistoryData(this.Limit + 1)
@@ -215,7 +215,7 @@ type PDiffFunction struct {
 	RightValue float64
 }
 
-func (this PDiffFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this PDiffFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit + 1)
 	if !isEnough {
 		return
@@ -316,7 +316,7 @@ func checkIsTriggered(leftValue float64, operator string, rightValue float64) (i
 	离群点检测函数
 	deviation（10）取最新10个点数据分别计算他们的标准差和均值，±3倍于标准方差后则报警。
 */
-func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
 		return
@@ -331,8 +331,8 @@ func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*model.HistoryDat
 		datas = append(datas, i.Value)
 	}
 	isTriggered = false
-	std := utils.ComputeStdDeviation(datas)
-	mean := utils.ComputeMean(datas)
+	std := cutils.ComputeStdDeviation(datas)
+	mean := cutils.ComputeMean(datas)
 	upper_bound := mean + 3*std
 	lower_bound := mean - 3*std
 	if leftValue >= upper_bound {

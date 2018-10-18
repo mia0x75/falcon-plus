@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
-func UpdateAgent(agentInfo *model.AgentUpdateInfo) {
+func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 	sql := ""
 	if g.Config().Hosts == "" {
 		sql = fmt.Sprintf(

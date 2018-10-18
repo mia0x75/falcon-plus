@@ -1,12 +1,12 @@
 package funcs
 
 import (
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
 type FuncsAndInterval struct {
-	Fs       []func() []*model.MetricValue
+	Fs       []func() []*cmodel.MetricValue
 	Interval int
 }
 
@@ -16,7 +16,7 @@ func BuildMappers() {
 	interval := g.Config().Transfer.Interval
 	Mappers = []FuncsAndInterval{
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				AgentMetrics,
 				CpuMetrics,
 				NetMetrics,
@@ -32,38 +32,38 @@ func BuildMappers() {
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				DeviceMetrics,
 			},
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				PortMetrics,
 				SocketStatSummaryMetrics,
 			},
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				DuMetrics,
 			},
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				UrlMetrics,
 			},
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				MySQLMetrics,
 			},
 			Interval: interval,
 		},
 		{
-			Fs: []func() []*model.MetricValue{
+			Fs: []func() []*cmodel.MetricValue{
 				RedisMetrics,
 			},
 			Interval: interval,

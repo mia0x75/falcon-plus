@@ -3,6 +3,7 @@ package http
 import (
 	"net/http"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/toolkits/nux"
 )
 
@@ -10,7 +11,7 @@ func SetupMemoryRoutes() {
 	http.HandleFunc("/page/memory", func(w http.ResponseWriter, r *http.Request) {
 		mem, err := nux.MemInfo()
 		if err != nil {
-			RenderMsgJson(w, err.Error())
+			cutils.RenderMsgJson(w, err.Error())
 			return
 		}
 
@@ -20,13 +21,13 @@ func SetupMemoryRoutes() {
 		//}
 		memUsed := mem.MemTotal - memFree
 		var t uint64 = 1024 * 1024
-		RenderDataJson(w, []interface{}{mem.MemTotal / t, memUsed / t, memFree / t})
+		cutils.RenderDataJson(w, []interface{}{mem.MemTotal / t, memUsed / t, memFree / t})
 	})
 
 	http.HandleFunc("/proc/memory", func(w http.ResponseWriter, r *http.Request) {
 		mem, err := nux.MemInfo()
 		if err != nil {
-			RenderMsgJson(w, err.Error())
+			cutils.RenderMsgJson(w, err.Error())
 			return
 		}
 
@@ -36,7 +37,7 @@ func SetupMemoryRoutes() {
 		//}
 		memUsed := mem.MemTotal - memFree
 
-		RenderDataJson(w, map[string]interface{}{
+		cutils.RenderDataJson(w, map[string]interface{}{
 			"total": mem.MemTotal,
 			"free":  memFree,
 			"used":  memUsed,

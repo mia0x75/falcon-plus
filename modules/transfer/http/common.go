@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/toolkits/file"
 )
@@ -23,15 +24,15 @@ func SetupCommonRoutes() {
 	})
 
 	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, g.Config())
+		cutils.RenderDataJson(w, g.Config())
 	})
 
 	http.HandleFunc("/config/reload", func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.RemoteAddr, "127.0.0.1") {
 			g.ParseConfig(g.ConfigFile)
-			RenderDataJson(w, "ok")
+			cutils.RenderDataJson(w, "ok")
 		} else {
-			RenderDataJson(w, "no privilege")
+			cutils.RenderDataJson(w, "no privilege")
 		}
 	})
 }

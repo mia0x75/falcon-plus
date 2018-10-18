@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -16,7 +16,7 @@ func SetupPushRoutes() {
 		}
 
 		decoder := json.NewDecoder(req.Body)
-		var metrics []*model.MetricValue
+		var metrics []*cmodel.MetricValue
 		err := decoder.Decode(&metrics)
 		if err != nil {
 			http.Error(w, "connot decode body", http.StatusBadRequest)

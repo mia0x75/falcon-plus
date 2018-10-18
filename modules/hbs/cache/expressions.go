@@ -3,18 +3,18 @@ package cache
 import (
 	"sync"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 )
 
 type SafeExpressionCache struct {
 	sync.RWMutex
-	L []*model.Expression
+	L []*cmodel.Expression
 }
 
 var ExpressionCache = &SafeExpressionCache{}
 
-func (this *SafeExpressionCache) Get() []*model.Expression {
+func (this *SafeExpressionCache) Get() []*cmodel.Expression {
 	this.RLock()
 	defer this.RUnlock()
 	return this.L

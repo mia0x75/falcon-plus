@@ -3,7 +3,7 @@ package cache
 import (
 	"sync"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 )
 
@@ -35,12 +35,12 @@ func (this *SafeGroupTemplates) Init() {
 
 type SafeTemplateCache struct {
 	sync.RWMutex
-	M map[int]*model.Template
+	M map[int]*cmodel.Template
 }
 
-var TemplateCache = &SafeTemplateCache{M: make(map[int]*model.Template)}
+var TemplateCache = &SafeTemplateCache{M: make(map[int]*cmodel.Template)}
 
-func (this *SafeTemplateCache) GetMap() map[int]*model.Template {
+func (this *SafeTemplateCache) GetMap() map[int]*cmodel.Template {
 	this.RLock()
 	defer this.RUnlock()
 	return this.M

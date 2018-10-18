@@ -1,7 +1,7 @@
 package sender
 
 import (
-	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
+	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	nset "github.com/toolkits/container/set"
 )
@@ -14,12 +14,12 @@ func initConnPools() {
 	for _, instance := range cfg.Judge.Cluster {
 		judgeInstances.Add(instance)
 	}
-	JudgeConnPools = backend.CreateSafeRpcConnPools(cfg.Judge.MaxConns, cfg.Judge.MaxIdle,
+	JudgeConnPools = cpools.CreateSafeRpcConnPools(cfg.Judge.MaxConns, cfg.Judge.MaxIdle,
 		cfg.Judge.ConnTimeout, cfg.Judge.CallTimeout, judgeInstances.ToSlice())
 
 	// tsdb
 	if cfg.Tsdb.Enabled {
-		TsdbConnPoolHelper = backend.NewTsdbConnPoolHelper(cfg.Tsdb.Address, cfg.Tsdb.MaxConns, cfg.Tsdb.MaxIdle, cfg.Tsdb.ConnTimeout, cfg.Tsdb.CallTimeout)
+		TsdbConnPoolHelper = cpools.NewTsdbConnPoolHelper(cfg.Tsdb.Address, cfg.Tsdb.MaxConns, cfg.Tsdb.MaxIdle, cfg.Tsdb.ConnTimeout, cfg.Tsdb.CallTimeout)
 	}
 
 	// graph
@@ -29,7 +29,7 @@ func initConnPools() {
 			graphInstances.Add(addr)
 		}
 	}
-	GraphConnPools = backend.CreateSafeRpcConnPools(cfg.Graph.MaxConns, cfg.Graph.MaxIdle,
+	GraphConnPools = cpools.CreateSafeRpcConnPools(cfg.Graph.MaxConns, cfg.Graph.MaxIdle,
 		cfg.Graph.ConnTimeout, cfg.Graph.CallTimeout, graphInstances.ToSlice())
 
 }

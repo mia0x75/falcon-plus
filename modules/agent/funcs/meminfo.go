@@ -2,11 +2,11 @@ package funcs
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/nux"
 )
 
-func MemMetrics() []*model.MetricValue {
+func MemMetrics() []*cmodel.MetricValue {
 	m, err := nux.MemInfo()
 	if err != nil {
 		log.Println(err)
@@ -33,7 +33,7 @@ func MemMetrics() []*model.MetricValue {
 		pswapUsed = float64(m.SwapUsed) * 100.0 / float64(m.SwapTotal)
 	}
 
-	return []*model.MetricValue{
+	return []*cmodel.MetricValue{
 		GaugeValue("mem.memtotal", m.MemTotal),
 		GaugeValue("mem.memused", memUsed),
 		GaugeValue("mem.memfree", memFree),

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	trpc "github.com/open-falcon/falcon-plus/modules/gateway/receiver/rpc"
 )
 
@@ -26,6 +27,6 @@ func SetupAPIRoutes() {
 		reply := &cmodel.TransferResponse{}
 		trpc.RecvMetricValues(metrics, reply, "http")
 
-		RenderDataJson(w, reply)
+		cutils.RenderDataJson(w, reply)
 	})
 }

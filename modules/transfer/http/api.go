@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	prpc "github.com/open-falcon/falcon-plus/modules/transfer/receiver/rpc"
 )
 
@@ -25,7 +26,7 @@ func api_push_datapoints(rw http.ResponseWriter, req *http.Request) {
 	reply := &cmodel.TransferResponse{}
 	prpc.RecvMetricValues(metrics, reply, "http")
 
-	RenderDataJson(rw, reply)
+	cutils.RenderDataJson(rw, reply)
 }
 
 func SetupApiRoutes() {

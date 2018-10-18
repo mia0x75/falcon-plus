@@ -6,13 +6,13 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/toolkits/container/set"
 )
 
 // 获取所有的Strategy列表
-func QueryStrategies(tpls map[int]*model.Template) (map[int]*model.Strategy, error) {
-	ret := make(map[int]*model.Strategy)
+func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, error) {
+	ret := make(map[int]*cmodel.Strategy)
 
 	if tpls == nil || len(tpls) == 0 {
 		return ret, fmt.Errorf("illegal argument")
@@ -38,7 +38,7 @@ func QueryStrategies(tpls map[int]*model.Template) (map[int]*model.Strategy, err
 
 	defer rows.Close()
 	for rows.Next() {
-		s := model.Strategy{}
+		s := cmodel.Strategy{}
 		var tags string
 		var tid int
 		err = rows.Scan(&s.Id, &s.Metric, &tags, &s.Func, &s.Operator, &s.RightValue, &s.MaxStep, &s.Priority, &s.Note, &tid)
@@ -74,13 +74,13 @@ func QueryStrategies(tpls map[int]*model.Template) (map[int]*model.Strategy, err
 	return ret, nil
 }
 
-func QueryBuiltinMetrics(tids string) ([]*model.BuiltinMetric, error) {
+func QueryBuiltinMetrics(tids string) ([]*cmodel.BuiltinMetric, error) {
 	sql := fmt.Sprintf(
 		"select metric, tags from strategy where tpl_id in (%s) and metric in ('net.port.listen', 'proc.num', 'du.bs', 'url.check.health')",
 		tids,
 	)
 
-	ret := []*model.BuiltinMetric{}
+	ret := []*cmodel.BuiltinMetric{}
 
 	rows, err := DB.Query(sql)
 	if err != nil {
@@ -92,7 +92,7 @@ func QueryBuiltinMetrics(tids string) ([]*model.BuiltinMetric, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		builtinMetric := model.BuiltinMetric{}
+		builtinMetric := cmodel.BuiltinMetric{}
 		err = rows.Scan(&builtinMetric.Metric, &builtinMetric.Tags)
 		if err != nil {
 			log.Println("WARN:", err)

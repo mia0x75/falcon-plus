@@ -4,7 +4,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -18,7 +18,7 @@ func syncTrustableIps() {
 	d := time.Duration(g.Config().Heartbeat.Interval) * time.Second
 	for range time.Tick(d) {
 		var ips string
-		err := g.HbsClient.Call("Agent.TrustableIps", model.NullRpcRequest{}, &ips)
+		err := g.HbsClient.Call("Agent.TrustableIps", cmodel.NullRpcRequest{}, &ips)
 		if err != nil {
 			log.Println("ERROR: call Agent.TrustableIps fail", err)
 			continue

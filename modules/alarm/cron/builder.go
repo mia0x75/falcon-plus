@@ -3,26 +3,26 @@ package cron
 import (
 	"fmt"
 
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/utils"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
-func BuildCommonSMSContent(event *model.Event) string {
+func BuildCommonSMSContent(event *cmodel.Event) string {
 	return fmt.Sprintf(
 		"[%s][%s][][%s %s %s %s%s%s]",
 		event.Status,
 		event.Endpoint,
 		event.Func(),
 		event.Metric(),
-		utils.SortedTags(event.PushedTags),
-		utils.ReadableFloat(event.LeftValue),
+		cutils.SortedTags(event.PushedTags),
+		cutils.ReadableFloat(event.LeftValue),
 		event.Operator(),
-		utils.ReadableFloat(event.RightValue()),
+		cutils.ReadableFloat(event.RightValue()),
 	)
 }
 
-func BuildCommonIMContent(event *model.Event) string {
+func BuildCommonIMContent(event *cmodel.Event) string {
 	return fmt.Sprintf(
 		"[P%d][%s][%s][][%s %s %s %s %s%s%s][O%d %s]",
 		event.Priority(),
@@ -31,16 +31,16 @@ func BuildCommonIMContent(event *model.Event) string {
 		event.Note(),
 		event.Func(),
 		event.Metric(),
-		utils.SortedTags(event.PushedTags),
-		utils.ReadableFloat(event.LeftValue),
+		cutils.SortedTags(event.PushedTags),
+		cutils.ReadableFloat(event.LeftValue),
 		event.Operator(),
-		utils.ReadableFloat(event.RightValue()),
+		cutils.ReadableFloat(event.RightValue()),
 		event.CurrentStep,
 		event.FormattedTime(),
 	)
 }
 
-func BuildCommonMailContent(event *model.Event) string {
+func BuildCommonMailContent(event *cmodel.Event) string {
 	link := g.Link(event)
 	return fmt.Sprintf(
 		"%s\r\nP%d\r\nEndpoint:%s\r\nMetric:%s\r\nTags:%s\r\n%s: %s%s%s\r\nNote:%s\r\nMax:%d, Current:%d\r\nTimestamp:%s\r\n%s\r\n",
@@ -48,11 +48,11 @@ func BuildCommonMailContent(event *model.Event) string {
 		event.Priority(),
 		event.Endpoint,
 		event.Metric(),
-		utils.SortedTags(event.PushedTags),
+		cutils.SortedTags(event.PushedTags),
 		event.Func(),
-		utils.ReadableFloat(event.LeftValue),
+		cutils.ReadableFloat(event.LeftValue),
 		event.Operator(),
-		utils.ReadableFloat(event.RightValue()),
+		cutils.ReadableFloat(event.RightValue()),
 		event.Note(),
 		event.MaxStep(),
 		event.CurrentStep,
@@ -61,14 +61,14 @@ func BuildCommonMailContent(event *model.Event) string {
 	)
 }
 
-func GenerateSmsContent(event *model.Event) string {
+func GenerateSmsContent(event *cmodel.Event) string {
 	return BuildCommonSMSContent(event)
 }
 
-func GenerateMailContent(event *model.Event) string {
+func GenerateMailContent(event *cmodel.Event) string {
 	return BuildCommonMailContent(event)
 }
 
-func GenerateIMContent(event *model.Event) string {
+func GenerateIMContent(event *cmodel.Event) string {
 	return BuildCommonIMContent(event)
 }

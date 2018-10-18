@@ -6,7 +6,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 	TransferClients     map[string]*SingleConnRpcClient = map[string]*SingleConnRpcClient{}
 )
 
-func SendMetrics(metrics []*model.MetricValue, resp *model.TransferResponse) {
+func SendMetrics(metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) {
 	rand.Seed(time.Now().UnixNano())
 	for _, i := range rand.Perm(len(Config().Transfer.Addrs)) {
 		addr := Config().Transfer.Addrs[i]
@@ -45,7 +45,7 @@ func initTransferClient(addr string) *SingleConnRpcClient {
 	return c
 }
 
-func updateMetrics(c *SingleConnRpcClient, metrics []*model.MetricValue, resp *model.TransferResponse) bool {
+func updateMetrics(c *SingleConnRpcClient, metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) bool {
 	err := c.Call("Transfer.Update", metrics, resp)
 	if err != nil {
 		log.Println("call Transfer.Update fail:", c, err)

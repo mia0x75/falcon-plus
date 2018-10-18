@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
-func QueryExpressions() (ret []*model.Expression, err error) {
+func QueryExpressions() (ret []*cmodel.Expression, err error) {
 	sql := "select id, expression, func, op, right_value, max_step, priority, note, action_id from expression where action_id>0 and pause=0"
 	rows, err := DB.Query(sql)
 	if err != nil {
@@ -18,7 +18,7 @@ func QueryExpressions() (ret []*model.Expression, err error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		e := model.Expression{}
+		e := cmodel.Expression{}
 		var exp string
 		err = rows.Scan(
 			&e.Id,

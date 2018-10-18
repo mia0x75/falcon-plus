@@ -8,13 +8,13 @@ import (
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/file"
 	"github.com/toolkits/sys"
 )
 
-func UrlMetrics() (L []*model.MetricValue) {
+func UrlMetrics() (L []*cmodel.MetricValue) {
 	reportUrls := g.ReportUrls()
 	sz := len(reportUrls)
 	if sz == 0 {

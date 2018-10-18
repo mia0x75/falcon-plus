@@ -5,16 +5,16 @@ import (
 	"fmt"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 
-func Judge(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {
+func Judge(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 	CheckStrategy(L, firstItem, now)
 	CheckExpression(L, firstItem, now)
 }
 
-func CheckStrategy(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {
+func CheckStrategy(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 	key := fmt.Sprintf("%s/%s", firstItem.Endpoint, firstItem.Metric)
 	strategyMap := g.StrategyMap.Get()
 	strategies, exists := strategyMap[key]
@@ -42,7 +42,7 @@ func CheckStrategy(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {
 	}
 }
 
-func judgeItemWithStrategy(L *SafeLinkedList, strategy model.Strategy, firstItem *model.JudgeItem, now int64) {
+func judgeItemWithStrategy(L *SafeLinkedList, strategy cmodel.Strategy, firstItem *cmodel.JudgeItem, now int64) {
 	fn, err := ParseFuncFromString(strategy.Func, strategy.Operator, strategy.RightValue)
 	if err != nil {
 		log.Printf("[ERROR] parse func %s fail: %v. strategy id: %d", strategy.Func, err, strategy.Id)
@@ -54,7 +54,7 @@ func judgeItemWithStrategy(L *SafeLinkedList, strategy model.Strategy, firstItem
 		return
 	}
 
-	event := &model.Event{
+	event := &cmodel.Event{
 		Id:         fmt.Sprintf("s_%d_%s", strategy.Id, firstItem.PrimaryKey()),
 		Strategy:   &strategy,
 		Endpoint:   firstItem.Endpoint,
@@ -66,7 +66,7 @@ func judgeItemWithStrategy(L *SafeLinkedList, strategy model.Strategy, firstItem
 	sendEventIfNeed(historyData, isTriggered, now, event, strategy.MaxStep)
 }
 
-func sendEvent(event *model.Event) {
+func sendEvent(event *cmodel.Event) {
 	// update last event
 	g.LastEvents.Set(event.Id, event)
 
@@ -90,7 +90,7 @@ func sendEvent(event *model.Event) {
 	}
 }
 
-func CheckExpression(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {
+func CheckExpression(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 	keys := buildKeysFromMetricAndTags(firstItem)
 	if len(keys) == 0 {
 		return
@@ -117,7 +117,7 @@ func CheckExpression(L *SafeLinkedList, firstItem *model.JudgeItem, now int64) {
 	}
 }
 
-func buildKeysFromMetricAndTags(item *model.JudgeItem) (keys []string) {
+func buildKeysFromMetricAndTags(item *cmodel.JudgeItem) (keys []string) {
 	for k, v := range item.Tags {
 		keys = append(keys, fmt.Sprintf("%s/%s=%s", item.Metric, k, v))
 	}
@@ -125,13 +125,13 @@ func buildKeysFromMetricAndTags(item *model.JudgeItem) (keys []string) {
 	return
 }
 
-func filterRelatedExpressions(expressions []*model.Expression, firstItem *model.JudgeItem) []*model.Expression {
+func filterRelatedExpressions(expressions []*cmodel.Expression, firstItem *cmodel.JudgeItem) []*cmodel.Expression {
 	size := len(expressions)
 	if size == 0 {
-		return []*model.Expression{}
+		return []*cmodel.Expression{}
 	}
 
-	exps := make([]*model.Expression, 0, size)
+	exps := make([]*cmodel.Expression, 0, size)
 
 	for _, exp := range expressions {
 
@@ -160,7 +160,7 @@ func filterRelatedExpressions(expressions []*model.Expression, firstItem *model.
 	return exps
 }
 
-func copyItemTags(item *model.JudgeItem) map[string]string {
+func copyItemTags(item *cmodel.JudgeItem) map[string]string {
 	ret := make(map[string]string)
 	ret["endpoint"] = item.Endpoint
 	if item.Tags != nil && len(item.Tags) > 0 {
@@ -171,7 +171,7 @@ func copyItemTags(item *model.JudgeItem) map[string]string {
 	return ret
 }
 
-func judgeItemWithExpression(L *SafeLinkedList, expression *model.Expression, firstItem *model.JudgeItem, now int64) {
+func judgeItemWithExpression(L *SafeLinkedList, expression *cmodel.Expression, firstItem *cmodel.JudgeItem, now int64) {
 	fn, err := ParseFuncFromString(expression.Func, expression.Operator, expression.RightValue)
 	if err != nil {
 		log.Printf("[ERROR] parse func %s fail: %v. expression id: %d", expression.Func, err, expression.Id)
@@ -183,7 +183,7 @@ func judgeItemWithExpression(L *SafeLinkedList, expression *model.Expression, fi
 		return
 	}
 
-	event := &model.Event{
+	event := &cmodel.Event{
 		Id:         fmt.Sprintf("e_%d_%s", expression.Id, firstItem.PrimaryKey()),
 		Expression: expression,
 		Endpoint:   firstItem.Endpoint,
@@ -196,7 +196,7 @@ func judgeItemWithExpression(L *SafeLinkedList, expression *model.Expression, fi
 
 }
 
-func sendEventIfNeed(historyData []*model.HistoryData, isTriggered bool, now int64, event *model.Event, maxStep int) {
+func sendEventIfNeed(historyData []*cmodel.HistoryData, isTriggered bool, now int64, event *cmodel.Event, maxStep int) {
 	lastEvent, exists := g.LastEvents.Get(event.Id)
 	if isTriggered {
 		event.Status = "PROBLEM"

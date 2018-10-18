@@ -3,18 +3,18 @@ package rpc
 import (
 	"fmt"
 
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/utils"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 )
 
-func (t *Hbs) GetExpressions(req model.NullRpcRequest, reply *model.ExpressionResponse) error {
+func (t *Hbs) GetExpressions(req cmodel.NullRpcRequest, reply *cmodel.ExpressionResponse) error {
 	reply.Expressions = cache.ExpressionCache.Get()
 	return nil
 }
 
-func (t *Hbs) GetStrategies(req model.NullRpcRequest, reply *model.StrategiesResponse) error {
-	reply.HostStrategies = []*model.HostStrategy{}
+func (t *Hbs) GetStrategies(req cmodel.NullRpcRequest, reply *cmodel.StrategiesResponse) error {
+	reply.HostStrategies = []*cmodel.HostStrategy{}
 	// 一个机器ID对应多个模板ID
 	hidTids := cache.HostTemplateIds.GetMap()
 	sz := len(hidTids)
@@ -43,7 +43,7 @@ func (t *Hbs) GetStrategies(req model.NullRpcRequest, reply *model.StrategiesRes
 	// 做个索引，给一个tplId，可以很方便的找到对应了哪些Strategy
 	tpl2Strategies := Tpl2Strategies(strategies)
 
-	hostStrategies := make([]*model.HostStrategy, 0, sz)
+	hostStrategies := make([]*cmodel.HostStrategy, 0, sz)
 	for hostId, tplIds := range hidTids {
 
 		h, exists := hosts[hostId]
@@ -57,7 +57,7 @@ func (t *Hbs) GetStrategies(req model.NullRpcRequest, reply *model.StrategiesRes
 			continue
 		}
 
-		hs := model.HostStrategy{
+		hs := cmodel.HostStrategy{
 			Hostname:   h.Name,
 			Strategies: ss,
 		}
@@ -70,8 +70,8 @@ func (t *Hbs) GetStrategies(req model.NullRpcRequest, reply *model.StrategiesRes
 	return nil
 }
 
-func Tpl2Strategies(strategies map[int]*model.Strategy) map[int][]*model.Strategy {
-	ret := make(map[int][]*model.Strategy)
+func Tpl2Strategies(strategies map[int]*cmodel.Strategy) map[int][]*cmodel.Strategy {
+	ret := make(map[int][]*cmodel.Strategy)
 	for _, s := range strategies {
 		if s == nil || s.Tpl == nil {
 			continue
@@ -79,13 +79,13 @@ func Tpl2Strategies(strategies map[int]*model.Strategy) map[int][]*model.Strateg
 		if _, exists := ret[s.Tpl.Id]; exists {
 			ret[s.Tpl.Id] = append(ret[s.Tpl.Id], s)
 		} else {
-			ret[s.Tpl.Id] = []*model.Strategy{s}
+			ret[s.Tpl.Id] = []*cmodel.Strategy{s}
 		}
 	}
 	return ret
 }
 
-func CalcInheritStrategies(allTpls map[int]*model.Template, tids []int, tpl2Strategies map[int][]*model.Strategy) []model.Strategy {
+func CalcInheritStrategies(allTpls map[int]*cmodel.Template, tids []int, tpl2Strategies map[int][]*cmodel.Strategy) []cmodel.Strategy {
 	// 根据模板的继承关系，找到每个机器对应的模板全量
 	/**
 	 * host_id =>
@@ -133,26 +133,26 @@ func CalcInheritStrategies(allTpls map[int]*model.Template, tids []int, tpl2Stra
 	}
 
 	// 继承覆盖父模板策略，得到每个模板聚合后的策略列表
-	strategies := []model.Strategy{}
+	strategies := []cmodel.Strategy{}
 
 	exists_by_id := make(map[int]struct{})
 	for _, bucket := range uniq_tpl_buckets {
 
 		// 开始计算一个桶，先计算老的tid，再计算新的，所以可以覆盖
 		// 该桶最终结果
-		bucket_stras_map := make(map[string][]*model.Strategy)
+		bucket_stras_map := make(map[string][]*cmodel.Strategy)
 		for _, tid := range bucket {
 
 			// 一个tid对应的策略列表
-			the_tid_stras := make(map[string][]*model.Strategy)
+			the_tid_stras := make(map[string][]*cmodel.Strategy)
 
 			if stras, ok := tpl2Strategies[tid]; ok {
 				for _, s := range stras {
-					uuid := fmt.Sprintf("metric:%s/tags:%v", s.Metric, utils.SortedTags(s.Tags))
+					uuid := fmt.Sprintf("metric:%s/tags:%v", s.Metric, cutils.SortedTags(s.Tags))
 					if _, ok2 := the_tid_stras[uuid]; ok2 {
 						the_tid_stras[uuid] = append(the_tid_stras[uuid], s)
 					} else {
-						the_tid_stras[uuid] = []*model.Strategy{s}
+						the_tid_stras[uuid] = []*cmodel.Strategy{s}
 					}
 				}
 			}

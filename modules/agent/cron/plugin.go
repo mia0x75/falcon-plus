@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/plugins"
 )
@@ -35,11 +35,11 @@ func syncMinePlugins() {
 			continue
 		}
 
-		req := model.AgentHeartbeatRequest{
+		req := cmodel.AgentHeartbeatRequest{
 			Hostname: hostname,
 		}
 
-		var resp model.AgentPluginsResponse
+		var resp cmodel.AgentPluginsResponse
 		err = g.HbsClient.Call("Agent.MinePlugins", req, &resp)
 		if err != nil {
 			log.Println("ERROR:", err)

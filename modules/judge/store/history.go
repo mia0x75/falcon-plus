@@ -4,7 +4,7 @@ import (
 	"container/list"
 	"sync"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 type JudgeItemMap struct {
@@ -64,7 +64,7 @@ func (this *JudgeItemMap) CleanStale(before int64) {
 			continue
 		}
 
-		if front.Value.(*model.JudgeItem).Timestamp < before {
+		if front.Value.(*cmodel.JudgeItem).Timestamp < before {
 			keys = append(keys, key)
 		}
 	}
@@ -73,7 +73,7 @@ func (this *JudgeItemMap) CleanStale(before int64) {
 	this.BatchDelete(keys)
 }
 
-func (this *JudgeItemMap) PushFrontAndMaintain(key string, val *model.JudgeItem, maxCount int, now int64) {
+func (this *JudgeItemMap) PushFrontAndMaintain(key string, val *cmodel.JudgeItem, maxCount int, now int64) {
 	if linkedList, exists := this.Get(key); exists {
 		needJudge := linkedList.PushFrontAndMaintain(val, maxCount)
 		if needJudge {

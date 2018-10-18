@@ -7,13 +7,13 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/astaxie/beego/orm"
-	coommonModel "github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/utils"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )
 
 const timeLayout = "2006-01-02 15:04:05"
 
-func insertEvent(q orm.Ormer, eve *coommonModel.Event) (res sql.Result, err error) {
+func insertEvent(q orm.Ormer, eve *cmodel.Event) (res sql.Result, err error) {
 	var status int
 	if status = 0; eve.Status == "OK" {
 		status = 1
@@ -43,7 +43,7 @@ func insertEvent(q orm.Ormer, eve *coommonModel.Event) (res sql.Result, err erro
 	return
 }
 
-func InsertEvent(eve *coommonModel.Event) {
+func InsertEvent(eve *cmodel.Event) {
 	q := orm.NewOrm()
 	var event []EventCases
 	q.Raw("select * from event_cases where id = ?", eve.Id).QueryRows(&event)
@@ -80,7 +80,7 @@ func InsertEvent(eve *coommonModel.Event) {
 			sqltemplete,
 			eve.Id,
 			eve.Endpoint,
-			counterGen(eve.Metric(), utils.SortedTags(eve.PushedTags)),
+			counterGen(eve.Metric(), cutils.SortedTags(eve.PushedTags)),
 			eve.Func(),
 			//cond
 			fmt.Sprintf("%v %v %v", eve.LeftValue, eve.Operator(), eve.RightValue()),

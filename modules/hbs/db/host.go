@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 func QueryHosts() (map[string]int, error) {
@@ -37,8 +37,8 @@ func QueryHosts() (map[string]int, error) {
 	return m, nil
 }
 
-func QueryMonitoredHosts() (map[int]*model.Host, error) {
-	hosts := make(map[int]*model.Host)
+func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
+	hosts := make(map[int]*cmodel.Host)
 	now := time.Now().Unix()
 	sql := fmt.Sprintf("select id, hostname from host where maintain_begin > %d or maintain_end < %d", now, now)
 	rows, err := DB.Query(sql)
@@ -49,7 +49,7 @@ func QueryMonitoredHosts() (map[int]*model.Host, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		t := model.Host{}
+		t := cmodel.Host{}
 		err = rows.Scan(&t.Id, &t.Name)
 		if err != nil {
 			log.Println("WARN:", err)

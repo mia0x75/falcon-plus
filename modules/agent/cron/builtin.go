@@ -6,7 +6,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -32,12 +32,12 @@ func syncBuiltinMetrics() {
 			continue
 		}
 
-		req := model.AgentHeartbeatRequest{
+		req := cmodel.AgentHeartbeatRequest{
 			Hostname: hostname,
 			Checksum: checksum,
 		}
 
-		var resp model.BuiltinMetricResponse
+		var resp cmodel.BuiltinMetricResponse
 		err = g.HbsClient.Call("Agent.BuiltinMetrics", req, &resp)
 		if err != nil {
 			log.Println("ERROR:", err)

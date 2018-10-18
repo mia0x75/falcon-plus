@@ -25,24 +25,24 @@ type APIIndexItemInput struct {
 
 func SetAPIRoutes() {
 	routes.GET("/api/v2/health", func(c *gin.Context) {
-		JSONR(c, 200, gin.H{"msg": "ok"})
+		cutils.JSONR(c, 200, gin.H{"msg": "ok"})
 	})
 
 	routes.GET("/api/v2/version", func(c *gin.Context) {
-		JSONR(c, 200, gin.H{"value": g.VERSION})
+		cutils.JSONR(c, 200, gin.H{"value": g.VERSION})
 	})
 
 	routes.GET("/api/v2/workdir", func(c *gin.Context) {
-		JSONR(c, 200, gin.H{"value": file.SelfDir()})
+		cutils.JSONR(c, 200, gin.H{"value": file.SelfDir()})
 	})
 
 	routes.GET("/api/v2/config", func(c *gin.Context) {
-		JSONR(c, 200, gin.H{"value": g.Config()})
+		cutils.JSONR(c, 200, gin.H{"value": g.Config()})
 	})
 
 	routes.POST("/api/v2/config/reload", func(c *gin.Context) {
 		g.ParseConfig(g.ConfigFile)
-		JSONR(c, 200, gin.H{"msg": "ok"})
+		cutils.JSONR(c, 200, gin.H{"msg": "ok"})
 	})
 
 	routes.GET("/api/v2/stats/graph-queue-size", func(c *gin.Context) {
@@ -65,7 +65,7 @@ func SetAPIRoutes() {
 			i_s := strconv.Itoa(i)
 			rt[i_s] = count
 		}
-		JSONR(c, 200, rt)
+		cutils.JSONR(c, 200, rt)
 	})
 
 	routes.GET("/api/v2/counter/migrate", func(c *gin.Context) {
@@ -96,6 +96,6 @@ func SetAPIRoutes() {
 				log.Debug("build index manually", in)
 			}
 		}
-		JSONR(c, 200, gin.H{"msg": "ok"})
+		cutils.JSONR(c, 200, gin.H{"msg": "ok"})
 	})
 }

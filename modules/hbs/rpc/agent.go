@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/utils"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
-func (t *Agent) MinePlugins(args model.AgentHeartbeatRequest, reply *model.AgentPluginsResponse) error {
+func (t *Agent) MinePlugins(args cmodel.AgentHeartbeatRequest, reply *cmodel.AgentPluginsResponse) error {
 	if args.Hostname == "" {
 		return nil
 	}
@@ -23,7 +23,7 @@ func (t *Agent) MinePlugins(args model.AgentHeartbeatRequest, reply *model.Agent
 	return nil
 }
 
-func (t *Agent) ReportStatus(args *model.AgentReportRequest, reply *model.SimpleRpcResponse) error {
+func (t *Agent) ReportStatus(args *cmodel.AgentReportRequest, reply *cmodel.SimpleRpcResponse) error {
 	if args.Hostname == "" {
 		reply.Code = 1
 		return nil
@@ -35,13 +35,13 @@ func (t *Agent) ReportStatus(args *model.AgentReportRequest, reply *model.Simple
 }
 
 // 需要checksum一下来减少网络开销？其实白名单通常只会有一个或者没有，无需checksum
-func (t *Agent) TrustableIps(args *model.NullRpcRequest, ips *string) error {
+func (t *Agent) TrustableIps(args *cmodel.NullRpcRequest, ips *string) error {
 	*ips = strings.Join(g.Config().Trustable, ",")
 	return nil
 }
 
 // agent按照server端的配置，按需采集的metric，比如net.port.listen port=22 或者 proc.num name=zabbix_agentd
-func (t *Agent) BuiltinMetrics(args *model.AgentHeartbeatRequest, reply *model.BuiltinMetricResponse) error {
+func (t *Agent) BuiltinMetrics(args *cmodel.AgentHeartbeatRequest, reply *cmodel.BuiltinMetricResponse) error {
 	if args.Hostname == "" {
 		return nil
 	}
@@ -57,7 +57,7 @@ func (t *Agent) BuiltinMetrics(args *model.AgentHeartbeatRequest, reply *model.B
 	}
 
 	if args.Checksum == checksum {
-		reply.Metrics = []*model.BuiltinMetric{}
+		reply.Metrics = []*cmodel.BuiltinMetric{}
 	} else {
 		reply.Metrics = metrics
 	}
@@ -67,13 +67,13 @@ func (t *Agent) BuiltinMetrics(args *model.AgentHeartbeatRequest, reply *model.B
 	return nil
 }
 
-func DigestBuiltinMetrics(items []*model.BuiltinMetric) string {
-	sort.Sort(model.BuiltinMetricSlice(items))
+func DigestBuiltinMetrics(items []*cmodel.BuiltinMetric) string {
+	sort.Sort(cmodel.BuiltinMetricSlice(items))
 
 	var buf bytes.Buffer
 	for _, m := range items {
 		buf.WriteString(m.String())
 	}
 
-	return utils.Md5(buf.String())
+	return cutils.Md5(buf.String())
 }

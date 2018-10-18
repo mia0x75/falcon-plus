@@ -2,7 +2,7 @@ package db
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 func QueryGroupTemplates() (map[int][]int, error) {
@@ -35,8 +35,8 @@ func QueryGroupTemplates() (map[int][]int, error) {
 }
 
 // 获取所有的策略模板列表
-func QueryTemplates() (map[int]*model.Template, error) {
-	templates := make(map[int]*model.Template)
+func QueryTemplates() (map[int]*cmodel.Template, error) {
+	templates := make(map[int]*cmodel.Template)
 
 	sql := "select id, tpl_name, parent_id, action_id, create_user from tpl"
 	rows, err := DB.Query(sql)
@@ -47,7 +47,7 @@ func QueryTemplates() (map[int]*model.Template, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		t := model.Template{}
+		t := cmodel.Template{}
 		err = rows.Scan(&t.Id, &t.Name, &t.ParentId, &t.ActionId, &t.Creator)
 		if err != nil {
 			log.Println("ERROR:", err)

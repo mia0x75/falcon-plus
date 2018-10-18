@@ -9,7 +9,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/file"
 	"github.com/toolkits/sys"
@@ -105,7 +105,7 @@ func PluginRun(plugin *Plugin) {
 		return
 	}
 
-	var metrics []*model.MetricValue
+	var metrics []*cmodel.MetricValue
 	err = json.Unmarshal(data, &metrics)
 	if err != nil {
 		log.Printf("[ERROR] json.Unmarshal stdout of %s fail. error:%s stdout: \n%s\n", fpath, err, stdout.String())

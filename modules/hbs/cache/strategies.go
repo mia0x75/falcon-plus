@@ -6,25 +6,25 @@ import (
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 	"github.com/toolkits/container/set"
 )
 
 type SafeStrategies struct {
 	sync.RWMutex
-	M map[int]*model.Strategy
+	M map[int]*cmodel.Strategy
 }
 
-var Strategies = &SafeStrategies{M: make(map[int]*model.Strategy)}
+var Strategies = &SafeStrategies{M: make(map[int]*cmodel.Strategy)}
 
-func (this *SafeStrategies) GetMap() map[int]*model.Strategy {
+func (this *SafeStrategies) GetMap() map[int]*cmodel.Strategy {
 	this.RLock()
 	defer this.RUnlock()
 	return this.M
 }
 
-func (this *SafeStrategies) Init(tpls map[int]*model.Template) {
+func (this *SafeStrategies) Init(tpls map[int]*cmodel.Template) {
 	m, err := db.QueryStrategies(tpls)
 	if err != nil {
 		return
@@ -35,8 +35,8 @@ func (this *SafeStrategies) Init(tpls map[int]*model.Template) {
 	this.M = m
 }
 
-func GetBuiltinMetrics(hostname string) ([]*model.BuiltinMetric, error) {
-	ret := []*model.BuiltinMetric{}
+func GetBuiltinMetrics(hostname string) ([]*cmodel.BuiltinMetric, error) {
+	ret := []*cmodel.BuiltinMetric{}
 	hid, exists := HostMap.GetID(hostname)
 	if !exists {
 		return ret, nil
@@ -87,7 +87,7 @@ func GetBuiltinMetrics(hostname string) ([]*model.BuiltinMetric, error) {
 	return db.QueryBuiltinMetrics(strings.Join(tidStrArr, ","))
 }
 
-func ParentIds(allTpls map[int]*model.Template, tid int) (ret []int) {
+func ParentIds(allTpls map[int]*cmodel.Template, tid int) (ret []int) {
 	depth := 0
 	for {
 		if tid <= 0 {

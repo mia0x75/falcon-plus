@@ -6,7 +6,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 
@@ -22,8 +22,8 @@ func SyncStrategies() {
 }
 
 func syncStrategies() {
-	var strategiesResponse model.StrategiesResponse
-	err := g.HbsClient.Call("Hbs.GetStrategies", model.NullRpcRequest{}, &strategiesResponse)
+	var strategiesResponse cmodel.StrategiesResponse
+	err := g.HbsClient.Call("Hbs.GetStrategies", cmodel.NullRpcRequest{}, &strategiesResponse)
 	if err != nil {
 		log.Println("[ERROR] Hbs.GetStrategies:", err)
 		return
@@ -32,9 +32,9 @@ func syncStrategies() {
 	rebuildStrategyMap(&strategiesResponse)
 }
 
-func rebuildStrategyMap(strategiesResponse *model.StrategiesResponse) {
+func rebuildStrategyMap(strategiesResponse *cmodel.StrategiesResponse) {
 	// endpoint:metric => [strategy1, strategy2 ...]
-	m := make(map[string][]model.Strategy)
+	m := make(map[string][]cmodel.Strategy)
 	for _, hs := range strategiesResponse.HostStrategies {
 		hostname := hs.Hostname
 		if hostname == g.Config().DebugHost {
@@ -47,7 +47,7 @@ func rebuildStrategyMap(strategiesResponse *model.StrategiesResponse) {
 			if _, exists := m[key]; exists {
 				m[key] = append(m[key], strategy)
 			} else {
-				m[key] = []model.Strategy{strategy}
+				m[key] = []cmodel.Strategy{strategy}
 			}
 		}
 	}
@@ -56,8 +56,8 @@ func rebuildStrategyMap(strategiesResponse *model.StrategiesResponse) {
 }
 
 func syncExpression() {
-	var expressionResponse model.ExpressionResponse
-	err := g.HbsClient.Call("Hbs.GetExpressions", model.NullRpcRequest{}, &expressionResponse)
+	var expressionResponse cmodel.ExpressionResponse
+	err := g.HbsClient.Call("Hbs.GetExpressions", cmodel.NullRpcRequest{}, &expressionResponse)
 	if err != nil {
 		log.Println("[ERROR] Hbs.GetExpressions:", err)
 		return
@@ -66,15 +66,15 @@ func syncExpression() {
 	rebuildExpressionMap(&expressionResponse)
 }
 
-func rebuildExpressionMap(expressionResponse *model.ExpressionResponse) {
-	m := make(map[string][]*model.Expression)
+func rebuildExpressionMap(expressionResponse *cmodel.ExpressionResponse) {
+	m := make(map[string][]*cmodel.Expression)
 	for _, exp := range expressionResponse.Expressions {
 		for k, v := range exp.Tags {
 			key := fmt.Sprintf("%s/%s=%s", exp.Metric, k, v)
 			if _, exists := m[key]; exists {
 				m[key] = append(m[key], exp)
 			} else {
-				m[key] = []*model.Expression{exp}
+				m[key] = []*cmodel.Expression{exp}
 			}
 		}
 	}
@@ -85,7 +85,7 @@ func rebuildExpressionMap(expressionResponse *model.ExpressionResponse) {
 func syncFilter() {
 	m := make(map[string]string)
 
-	//M map[string][]model.Strategy
+	//M map[string][]cmodel.Strategy
 	strategyMap := g.StrategyMap.Get()
 	for _, strategies := range strategyMap {
 		for _, strategy := range strategies {
@@ -93,7 +93,7 @@ func syncFilter() {
 		}
 	}
 
-	//M map[string][]*model.Expression
+	//M map[string][]*cmodel.Expression
 	expressionMap := g.ExpressionMap.Get()
 	for _, expressions := range expressionMap {
 		for _, expression := range expressions {

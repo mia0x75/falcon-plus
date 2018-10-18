@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/file"
 )
@@ -25,17 +26,17 @@ func SetupAdminRoutes() {
 	http.HandleFunc("/config/reload", func(w http.ResponseWriter, r *http.Request) {
 		if g.IsTrustable(r.RemoteAddr) {
 			g.ParseConfig(g.ConfigFile)
-			RenderDataJson(w, g.Config())
+			cutils.RenderDataJson(w, g.Config())
 		} else {
 			w.Write([]byte("no privilege"))
 		}
 	})
 
 	http.HandleFunc("/workdir", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, file.SelfDir())
+		cutils.RenderDataJson(w, file.SelfDir())
 	})
 
 	http.HandleFunc("/ips", func(w http.ResponseWriter, r *http.Request) {
-		RenderDataJson(w, g.TrustableIps())
+		cutils.RenderDataJson(w, g.TrustableIps())
 	})
 }

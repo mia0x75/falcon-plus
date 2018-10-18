@@ -3,7 +3,7 @@ package cache
 import (
 	"sync"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 )
 
@@ -36,12 +36,12 @@ func (this *SafeHostMap) Init() {
 
 type SafeMonitoredHosts struct {
 	sync.RWMutex
-	M map[int]*model.Host
+	M map[int]*cmodel.Host
 }
 
-var MonitoredHosts = &SafeMonitoredHosts{M: make(map[int]*model.Host)}
+var MonitoredHosts = &SafeMonitoredHosts{M: make(map[int]*cmodel.Host)}
 
-func (this *SafeMonitoredHosts) Get() map[int]*model.Host {
+func (this *SafeMonitoredHosts) Get() map[int]*cmodel.Host {
 	this.RLock()
 	defer this.RUnlock()
 	return this.M

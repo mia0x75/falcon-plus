@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	log "github.com/Sirupsen/logrus"
-	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
+	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
@@ -39,9 +39,9 @@ var (
 // 连接池
 // node_address -> connection_pool
 var (
-	JudgeConnPools     *backend.SafeRpcConnPools
-	TsdbConnPoolHelper *backend.TsdbConnPoolHelper
-	GraphConnPools     *backend.SafeRpcConnPools
+	JudgeConnPools     *cpools.SafeRpcConnPools
+	TsdbConnPoolHelper *cpools.TsdbConnPoolHelper
+	GraphConnPools     *cpools.SafeRpcConnPools
 )
 
 // 初始化数据发送服务, 在main函数中调用

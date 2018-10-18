@@ -9,7 +9,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	backend "github.com/open-falcon/falcon-plus/common/backend_pool"
+	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
@@ -22,7 +22,7 @@ import (
 // 连接池
 // node_address -> connection_pool
 var (
-	GraphConnPools *backend.SafeRpcConnPools
+	GraphConnPools *cpools.SafeRpcConnPools
 	clusterMap     map[string]string
 	gcluster       []string
 	connTimeout    int32
@@ -376,7 +376,7 @@ func initConnPools(clusterMap map[string]string) {
 	for _, address := range clusterMap {
 		graphInstances.Add(address)
 	}
-	GraphConnPools = backend.CreateSafeRpcConnPools(
+	GraphConnPools = cpools.CreateSafeRpcConnPools(
 		int(g.Config().Graphs.MaxConnections),
 		int(g.Config().Graphs.MaxIdle),
 		int(connTimeout), int(callTimeout), graphInstances.ToSlice())
