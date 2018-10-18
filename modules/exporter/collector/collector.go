@@ -22,7 +22,7 @@ import (
 var collectorCron = cron.New()
 
 func Start() {
-	if !g.Config().Collector.Enable {
+	if !g.Config().Collector.Enabled {
 		log.Println("collector.Start warning, not enable")
 		return
 	}
@@ -31,7 +31,7 @@ func Start() {
 	if g.Config().Collector.Agent == "" {
 		return
 	}
-	if g.Config().Collector.UrlPattern == "" {
+	if g.Config().Collector.Pattern == "" {
 		return
 	}
 	// start
@@ -76,7 +76,7 @@ func _collect() {
 		hostPort := hostNamePortList[1]
 
 		tags := "port=" + hostPort
-		srcUrl := fmt.Sprintf(g.Config().Collector.UrlPattern, hostNamePort)
+		srcUrl := fmt.Sprintf(g.Config().Collector.Pattern, hostNamePort)
 		reqGet, _ := http.NewRequest("GET", srcUrl, nil)
 		reqGet.Header.Set("Connection", "close")
 		getResp, err := clientGet.Do(reqGet)

@@ -3,11 +3,11 @@
 		"level": "info"
 	},
 	"http": {
-		"enable": true,
+		"enabled": true,
 		"listen": "%%EXPORTER_HTTP%%"
 	},
 	"index": {
-		"enable": false,
+		"enabled": false,
 		"addr": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
 		"max_idle": 4,
 		"max_connections": 8,
@@ -18,14 +18,14 @@
 		}
 	},
 	"agent": {
-		"enable": false,
+		"enabled": false,
 		"dsn": "",
 		"max_idle": 4,
 		"cleaner": {
 			"interval": 60
 		},
 		"plugin": {
-			"url_pattern": "",
+			"pattern": "",
 			"interval": 60,
 			"concurrent": 4,
 			"connect_timeout": 500,
@@ -33,9 +33,9 @@
 		}
 	},
 	"collector": {
-		"enable": true,
+		"enabled": true,
 		"agent": "http://%%AGENT_HTTP%%/v1/push",
-		"url_pattern": "http://%s/statistics/all",
+		"pattern": "http://%s/statistics/all",
 		"cluster": [
 			"transfer,%%TRANSFER_HTTP%%",
 			"graph,%%GRAPH_HTTP%%",

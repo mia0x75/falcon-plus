@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/http"
 	"github.com/open-falcon/falcon-plus/modules/exporter/index"
+	"github.com/open-falcon/falcon-plus/modules/exporter/monitor"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
 
@@ -40,6 +41,8 @@ func main() {
 	index.Start()
 	// collector
 	collector.Start()
+	// monitor
+	monitor.Start()
 	// http
 	http.Start()
 

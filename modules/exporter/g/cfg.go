@@ -8,13 +8,13 @@ import (
 	"github.com/toolkits/file"
 )
 
-type HttpConfig struct {
-	Enable bool   `json:"enable"`
-	Listen string `json:"listen"`
+type AlarmConfig struct {
+	Enabled bool   `json:"enabled"`
+	Url     string `json:"url"`
 }
 
 type IndexConfig struct {
-	Enable         bool              `json:"enable"`
+	Enabled        bool              `json:"enabled"`
 	Addr           string            `json:"addr"`
 	MaxIdle        int               `json:"max_idle"`
 	MaxConnections int               `json:"max_connections"`
@@ -22,15 +22,27 @@ type IndexConfig struct {
 	Cluster        map[string]string `json:"cluster"`
 }
 
+type HttpConfig struct {
+	Enabled bool   `json:"enabled"`
+	Listen  string `json:"listen"`
+}
+
+type MonitorConfig struct {
+	Enabled bool              `json:"enabled"`
+	Alarm   *AlarmConfig      `json:"alarm"`
+	Pattern string            `json:"pattern"`
+	Cluster map[string]string `json:"cluster"`
+}
+
 type CollectorConfig struct {
-	Enable     bool     `json:"enable"`
-	Agent      string   `json:"agent"`
-	UrlPattern string   `json:"url_pattern"`
-	Cluster    []string `json:"cluster"`
+	Enabled bool     `json:"enabled"`
+	Agent   string   `json:"agent"`
+	Pattern string   `json:"pattern"`
+	Cluster []string `json:"cluster"`
 }
 
 type PluginConfig struct {
-	ApiUrlFmt      string `json:"url_pattern"`
+	Pattern        string `json:"pattern"`
 	Interval       int32  `json:"interval"`
 	Concurrent     int32  `json:"concurrent"`
 	ConnectTimeout int32  `json:"connect_timeout"`
@@ -42,7 +54,7 @@ type CleanerConfig struct {
 }
 
 type AgentConfig struct {
-	Enable  bool           `json:"enable"`
+	Enabled bool           `json:"enabled"`
 	Dsn     string         `json:"dsn"`
 	MaxIdle int32          `json:"max_idle"`
 	Plugin  *PluginConfig  `json:"plugin"`
@@ -58,6 +70,7 @@ type GlobalConfig struct {
 	Http      *HttpConfig      `json:"http"`
 	Index     *IndexConfig     `json:"index"`
 	Collector *CollectorConfig `json:"collector"`
+	Monitor   *MonitorConfig   `json:"monitor"`
 	Agent     *AgentConfig     `json:"agent"`
 	Host      string           `json:"host"`
 }

@@ -4,11 +4,11 @@
 		"level": "debug"
 	},
 	"http": {
-		"enable": true,
+		"enabled": true,
 		"listen": "0.0.0.0:8002"
 	},
 	"index": {
-		"enable": false,
+		"enabled": false,
 		"addr": "root:root@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
@@ -19,7 +19,7 @@
 		}
 	},
 	"agent": {
-		"enable": false,
+		"enabled": false,
 		"dsn": "",
 		"max_idle": 4,
 		"cleaner": {
@@ -34,13 +34,23 @@
 		}
 	},
 	"collector": {
-		"enable": true,
+		"enabled": true,
 		"agent": "http://127.0.0.1:1988/v1/push",
-		"url_pattern": "http://%s/statistics/all",
+		"pattern": "http://%s/statistics/all",
 		"cluster": [
 			"transfer,test.hostname:6060",
 			"graph,test.hostname:6071",
 			"exporter,test.hostname:8001"
 		]
+	},
+	"monitor": {
+		"enabled": true,
+		"alarm_url": "http://10.100.98.158:9432/dbmonitor/send",
+		"pattern": "http://%s/health",
+		"cluster": {
+			"transfer-00": "test.hostname:6060",
+			"graph-00": "test.hostname:6071",
+			"exporter-00": "test.hostname:8001"
+		}
 	}
 }
