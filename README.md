@@ -4,18 +4,37 @@
 
 # 系统改进
 
-- 增加Updater组件用于更新agent
-- 增加Task组件用于监控graph,transfer
-- 数据库falcon_portal更名为portal
-- 修复BUG
-- 统一配置文件到/etc/mfp下
-- 统一日志输出到/var/log/mfp
-- 配置项采用统一的连字符格式
-- 集成MySQL监控
-- 集成Redis监控
-- 更新Vendor到最新版本
-- 用户密码哈希算法调整，不再使用md5+salt
-- 其他
+- Add updater module
+- Rename falcon_portal to portal
+- Potential bug fix
+- Put all config files to /etc/mfp
+- Change all output log files to /var/log/mfp
+- Naming consistency
+- Builtin mysql monitor
+- Builtin redis monitor
+- Update vendor
+- Replace md5+salt with bcrypt
+- Change log with logrus in all modules
+- Replace viper with local cfg code
+- Code format and style consistency
+- Re-organize port usage (xxx0 - RPC / xxx1 - HTTP / xxx2 - Sockets)
+- Replace time.Sleep with time.Tick
+- Add metric proc.num
+- Remove agent.alive, agent.alive replace with proc.num/name=falcon-agent
+- Remove mysql.alive, see above
+- Add health http method for api module
+- PFC (Performance Counter) (gateway.runtime/gateway.debug/graph.runtime/graph.debug)
+- Support interval settings for echo func
+- Use log.level = "debug" for debug mode, remove "debug: true"
+- Add webroot for agent
+- Change min-step to 5 sec (rrd related)
+- Add exporter module
+- Add health monitor into exporter module
+- Support multiple hbs in agent module
+- Remove GPU related metrics
+- Save statistic metrics from /statistics/all (gateway.stats/exporter.stats/graph.stats)
+- Code refactor
+
 
 # Documentations
 

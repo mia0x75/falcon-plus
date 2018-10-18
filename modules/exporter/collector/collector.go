@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -136,40 +135,6 @@ func _collect() {
 			log.Println(hostNamePort, "send to transfer error,", err.Error())
 		}
 	}
-
-	// collector.alive
-	_collectorAlive()
-}
-
-func _collectorAlive() error {
-	var err error
-	hostname := g.Config().Host
-	if hostname == "" {
-		hostname, err = os.Hostname()
-		if err != nil {
-			log.Println("get hostname failed,", err)
-			return err
-		}
-	}
-
-	var jmdCnt cmodel.JsonMetaData
-	jmdCnt.Endpoint = hostname
-	jmdCnt.Metric = "exporter.alive"
-	jmdCnt.Timestamp = time.Now().Unix()
-	jmdCnt.Step = 60
-	jmdCnt.Value = 0
-	jmdCnt.CounterType = "GAUGE"
-	jmdCnt.Tags = ""
-
-	jsonList := make([]*cmodel.JsonMetaData, 0)
-	jsonList = append(jsonList, &jmdCnt)
-	err = sendToTransfer(jsonList, g.Config().Collector.Agent)
-	if err != nil {
-		log.Println("send exporter.alive failed,", err)
-		return err
-	}
-
-	return nil
 }
 
 func sendToTransfer(items []*cmodel.JsonMetaData, destUrl string) error {

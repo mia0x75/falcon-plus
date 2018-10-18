@@ -88,7 +88,6 @@ Just look at https://github.com/open-falcon/ops-updater
 |rdb_last_bgsave_time_sec      |GAUGE|最近一次bgsave操作耗时秒数|
 |rdb_last_save_time            |GAUGE|最近一次创建RDB快照文件的Unix时间戳|
 |rdb_changes_since_last_save   |GAUGE|从最近一次dump快照后，未被dump的变更次数(和save里变更计数器类似)|
-|alive                   |GAUGE|当前Redis是否存活，ping监控socket_time默认500ms|
 |rejected_connections          |COUNTER|因连接数达到maxclients上限后，被拒绝的连接个数|
 |repl_backlog_active           |GAUGE|标志位，master是否开启了repl_backlog,有效地psync(2.8+)|
 |repl_backlog_first_byte_offset|GAUGE|repl_backlog中首字节的复制偏移位|
@@ -129,7 +128,6 @@ Just look at https://github.com/open-falcon/ops-updater
 |net.if.out.bytes|all(#3)>94371840|网络出口流量超90MB,影响Redis响应|
 |net.if.in.bytes|all(#3)>94371840|网络入口流量超90MB,影响Redis响应|
 |disk.io.util|all(#3)>90|磁盘IO可能存负载，影响从库持久化和阻塞写|
-|redis.alive|all(#2)=0|Redis实例存活有问题，可能不可用|
 |used_memory|all(#2)>32212254720|单实例使用30G，建议拆分扩容；对fork卡停，full_sync时长都有明显性能影响|
 |used_memory_pct|all(#3)>85|(存储场景)使用内存达85%,存储场景会写入失败|
 |mem_fragmentation_ratio|all(#3)>2|内存碎片过高(如果实例比较小，这个指标可能比较大，不实用)|
@@ -155,7 +153,6 @@ Just look at https://github.com/open-falcon/ops-updater
 
 | Counters | Type | Notes|
 |-----|------|------|
-|mongo_local_alive|                        GAUGE   |mongodb存活本地监控，如果开启Auth，要求连接认证成功
 |asserts_msg|                              COUNTER |消息断言数/秒
 |asserts_regular|                          COUNTER |常规断言数/秒
 |asserts_rollovers|                        COUNTER |计数器roll over的次数/秒,计数器每2^30个断言就会清零
@@ -295,7 +292,6 @@ Just look at https://github.com/open-falcon/ops-updater
 |net.if.out.bytes>94371840|
 |net.if.in.bytes>94371840|
 |disk.io.util>90|
-|mongo_local_alive=0|
 |page_faults>100|
 |connections_current>5000|
 |connections_used_percent>60|

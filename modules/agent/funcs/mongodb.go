@@ -523,19 +523,7 @@ func MongoDBMetrics() (L []*cmodel.MetricValue) {
 	}
 	defer session.Close()
 	L = append(L, MongoDBStatInfo(session)...)
-	L = append(L, MongoDBAlive())
 	return
-}
-
-func MongoDBAlive() *cmodel.MetricValue {
-	if g.Config().Collector.MongoDB != nil {
-		if g.Config().Collector.MongoDB.Enabled {
-			return GaugeValue("mongodb.alive", 1, mgoTags)
-		} else {
-			return GaugeValue("mongodb.alive", 0, mgoTags)
-		}
-	}
-	return nil
 }
 
 func MongoDBStatInfo(session *mgo.Session) (L []*cmodel.MetricValue) {

@@ -37,24 +37,11 @@ func RedisMetrics() (L []*cmodel.MetricValue) {
 	}
 	defer client.Close()
 	L = append(L, RedisStatInfo(client)...)
-	L = append(L, RedisAlive())
 	return
-}
-
-func RedisAlive() *cmodel.MetricValue {
-	if g.Config().Collector.Redis != nil {
-		if g.Config().Collector.Redis.Enabled {
-			return GaugeValue("redis.alive", 1, tags)
-		} else {
-			return GaugeValue("redis.alive", 0, tags)
-		}
-	}
-	return nil
 }
 
 func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	monitorKeys := map[string]string{
-		//"redis_alive":                    "GAUGE",   // 当前Redis是否存活，ping监控socket_time默认500ms
 		"connected_clients":              "GAUGE", // 当前已连接的客户端个数
 		"blocked_clients":                "GAUGE", // 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量
 		"keys_num":                       "GAUGE",
