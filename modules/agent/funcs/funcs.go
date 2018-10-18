@@ -17,7 +17,6 @@ func BuildMappers() {
 	Mappers = []FuncsAndInterval{
 		{
 			Fs: []func() []*cmodel.MetricValue{
-				AgentMetrics,
 				CpuMetrics,
 				NetMetrics,
 				KernelMetrics,
