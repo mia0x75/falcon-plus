@@ -10,12 +10,6 @@ import (
 )
 
 func ProcMetrics() (L []*cmodel.MetricValue) {
-	reportProcs := g.ReportProcs()
-	sz := len(reportProcs)
-	if sz == 0 {
-		return
-	}
-
 	ps, err := nux.AllProcs()
 	if err != nil {
 		log.Println(err)
@@ -23,6 +17,12 @@ func ProcMetrics() (L []*cmodel.MetricValue) {
 	}
 
 	pslen := len(ps)
+
+	reportProcs := g.ReportProcs()
+	sz := len(reportProcs)
+	if sz == 0 {
+		return
+	}
 
 	for tags, m := range reportProcs {
 		cnt := 0
