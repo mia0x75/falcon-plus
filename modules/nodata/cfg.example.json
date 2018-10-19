@@ -23,7 +23,7 @@
 		"batch": 200,
 		"concurrent": 10
 	},
-	"sender": {
+	"transfer": {
 		"enabled": true,
 		"connect_timeout": 500,
 		"request_timeout": 2000,

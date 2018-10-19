@@ -33,9 +33,9 @@ type CollectorConfig struct {
 	Concurrent int32 `json:"concurrent"`
 }
 
-type SenderConfig struct {
+type TransferConfig struct {
 	Enabled        bool   `json:"enabled"`
-	TransferAddr   string `json:"transfer_addr"`
+	Addr           string `json:"addr"`
 	ConnectTimeout int32  `json:"connect_timeout"`
 	RequestTimeout int32  `json:"request_timeout"`
 	Batch          int32  `json:"batch"`
@@ -51,7 +51,7 @@ type GlobalConfig struct {
 	Api       *PlusAPIConfig   `json:"api"`
 	Database  *DatabaseConfig  `json:"database"`
 	Collector *CollectorConfig `json:"collector"`
-	Sender    *SenderConfig    `json:"sender"`
+	Transfer  *TransferConfig  `json:"transfer"`
 }
 
 var (

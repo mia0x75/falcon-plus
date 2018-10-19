@@ -43,7 +43,7 @@ func SendMockOnce() int {
 	defer sema.Release()
 
 	// not enabled
-	if !g.Config().Sender.Enabled {
+	if !g.Config().Transfer.Enabled {
 		return 0
 	}
 
@@ -62,7 +62,7 @@ func SendMockOnce() int {
 
 func sendMock() (cnt int, errt error) {
 
-	cfg := g.Config().Sender
+	cfg := g.Config().Transfer
 	batch := int(cfg.Batch)
 	connTimeout := cfg.ConnectTimeout
 	requTimeout := cfg.RequestTimeout
@@ -108,7 +108,7 @@ func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname str
 	}
 
 	cfg := g.Config()
-	transUlr := fmt.Sprintf("http://%s/api/push", cfg.Sender.TransferAddr)
+	transUlr := fmt.Sprintf("http://%s/api/push", cfg.Transfer.Addr)
 
 	// form request args
 	itemsBody, err := json.Marshal(items)

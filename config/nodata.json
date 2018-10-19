@@ -23,11 +23,11 @@
 		"batch": 200,
 		"concurrent": 10
 	},
-	"sender": {
+	"transfer": {
 		"enabled": true,
 		"connect_timeout": 500,
 		"request_timeout": 2000,
-		"transfer_addr": "%%TRANSFER_HTTP%%",
+		"addr": "%%TRANSFER_HTTP%%",
 		"batch": 500
 	}
 }
