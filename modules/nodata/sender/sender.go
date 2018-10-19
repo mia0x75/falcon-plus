@@ -1,18 +1,16 @@
 package sender
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 	tsema "github.com/toolkits/concurrent/semaphore"
 	"github.com/toolkits/container/nmap"
-	thttpclient "github.com/toolkits/http/httpclient"
 	ttime "github.com/toolkits/time"
 )
 
@@ -22,7 +20,15 @@ var (
 )
 
 func AddMock(key string, endpoint string, metric string, tags string, ts int64, dstype string, step int64, value interface{}) {
-	item := &cmodel.JsonMetaData{metric, endpoint, ts, step, value, dstype, tags}
+	item := &cmodel.JsonMetaData{
+		Metric:      metric,
+		Endpoint:    endpoint,
+		Timestamp:   ts,
+		Step:        step,
+		Value:       value,
+		CounterType: dstype,
+		Tags:        tags,
+	}
 	MockMap.Put(key, item)
 }
 
@@ -103,7 +109,6 @@ func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname str
 
 	cfg := g.Config()
 	transUlr := fmt.Sprintf("http://%s/api/push", cfg.Sender.TransferAddr)
-	hcli := thttpclient.GetHttpClient(httpcliname, connT, reqT)
 
 	// form request args
 	itemsBody, err := json.Marshal(items)
@@ -113,21 +118,17 @@ func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname str
 		return
 	}
 
-	// fetch items
-	req, err := http.NewRequest("POST", transUlr, bytes.NewBuffer(itemsBody))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
-	req.Header.Set("Connection", "close")
-	postResp, err := hcli.Do(req)
-	if err != nil {
+	// post items
+	client := cutils.NewHttp(transUlr)
+	client.SetUserAgent(httpcliname)
+	headers := map[string]string{
+		"Content-Type": "application/json; charset=UTF-8",
+		"Connection":   "close",
+	}
+	client.SetHeaders(headers)
+	if _, err := client.Post(itemsBody); err != nil {
 		log.Println(transUlr+", post to dest error,", err)
 		errt = err
-		return
-	}
-	defer postResp.Body.Close()
-
-	if postResp.StatusCode/100 != 2 {
-		log.Println(transUlr+", post to dest, bad response,", postResp.Body)
-		errt = fmt.Errorf("request failed, %s", postResp.Body)
 		return
 	}
 
