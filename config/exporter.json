@@ -51,19 +51,19 @@
 		"pattern": "http://%s/health",
 		"hosts": {
 			"agents": [
-				"10.100.14.94:6071"
+				"%%AGENT_HTTP%%"
 			],
 			"modules": {
-				"transfer-00": "%%TRANSFER_HTTP%%",
-				"graph-00": "%%GRAPH_HTTP%%",
-				"exporter-00": "%%EXPORTER_HTTP%%",
 				"aggregator-00": "%%AGGREGATOR_HTTP%%",
 				"alarm-00": "%%ALARM_HTTP%%",
 				"api-00": "%%API_HTTP%%",
+				"exporter-00": "%%EXPORTER_HTTP%%",
 				"gateway-00": "%%GATEWAY_HTTP%%",
+				"graph-00": "%%GRAPH_HTTP%%",
 				"hbs-00": "%%HBS_HTTP%%",
 				"judge-00": "%%JUDGE_HTTP%%",
 				"nodata-00": "%%NODATA_HTTP%%",
+				"transfer-00": "%%TRANSFER_HTTP%%",
 				"updater-00": "%%UPDATER_HTTP%%"
 			}
 		}
