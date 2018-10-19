@@ -1,20 +1,17 @@
 package collector
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/common/model"
 	cron "github.com/toolkits/cron"
-	nhttpclient "github.com/toolkits/http/httpclient"
 	ntime "github.com/toolkits/time"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
@@ -55,7 +52,6 @@ func collect() {
 }
 
 func _collect() {
-	clientGet := nhttpclient.GetHttpClient("collector.get", 10*time.Second, 20*time.Second)
 	for _, host := range g.Config().Collector.Cluster {
 		ts := time.Now().Unix()
 		jsonList := make([]*cmodel.JsonMetaData, 0)
@@ -77,18 +73,15 @@ func _collect() {
 
 		tags := "port=" + hostPort
 		srcUrl := fmt.Sprintf(g.Config().Collector.Pattern, hostNamePort)
-		reqGet, _ := http.NewRequest("GET", srcUrl, nil)
-		reqGet.Header.Set("Connection", "close")
-		getResp, err := clientGet.Do(reqGet)
+		client := cutils.NewHttp(srcUrl)
+		client.SetUserAgent("collector.get")
+		headers := map[string]string{
+			"Connection": "close",
+		}
+		client.SetHeaders(headers)
+		body, err := client.Get()
 		if err != nil {
 			log.Printf(hostNamePort+", get statistics error,", err)
-			continue
-		}
-		defer getResp.Body.Close()
-
-		body, err := ioutil.ReadAll(getResp.Body)
-		if err != nil {
-			log.Println(hostNamePort+", get statistics error,", err)
 			continue
 		}
 
@@ -149,18 +142,15 @@ func sendToTransfer(items []*cmodel.JsonMetaData, destUrl string) error {
 	}
 
 	// send by http-post
-	req, err := http.NewRequest("POST", destUrl, bytes.NewBuffer(jsonBody))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
-	req.Header.Set("Connection", "close")
-	clientPost := nhttpclient.GetHttpClient("collector.post", 5*time.Second, 10*time.Second)
-	postResp, err := clientPost.Do(req)
-	if err != nil {
-		return fmt.Errorf("post to %s, resquest failed with %v", destUrl, err)
+	client := cutils.NewHttp(destUrl)
+	client.SetUserAgent("collector.post")
+	headers := map[string]string{
+		"Content-Type": "application/json; charset=UTF-8",
+		"Connection":   "close",
 	}
-	defer postResp.Body.Close()
-
-	if postResp.StatusCode/100 != 2 {
-		return fmt.Errorf("post to %s, got bad response %d", destUrl, postResp.StatusCode)
+	client.SetHeaders(headers)
+	if _, err = client.Post(jsonBody); err != nil {
+		return fmt.Errorf("post to %s, resquest failed with %v", destUrl, err)
 	}
 
 	return nil

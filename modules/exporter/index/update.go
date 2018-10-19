@@ -3,17 +3,14 @@ package index
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	cron "github.com/toolkits/cron"
-	nhttpclient "github.com/toolkits/http/httpclient"
-	ntime "github.com/toolkits/time"
-
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
+	cron "github.com/toolkits/cron"
+	ntime "github.com/toolkits/time"
 )
 
 const (
@@ -63,21 +60,17 @@ func updateIndexOfOneGraph(hostNamePort string) error {
 		return fmt.Errorf("index update error, bad host")
 	}
 
-	client := nhttpclient.GetHttpClient("index.update."+hostNamePort, 5*time.Second, 10*time.Second)
-
 	destUrl := fmt.Sprintf(destUrlFmt, hostNamePort)
-	req, _ := http.NewRequest("GET", destUrl, nil)
-	req.Header.Set("Connection", "close")
-	getResp, err := client.Do(req)
+
+	client := cutils.NewHttp(destUrl)
+	client.SetUserAgent(fmt.Sprintf("index.update.%s", hostNamePort))
+	headers := map[string]string{
+		"Connection": "close",
+	}
+	client.SetHeaders(headers)
+	body, err := client.Get()
 	if err != nil {
 		log.Printf(hostNamePort+", index update error,", err)
-		return err
-	}
-	defer getResp.Body.Close()
-
-	body, err := ioutil.ReadAll(getResp.Body)
-	if err != nil {
-		log.Println(hostNamePort+", index update error,", err)
 		return err
 	}
 

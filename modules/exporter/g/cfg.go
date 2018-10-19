@@ -28,10 +28,15 @@ type HttpConfig struct {
 }
 
 type MonitorConfig struct {
-	Enabled bool              `json:"enabled"`
-	Alarm   *AlarmConfig      `json:"alarm"`
-	Pattern string            `json:"pattern"`
-	Cluster map[string]string `json:"cluster"`
+	Enabled bool         `json:"enabled"`
+	Alarm   *AlarmConfig `json:"alarm"`
+	Pattern string       `json:"pattern"`
+	Hosts   *HostsConfig `json:"hosts"`
+}
+
+type HostsConfig struct {
+	Agents  []string          `json:"agents"`
+	Modules map[string]string `json:"modules"`
 }
 
 type CollectorConfig struct {

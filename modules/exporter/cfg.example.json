@@ -26,7 +26,7 @@
 			"interval": 60
 		},
 		"plugin": {
-			"url_pattern": "",
+			"pattern": "",
 			"interval": 60,
 			"concurrent": 4,
 			"connect_timeout": 500,
@@ -45,12 +45,21 @@
 	},
 	"monitor": {
 		"enabled": true,
-		"alarm_url": "http://10.100.98.158:9432/dbmonitor/send",
+		"alarm": {
+			"enabled": true,
+			"url": "http://10.100.98.158:9432/dbmonitor/send"
+		},
 		"pattern": "http://%s/health",
-		"cluster": {
-			"transfer-00": "test.hostname:6060",
-			"graph-00": "test.hostname:6071",
-			"exporter-00": "test.hostname:8001"
+		"agent": "",
+		"hosts": {
+			"agents" : [
+				"10.100.14.94:6071"
+			],
+			"modules":{
+				"transfer-00": "10.100.14.94:6071",
+				"graph-00": "10.100.14.94:6071",
+				"exporter-00": "10.100.14.94:6071"
+			}
 		}
 	}
 }

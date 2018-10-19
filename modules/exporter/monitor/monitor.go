@@ -8,12 +8,14 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/toolkits/container/nmap"
 	"github.com/toolkits/cron"
 )
 
 var (
+	lock       = new(sync.Mutex)
 	cronHealth = cron.New()
 	alarmCache = nmap.NewSafeMap()
 )
@@ -66,7 +68,7 @@ func Start() {
 	go startMonitor()
 	go startJudge()
 
-	log.Println("collector.Start, ok")
+	log.Println("monitor.Start, ok")
 }
 
 func startMonitor() {
@@ -76,52 +78,61 @@ func startMonitor() {
 
 // monitor
 func monitor() {
-	for name, host := range g.Config().Monitor.Cluster {
-		var state *State
-		var found bool
-		if state, found = HealthState[host]; !found {
-			state = &State{Errors: 0, Name: name, Host: host}
-			state.Queue = []string{"ok", "ok"}
-			HealthState[host] = state
-		}
-		url := fmt.Sprintf(g.Config().Monitor.Pattern, host)
-		client := NewHttp(url)
-		body, err := client.Get()
-		if !(err == nil && len(body) >= 2 && string(body[:2]) == "ok") {
-			state.Queue = append(state.Queue[1:], "err")
-			state.RLock()
-			state.Errors++
-			if state.Errors >= 3 {
-				// raise problem
-				alarm := &Alarm{
-					Host:      host,
-					Name:      name,
-					Type:      "err",
-					Count:     state.Errors,
-					Timestamp: time.Now().Unix(),
-				}
-				alarmCache.Put(host, alarm)
+	clusters := g.Config().Monitor.Hosts.Modules
+	for _, node := range g.Config().Monitor.Hosts.Agents {
+		clusters[fmt.Sprintf("agent-%s", node)] = node
+	}
+	for name, host := range clusters {
+		go func(name, host string) {
+			var state *State
+			var found bool
+			if state, found = HealthState[host]; !found {
+				lock.Lock()
+				state = &State{Errors: 0, Name: name, Host: host}
+				state.Queue = []string{"ok", "ok"}
+				HealthState[host] = state
+				lock.Unlock()
 			}
-			state.RUnlock()
-			log.Errorf(host+", get health error,", err)
-		} else {
-			state.Queue = append(state.Queue[1:], "ok")
-			state.RLock()
-			if state.Errors >= 3 {
-				// problem restore
-				alarm := &Alarm{
-					Host:      host,
-					Name:      name,
-					Type:      "ok",
-					Count:     state.Errors,
-					Timestamp: time.Now().Unix(),
+			url := fmt.Sprintf(g.Config().Monitor.Pattern, host)
+			client := cutils.NewHttp(url)
+			client.SetUserAgent("monitor.get")
+			body, err := client.Get()
+			if !(err == nil && len(body) >= 2 && string(body[:2]) == "ok") {
+				state.Queue = append(state.Queue[1:], "err")
+				state.RLock()
+				state.Errors++
+				if state.Errors >= 3 {
+					// raise problem
+					alarm := &Alarm{
+						Host:      host,
+						Name:      name,
+						Type:      "err",
+						Count:     state.Errors,
+						Timestamp: time.Now().Unix(),
+					}
+					alarmCache.Put(host, alarm)
 				}
-				alarmCache.Put(host, alarm)
+				state.RUnlock()
+				log.Errorf("%s, get health error.", host)
+			} else {
+				state.Queue = append(state.Queue[1:], "ok")
+				state.RLock()
+				if state.Errors >= 3 {
+					// problem restore
+					alarm := &Alarm{
+						Host:      host,
+						Name:      name,
+						Type:      "ok",
+						Count:     state.Errors,
+						Timestamp: time.Now().Unix(),
+					}
+					alarmCache.Put(host, alarm)
+				}
+				state.Errors = 0
+				state.RUnlock()
+				log.Infof("%s, get health ok.", host)
 			}
-			state.Errors = 0
-			state.RUnlock()
-			log.Infof(host + ", get health ok.")
-		}
+		}(name, host)
 	}
 }
 
@@ -157,7 +168,8 @@ func startJudge() {
 		params.Add("content", content.String())
 		params.Add("user", "exporter")
 		alarmUrl.RawQuery = params.Encode()
-		client := NewHttp(alarmUrl.String())
+		client := cutils.NewHttp(alarmUrl.String())
+		client.SetUserAgent("monitor.alert")
 		_, err := client.Post(nil)
 		if err != nil {
 			log.Infof("alarm send request for health check error, %s\n", err.Error())
