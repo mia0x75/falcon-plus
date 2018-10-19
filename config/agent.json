@@ -21,7 +21,7 @@
 		"addrs": [
 			"%%TRANSFER_RPC%%"
 		],
-		"interval": 60,
+		"interval": 5,
 		"timeout": 1000
 	},
 	"http": {
