@@ -86,13 +86,13 @@ func monitor() {
 		go func(name, host string) {
 			var state *State
 			var found bool
+			lock.Lock()
 			if state, found = HealthState[host]; !found {
-				lock.Lock()
 				state = &State{Errors: 0, Name: name, Host: host}
 				state.Queue = []string{"ok", "ok"}
 				HealthState[host] = state
-				lock.Unlock()
 			}
+			lock.Unlock()
 			url := fmt.Sprintf(g.Config().Monitor.Pattern, host)
 			client := cutils.NewHttp(url)
 			client.SetUserAgent("monitor.get")
