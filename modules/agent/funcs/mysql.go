@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
@@ -298,10 +299,11 @@ func NewMetric(name string) *cmodel.MetricValue {
 
 // GetTag can get the tag to output
 func GetTag() string {
-	return fmt.Sprintf("host=%s,port=%d,read_only=%d",
-		g.Config().Collector.MySQL.Host,
-		g.Config().Collector.MySQL.Port,
-		IsReadOnly)
+	role := "master"
+	if IsSlave == 1 {
+		role = "slave"
+	}
+	return fmt.Sprintf("role=%s,port=%d", role, g.Config().Collector.MySQL.Port)
 }
 
 // GetIsReadOnly get read_only variable of mysql
@@ -322,7 +324,6 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 		return nil
 	}
 
-	Tag = GetTag()
 	db, err := sql.Open("mysql",
 		fmt.Sprintf("%s:%s@tcp(%s:%d)/mysql",
 			g.Config().Collector.MySQL.User,
@@ -331,7 +332,7 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 			g.Config().Collector.MySQL.Port))
 
 	if err != nil {
-		fmt.Printf("Connect to mysql error: %s\n", err.Error())
+		log.Fatalf("Connect to mysql error: %s\n", err.Error())
 		return nil
 	}
 	defer db.Close()
@@ -339,27 +340,28 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 	// Get slave status and set IsSlave global var
 	slaveState, err := ShowSlaveStatus(db)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Fatalf("%+v\n", err)
 		return
 	}
+	Tag = GetTag()
 
 	globalStatus, err := ShowGlobalStatus(db)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Fatalf("%+v\n", err)
 		return
 	}
 	L = append(L, globalStatus...)
 
 	globalVars, err := ShowGlobalVariables(db)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Fatalf("%+v\n", err)
 		return
 	}
 	L = append(L, globalVars...)
 
 	innodbState, err := ShowInnodbStatus(db)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Fatalf("%+v\n", err)
 		return
 	}
 	L = append(L, innodbState...)
@@ -367,7 +369,7 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 
 	binaryLogStatus, err := ShowBinaryLogs(db)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Fatalf("%+v\n", err)
 		return
 	}
 	L = append(L, binaryLogStatus...)
@@ -476,9 +478,6 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 		IsSlave = 0
 	}
 
-	isSlaveMetric := NewMetric("is_slave")
-	isSlaveMetric.Value = IsSlave
-
 	// be master
 	if IsSlave == 0 {
 		// Master_is_readonly VS master_is_read_only for version compatible, ugly
@@ -494,7 +493,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 		if err != nil {
 			return nil, err
 		}
-		return []*cmodel.MetricValue{isSlaveMetric, masterReadOnly, masterReadOnly2, innodbStatsOnMetadata}, nil
+		return []*cmodel.MetricValue{masterReadOnly, masterReadOnly2, innodbStatsOnMetadata}, nil
 	}
 
 	// be slave
@@ -524,7 +523,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 			}
 		}
 	}
-	return append(data, []*cmodel.MetricValue{isSlaveMetric, ioDelay, slaveReadOnly}...), nil
+	return append(data, []*cmodel.MetricValue{ioDelay, slaveReadOnly}...), nil
 }
 
 func GetLastNum(str string, split string) int {
@@ -566,21 +565,6 @@ func ShowOtherMetric(db *sql.DB, metric string) (*cmodel.MetricValue, error) {
 			if masterLogFile < 0 || relayMasterLogFile < 0 {
 				newMetaData.Value = -1
 			}
-		}
-	case "Heartbeats_Behind_Master":
-		var ts string
-		err = db.QueryRow("select ts from mysql.heartbeat limit 1").Scan(&ts)
-		// when row is empty, err is nil either
-		if err != nil && err != sql.ErrNoRows {
-			newMetaData.Value = -1
-		} else {
-			localTimezone, _ := time.LoadLocation("Local")
-			heartbeatTimeStr := ts
-			b := strings.Replace(heartbeatTimeStr, "T", " ", 1)
-			t, _ := time.ParseInLocation("2006-01-02 15:04:05", strings.Split(b, ".")[0], localTimezone)
-			heartbeatTimestamp := t.Unix()
-			currentTimestamp := time.Now().Unix()
-			newMetaData.Value = currentTimestamp - heartbeatTimestamp
 		}
 	}
 
