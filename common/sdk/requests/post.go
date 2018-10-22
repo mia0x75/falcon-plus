@@ -1,26 +1,20 @@
 package requests
 
 import (
-	"bytes"
 	"encoding/json"
-	"io/ioutil"
-	"net/http"
+
+	"github.com/open-falcon/falcon-plus/common/utils"
 )
 
-func PostJsonBody(url string, v interface{}) (response []byte, err error) {
+func PostJsonBody(url string, v interface{}) ([]byte, error) {
 	bs, err := json.Marshal(v)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
-	bf := bytes.NewBuffer(bs)
-
-	resp, err := http.Post(url, "application/json", bf)
+	resp, err := utils.Post(url, bs)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
-
-	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
-
+	return resp, nil
 }

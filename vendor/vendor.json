@@ -387,12 +387,6 @@
 			"revisionTime": "2018-07-18T01:23:57Z"
 		},
 		{
-			"checksumSHA1": "dF/7nuPmVNWIRpxjfrDOYlm4vK8=",
-			"path": "github.com/niean/gotools/http/httpclient/beego",
-			"revision": "ff3f51fc5c60fdcde5a9633c50105fb5f1811d38",
-			"revisionTime": "2015-12-21T08:53:10Z"
-		},
-		{
 			"checksumSHA1": "HnkWaEg4rBmj6186sKLl6kzHLH8=",
 			"path": "github.com/open-falcon/common/db",
 			"revision": "b9ba65549217ef89b4d1d05d8eb58fe493e5f982",
@@ -607,12 +601,6 @@
 			"path": "github.com/toolkits/file",
 			"revision": "a5b3c5147e07f934d9f9d00b901a20b2529f1a57",
 			"revisionTime": "2016-03-25T03:37:39Z"
-		},
-		{
-			"checksumSHA1": "5B4gMLppXXoTFwYvDrfdP2LuLK4=",
-			"path": "github.com/toolkits/http/httpclient",
-			"revision": "f3ac6e6c24be069828e95fc2dcc018aae084cd6c",
-			"revisionTime": "2015-06-09T12:28:24Z"
 		},
 		{
 			"checksumSHA1": "qMNq28HlS5CkK9bPmqOh6p7DEWg=",
