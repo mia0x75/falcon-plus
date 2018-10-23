@@ -25,6 +25,16 @@ func NewSafeAgents() *SafeAgents {
 	return &SafeAgents{M: make(map[string]*cmodel.AgentUpdateInfo)}
 }
 
+func (this *SafeAgents) Init() {
+	m, err := db.QueryAgentsInfo()
+	if err != nil {
+		return
+	}
+	this.Lock()
+	defer this.Unlock()
+	this.M = m
+}
+
 func (this *SafeAgents) Put(req *cmodel.AgentReportRequest) {
 	val := &cmodel.AgentUpdateInfo{
 		LastUpdate:    time.Now().Unix(),
@@ -36,12 +46,11 @@ func (this *SafeAgents) Put(req *cmodel.AgentReportRequest) {
 		agentInfo.ReportRequest.IP != req.IP ||
 		agentInfo.ReportRequest.PluginVersion != req.PluginVersion {
 
+		this.Lock()
+		this.M[req.Hostname] = val
+		this.Unlock()
 		db.UpdateAgent(val)
 	}
-
-	this.Lock()
-	this.M[req.Hostname] = val
-	this.Unlock()
 }
 
 func (this *SafeAgents) Get(hostname string) (*cmodel.AgentUpdateInfo, bool) {
