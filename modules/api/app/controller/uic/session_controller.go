@@ -14,12 +14,12 @@ import (
 )
 
 type APILoginInput struct {
-	Name     string `json:"name"  form:"name" binding:"required"`
-	Password string `json:"password"  form:"password" binding:"required"`
+	Name     string `json:"name" form:"name" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
 
 type APIAdminLoginInput struct {
-	Name string `json:"name"  form:"name" binding:"required"`
+	Name string `json:"name" form:"name" binding:"required"`
 }
 
 func Login(c *gin.Context) {
