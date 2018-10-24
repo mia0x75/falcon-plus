@@ -29,9 +29,9 @@ func restart(c *cobra.Command, args []string) error {
 	for _, moduleName := range args {
 		stop(c, []string{moduleName})
 		if strings.Contains(moduleName, "graph") {
-			time.Sleep(5 * time.Second)
+			time.Sleep(5000 * time.Millisecond)
 		} else {
-			time.Sleep(1 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 		}
 		start(c, []string{moduleName})
 	}

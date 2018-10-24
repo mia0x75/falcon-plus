@@ -114,9 +114,9 @@ func start(c *cobra.Command, args []string) error {
 		}
 
 		if strings.Contains(moduleName, "graph") {
-			time.Sleep(5 * time.Second)
+			time.Sleep(5000 * time.Millisecond)
 		} else {
-			time.Sleep(1 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 		}
 		if isStarted(moduleName) {
 			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
