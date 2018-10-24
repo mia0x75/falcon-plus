@@ -51,7 +51,7 @@ func main() {
 	http.Start()
 
 	hostname, _ := g.Hostname()
-	log.Println("hostname: ", hostname)
+	log.Printf("hostname: %s", hostname)
 
 	log.Infoln("service ready ...")
 
