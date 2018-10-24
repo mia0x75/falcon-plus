@@ -3,12 +3,10 @@ package cron
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/garyburd/redigo/redis"
-	"github.com/open-falcon/falcon-plus/modules/alarm/api"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
@@ -50,33 +48,27 @@ func combineMail() {
 		return
 	}
 
-	dtoMap := make(map[string][]*MailDto)
+	dtoMap := make(map[string][]*g.AlarmDto)
 	for i := 0; i < count; i++ {
-		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].Email, dtos[i].Metric)
+		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].Subscriber, dtos[i].Metric)
 		if _, ok := dtoMap[key]; ok {
 			dtoMap[key] = append(dtoMap[key], dtos[i])
 		} else {
-			dtoMap[key] = []*MailDto{dtos[i]}
+			dtoMap[key] = []*g.AlarmDto{dtos[i]}
 		}
 	}
 
 	// 不要在这处理，继续写回redis，否则重启alarm很容易丢数据
 	for _, arr := range dtoMap {
-		size := len(arr)
-		if size == 1 {
-			redi.WriteMail([]string{arr[0].Email}, arr[0].Subject, arr[0].Content)
+		if arr[0].Subscriber == nil {
 			continue
 		}
-
-		subject := fmt.Sprintf("[P%d][%s] %d %s", arr[0].Priority, arr[0].Status, size, arr[0].Metric)
-		contentArr := make([]string, size)
-		for i := 0; i < size; i++ {
-			contentArr[i] = arr[i].Content
+		if len(arr[0].Subscriber) == 0 {
+			continue
 		}
-		content := strings.Join(contentArr, "\r\n")
-
-		log.Debugf("combined mail subject:%s, content:%s", subject, content)
-		redi.WriteMail([]string{arr[0].Email}, subject, content)
+		size := len(arr)
+		arr[0].Occur = size
+		redi.WriteMail(arr[0])
 	}
 }
 
@@ -87,49 +79,26 @@ func combineIM() {
 		return
 	}
 
-	dtoMap := make(map[string][]*ImDto)
+	dtoMap := make(map[string][]*g.AlarmDto)
 	for i := 0; i < count; i++ {
-		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].IM, dtos[i].Metric)
+		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].Subscriber, dtos[i].Metric)
 		if _, ok := dtoMap[key]; ok {
 			dtoMap[key] = append(dtoMap[key], dtos[i])
 		} else {
-			dtoMap[key] = []*ImDto{dtos[i]}
+			dtoMap[key] = []*g.AlarmDto{dtos[i]}
 		}
 	}
 
 	for _, arr := range dtoMap {
-		size := len(arr)
-		if size == 1 {
-			redi.WriteIM([]string{arr[0].IM}, arr[0].Content)
+		if arr[0].Subscriber == nil {
 			continue
 		}
-
-		// 把多个im内容写入数据库，只给用户提供一个链接
-		contentArr := make([]string, size)
-		for i := 0; i < size; i++ {
-			contentArr[i] = arr[i].Content
+		if len(arr[0].Subscriber) == 0 {
+			continue
 		}
-		content := strings.Join(contentArr, ",,")
-
-		first := arr[0].Content
-		t := strings.Split(first, "][")
-		eg := ""
-		if len(t) >= 3 {
-			eg = t[2]
-		}
-
-		path, err := api.LinkToSMS(content)
-		chat := ""
-		if err != nil || path == "" {
-			chat = fmt.Sprintf("[P%d][%s] %d %s.  e.g. %s. detail in email", arr[0].Priority, arr[0].Status, size, arr[0].Metric, eg)
-			log.Error("create short link fail", err)
-		} else {
-			chat = fmt.Sprintf("[P%d][%s] %d %s e.g. %s %s/portal/links/%s ",
-				arr[0].Priority, arr[0].Status, size, arr[0].Metric, eg, g.Config().Api.Dashboard, path)
-			log.Debugf("combined im is:%s", chat)
-		}
-
-		redi.WriteIM([]string{arr[0].IM}, chat)
+		size := len(arr)
+		arr[0].Occur = size
+		redi.WriteIM(arr[0])
 	}
 }
 
@@ -140,54 +109,31 @@ func combineSms() {
 		return
 	}
 
-	dtoMap := make(map[string][]*SmsDto)
+	dtoMap := make(map[string][]*g.AlarmDto)
 	for i := 0; i < count; i++ {
-		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].Phone, dtos[i].Metric)
+		key := fmt.Sprintf("%d%s%s%s", dtos[i].Priority, dtos[i].Status, dtos[i].Subscriber, dtos[i].Metric)
 		if _, ok := dtoMap[key]; ok {
 			dtoMap[key] = append(dtoMap[key], dtos[i])
 		} else {
-			dtoMap[key] = []*SmsDto{dtos[i]}
+			dtoMap[key] = []*g.AlarmDto{dtos[i]}
 		}
 	}
 
 	for _, arr := range dtoMap {
-		size := len(arr)
-		if size == 1 {
-			redi.WriteSms([]string{arr[0].Phone}, arr[0].Content)
+		if arr[0].Subscriber == nil {
 			continue
 		}
-
-		// 把多个sms内容写入数据库，只给用户提供一个链接
-		contentArr := make([]string, size)
-		for i := 0; i < size; i++ {
-			contentArr[i] = arr[i].Content
+		if len(arr[0].Subscriber) == 0 {
+			continue
 		}
-		content := strings.Join(contentArr, ",,")
-
-		first := arr[0].Content
-		t := strings.Split(first, "][")
-		eg := ""
-		if len(t) >= 3 {
-			eg = t[2]
-		}
-
-		path, err := api.LinkToSMS(content)
-		sms := ""
-		if err != nil || path == "" {
-			sms = fmt.Sprintf("[P%d][%s] %d %s.  e.g. %s. detail in email", arr[0].Priority, arr[0].Status, size, arr[0].Metric, eg)
-			log.Error("get short link fail", err)
-		} else {
-			sms = fmt.Sprintf("[P%d][%s] %d %s e.g. %s %s/portal/links/%s ",
-				arr[0].Priority, arr[0].Status, size, arr[0].Metric, eg, g.Config().Api.Dashboard, path)
-			log.Debugf("combined sms is:%s", sms)
-		}
-
-		redi.WriteSms([]string{arr[0].Phone}, sms)
+		size := len(arr)
+		arr[0].Occur = size
+		redi.WriteSms(arr[0])
 	}
 }
 
-func popAllSmsDto() []*SmsDto {
-	ret := []*SmsDto{}
+func popAllSmsDto() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.Config().Redis.UserSmsQueue
 
 	rc := g.RedisConnPool.Get()
@@ -206,21 +152,20 @@ func popAllSmsDto() []*SmsDto {
 			continue
 		}
 
-		var smsDto SmsDto
+		var smsDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &smsDto)
 		if err != nil {
 			log.Errorf("json unmarshal SmsDto: %s fail: %v", reply, err)
 			continue
 		}
-
-		ret = append(ret, &smsDto)
+		ret = append(ret, smsDto)
 	}
 
 	return ret
 }
 
-func popAllMailDto() []*MailDto {
-	ret := []*MailDto{}
+func popAllMailDto() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.Config().Redis.UserMailQueue
 
 	rc := g.RedisConnPool.Get()
@@ -239,21 +184,20 @@ func popAllMailDto() []*MailDto {
 			continue
 		}
 
-		var mailDto MailDto
+		var mailDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &mailDto)
 		if err != nil {
 			log.Errorf("json unmarshal MailDto: %s fail: %v", reply, err)
 			continue
 		}
-
-		ret = append(ret, &mailDto)
+		ret = append(ret, mailDto)
 	}
 
 	return ret
 }
 
-func popAllImDto() []*ImDto {
-	ret := []*ImDto{}
+func popAllImDto() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.Config().Redis.UserIMQueue
 
 	rc := g.RedisConnPool.Get()
@@ -272,14 +216,13 @@ func popAllImDto() []*ImDto {
 			continue
 		}
 
-		var imDto ImDto
+		var imDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &imDto)
 		if err != nil {
 			log.Errorf("json unmarshal imDto: %s fail: %v", reply, err)
 			continue
 		}
-
-		ret = append(ret, &imDto)
+		ret = append(ret, imDto)
 	}
 
 	return ret

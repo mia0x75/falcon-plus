@@ -63,6 +63,7 @@ func SessionChecking(c *gin.Context) (auth bool, err error) {
 	}
 
 	db := g.Con().Uic
+	db.DB().Ping()
 	var user uic.User
 	db.Where("name = ?", websessio.Name).Find(&user)
 	if user.ID == 0 {
@@ -82,6 +83,7 @@ func SessionChecking(c *gin.Context) (auth bool, err error) {
 
 func GetUser(c *gin.Context) (user uic.User, err error) {
 	db := g.Con().Uic
+	db.DB().Ping()
 	websession, getserr := GetSession(c)
 	if getserr != nil {
 		err = getserr

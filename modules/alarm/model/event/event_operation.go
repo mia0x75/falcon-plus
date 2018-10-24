@@ -45,6 +45,12 @@ func insertEvent(q orm.Ormer, eve *cmodel.Event) (res sql.Result, err error) {
 
 func InsertEvent(eve *cmodel.Event) {
 	q := orm.NewOrm()
+	db, err := orm.GetDB()
+	if err != nil {
+		log.Errorf("get database connection error:%v", err)
+	} else {
+		db.Ping()
+	}
 	var event []EventCases
 	q.Raw("select * from event_cases where id = ?", eve.Id).QueryRows(&event)
 	var sqlLog sql.Result

@@ -2,11 +2,9 @@ package redi
 
 import (
 	"encoding/json"
-	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
-	"github.com/open-falcon/falcon-plus/modules/alarm/model"
 )
 
 func lpush(queue, message string) {
@@ -18,74 +16,56 @@ func lpush(queue, message string) {
 	}
 }
 
-func WriteSmsModel(sms *model.Sms) {
-	if sms == nil {
+func WriteSms(content *g.AlarmDto) {
+	if content.Subscriber == nil {
+		return
+	}
+	if len(content.Subscriber) == 0 {
 		return
 	}
 
-	bs, err := json.Marshal(sms)
+	bs, err := json.Marshal(content)
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
-	log.Debugf("write sms to queue, sms:%v, queue:%s", sms, g.SMS_QUEUE_NAME)
+	log.Debugf("write sms to queue, sms:%v, queue:%s", content, g.SMS_QUEUE_NAME)
 	lpush(g.SMS_QUEUE_NAME, string(bs))
 }
 
-func WriteIMModel(im *model.IM) {
-	if im == nil {
+func WriteIM(content *g.AlarmDto) {
+	if content.Subscriber == nil {
+		return
+	}
+	if len(content.Subscriber) == 0 {
 		return
 	}
 
-	bs, err := json.Marshal(im)
+	bs, err := json.Marshal(content)
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
-	log.Debugf("write im to queue, im:%v, queue:%s", im, g.IM_QUEUE_NAME)
+	log.Debugf("write im to queue, im:%v, queue:%s", content, g.IM_QUEUE_NAME)
 	lpush(g.IM_QUEUE_NAME, string(bs))
 }
 
-func WriteMailModel(mail *model.Mail) {
-	if mail == nil {
+func WriteMail(content *g.AlarmDto) {
+	if content.Subscriber == nil {
+		return
+	}
+	if len(content.Subscriber) == 0 {
 		return
 	}
 
-	bs, err := json.Marshal(mail)
+	bs, err := json.Marshal(content)
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
-	log.Debugf("write mail to queue, mail:%v, queue:%s", mail, g.MAIL_QUEUE_NAME)
+	log.Debugf("write mail to queue, mail:%v, queue:%s", content, g.MAIL_QUEUE_NAME)
 	lpush(g.MAIL_QUEUE_NAME, string(bs))
-}
-
-func WriteSms(tos []string, content string) {
-	if len(tos) == 0 {
-		return
-	}
-
-	sms := &model.Sms{Tos: strings.Join(tos, ","), Content: content}
-	WriteSmsModel(sms)
-}
-
-func WriteIM(tos []string, content string) {
-	if len(tos) == 0 {
-		return
-	}
-
-	im := &model.IM{Tos: strings.Join(tos, ","), Content: content}
-	WriteIMModel(im)
-}
-
-func WriteMail(tos []string, subject, content string) {
-	if len(tos) == 0 {
-		return
-	}
-
-	mail := &model.Mail{Tos: strings.Join(tos, ","), Subject: subject, Content: content}
-	WriteMailModel(mail)
 }

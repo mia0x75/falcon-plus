@@ -6,11 +6,10 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/garyburd/redigo/redis"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
-	"github.com/open-falcon/falcon-plus/modules/alarm/model"
 )
 
-func PopAllSms() []*model.Sms {
-	ret := []*model.Sms{}
+func PopAllSms() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.SMS_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
@@ -29,21 +28,21 @@ func PopAllSms() []*model.Sms {
 			continue
 		}
 
-		var sms model.Sms
+		var sms *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &sms)
 		if err != nil {
 			log.Error(err, reply)
 			continue
 		}
 
-		ret = append(ret, &sms)
+		ret = append(ret, sms)
 	}
 
 	return ret
 }
 
-func PopAllIM() []*model.IM {
-	ret := []*model.IM{}
+func PopAllIM() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.IM_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
@@ -62,21 +61,21 @@ func PopAllIM() []*model.IM {
 			continue
 		}
 
-		var im model.IM
+		var im *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &im)
 		if err != nil {
 			log.Error(err, reply)
 			continue
 		}
 
-		ret = append(ret, &im)
+		ret = append(ret, im)
 	}
 
 	return ret
 }
 
-func PopAllMail() []*model.Mail {
-	ret := []*model.Mail{}
+func PopAllMail() []*g.AlarmDto {
+	var ret []*g.AlarmDto
 	queue := g.MAIL_QUEUE_NAME
 
 	rc := g.RedisConnPool.Get()
@@ -95,14 +94,13 @@ func PopAllMail() []*model.Mail {
 			continue
 		}
 
-		var mail model.Mail
+		var mail *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &mail)
 		if err != nil {
 			log.Error(err, reply)
 			continue
 		}
-
-		ret = append(ret, &mail)
+		ret = append(ret, mail)
 	}
 
 	return ret
