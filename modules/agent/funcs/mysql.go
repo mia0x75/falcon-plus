@@ -332,7 +332,7 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 			g.Config().Collector.MySQL.Port))
 
 	if err != nil {
-		log.Fatalf("Connect to mysql error: %s\n", err.Error())
+		log.Warnf("connect to mysql error:%v", err)
 		return nil
 	}
 	defer db.Close()
@@ -340,28 +340,28 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 	// Get slave status and set IsSlave global var
 	slaveState, err := ShowSlaveStatus(db)
 	if err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Warnf("show slave status error:%v", err)
 		return
 	}
 	Tag = GetTag()
 
 	globalStatus, err := ShowGlobalStatus(db)
 	if err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Warnf("show status error:%v", err)
 		return
 	}
 	L = append(L, globalStatus...)
 
 	globalVars, err := ShowGlobalVariables(db)
 	if err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Warnf("show variables error:%v", err)
 		return
 	}
 	L = append(L, globalVars...)
 
 	innodbState, err := ShowInnodbStatus(db)
 	if err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Warnf("show innodb status error:%v", err)
 		return
 	}
 	L = append(L, innodbState...)
@@ -369,7 +369,7 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 
 	binaryLogStatus, err := ShowBinaryLogs(db)
 	if err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Warnf("show bin log error:%v", err)
 		return
 	}
 	L = append(L, binaryLogStatus...)
@@ -600,42 +600,54 @@ func parseInnodbSection(
 	switch section {
 	case "TRANSACTIONS":
 		if strings.Contains(row, "ACTIVE") {
-			tmpLongTransactionTime, err := strconv.Atoi(
-				strings.Split(
-					strings.Split(
-						row, "ACTIVE ")[1],
-					" sec")[0])
-			if err != nil {
-				return err
-			}
-			if tmpLongTransactionTime > *longTranTime {
-				*longTranTime = tmpLongTransactionTime
+			// TRANSACTION 97779198, ACTIVE 2 sec
+			// TRANSACTION 97779198, ACTIVE (PREPARED) 2 sec
+			// TRANSACTION 97869332, ACTIVE (PREPARED) 0 sec committing
+			matches := regexp.MustCompile(`^---TRANSACTION\s+(?P<T>\d+),\s+ACTIVE\s+(?:\(PREPARED\)\s+){0,1}(?P<D>\d+)\s+sec`).FindStringSubmatch(row)
+			if len(matches) == 3 {
+				tmpLongTransactionTime, _ := strconv.Atoi(matches[2])
+				if tmpLongTransactionTime > *longTranTime {
+					*longTranTime = tmpLongTransactionTime
+				}
 			}
 		}
 		if strings.Contains(row, "History list length") {
 			hisListLengthStr := strings.Split(row, "length ")[1]
-			hisListLength, _ := strconv.Atoi(hisListLengthStr)
-			HistoryListLength := NewMetric("History_list_length")
-			HistoryListLength.Value = hisListLength
-			*pdata = append(*pdata, HistoryListLength)
+			hisListLength, err := strconv.Atoi(hisListLengthStr)
+			if err != nil {
+				log.Printf("extract history list length from %s error:%v", row, err)
+			} else {
+				HistoryListLength := NewMetric("History_list_length")
+				HistoryListLength.Value = hisListLength
+				*pdata = append(*pdata, HistoryListLength)
+			}
 		}
 	case "SEMAPHORES":
 		matches := regexp.MustCompile(`^Mutex spin waits\s+(\d+),\s+rounds\s+(\d+),\s+OS waits\s+(\d+)`).FindStringSubmatch(row)
 		if len(matches) == 4 {
-			spinWaits, _ := strconv.Atoi(matches[1])
-			innodbMutexSpinWaits := NewMetric("Innodb_mutex_spin_waits")
-			innodbMutexSpinWaits.Value = spinWaits
-			*pdata = append(*pdata, innodbMutexSpinWaits)
+			if spinWaits, err := strconv.Atoi(matches[1]); err != nil {
+				log.Printf("extract spin waits from %s error:%v", matches[1], err)
+			} else {
+				innodbMutexSpinWaits := NewMetric("Innodb_mutex_spin_waits")
+				innodbMutexSpinWaits.Value = spinWaits
+				*pdata = append(*pdata, innodbMutexSpinWaits)
+			}
 
-			spinRounds, _ := strconv.Atoi(matches[2])
-			InnodbMutexSpinRounds := NewMetric("Innodb_mutex_spin_rounds")
-			InnodbMutexSpinRounds.Value = spinRounds
-			*pdata = append(*pdata, InnodbMutexSpinRounds)
+			if spinRounds, err := strconv.Atoi(matches[2]); err != nil {
+				log.Printf("extract spin rounds from %s error:%v", matches[2], err)
+			} else {
+				InnodbMutexSpinRounds := NewMetric("Innodb_mutex_spin_rounds")
+				InnodbMutexSpinRounds.Value = spinRounds
+				*pdata = append(*pdata, InnodbMutexSpinRounds)
+			}
 
-			osWaits, _ := strconv.Atoi(matches[3])
-			InnodbMutexOsWaits := NewMetric("Innodb_mutex_os_waits")
-			InnodbMutexOsWaits.Value = osWaits
-			*pdata = append(*pdata, InnodbMutexOsWaits)
+			if osWaits, err := strconv.Atoi(matches[3]); err != nil {
+				log.Printf("extract os waits from %s error:%v", matches[3], err)
+			} else {
+				InnodbMutexOsWaits := NewMetric("Innodb_mutex_os_waits")
+				InnodbMutexOsWaits.Value = osWaits
+				*pdata = append(*pdata, InnodbMutexOsWaits)
+			}
 		}
 	}
 	return nil
