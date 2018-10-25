@@ -1,9 +1,9 @@
 package monitor
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
-	"net/url"
+	"strings"
 	"sync"
 	"time"
 
@@ -18,34 +18,55 @@ var (
 	lock       = new(sync.Mutex)
 	cronHealth = cron.New()
 	alarmCache = nmap.NewSafeMap()
+	clusters   map[string]*HostInfo
 )
 
 type State struct {
-	sync.RWMutex
-	Queue  []string
-	Name   string
-	Host   string
-	Errors int32
+	sync.Mutex
+	Name     string
+	Endpoint string
+	Errors   int32
 }
 
-// AlarmItem Struct
-type Alarm struct {
-	Host      string
-	Name      string
-	Type      string
-	Count     int32
-	Timestamp int64
+// AlarmDto Struct
+type AlarmDto struct {
+	Status     string
+	Priority   int
+	Endpoint   string
+	Metric     string
+	Tags       string
+	Func       string
+	LeftValue  string
+	Operator   string
+	RightValue string
+	Note       string
+	Max        int
+	Current    int
+	Timestamp  string
+	Link       string
+	Occur      int
+	Subscriber []string
+	Uic        string
 }
 
-func (a *Alarm) String() string {
-	switch a.Type {
-	case "err":
-		return fmt.Sprintf("PROBLEM\nP1\n%s\n%d\n%s", a.Name, a.Count, a.Host)
-	case "ok":
-		return fmt.Sprintf("OK\nP3\n%s\n%d\n%s", a.Name, a.Count, a.Host)
-	default:
-		return ""
-	}
+func (this *AlarmDto) String() string {
+	return fmt.Sprintf(
+		"<Content:%s, Priority:P%d, Status:%s, Value:%s, Operator:%s Threshold:%s, Occur:%d, Uic:%s, Tos:%s>",
+		this.Note,
+		this.Priority,
+		this.Status,
+		this.LeftValue,
+		this.Operator,
+		this.RightValue,
+		this.Occur,
+		this.Uic,
+		this.Subscriber,
+	)
+}
+
+type HostInfo struct {
+	Endpoint string
+	Tag      string
 }
 
 var HealthState map[string]*State
@@ -63,12 +84,49 @@ func Start() {
 		return
 	}
 
+	initClusters()
 	HealthState = make(map[string]*State, 5)
 
 	go startMonitor()
 	go startJudge()
 
 	log.Println("monitor.Start, ok")
+}
+
+func initClusters() {
+	clusters = make(map[string]*HostInfo)
+	for k, v := range g.Config().Monitor.Hosts.Modules {
+		clusters[k] = &HostInfo{
+			Endpoint: v,
+			Tag:      k,
+		}
+	}
+	for _, node := range g.Config().Monitor.Hosts.Agents {
+		clusters[fmt.Sprintf("agent-%s", node)] = &HostInfo{
+			Endpoint: node,
+			Tag:      "agent",
+		}
+	}
+}
+
+func createAlarm(endpoint, status, tag string, tos []string) *AlarmDto {
+	return &AlarmDto{
+		Status:     status,
+		Priority:   0,
+		Endpoint:   endpoint,
+		Metric:     "health.ok",
+		Tags:       tag,
+		Func:       "all(#3)",
+		LeftValue:  "0",
+		Operator:   "==",
+		RightValue: "0",
+		Note:       "组件/health存活检查",
+		Max:        3,
+		Current:    1,
+		Timestamp:  time.Now().Format("2006-01-02 15:04:05"),
+		Link:       "",
+		Subscriber: []string{"tos"},
+	}
 }
 
 func startMonitor() {
@@ -78,61 +136,46 @@ func startMonitor() {
 
 // monitor
 func monitor() {
-	clusters := g.Config().Monitor.Hosts.Modules
-	for _, node := range g.Config().Monitor.Hosts.Agents {
-		clusters[fmt.Sprintf("agent-%s", node)] = node
+	if clusters == nil {
+		return
 	}
-	for name, host := range clusters {
-		go func(name, host string) {
-			var state *State
-			var found bool
+	for _, h := range clusters {
+		go func(tag, endpoint string) {
 			lock.Lock()
-			if state, found = HealthState[host]; !found {
-				state = &State{Errors: 0, Name: name, Host: host}
-				state.Queue = []string{"ok", "ok"}
-				HealthState[host] = state
+			defer lock.Unlock()
+			var state *State
+			if s, ok := HealthState[endpoint]; !ok {
+				s = &State{Errors: 0, Name: tag, Endpoint: endpoint}
+				HealthState[endpoint] = s
+				state = s
+			} else {
+				state = s
 			}
-			lock.Unlock()
-			url := fmt.Sprintf(g.Config().Monitor.Pattern, host)
-			client := cutils.NewHttp(url)
-			client.SetUserAgent("monitor.get")
-			body, err := client.Get()
+			host := strings.Split(endpoint, ":")[0]
+			url := fmt.Sprintf(g.Config().Monitor.Pattern, endpoint)
+			body, err := cutils.Get(url)
+			state.Lock()
+			defer state.Unlock()
 			if !(err == nil && len(body) >= 2 && string(body[:2]) == "ok") {
-				state.Queue = append(state.Queue[1:], "err")
-				state.RLock()
 				state.Errors++
 				if state.Errors >= 3 {
 					// raise problem
-					alarm := &Alarm{
-						Host:      host,
-						Name:      name,
-						Type:      "err",
-						Count:     state.Errors,
-						Timestamp: time.Now().Unix(),
-					}
-					alarmCache.Put(host, alarm)
+					alarm := createAlarm(host, "PROBLEM", fmt.Sprintf("module=%s", tag), nil)
+					alarm.Occur = int(state.Errors)
+					alarmCache.Put(endpoint, alarm)
 				}
-				state.RUnlock()
-				log.Errorf("%s, get health error.", host)
+				log.Errorf("%s, get health error.", endpoint)
 			} else {
-				state.Queue = append(state.Queue[1:], "ok")
-				state.RLock()
 				if state.Errors >= 3 {
 					// problem restore
-					alarm := &Alarm{
-						Host:      host,
-						Name:      name,
-						Type:      "ok",
-						Count:     state.Errors,
-						Timestamp: time.Now().Unix(),
-					}
-					alarmCache.Put(host, alarm)
+					alarm := createAlarm(host, "OK", fmt.Sprintf("module=%s", tag), nil)
+					alarm.Occur = 0
+					alarmCache.Put(endpoint, alarm)
 				}
 				state.Errors = 0
-				state.RUnlock()
-				log.Infof("%s, get health ok.", host)
+				log.Infof("%s, get health ok.", endpoint)
 			}
-		}(name, host)
+		}(h.Tag, h.Endpoint)
 	}
 }
 
@@ -144,8 +187,6 @@ func startJudge() {
 
 	d := time.Duration(10) * time.Second
 	for range time.Tick(d) {
-		var content bytes.Buffer
-
 		keys := alarmCache.Keys()
 		if len(keys) == 0 {
 			continue
@@ -155,27 +196,17 @@ func startJudge() {
 			if !found {
 				continue
 			}
-			content.WriteString(item.(*Alarm).String() + "\n")
-		}
-
-		if content.Len() < 6 {
-			return
-		}
-		params := url.Values{}
-		alarmUrl, _ := url.Parse(g.Config().Monitor.Alarm.Url)
-		params.Add("tos", "tos")
-		params.Add("subject", "subject")
-		params.Add("content", content.String())
-		params.Add("user", "exporter")
-		alarmUrl.RawQuery = params.Encode()
-		client := cutils.NewHttp(alarmUrl.String())
-		client.SetUserAgent("monitor.alert")
-		_, err := client.Post(nil)
-		if err != nil {
-			log.Infof("alarm send request for health check error, %s\n", err.Error())
-		} else {
-			log.Info("alarm send request for health check success\n")
-			// statistics
+			if data, err := json.Marshal(item.(*AlarmDto)); err != nil {
+				log.Infof("json marshal error:%v", err)
+			} else {
+				_, err := cutils.Post(g.Config().Monitor.Alarm.Url, data)
+				if err != nil {
+					log.Infof("alarm send request for health check error:%v", err)
+				} else {
+					log.Info("alarm send request for health check success\n")
+					// statistics
+				}
+			}
 		}
 	}
 }
