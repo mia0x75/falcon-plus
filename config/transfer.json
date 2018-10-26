@@ -2,7 +2,7 @@
 	"log": {
 		"level": "info"
 	},
-	"min_step": 30,
+	"min_step": 5,
 	"http": {
 		"enabled": true,
 		"listen": "%%TRANSFER_HTTP%%"
