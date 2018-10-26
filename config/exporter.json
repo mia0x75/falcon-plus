@@ -11,6 +11,7 @@
 		"addr": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
 		"max_idle": 4,
 		"max_connections": 8,
+		"wait_timeout": 30,
 		"auto_delete": false,
 		"cluster": {
 			"test.hostname01:6071": "0 0 0 ? * 0-5",

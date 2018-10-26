@@ -28,14 +28,14 @@ type SocketConfig struct {
 }
 
 type TransferConfig struct {
-	Enabled     bool              `json:"enabled"`
-	Batch       int32             `json:"batch"`
-	Retry       int32             `json:"retry"`
-	ConnTimeout int32             `json:"connect_timeout"`
-	CallTimeout int32             `json:"execute_timeout"`
-	MaxConns    int32             `json:"max_connections"`
-	MaxIdle     int32             `json:"max_idle"`
-	Cluster     map[string]string `json:"cluster"`
+	Enabled        bool              `json:"enabled"`
+	Batch          int32             `json:"batch"`
+	Retry          int32             `json:"retry"`
+	ConnectTimeout int32             `json:"connect_timeout"`
+	ExecuteTimeout int32             `json:"execute_timeout"`
+	MaxConnections int32             `json:"max_connections"`
+	MaxIdle        int32             `json:"max_idle"`
+	Cluster        map[string]string `json:"cluster"`
 }
 
 type LogConfig struct {

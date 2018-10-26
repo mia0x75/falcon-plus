@@ -66,6 +66,6 @@ func initConnPools() {
 	}
 
 	// init conn pools
-	SenderConnPools = cpools.CreateSafeJsonrpcConnPools(int(cfg.Transfer.MaxConns), int(cfg.Transfer.MaxIdle),
-		int(cfg.Transfer.ConnTimeout), int(cfg.Transfer.CallTimeout), addrs)
+	SenderConnPools = cpools.CreateSafeJsonrpcConnPools(int(cfg.Transfer.MaxConnections), int(cfg.Transfer.MaxIdle),
+		int(cfg.Transfer.ConnectTimeout), int(cfg.Transfer.ExecuteTimeout), addrs)
 }

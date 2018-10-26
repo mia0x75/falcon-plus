@@ -18,6 +18,7 @@ type IndexConfig struct {
 	Addr           string            `json:"addr"`
 	MaxIdle        int               `json:"max_idle"`
 	MaxConnections int               `json:"max_connections"`
+	WaitTimeout    int               `json:"wait_timeout"`
 	AutoDelete     bool              `json:"auto_delete"`
 	Cluster        map[string]string `json:"cluster"`
 }

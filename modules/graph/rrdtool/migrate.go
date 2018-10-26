@@ -227,7 +227,7 @@ func query_data(client **rpc.Client, addr string,
 
 	for i = 0; i < 3; i++ {
 		err = rpc_call(*client, "Graph.Query", args, resp,
-			time.Duration(g.Config().CallTimeout)*time.Millisecond)
+			time.Duration(g.Config().ExecuteTimeout)*time.Millisecond)
 
 		if err == nil {
 			break
@@ -264,7 +264,7 @@ func send_data(client **rpc.Client, key string, addr string) error {
 
 	for i = 0; i < 3; i++ {
 		err = rpc_call(*client, "Graph.Send", items, resp,
-			time.Duration(cfg.CallTimeout)*time.Millisecond)
+			time.Duration(cfg.ExecuteTimeout)*time.Millisecond)
 
 		if err == nil {
 			goto out
@@ -307,7 +307,7 @@ func fetch_rrd(client **rpc.Client, key string, addr string) error {
 
 	for i = 0; i < 3; i++ {
 		err = rpc_call(*client, "Graph.GetRrd", key, &rrdfile,
-			time.Duration(cfg.CallTimeout)*time.Millisecond)
+			time.Duration(cfg.ExecuteTimeout)*time.Millisecond)
 
 		if err == nil {
 			done := make(chan error, 1)

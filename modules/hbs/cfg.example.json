@@ -5,7 +5,8 @@
 	"database": {
 		"addr": "root:@tcp(127.0.0.1:3306)/portal?loc=Local&parseTime=true",
 		"max_connections": 20,
-		"max_idle": 10
+		"max_idle": 10,
+		"wait_timeout": 30
 	},
 	"hosts": "",
 	"listen": ":6030",

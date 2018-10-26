@@ -33,9 +33,10 @@ type RRDConfig struct {
 }
 
 type DatabaseConfig struct {
-	Addr     string `json:"addr"`
-	MaxIdle  int    `json:"max_idle"`
-	MaxConns int    `json:"max_connections"`
+	Addr           string `json:"addr"`
+	MaxIdle        int    `json:"max_idle"`
+	MaxConnections int    `json:"max_connections"`
+	WaitTimeout    int    `json:"wait_timeout"`
 }
 
 type LogConfig struct {
@@ -49,7 +50,7 @@ type GlobalConfig struct {
 	Rpc            *RpcConfig      `json:"rpc"`
 	RRD            *RRDConfig      `json:"rrd"`
 	Database       *DatabaseConfig `json:"database"`
-	CallTimeout    int32           `json:"execute_timeout"`
+	ExecuteTimeout int32           `json:"execute_timeout"`
 	IOWorkerNum    int             `json:"io_workers"`
 	FirstBytesSize int
 	Migrate        struct {

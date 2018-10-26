@@ -18,20 +18,21 @@ type LogConfig struct {
 }
 
 type DatabaseConfig struct {
-	Addr     string `json:"addr"`
-	MaxIdle  int    `json:"max_idle"`
-	MaxConns int    `json:"max_connections"`
+	Addr           string `json:"addr"`
+	MaxIdle        int    `json:"max_idle"`
+	MaxConnections int    `json:"max_connections"`
+	WaitTimeout    int    `json:"wait_timeout"`
 }
 
 type GlobalConfig struct {
-	Log       *LogConfig      `json:"log"`
-	Hosts     string          `json:"hosts"`
-	Database  *DatabaseConfig `json:"database"`
-	MaxConns  int             `json:"max_connections"`
-	MaxIdle   int             `json:"max_idle"`
-	Listen    string          `json:"listen"`
-	Trustable []string        `json:"trustable"`
-	Http      *HttpConfig     `json:"http"`
+	Log            *LogConfig      `json:"log"`
+	Hosts          string          `json:"hosts"`
+	Database       *DatabaseConfig `json:"database"`
+	MaxConnections int             `json:"max_connections"`
+	MaxIdle        int             `json:"max_idle"`
+	Listen         string          `json:"listen"`
+	Trustable      []string        `json:"trustable"`
+	Http           *HttpConfig     `json:"http"`
 }
 
 var (

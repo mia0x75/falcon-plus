@@ -15,14 +15,14 @@ import (
 
 func startSendTasks() {
 	cfg := g.Config()
-	concurrent := cfg.Transfer.MaxConns * int32(len(cfg.Transfer.Cluster))
+	concurrent := cfg.Transfer.MaxConnections * int32(len(cfg.Transfer.Cluster))
 	go forward2TransferTask(SenderQueue, concurrent)
 }
 
 func forward2TransferTask(Q *nlist.SafeListLimited, concurrent int32) {
 	cfg := g.Config()
 	batch := int(cfg.Transfer.Batch)
-	maxConns := int64(cfg.Transfer.MaxConns)
+	maxConns := int64(cfg.Transfer.MaxConnections)
 	retry := int(cfg.Transfer.Retry)
 	if retry < 1 {
 		retry = 1

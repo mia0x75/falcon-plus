@@ -17,6 +17,7 @@ type DatabaseConfig struct {
 	Addr           string `json:"addr"`
 	MaxIdle        int    `json:"max_idle"`
 	MaxConnections int    `json:"max_connections"`
+	WaitTimeout    int    `json:"wait_timeout"`
 	Ids            []int  `json:"ids"`
 	Interval       int64  `json:"interval"`
 }

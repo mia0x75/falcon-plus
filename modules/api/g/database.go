@@ -3,6 +3,7 @@ package g
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -42,6 +43,7 @@ func InitDB() (err error) {
 	portald.SingularTable(true)
 	portald.DB().SetMaxIdleConns(Config().Databases.Portal.MaxIdle)
 	portald.DB().SetMaxOpenConns(Config().Databases.Portal.MaxConnections)
+	portald.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Portal.WaitTimeout) * time.Second)
 	dbp.Falcon = portald
 
 	var g *sql.DB
@@ -53,6 +55,7 @@ func InitDB() (err error) {
 	graphd.SingularTable(true)
 	graphd.DB().SetMaxIdleConns(Config().Databases.Graph.MaxIdle)
 	graphd.DB().SetMaxOpenConns(Config().Databases.Graph.MaxConnections)
+	graphd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Graph.WaitTimeout) * time.Second)
 	dbp.Graph = graphd
 
 	var u *sql.DB
@@ -64,6 +67,7 @@ func InitDB() (err error) {
 	uicd.SingularTable(true)
 	uicd.DB().SetMaxIdleConns(Config().Databases.Uic.MaxIdle)
 	uicd.DB().SetMaxOpenConns(Config().Databases.Uic.MaxConnections)
+	uicd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Uic.WaitTimeout) * time.Second)
 	dbp.Uic = uicd
 
 	var d *sql.DB
@@ -75,6 +79,7 @@ func InitDB() (err error) {
 	dashd.SingularTable(true)
 	dashd.DB().SetMaxIdleConns(Config().Databases.Dashboard.MaxIdle)
 	dashd.DB().SetMaxOpenConns(Config().Databases.Dashboard.MaxConnections)
+	dashd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Dashboard.WaitTimeout) * time.Second)
 	dbp.Dashboard = dashd
 
 	var alm *sql.DB
@@ -86,6 +91,7 @@ func InitDB() (err error) {
 	almd.SingularTable(true)
 	almd.DB().SetMaxIdleConns(Config().Databases.Alarms.MaxIdle)
 	almd.DB().SetMaxOpenConns(Config().Databases.Alarms.MaxConnections)
+	almd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Alarms.WaitTimeout) * time.Second)
 	dbp.Alarm = almd
 
 	return

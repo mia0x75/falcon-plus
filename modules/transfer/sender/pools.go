@@ -14,12 +14,12 @@ func initConnPools() {
 	for _, instance := range cfg.Judge.Cluster {
 		judgeInstances.Add(instance)
 	}
-	JudgeConnPools = cpools.CreateSafeRpcConnPools(cfg.Judge.MaxConns, cfg.Judge.MaxIdle,
-		cfg.Judge.ConnTimeout, cfg.Judge.CallTimeout, judgeInstances.ToSlice())
+	JudgeConnPools = cpools.CreateSafeRpcConnPools(cfg.Judge.MaxConnections, cfg.Judge.MaxIdle,
+		cfg.Judge.ConnectTimeout, cfg.Judge.ExecuteTimeout, judgeInstances.ToSlice())
 
 	// tsdb
 	if cfg.Tsdb.Enabled {
-		TsdbConnPoolHelper = cpools.NewTsdbConnPoolHelper(cfg.Tsdb.Address, cfg.Tsdb.MaxConns, cfg.Tsdb.MaxIdle, cfg.Tsdb.ConnTimeout, cfg.Tsdb.CallTimeout)
+		TsdbConnPoolHelper = cpools.NewTsdbConnPoolHelper(cfg.Tsdb.Address, cfg.Tsdb.MaxConnections, cfg.Tsdb.MaxIdle, cfg.Tsdb.ConnectTimeout, cfg.Tsdb.ExecuteTimeout)
 	}
 
 	// graph
@@ -29,8 +29,8 @@ func initConnPools() {
 			graphInstances.Add(addr)
 		}
 	}
-	GraphConnPools = cpools.CreateSafeRpcConnPools(cfg.Graph.MaxConns, cfg.Graph.MaxIdle,
-		cfg.Graph.ConnTimeout, cfg.Graph.CallTimeout, graphInstances.ToSlice())
+	GraphConnPools = cpools.CreateSafeRpcConnPools(cfg.Graph.MaxConnections, cfg.Graph.MaxIdle,
+		cfg.Graph.ConnectTimeout, cfg.Graph.ExecuteTimeout, graphInstances.ToSlice())
 
 }
 

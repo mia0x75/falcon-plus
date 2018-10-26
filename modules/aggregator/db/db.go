@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
@@ -18,6 +19,7 @@ func InitDB() (err error) {
 
 	DB.SetMaxIdleConns(g.Config().Database.MaxIdle)
 	DB.SetMaxOpenConns(g.Config().Database.MaxConnections)
+	DB.SetConnMaxLifetime(time.Duration(g.Config().Database.WaitTimeout) * time.Second)
 
 	err = DB.Ping()
 	if err != nil {

@@ -16,7 +16,8 @@
 	"database": {
 		"addr": "root:@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
 		"max_idle": 4,
-		"max_connections": 8
+		"max_connections": 8,
+		"wait_timeout": 30
 	},
 	"execute_timeout": 5000,
 	"io_workers": 64,
