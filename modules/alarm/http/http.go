@@ -1,6 +1,7 @@
 package http
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
@@ -28,6 +29,8 @@ func startHttpServer() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()
+	//start gin server
+	log.Debugf("will start with port:%v", addr)
 
 	SetupRoutes()
 
