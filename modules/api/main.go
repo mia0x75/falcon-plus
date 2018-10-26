@@ -32,14 +32,13 @@ func main() {
 	g.ParseConfig(*cfg)
 	g.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
+		log.Fatalln("open db fail:", err)
 		os.Exit(0)
 	}
 
 	rpc.Start()
 	graph.Start()
 	http.Start()
-
-	log.Infoln("service ready ...")
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

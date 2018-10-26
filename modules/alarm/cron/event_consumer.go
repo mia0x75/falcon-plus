@@ -35,7 +35,6 @@ func consumeHighEvents(event *cmodel.Event, action *api.Action) {
 	}
 
 	phones, mails, ims := api.ParseTeams(action.Uic)
-	log.Printf("phones:%s, mails:%s, ims:%s", phones, mails, ims)
 	// <=P2 才发送短信
 	if event.Priority() < 3 {
 		if len(phones) > 0 {

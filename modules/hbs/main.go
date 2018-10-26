@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
@@ -36,8 +35,6 @@ func main() {
 
 	http.Start()
 	rpc.Start()
-
-	log.Infoln("service ready ...")
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

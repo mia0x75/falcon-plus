@@ -88,7 +88,5 @@ func main() {
 	http.Start()
 	cron.CleanCache()
 
-	log.Infoln("service ready ...")
-
 	start_signal(os.Getpid(), g.Config())
 }

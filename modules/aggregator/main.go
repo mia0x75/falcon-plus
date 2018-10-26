@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/common/sdk/sender"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/cron"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
@@ -45,8 +44,6 @@ func main() {
 	sender.PostPushUrl = g.Config().Api.Agent
 	// sender
 	sender.StartSender()
-
-	log.Infoln("service ready ...")
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

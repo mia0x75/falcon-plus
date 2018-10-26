@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/open-falcon/falcon-plus/modules/agent/cron"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
@@ -34,7 +33,6 @@ func main() {
 
 	g.ParseConfig(*cfg)
 
-	os.Setenv("FALCON_AGENT_RUNTIME", g.VERSION)
 	g.InitLog(g.Config().Log.Level)
 	g.InitLocalIp()
 	g.InitRpcClients()
@@ -49,11 +47,6 @@ func main() {
 	cron.Collect()
 
 	http.Start()
-
-	hostname, _ := g.Hostname()
-	log.Printf("hostname: %s", hostname)
-
-	log.Infoln("service ready ...")
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
