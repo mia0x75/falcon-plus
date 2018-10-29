@@ -1,6 +1,7 @@
 package funcs
 
 import (
+	"math"
 	"runtime"
 	"strconv"
 	"sync"
@@ -96,16 +97,16 @@ func CpuUsagesSummary() (cpuUsages *CpuUsages, switches uint64, prepared bool) {
 	} else {
 		invQuotient := 100.00 / float64(dt)
 
-		idle := float64(procStatHistory[0].Cpu.Idle-procStatHistory[1].Cpu.Idle) * invQuotient
-		busy := 100.0 - idle
-		user := float64(procStatHistory[0].Cpu.User-procStatHistory[1].Cpu.User) * invQuotient
-		nice := float64(procStatHistory[0].Cpu.Nice-procStatHistory[1].Cpu.Nice) * invQuotient
-		system := float64(procStatHistory[0].Cpu.System-procStatHistory[1].Cpu.System) * invQuotient
-		iowait := float64(procStatHistory[0].Cpu.Iowait-procStatHistory[1].Cpu.Iowait) * invQuotient
-		irq := float64(procStatHistory[0].Cpu.Irq-procStatHistory[1].Cpu.Irq) * invQuotient
-		softirq := float64(procStatHistory[0].Cpu.SoftIrq-procStatHistory[1].Cpu.SoftIrq) * invQuotient
-		steal := float64(procStatHistory[0].Cpu.Steal-procStatHistory[1].Cpu.Steal) * invQuotient
-		guest := float64(procStatHistory[0].Cpu.Guest-procStatHistory[1].Cpu.Guest) * invQuotient
+		user := math.Round(float64(procStatHistory[0].Cpu.User-procStatHistory[1].Cpu.User)*invQuotient*100) / 100
+		nice := math.Round(float64(procStatHistory[0].Cpu.Nice-procStatHistory[1].Cpu.Nice)*invQuotient*100) / 100
+		system := math.Round(float64(procStatHistory[0].Cpu.System-procStatHistory[1].Cpu.System)*invQuotient*100) / 100
+		iowait := math.Round(float64(procStatHistory[0].Cpu.Iowait-procStatHistory[1].Cpu.Iowait)*invQuotient*100) / 100
+		irq := math.Round(float64(procStatHistory[0].Cpu.Irq-procStatHistory[1].Cpu.Irq)*invQuotient*100) / 100
+		softirq := math.Round(float64(procStatHistory[0].Cpu.SoftIrq-procStatHistory[1].Cpu.SoftIrq)*invQuotient*100) / 100
+		steal := math.Round(float64(procStatHistory[0].Cpu.Steal-procStatHistory[1].Cpu.Steal)*invQuotient*100) / 100
+		guest := math.Round(float64(procStatHistory[0].Cpu.Guest-procStatHistory[1].Cpu.Guest)*invQuotient*100) / 100
+		busy := user + nice + system + iowait + irq + softirq + steal + guest
+		idle := 100.0 - busy
 
 		cpuUsages = &CpuUsages{
 			User:    user,
