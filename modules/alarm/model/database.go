@@ -21,7 +21,13 @@ func InitDB() {
 		log.Fatalln("open db fail:", err)
 	} else {
 		db.SetConnMaxLifetime(time.Duration(config.Database.WaitTimeout) * time.Second)
+
+		err = db.Ping()
+		if err != nil {
+			log.Fatalln("ping db fail:", err)
+		}
 	}
+
 	if cutils.IsDebug() {
 		orm.Debug = true
 	}

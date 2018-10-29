@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -44,6 +45,10 @@ func InitDB() (err error) {
 	portald.DB().SetMaxIdleConns(Config().Databases.Portal.MaxIdle)
 	portald.DB().SetMaxOpenConns(Config().Databases.Portal.MaxConnections)
 	portald.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Portal.WaitTimeout) * time.Second)
+	err = portald.DB().Ping()
+	if err != nil {
+		log.Fatalln("ping db fail:", err)
+	}
 	dbp.Falcon = portald
 
 	var g *sql.DB
@@ -56,6 +61,10 @@ func InitDB() (err error) {
 	graphd.DB().SetMaxIdleConns(Config().Databases.Graph.MaxIdle)
 	graphd.DB().SetMaxOpenConns(Config().Databases.Graph.MaxConnections)
 	graphd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Graph.WaitTimeout) * time.Second)
+	err = graphd.DB().Ping()
+	if err != nil {
+		log.Fatalln("ping db fail:", err)
+	}
 	dbp.Graph = graphd
 
 	var u *sql.DB
@@ -68,6 +77,10 @@ func InitDB() (err error) {
 	uicd.DB().SetMaxIdleConns(Config().Databases.Uic.MaxIdle)
 	uicd.DB().SetMaxOpenConns(Config().Databases.Uic.MaxConnections)
 	uicd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Uic.WaitTimeout) * time.Second)
+	err = uicd.DB().Ping()
+	if err != nil {
+		log.Fatalln("ping db fail:", err)
+	}
 	dbp.Uic = uicd
 
 	var d *sql.DB
@@ -80,6 +93,10 @@ func InitDB() (err error) {
 	dashd.DB().SetMaxIdleConns(Config().Databases.Dashboard.MaxIdle)
 	dashd.DB().SetMaxOpenConns(Config().Databases.Dashboard.MaxConnections)
 	dashd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Dashboard.WaitTimeout) * time.Second)
+	err = dashd.DB().Ping()
+	if err != nil {
+		log.Fatalln("ping db fail:", err)
+	}
 	dbp.Dashboard = dashd
 
 	var alm *sql.DB
@@ -92,6 +109,10 @@ func InitDB() (err error) {
 	almd.DB().SetMaxIdleConns(Config().Databases.Alarms.MaxIdle)
 	almd.DB().SetMaxOpenConns(Config().Databases.Alarms.MaxConnections)
 	almd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Alarms.WaitTimeout) * time.Second)
+	err = almd.DB().Ping()
+	if err != nil {
+		log.Fatalln("ping db fail:", err)
+	}
 	dbp.Alarm = almd
 
 	return

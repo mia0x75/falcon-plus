@@ -80,7 +80,6 @@ func GetEndpointFromCache(endpoint string) (int64, bool) {
 
 	// get from db
 	var id int64 = -1
-	g.DB.Ping()
 	err := g.DB.QueryRow("SELECT id FROM endpoint WHERE endpoint = ?", endpoint).Scan(&id)
 	if err != nil && err != sql.ErrNoRows {
 		log.Println("query endpoint id fail,", err)
@@ -115,7 +114,6 @@ func GetCounterFromCache(endpointId int64, counter string) (dsType string, step 
 	}
 
 	// get from db
-	g.DB.Ping()
 	err = g.DB.QueryRow("SELECT type, step FROM endpoint_counter WHERE endpoint_id = ? and counter = ?",
 		endpointId, counter).Scan(&dsType, &step)
 	if err != nil && err != sql.ErrNoRows {

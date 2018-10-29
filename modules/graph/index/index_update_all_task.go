@@ -138,7 +138,6 @@ func updateIndexFromOneItem(item *cmodel.GraphItem, conn *sql.DB) error {
 		VALUES (?, ?, NOW())
 		ON DUPLICATE KEY UPDATE ts=?, t_modify=NOW()`
 
-	conn.Ping()
 	_, err := conn.Exec(sqlStr, item.Endpoint, ts, ts)
 	if err != nil {
 		log.Error(err)
