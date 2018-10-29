@@ -43,10 +43,10 @@ func SetupRoutes() {
 }
 
 func Start() {
-	go startHttpServer()
+	go start()
 }
 
-func startHttpServer() {
+func start() {
 	if !cutils.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}

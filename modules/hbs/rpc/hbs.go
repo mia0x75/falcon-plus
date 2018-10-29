@@ -8,6 +8,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 )
 
+type Hbs int
+
 func (t *Hbs) GetExpressions(req cmodel.NullRpcRequest, reply *cmodel.ExpressionResponse) error {
 	reply.Expressions = cache.ExpressionCache.Get()
 	return nil

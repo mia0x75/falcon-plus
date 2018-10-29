@@ -9,26 +9,29 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
-func StartRpc() {
+func Start() {
+	go start()
+}
+
+func start() {
 	if !g.Config().Rpc.Enabled {
 		return
 	}
 
+	rpc.Register(new(Transfer))
+
 	addr := g.Config().Rpc.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("net.ResolveTCPAddr fail: %s", err)
+		log.Fatalf("rpc.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("listen %s fail: %s", addr, err)
+		log.Fatalf("rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Println("rpc listening", addr)
+		log.Printf("rpc listening %s", addr)
 	}
-
-	server := rpc.NewServer()
-	server.Register(new(Transfer))
 
 	for {
 		conn, err := listener.Accept()
@@ -36,6 +39,6 @@ func StartRpc() {
 			log.Println("listener.Accept occur error:", err)
 			continue
 		}
-		go server.ServeCodec(jsonrpc.NewServerCodec(conn))
+		go rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
 }

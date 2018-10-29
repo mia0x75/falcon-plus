@@ -7,7 +7,11 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
-func StartSocket() {
+func Start() {
+	go start()
+}
+
+func start() {
 	if !g.Config().Socket.Enabled {
 		return
 	}
@@ -15,14 +19,14 @@ func StartSocket() {
 	addr := g.Config().Socket.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("net.ResolveTCPAddr fail: %s", err)
+		log.Fatalf("socket.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("listen %s fail: %s", addr, err)
+		log.Fatalf("socket.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Println("socket listening", addr)
+		log.Printf("socket listening %s", addr)
 	}
 
 	defer listener.Close()

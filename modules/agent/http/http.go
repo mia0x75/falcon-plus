@@ -24,10 +24,10 @@ func SetupRoutes() {
 }
 
 func Start() {
-	go startHttpServer()
+	go start()
 }
 
-func startHttpServer() {
+func start() {
 	addr := g.Config().Http.Listen
 	if addr == "" {
 		return

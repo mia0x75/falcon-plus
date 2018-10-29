@@ -9,23 +9,28 @@ import (
 )
 
 func Start() {
+	go start()
+}
+
+func start() {
 	if !g.Config().Rpc.Enabled {
 		return
 	}
+
+	rpc.Register(new(Judge))
+
 	addr := g.Config().Rpc.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("net.ResolveTCPAddr fail: %s", err)
+		log.Fatalf("rpc.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("listen %s fail: %s", addr, err)
+		log.Fatalf("rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
 		log.Println("rpc listening", addr)
 	}
-
-	rpc.Register(new(Judge))
 
 	go func() {
 		for {

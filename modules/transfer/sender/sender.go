@@ -46,10 +46,10 @@ var (
 
 // 初始化数据发送服务, 在main函数中调用
 func Start() {
-	go startSender()
+	go start()
 }
 
-func startSender() {
+func start() {
 	// 初始化默认参数
 	MinStep = g.Config().MinStep
 	if MinStep < 1 {

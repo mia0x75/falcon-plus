@@ -6,6 +6,6 @@ import (
 )
 
 func Start() {
-	go rpc.StartRpc()
-	go socket.StartSocket()
+	rpc.Start()
+	socket.Start()
 }

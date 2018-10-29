@@ -46,20 +46,21 @@ func start() {
 		log.Println("rpc.Start warning, not enabled")
 		return
 	}
+
+	rpc.Register(new(Graph))
+
 	addr := g.Config().Rpc.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("rpc.Start error, net.ResolveTCPAddr failed, %s", err)
+		log.Fatalf("rpc.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("rpc.Start error, listen %s failed, %s", addr, err)
+		log.Fatalf("rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Println("rpc.Start ok, listening on", addr)
+		log.Printf("rpc listening %s", addr)
 	}
-
-	rpc.Register(new(Graph))
 
 	go func() {
 		var tempDelay time.Duration // how long to sleep on accept failure

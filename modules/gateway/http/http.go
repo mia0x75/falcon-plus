@@ -15,10 +15,10 @@ func SetupRoutes() {
 }
 
 func Start() {
-	go startHttpServer()
+	go start()
 }
 
-func startHttpServer() {
+func start() {
 	if !g.Config().Http.Enabled {
 		return
 	}

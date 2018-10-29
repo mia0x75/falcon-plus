@@ -12,6 +12,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
+type Agent int
+
 func (t *Agent) MinePlugins(args cmodel.AgentHeartbeatRequest, reply *cmodel.AgentPluginsResponse) error {
 	if args.Hostname == "" {
 		return nil
