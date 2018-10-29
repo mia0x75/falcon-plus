@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/cron"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/http"
@@ -30,7 +31,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
 	model.InitDB()
 	cron.InitSenderWorker()

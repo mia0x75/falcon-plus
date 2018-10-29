@@ -10,6 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc"
 	pfcg "github.com/mia0x75/gopfc/g"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
@@ -65,7 +66,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	// init db
 	if err := g.InitDB(); err != nil {
 		os.Exit(0)

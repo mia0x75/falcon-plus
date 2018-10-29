@@ -7,6 +7,7 @@ import (
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller/alarm"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller/dashboard_graph"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller/dashboard_screen"
@@ -46,7 +47,7 @@ func Start() {
 }
 
 func startHttpServer() {
-	if !g.IsDebug() {
+	if !cutils.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()

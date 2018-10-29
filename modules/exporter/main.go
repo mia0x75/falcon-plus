@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/collector"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/http"
@@ -32,7 +33,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	// proc
 	proc.Start()
 

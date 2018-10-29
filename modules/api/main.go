@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
 	"github.com/open-falcon/falcon-plus/modules/api/http"
@@ -30,7 +31,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
 		log.Fatalln("open db fail:", err)
 		os.Exit(0)

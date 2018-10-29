@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/judge/cron"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 	"github.com/open-falcon/falcon-plus/modules/judge/http"
@@ -25,7 +26,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
 	g.InitHbsClient()
 

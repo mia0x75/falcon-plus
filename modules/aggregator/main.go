@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/open-falcon/falcon-plus/common/sdk/sender"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/cron"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
@@ -31,7 +32,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	if err := db.InitDB(); err != nil {
 		os.Exit(0)
 	}
@@ -40,7 +41,7 @@ func main() {
 	cron.UpdateItems()
 
 	// sdk configuration
-	sender.Debug = g.IsDebug()
+	sender.Debug = cutils.IsDebug()
 	sender.PostPushUrl = g.Config().Api.Agent
 	// sender
 	sender.StartSender()

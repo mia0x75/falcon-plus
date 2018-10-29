@@ -10,6 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc"
 	pfcg "github.com/mia0x75/gopfc/g"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 	"github.com/open-falcon/falcon-plus/modules/gateway/http"
 	"github.com/open-falcon/falcon-plus/modules/gateway/receiver"
@@ -28,7 +29,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	if g.Config().PerfCounter != nil {
 		log.Debugf("pfc config: %v", g.Config().PerfCounter)
 		pfcg.PFCWithConfig(g.Config().PerfCounter)

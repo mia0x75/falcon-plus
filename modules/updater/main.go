@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/updater/cron"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/falcon-plus/modules/updater/http"
@@ -28,7 +29,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	g.InitGlobalVariables()
 
 	CheckDependency()

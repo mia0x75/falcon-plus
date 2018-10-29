@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/cron"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
@@ -33,7 +34,7 @@ func main() {
 
 	g.ParseConfig(*cfg)
 
-	g.InitLog(g.Config().Log.Level)
+	cutils.InitLog(g.Config().Log.Level)
 	g.InitLocalIp()
 	g.InitRpcClients()
 

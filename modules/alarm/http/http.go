@@ -3,6 +3,7 @@ package http
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
@@ -25,7 +26,7 @@ func startHttpServer() {
 		return
 	}
 
-	if !g.IsDebug() {
+	if !cutils.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()

@@ -7,6 +7,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 )
 
@@ -45,7 +46,7 @@ func startHttpServer() {
 		log.Println("http.Start warning, not enabled")
 		return
 	}
-	if !g.IsDebug() {
+	if !cutils.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()

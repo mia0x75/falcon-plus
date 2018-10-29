@@ -6,6 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/model/event"
 )
@@ -21,7 +22,7 @@ func InitDB() {
 	} else {
 		db.SetConnMaxLifetime(time.Duration(config.Database.WaitTimeout) * time.Second)
 	}
-	if g.IsDebug() {
+	if cutils.IsDebug() {
 		orm.Debug = true
 	}
 }
