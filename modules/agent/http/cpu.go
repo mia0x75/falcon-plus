@@ -21,50 +21,46 @@ func SetupCpuRoutes() {
 	})
 
 	http.HandleFunc("/page/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
-		if !funcs.CpuPrepared() {
+		cpuUsages, _, prepared := funcs.CpuUsagesSummary()
+		if !prepared {
 			cutils.RenderMsgJson(w, "not prepared")
 			return
 		}
 
-		idle := funcs.CpuIdle()
-		busy := 100.0 - idle
-
 		item := [10]string{
-			fmt.Sprintf("%.1f%%", idle),
-			fmt.Sprintf("%.1f%%", busy),
-			fmt.Sprintf("%.1f%%", funcs.CpuUser()),
-			fmt.Sprintf("%.1f%%", funcs.CpuNice()),
-			fmt.Sprintf("%.1f%%", funcs.CpuSystem()),
-			fmt.Sprintf("%.1f%%", funcs.CpuIowait()),
-			fmt.Sprintf("%.1f%%", funcs.CpuIrq()),
-			fmt.Sprintf("%.1f%%", funcs.CpuSoftIrq()),
-			fmt.Sprintf("%.1f%%", funcs.CpuSteal()),
-			fmt.Sprintf("%.1f%%", funcs.CpuGuest()),
+			fmt.Sprintf("%.1f%%", cpuUsages.Idle),
+			fmt.Sprintf("%.1f%%", cpuUsages.Busy),
+			fmt.Sprintf("%.1f%%", cpuUsages.User),
+			fmt.Sprintf("%.1f%%", cpuUsages.Nice),
+			fmt.Sprintf("%.1f%%", cpuUsages.System),
+			fmt.Sprintf("%.1f%%", cpuUsages.Iowait),
+			fmt.Sprintf("%.1f%%", cpuUsages.Irq),
+			fmt.Sprintf("%.1f%%", cpuUsages.SoftIrq),
+			fmt.Sprintf("%.1f%%", cpuUsages.Steal),
+			fmt.Sprintf("%.1f%%", cpuUsages.Guest),
 		}
 
 		cutils.RenderDataJson(w, [][10]string{item})
 	})
 
 	http.HandleFunc("/proc/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
-		if !funcs.CpuPrepared() {
+		cpuUsages, _, prepared := funcs.CpuUsagesSummary()
+		if !prepared {
 			cutils.RenderMsgJson(w, "not prepared")
 			return
 		}
 
-		idle := funcs.CpuIdle()
-		busy := 100.0 - idle
-
 		cutils.RenderDataJson(w, map[string]interface{}{
-			"idle":    idle,
-			"busy":    busy,
-			"user":    funcs.CpuUser(),
-			"nice":    funcs.CpuNice(),
-			"system":  funcs.CpuSystem(),
-			"iowait":  funcs.CpuIowait(),
-			"irq":     funcs.CpuIrq(),
-			"softirq": funcs.CpuSoftIrq(),
-			"steal":   funcs.CpuSteal(),
-			"guest":   funcs.CpuGuest(),
+			"idle":    fmt.Sprintf("%.1f%%", cpuUsages.Idle),
+			"busy":    fmt.Sprintf("%.1f%%", cpuUsages.Busy),
+			"user":    fmt.Sprintf("%.1f%%", cpuUsages.User),
+			"nice":    fmt.Sprintf("%.1f%%", cpuUsages.Nice),
+			"system":  fmt.Sprintf("%.1f%%", cpuUsages.System),
+			"iowait":  fmt.Sprintf("%.1f%%", cpuUsages.Iowait),
+			"irq":     fmt.Sprintf("%.1f%%", cpuUsages.Irq),
+			"softirq": fmt.Sprintf("%.1f%%", cpuUsages.SoftIrq),
+			"steal":   fmt.Sprintf("%.1f%%", cpuUsages.Steal),
+			"guest":   fmt.Sprintf("%.1f%%", cpuUsages.Guest),
 		})
 	})
 }
