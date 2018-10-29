@@ -31,7 +31,7 @@ func startHttpServer() {
 	}
 	routes = gin.Default()
 	//start gin server
-	log.Debugf("will start with port:%v", addr)
+	log.Printf("http listening %s", addr)
 
 	SetupRoutes()
 

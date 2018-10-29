@@ -61,9 +61,10 @@ func startHttpServer() {
 		routes.Use(yaag_gin.Document())
 	}
 	//start gin server
-	log.Debugf("will start with port:%v", g.Config().Listen)
+	addr := g.Config().Listen
+	log.Printf("http listening %s", addr)
 
 	SetupRoutes()
 
-	go routes.Run(g.Config().Listen)
+	go routes.Run(addr)
 }

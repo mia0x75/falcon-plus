@@ -22,9 +22,9 @@ func Start() {
 
 	l, e := net.Listen("tcp", addr)
 	if e != nil {
-		log.Fatalln("listen error:", e)
+		log.Fatalf("rpc listen error:%v", e)
 	} else {
-		log.Println("listening", addr)
+		log.Printf("rpc listening %s", addr)
 	}
 
 	go func() {

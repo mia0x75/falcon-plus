@@ -40,6 +40,6 @@ func startHttpServer() {
 
 	SetupRoutes()
 
-	log.Println("listening", addr)
+	log.Printf("http listening %s", addr)
 	log.Fatalln(s.ListenAndServe())
 }

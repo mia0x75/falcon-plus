@@ -57,5 +57,6 @@ func startHttpServer() {
 	if addr == "" {
 		return
 	}
+	log.Printf("http listening %s", addr)
 	go routes.Run(addr)
 }
