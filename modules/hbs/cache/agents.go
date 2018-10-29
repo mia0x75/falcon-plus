@@ -46,11 +46,12 @@ func (this *SafeAgents) Put(req *cmodel.AgentReportRequest) {
 		agentInfo.ReportRequest.IP != req.IP ||
 		agentInfo.ReportRequest.PluginVersion != req.PluginVersion {
 
-		this.Lock()
-		this.M[req.Hostname] = val
-		this.Unlock()
 		db.UpdateAgent(val)
 	}
+	// 更新hbs时间
+	this.Lock()
+	defer this.Unlock()
+	this.M[req.Hostname] = val
 }
 
 func (this *SafeAgents) Get(hostname string) (*cmodel.AgentUpdateInfo, bool) {
@@ -104,45 +105,3 @@ func deleteStaleAgents() {
 		}
 	}
 }
-
-// CheckAgentHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
-/*
-func CheckAgentHbs() {
-	d := time.Second * time.Duration(g.Config().AgentMaxIdle)
-	for range time.Tick(d) {
-		checkAgentHbs()
-	}
-}
-
-func checkAgentHbs() {
-	before := time.Now().Unix() - g.Config().AgentMaxIdle
-	keys := Agents.Keys()
-	count := len(keys)
-	if count == 0 {
-		return
-	}
-
-	for i := 0; i < count; i++ {
-		curr, _ := Agents.Get(keys[i])
-		if curr.LastUpdate < before {
-			key := cutils.PK(curr.ReportRequest.Hostname, "agent.alive", nil)
-			genMock(genTs(time.Now().Unix(), g.Config().AgentStep), key, curr.ReportRequest.Hostname)
-		}
-	}
-
-	sender.SendMockOnceAsync()
-}
-
-func genMock(ts int64, key, hostname string) {
-	sender.AddMock(key, hostname, "agent.alive", "", ts, "GAUGE", g.Config().AgentStep, -1)
-}
-
-//mock的数据,要前移1+个周期、防止覆盖正常值
-func genTs(nowTs int64, step int64) int64 {
-	if step < 1 {
-		step = 60
-	}
-
-	return nowTs - nowTs%step - 2*step
-}
-*/
