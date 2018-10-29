@@ -33,7 +33,7 @@ func GetHostGroups(c *gin.Context) {
 	var hostgroups []f.HostGroup
 	var dt *gorm.DB
 	if limit != -1 && page != -1 {
-		dt = db.Falcon.Raw(fmt.Sprintf("SELECT * from grp  where grp_name regexp '%s' limit %d,%d", q, page, limit)).Scan(&hostgroups)
+		dt = db.Falcon.Raw("SELECT * from grp where grp_name regexp ? limit ?,?", q, page, limit).Scan(&hostgroups)
 	} else {
 		dt = db.Falcon.Table("grp").Where("grp_name regexp ?", q).Find(&hostgroups)
 	}
@@ -366,8 +366,9 @@ func GetTemplateOfHostGroup(c *gin.Context) {
 		for _, t := range grpTpls {
 			tips = append(tips, t.TplID)
 		}
-		tipsStr, _ := u.ArrInt64ToString(tips)
-		db.Falcon.Where(fmt.Sprintf("id in (%s)", tipsStr)).Find(&Tpls)
+		if len(tips) > 0 {
+			db.Falcon.Where("id in (?)", tips).Find(&Tpls)
+		}
 	}
 	h.JSONR(c, map[string]interface{}{
 		"hostgroup": hostgroup,

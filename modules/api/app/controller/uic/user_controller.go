@@ -327,11 +327,12 @@ func GetUserTeams(c *gin.Context) {
 		tids = append(tids, ut.Tid)
 	}
 	teams := []uic.Team{}
-	tidsStr, _ := utils.ArrInt64ToString(tids)
-	dt = db.Uic.Table("team").Where(fmt.Sprintf("id in (%s)", tidsStr)).Find(&teams)
-	if dt.Error != nil {
-		h.JSONR(c, http.StatusExpectationFailed, dt.Error)
-		return
+	if len(tids) > 0 {
+		dt = db.Uic.Table("team").Where("id in (?)", tids).Find(&teams)
+		if dt.Error != nil {
+			h.JSONR(c, http.StatusExpectationFailed, dt.Error)
+			return
+		}
 	}
 	h.JSONR(c, map[string]interface{}{
 		"teams": teams,
@@ -485,8 +486,7 @@ func UserList(c *gin.Context) {
 	var user []uic.User
 	var dt *gorm.DB
 	if limit != -1 && page != -1 {
-		dt = db.Uic.Raw(
-			fmt.Sprintf("select * from user where name regexp '%s' limit %d,%d", q, page, limit)).Scan(&user)
+		dt = db.Uic.Raw("select * from user where name regexp ? limit ?,?", q, page, limit).Scan(&user)
 	} else {
 		dt = db.Uic.Table("user").Where("name regexp ?", q).Scan(&user)
 	}

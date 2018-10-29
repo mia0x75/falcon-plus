@@ -74,14 +74,13 @@ func GetNotesOfAlarm(c *gin.Context) {
 	}
 	filterCollector := inputs.collectFilters()
 	//for get correct table name
-	f := alm.EventNote{}
 	notes := []alm.EventNote{}
 	if inputs.Limit == 0 || inputs.Limit >= 50 {
 		inputs.Limit = 50
 	}
+	// TODO:
 	perparedSql := fmt.Sprintf(
-		"select id, event_caseId, note, case_id, status, timestamp, user_id from %s %s order by timestamp DESC limit %d,%d",
-		f.TableName(),
+		"select id, event_caseId, note, case_id, status, timestamp, user_id from event_note %s order by timestamp DESC limit %d,%d",
 		filterCollector,
 		inputs.Page,
 		inputs.Limit,

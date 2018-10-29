@@ -27,7 +27,7 @@ func GetNoDataList(c *gin.Context) {
 	var dt *gorm.DB
 	mockcfgs := []f.Mockcfg{}
 	if limit != -1 && page != -1 {
-		dt = db.Falcon.Raw(fmt.Sprintf("SELECT * from mockcfg limit %d,%d", page, limit)).Scan(&mockcfgs)
+		dt = db.Falcon.Raw("SELECT * from mockcfg limit ?,?", page, limit).Scan(&mockcfgs)
 	} else {
 		dt = db.Falcon.Find(&mockcfgs)
 	}

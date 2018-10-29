@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -33,17 +32,13 @@ func MapTake(list []interface{}, limit int) []interface{} {
 	return res
 }
 
-func ConverIntStringToList(eid string) (result string) {
-	for i, e := range strings.Split(eid, ",") {
+func ConverIntStringToArray(eid string) (result []int) {
+	for _, e := range strings.Split(eid, ",") {
 		v, err := strconv.Atoi(e)
 		if err != nil {
 			log.Debug(err.Error())
 		} else {
-			if i == 0 {
-				result = fmt.Sprintf("%d", v)
-			} else {
-				result = fmt.Sprintf("%s, %d", result, v)
-			}
+			result = append(result, v)
 		}
 	}
 	return

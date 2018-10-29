@@ -1,9 +1,6 @@
 package uic
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
@@ -30,18 +27,12 @@ func (this Team) Members() (users []User, err error) {
 	for _, t := range tmapping {
 		uids = append(uids, t.Uid)
 	}
-	//no user bind to team
-	if len(uids) == 0 {
-		return
-	}
-	uidstr, err := arrIntToString(uids)
-	if err != nil {
-		return
-	}
 
-	if dt := db.Uic.Select("name, id, cnname").Where(fmt.Sprintf("id in (%s)", uidstr)).Find(&users); dt.Error != nil {
-		err = dt.Error
-		return
+	if len(uids) > 0 {
+		if dt := db.Uic.Select("name, id, cnname").Where("id in (?)", uids).Find(&users); dt.Error != nil {
+			err = dt.Error
+			return
+		}
 	}
 	return
 }
@@ -54,21 +45,6 @@ func (this Team) GetCreatorName() (userName string, err error) {
 		err = dt.Error
 	} else {
 		userName = user.Name
-	}
-	return
-}
-
-func arrIntToString(arr []int64) (result string, err error) {
-	result = ""
-	for indx, a := range arr {
-		if indx == 0 {
-			result = fmt.Sprintf("%v", a)
-		} else {
-			result = fmt.Sprintf("%v,%v", result, a)
-		}
-	}
-	if result == "" {
-		err = errors.New(fmt.Sprintf("array is empty, err: %v", arr))
 	}
 	return
 }

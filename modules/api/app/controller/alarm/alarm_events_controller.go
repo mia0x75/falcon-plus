@@ -115,15 +115,14 @@ func AlarmLists(c *gin.Context) {
 	}
 	filterCollector := inputs.collectFilters()
 	//for get correct table name
-	f := alm.EventCases{}
 	cevens := []alm.EventCases{}
 	perparedSql := ""
+	step := 0
 	//if no specific, will give return first 2000 records
 	if inputs.Page == -1 {
 		if inputs.Limit >= 2000 || inputs.Limit == 0 {
 			inputs.Limit = 2000
 		}
-		perparedSql = fmt.Sprintf("select * from %s %s order by timestamp DESC limit %d", f.TableName(), filterCollector, inputs.Limit)
 	} else {
 		//set the max limit of each page
 		if inputs.Limit >= 50 {
@@ -133,10 +132,10 @@ func AlarmLists(c *gin.Context) {
 		// if page stands for step page
 		// {"page":0} for actual page 1
 		// step = page * limit
-		step := inputs.Page * inputs.Limit
-
-		perparedSql = fmt.Sprintf("select * from %s %s  order by timestamp DESC limit %d,%d", f.TableName(), filterCollector, step, inputs.Limit)
+		step = inputs.Page * inputs.Limit
 	}
+	// TODO:
+	perparedSql = fmt.Sprintf("select * from event_cases %s order by timestamp DESC limit %d,%d", filterCollector, step, inputs.Limit)
 	db.Alarm.Raw(perparedSql).Find(&cevens)
 	h.JSONR(c, cevens)
 }
@@ -184,12 +183,12 @@ func EventsGet(c *gin.Context) {
 	}
 	filterCollector := inputs.collectFilters()
 	//for get correct table name
-	f := alm.Events{}
 	evens := []alm.Events{}
 	if inputs.Limit == 0 || inputs.Limit >= 50 {
 		inputs.Limit = 50
 	}
-	perparedSql := fmt.Sprintf("select id, event_caseId, cond, status, timestamp from %s %s order by timestamp DESC limit %d,%d", f.TableName(), filterCollector, inputs.Page, inputs.Limit)
+	// TODO:
+	perparedSql := fmt.Sprintf("select id, event_caseId, cond, status, timestamp from events %s order by timestamp DESC limit %d,%d", filterCollector, inputs.Page, inputs.Limit)
 	db.Alarm.Raw(perparedSql).Scan(&evens)
 	h.JSONR(c, evens)
 }

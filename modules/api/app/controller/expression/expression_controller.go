@@ -29,7 +29,7 @@ func GetExpressionList(c *gin.Context) {
 	var dt *gorm.DB
 	expressions := []f.Expression{}
 	if limit != -1 && page != -1 {
-		dt = db.Falcon.Raw(fmt.Sprintf("SELECT * from expression limit %d,%d", page, limit)).Scan(&expressions)
+		dt = db.Falcon.Raw("SELECT * from expression limit ?,?", page, limit).Scan(&expressions)
 	} else {
 		dt = db.Falcon.Find(&expressions)
 	}

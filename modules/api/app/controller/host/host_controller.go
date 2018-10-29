@@ -1,7 +1,6 @@
 package host
 
 import (
-	"fmt"
 	"strconv"
 
 	log "github.com/Sirupsen/logrus"
@@ -9,7 +8,6 @@ import (
 	"github.com/jinzhu/gorm"
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
-	u "github.com/open-falcon/falcon-plus/modules/api/app/utils"
 )
 
 func GetHostBindToWhichHostGroup(c *gin.Context) {
@@ -32,8 +30,7 @@ func GetHostBindToWhichHostGroup(c *gin.Context) {
 	}
 	hostgroups := []f.HostGroup{}
 	if len(grpIds) != 0 {
-		grpIdsStr, _ := u.ArrInt64ToString(grpIds)
-		db.Falcon.Where(fmt.Sprintf("id in (%s)", grpIdsStr)).Find(&hostgroups)
+		db.Falcon.Where("id in (？)", grpIds).Find(&hostgroups)
 	}
 	h.JSONR(c, hostgroups)
 	return
@@ -158,7 +155,7 @@ func GetHosts(c *gin.Context) {
 	var hosts []f.Host
 	var dt *gorm.DB
 	if limit != -1 && page != -1 {
-		dt = db.Falcon.Raw(fmt.Sprintf("SELECT * from host where hostname regexp '%s' limit %d,%d", q, page, limit)).Scan(&hosts)
+		dt = db.Falcon.Raw("SELECT * from host where hostname regexp ? limit ?,?", q, page, limit).Scan(&hosts)
 	} else {
 		dt = db.Falcon.Table("host").Where("hostname regexp ?", q).Find(&hosts)
 	}

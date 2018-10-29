@@ -1,7 +1,6 @@
 package alarm
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/open-falcon/falcon-plus/modules/api/g"
@@ -73,10 +72,9 @@ func (this EventCases) GetEvents() []Events {
 
 func (this EventCases) GetNotes() []EventNote {
 	db := g.Con()
-	perpareSql := fmt.Sprintf("event_caseId = '%s' AND timestamp >= FROM_UNIXTIME(%d)", this.ID, this.Timestamp.Unix())
 	t := EventCases{}
 	notes := []EventNote{}
-	db.Alarm.Table(t.TableName()).Where(perpareSql).Scan(&notes)
+	db.Alarm.Table(t.TableName()).Where("event_caseId = ? AND timestamp >= FROM_UNIXTIME(?)", this.ID, this.Timestamp.Unix()).Scan(&notes)
 	return notes
 }
 

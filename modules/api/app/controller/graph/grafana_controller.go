@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 
@@ -12,7 +11,6 @@ import (
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	m "github.com/open-falcon/falcon-plus/modules/api/app/model/graph"
 	pm "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
-	u "github.com/open-falcon/falcon-plus/modules/api/app/utils"
 )
 
 type APIGrafanaMainQueryInputs struct {
@@ -214,10 +212,7 @@ func findEndpointIdByEndpointList(hosts []string) []int64 {
 	for _, h := range hosts {
 		hostsNew = append(hostsNew, strings.Split(h, "_")[0])
 	}
-	hostStr, _ := u.ArrStringsToString(hostsNew)
-	log.Debugf("hostStr: %v", hostStr)
-	log.Debugf("endpoint in (%s)", hostStr)
-	db.Graph.Table(enpsHelp.TableName()).Where(fmt.Sprintf("endpoint in (%s)", hostStr)).Scan(&enps)
+	db.Graph.Table(enpsHelp.TableName()).Where("endpoint in (?)", hosts).Scan(&enps)
 	hostIds := make([]int64, len(enps))
 	for indx, h := range enps {
 		hostIds[indx] = int64(h.ID)
@@ -237,11 +232,10 @@ func responseCounterRegexp(regexpKey string) (result []APIGrafanaMainQueryOutput
 	if len(hostIds) == 0 {
 		return
 	}
-	idConcact, _ := u.ArrInt64ToString(hostIds)
 	//for get right table name
 	countHelp := m.EndpointCounter{}
 	counters := []m.EndpointCounter{}
-	db.Graph.Table(countHelp.TableName()).Where(fmt.Sprintf("endpoint_id IN (%s) AND counter regexp '%s'", idConcact, counter)).Scan(&counters)
+	db.Graph.Table(countHelp.TableName()).Where("endpoint_id IN (?) AND counter regexp ?", hostIds, counter).Scan(&counters)
 	//if not any counter matched
 	if len(counters) == 0 {
 		return
@@ -314,9 +308,9 @@ func GrafanaRender(c *gin.Context) {
 		counters := []m.EndpointCounter{}
 		hostIds := findEndpointIdByEndpointList(hosts)
 		if flag {
-			db.Graph.Table(ecHelp.TableName()).Select("distinct counter").Where(fmt.Sprintf("endpoint_id IN (%s) AND counter = '%s'", u.ArrInt64ToStringMust(hostIds), counter)).Scan(&counters)
+			db.Graph.Table(ecHelp.TableName()).Select("distinct counter").Where("endpoint_id IN (?) AND counter = ?", hostIds, counter).Scan(&counters)
 		} else {
-			db.Graph.Table(ecHelp.TableName()).Select("distinct counter").Where(fmt.Sprintf("endpoint_id IN (%s) AND counter regexp '%s'", u.ArrInt64ToStringMust(hostIds), counter)).Scan(&counters)
+			db.Graph.Table(ecHelp.TableName()).Select("distinct counter").Where("endpoint_id IN (?) AND counter regexp ?", hostIds, counter).Scan(&counters)
 		}
 		if len(counters) == 0 {
 			// 没有匹配到的继续执行，避免当grafana graph有多个查询时，其他正常的查询也无法渲染视图

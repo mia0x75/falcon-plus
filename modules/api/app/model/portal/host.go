@@ -1,9 +1,6 @@
 package portal
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
@@ -52,9 +49,10 @@ func (this Host) RelatedGrp() (Grps []HostGroup) {
 	for _, t := range grpHost {
 		tids = append(tids, t.GrpID)
 	}
-	tidStr, _ := arrInt64ToString(tids)
 	Grps = []HostGroup{}
-	db.Falcon.Where(fmt.Sprintf("id in (%s)", tidStr)).Find(&Grps)
+	if len(tids) > 0 {
+		db.Falcon.Where("id in (?)", tids).Find(&Grps)
+	}
 	return
 }
 
@@ -65,30 +63,17 @@ func (this Host) RelatedTpl() (tpls []Template) {
 	for _, g := range grps {
 		gids = append(gids, g.ID)
 	}
-	gidStr, _ := arrInt64ToString(gids)
 	grpTpls := []GrpTpl{}
-	db.Falcon.Select("tpl_id").Where(fmt.Sprintf("grp_id in (%s)", gidStr)).Find(&grpTpls)
+	if len(gids) > 0 {
+		db.Falcon.Select("tpl_id").Where("grp_id in (?)", gids).Find(&grpTpls)
+	}
 	tids := []int64{}
 	for _, t := range grpTpls {
 		tids = append(tids, t.TplID)
 	}
-	tidStr, _ := arrInt64ToString(tids)
 	tpls = []Template{}
-	db.Falcon.Where(fmt.Sprintf("id in (%s)", tidStr)).Find(&tpls)
-	return
-}
-
-func arrInt64ToString(arr []int64) (result string, err error) {
-	result = ""
-	for indx, a := range arr {
-		if indx == 0 {
-			result = fmt.Sprintf("%v", a)
-		} else {
-			result = fmt.Sprintf("%v,%v", result, a)
-		}
-	}
-	if result == "" {
-		err = errors.New(fmt.Sprintf("array is empty, err: %v", arr))
+	if len(tids) > 0 {
+		db.Falcon.Where("id in (?)", tids).Find(&tpls)
 	}
 	return
 }
