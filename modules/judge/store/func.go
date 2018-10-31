@@ -21,13 +21,6 @@ type MaxFunction struct {
 	RightValue float64
 }
 
-type DeviationFunction struct {
-	Function
-	Limit      int
-	Operator   string
-	RightValue float64
-}
-
 func (this MaxFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
 	vs, isEnough = L.HistoryData(this.Limit)
 	if !isEnough {
@@ -244,6 +237,42 @@ func (this PDiffFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, 
 	return
 }
 
+type StdDeviationFunction struct {
+	Function
+	Limit      int
+	Operator   string
+	RightValue float64
+}
+
+/*
+	离群点检测函数，更多请参考3-sigma算法：https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
+	stddev(#10) = 3 //取最新 **10** 个点的数据分别计算得到他们的标准差和均值，分别计为 σ 和 μ，其中当前值计为 X，那么当 X 落在区间 [μ-3σ, μ+3σ] 之外时则报警。
+*/
+func (this StdDeviationFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
+	vs, isEnough = L.HistoryData(this.Limit)
+	if !isEnough {
+		return
+	}
+	if len(vs) == 0 {
+		isEnough = false
+		return
+	}
+	leftValue = vs[0].Value
+	var datas []float64
+	for _, i := range vs {
+		datas = append(datas, i.Value)
+	}
+	isTriggered = false
+	std := cutils.ComputeStdDeviation(datas)
+	mean := cutils.ComputeMean(datas)
+	upperBound := mean + this.RightValue*std
+	lowerBound := mean - this.RightValue*std
+	if leftValue < lowerBound || leftValue > upperBound {
+		isTriggered = true
+	}
+	return
+}
+
 func atois(s string) (ret []int, err error) {
 	a := strings.Split(s, ",")
 	ret = make([]int, len(a))
@@ -256,7 +285,7 @@ func atois(s string) (ret []int, err error) {
 	return
 }
 
-// @str: e.g. all(#3) sum(#3) avg(#10) diff(#10)
+// @str: e.g. max(#3) min(#3) all(#3) sum(#3) avg(#3) diff(#3) pdiff(#3) lookup(#2,3) stddev(#3)
 func ParseFuncFromString(str string, operator string, rightValue float64) (fn Function, err error) {
 	if str == "" {
 		return nil, fmt.Errorf("func can not be null!")
@@ -284,8 +313,8 @@ func ParseFuncFromString(str string, operator string, rightValue float64) (fn Fu
 		fn = &PDiffFunction{Limit: args[0], Operator: operator, RightValue: rightValue}
 	case "lookup":
 		fn = &LookupFunction{Num: args[0], Limit: args[1], Operator: operator, RightValue: rightValue}
-	case "deviation":
-		fn = &DeviationFunction{Limit: args[0], Operator: operator, RightValue: rightValue}
+	case "stddev":
+		fn = &StdDeviationFunction{Limit: args[0], Operator: operator, RightValue: rightValue}
 	default:
 		err = fmt.Errorf("not_supported_method")
 	}
@@ -309,39 +338,5 @@ func checkIsTriggered(leftValue float64, operator string, rightValue float64) (i
 		isTriggered = leftValue >= rightValue
 	}
 
-	return
-}
-
-/*
-	离群点检测函数
-	deviation（10）取最新10个点数据分别计算他们的标准差和均值，±3倍于标准方差后则报警。
-*/
-func (this DeviationFunction) Compute(L *SafeLinkedList) (vs []*cmodel.HistoryData, leftValue float64, isTriggered bool, isEnough bool) {
-	vs, isEnough = L.HistoryData(this.Limit)
-	if !isEnough {
-		return
-	}
-	if len(vs) == 0 {
-		isEnough = false
-		return
-	}
-	leftValue = vs[0].Value
-	var datas []float64
-	for _, i := range vs {
-		datas = append(datas, i.Value)
-	}
-	isTriggered = false
-	std := cutils.ComputeStdDeviation(datas)
-	mean := cutils.ComputeMean(datas)
-	upper_bound := mean + 3*std
-	lower_bound := mean - 3*std
-	if leftValue >= upper_bound {
-		isTriggered = true
-		return
-	}
-	if leftValue <= lower_bound {
-		isTriggered = true
-		return
-	}
 	return
 }
