@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/garyburd/redigo/redis"
+	"github.com/gomodule/redigo/redis"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 

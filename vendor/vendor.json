@@ -9,10 +9,10 @@
 			"revisionTime": "2018-09-18T20:26:59Z"
 		},
 		{
-			"checksumSHA1": "kfn4H5RVA6oZqKyYhqGJ8MRw5Ok=",
+			"checksumSHA1": "w+rxacbAL9JOVhkT1XVolHVP+iI=",
 			"path": "github.com/Sirupsen/logrus",
-			"revision": "4fabf2fffcecfd47f802869b7b92d75e43c5a095",
-			"revisionTime": "2018-10-21T10:09:20Z"
+			"revision": "44067abb194b1bc8b342e1f2120f8d3ea691b834",
+			"revisionTime": "2018-11-03T06:28:19Z"
 		},
 		{
 			"checksumSHA1": "skbVWA35zzQ+Yml14zyULI1OPic=",
@@ -93,40 +93,28 @@
 			"revisionTime": "2018-08-30T22:02:26Z"
 		},
 		{
-			"checksumSHA1": "2UmMbNHc8FBr98mJFN1k8ISOIHk=",
-			"path": "github.com/garyburd/redigo/internal",
-			"revision": "569eae59ada904ea8db7a225c2b47165af08735a",
-			"revisionTime": "2018-04-04T16:07:26Z"
-		},
-		{
-			"checksumSHA1": "3kM5bMyfqvdCfgQdOb01CR1aA74=",
-			"path": "github.com/garyburd/redigo/redis",
-			"revision": "569eae59ada904ea8db7a225c2b47165af08735a",
-			"revisionTime": "2018-04-04T16:07:26Z"
-		},
-		{
 			"checksumSHA1": "QeKwBtN2df+j+4stw3bQJ6yO4EY=",
 			"path": "github.com/gin-contrib/sse",
 			"revision": "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae",
 			"revisionTime": "2017-01-09T09:34:21Z"
 		},
 		{
-			"checksumSHA1": "ow9NW7BBNs7ToXqdUcf40f997+8=",
+			"checksumSHA1": "qy8JMA3C5DumzHzQ4j589vtyjLU=",
 			"path": "github.com/gin-gonic/gin",
-			"revision": "c65e5efc9a0ae6666819cda8e9a86db4d3d19833",
-			"revisionTime": "2018-10-23T02:56:33Z"
+			"revision": "4f488aca552812f572d3135693fd26617c2a9350",
+			"revisionTime": "2018-11-05T01:44:00Z"
 		},
 		{
 			"checksumSHA1": "2zQvkwtPsCLc+y7YiHQO2R9Oqd0=",
 			"path": "github.com/gin-gonic/gin/binding",
-			"revision": "c65e5efc9a0ae6666819cda8e9a86db4d3d19833",
-			"revisionTime": "2018-10-23T02:56:33Z"
+			"revision": "4f488aca552812f572d3135693fd26617c2a9350",
+			"revisionTime": "2018-11-05T01:44:00Z"
 		},
 		{
 			"checksumSHA1": "Y8Vu2NT4c2ve963fedBxoJyiU6s=",
 			"path": "github.com/gin-gonic/gin/internal/json",
-			"revision": "c65e5efc9a0ae6666819cda8e9a86db4d3d19833",
-			"revisionTime": "2018-10-23T02:56:33Z"
+			"revision": "4f488aca552812f572d3135693fd26617c2a9350",
+			"revisionTime": "2018-11-05T01:44:00Z"
 		},
 		{
 			"checksumSHA1": "woO1qIxIeQ1bcbPSiMfAKk3r4xg=",
@@ -137,56 +125,56 @@
 		{
 			"checksumSHA1": "afLqBfX9SeIP6eeTZb3WwdTFaOo=",
 			"path": "github.com/gin-gonic/gin/render",
-			"revision": "c65e5efc9a0ae6666819cda8e9a86db4d3d19833",
-			"revisionTime": "2018-10-23T02:56:33Z"
+			"revision": "4f488aca552812f572d3135693fd26617c2a9350",
+			"revisionTime": "2018-11-05T01:44:00Z"
 		},
 		{
-			"checksumSHA1": "cmthqHHbFaaVPxOgj3osQWe2bEU=",
+			"checksumSHA1": "eogu3//JJlPNpP1BLWa5cgWL1NI=",
 			"path": "github.com/go-redis/redis",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "z12gGj6VbVBcPOvof1aCM+DVGRU=",
 			"path": "github.com/go-redis/redis/internal",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "GQZsUVg/+6UpQAYpc4luMvMutSI=",
 			"path": "github.com/go-redis/redis/internal/consistenthash",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "l66eTZiJqueypc56HXCakGDm784=",
 			"path": "github.com/go-redis/redis/internal/hashtag",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "WoUjtqpn00RUnAgZLljk3lWfpSQ=",
 			"path": "github.com/go-redis/redis/internal/pool",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "zCo0t+gRBbctwyIpkDLrqRFtXew=",
 			"path": "github.com/go-redis/redis/internal/proto",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "sjbjSJrTdvyDwNjrWjTNeXgUhaU=",
 			"path": "github.com/go-redis/redis/internal/singleflight",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "1PH2NoAB/u3IZmLYyCrIbOzqLZ4=",
 			"path": "github.com/go-redis/redis/internal/util",
-			"revision": "fa76dd0e87967c95e6f7bef33a230ed2c263fe2d",
-			"revisionTime": "2018-10-14T08:27:34Z"
+			"revision": "58f22c56fdbdf07f5d6f5e397a6e134b94c65b0c",
+			"revisionTime": "2018-11-03T10:07:25Z"
 		},
 		{
 			"checksumSHA1": "NBGs82mY9YS6E8JovYGObCqp5ns=",
@@ -195,16 +183,22 @@
 			"revisionTime": "2018-09-20T01:11:43Z"
 		},
 		{
-			"checksumSHA1": "F4uLXFnFwxcC/U3VK2+JFJcSG+8=",
+			"checksumSHA1": "8M/GlM986QSn9urcuFsQMvUFgSI=",
 			"path": "github.com/go-sql-driver/mysql",
-			"revision": "7daee5be2a29576f4bada53f3754b8cf886772a6",
-			"revisionTime": "2018-10-20T13:49:31Z"
+			"revision": "fd197cdcfae0c686792ef5399f223f5b66a30b6b",
+			"revisionTime": "2018-10-31T14:07:16Z"
 		},
 		{
 			"checksumSHA1": "GaJLoEuMGnP5ofXvuweAI4wx06U=",
 			"path": "github.com/golang/protobuf/proto",
-			"revision": "5e0eda4b6dc0f7e3c4ed8b94d87f7f7186b20c9c",
-			"revisionTime": "2018-10-24T21:30:55Z"
+			"revision": "1918e1ff6ffd2be7bed0553df8650672c3bfe80d",
+			"revisionTime": "2018-10-30T15:47:21Z"
+		},
+		{
+			"checksumSHA1": "cyejI0bcXBrdCmmbBNVzMNx7I80=",
+			"path": "github.com/gomodule/redigo/redis",
+			"revision": "e8fc0692a7e26a05b06517348ed466349062eb47",
+			"revisionTime": "2018-10-26T00:15:55Z"
 		},
 		{
 			"checksumSHA1": "yIkYzW7bzAD81zHyuCNmEj4+oxQ=",
@@ -449,8 +443,8 @@
 		{
 			"checksumSHA1": "Tutue3nEgM/87jitUcYv6ODwyNE=",
 			"path": "github.com/satori/go.uuid",
-			"revision": "8ccf5352a842c034b1a69f28c863aff9b1cdb116",
-			"revisionTime": "2018-10-16T18:40:21Z"
+			"revision": "b2ce2384e17bbe0c6d34077efa39dbab3e09123b",
+			"revisionTime": "2018-10-28T12:50:25Z"
 		},
 		{
 			"checksumSHA1": "IFtQxH02Qj36QooV+Z41enAh/hc=",
@@ -513,10 +507,10 @@
 			"revisionTime": "2018-09-15T22:22:04Z"
 		},
 		{
-			"checksumSHA1": "iGAtqImI/4+ZcaL05oVm+f+pFLw=",
+			"checksumSHA1": "kmcWtDErtMPA3+o7+B4MDC3z+T0=",
 			"path": "github.com/spf13/jwalterweatherman",
-			"revision": "103a6da826d08544f49833dabd4f1cdf8a1038bb",
-			"revisionTime": "2018-10-05T07:31:47Z"
+			"revision": "94f6ae3ed3bceceafa716478c5fbf8d29ca601a1",
+			"revisionTime": "2018-10-28T14:53:47Z"
 		},
 		{
 			"checksumSHA1": "EefrUdqMEXf5NaDmT1709v2kNCk=",
@@ -715,12 +709,6 @@
 			"path": "google.golang.org/appengine/cloudsql",
 			"revision": "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06",
 			"revisionTime": "2018-09-18T20:26:59Z"
-		},
-		{
-			"checksumSHA1": "o5Skl9YjZqmvEEqWie3f3oY0Kow=",
-			"path": "gopkg.in/alexcesaro/statsd.v2",
-			"revision": "7fea3f0d2fab1ad973e641e51dba45443a311a90",
-			"revisionTime": "2016-03-20T18:21:10Z"
 		},
 		{
 			"checksumSHA1": "P/k5ZGf0lEBgpKgkwy++F7K1PSg=",
