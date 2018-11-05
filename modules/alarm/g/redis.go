@@ -10,15 +10,27 @@ import (
 var RedisConnPool *redis.Pool
 
 func InitRedisConnPool() {
-	redisConfig := Config().Redis
+	cfg := Config().Redis
+	addr := cfg.Addr
+	password := cfg.Password
+	maxIdle := cfg.MaxIdle
+	waitTimeout := time.Duration(cfg.WaitTimeout) * time.Second
+	connTimeout := time.Duration(cfg.ConnTimeout) * time.Second
+	readTimeout := time.Duration(cfg.ReadTimeout) * time.Second
+	writeTimeout := time.Duration(cfg.WriteTimeout) * time.Second
 
 	RedisConnPool = &redis.Pool{
-		MaxIdle:     redisConfig.MaxIdle,
-		IdleTimeout: 240 * time.Second,
+		MaxIdle:     maxIdle,
+		IdleTimeout: waitTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", redisConfig.Addr)
+			c, err := redis.DialTimeout("tcp", addr, connTimeout, readTimeout, writeTimeout)
 			if err != nil {
 				return nil, err
+			}
+			if password != "" {
+				if _, err := c.Do("AUTH", password); err != nil {
+					return nil, err
+				}
 			}
 			return c, err
 		},

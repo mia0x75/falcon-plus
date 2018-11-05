@@ -73,7 +73,7 @@ func consumeLowEvents(event *cmodel.Event, action *api.Action) {
 
 func ParseUserSms(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
-	queue := g.Config().Redis.UserSmsQueue
+	queue := g.Config().Queue.UserSmsQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -99,7 +99,7 @@ func ParseUserSms(event *cmodel.Event, action *api.Action) {
 
 func ParseUserMail(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
-	queue := g.Config().Redis.UserMailQueue
+	queue := g.Config().Queue.UserMailQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -125,7 +125,7 @@ func ParseUserMail(event *cmodel.Event, action *api.Action) {
 
 func ParseUserIm(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
-	queue := g.Config().Redis.UserIMQueue
+	queue := g.Config().Queue.UserIMQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()

@@ -13,7 +13,7 @@ import (
 )
 
 func ReadHighEvent() {
-	queues := g.Config().Redis.HighQueues
+	queues := g.Config().Queue.HighQueues
 	if len(queues) == 0 {
 		return
 	}
@@ -31,7 +31,7 @@ func ReadHighEvent() {
 }
 
 func ReadLowEvent() {
-	queues := g.Config().Redis.LowQueues
+	queues := g.Config().Queue.LowQueues
 	if len(queues) == 0 {
 		return
 	}

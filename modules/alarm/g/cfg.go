@@ -14,8 +14,16 @@ type HttpConfig struct {
 }
 
 type RedisConfig struct {
-	Addr          string   `json:"addr"`
-	MaxIdle       int      `json:"max_idle"`
+	Addr         string `json:"addr"`
+	Password     string `json:"password"`
+	MaxIdle      int    `json:"max_idle"`
+	ConnTimeout  int    `json:"connect_timeout"`
+	ReadTimeout  int    `json:"read_timeout"`
+	WriteTimeout int    `json:"write_timeout"`
+	WaitTimeout  int    `json:"wait_timeout"`
+}
+
+type QueueConfig struct {
 	HighQueues    []string `json:"high_queues"`
 	LowQueues     []string `json:"low_queues"`
 	UserIMQueue   string   `json:"user_im_queue"`
@@ -59,6 +67,7 @@ type GlobalConfig struct {
 	Database    *DatabaseConfig    `json:"database"`
 	Http        *HttpConfig        `json:"http"`
 	Redis       *RedisConfig       `json:"redis"`
+	Queue       *QueueConfig       `json:"queue"`
 	Api         *ApiConfig         `json:"api"`
 	Worker      *WorkerConfig      `json:"worker"`
 	Housekeeper *HousekeeperConfig `json:"housekeeper"`

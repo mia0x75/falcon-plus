@@ -10,25 +10,27 @@ import (
 var RedisConnPool *redis.Pool
 
 func InitRedisConnPool() {
-	if !Config().Alarm.Enabled {
-		return
-	}
-
-	dsn := Config().Alarm.Redis.Dsn
-	maxIdle := Config().Alarm.Redis.MaxIdle
-	idleTimeout := 240 * time.Second
-
-	connTimeout := time.Duration(Config().Alarm.Redis.ConnTimeout) * time.Millisecond
-	readTimeout := time.Duration(Config().Alarm.Redis.ReadTimeout) * time.Millisecond
-	writeTimeout := time.Duration(Config().Alarm.Redis.WriteTimeout) * time.Millisecond
+	cfg := Config().Redis
+	addr := cfg.Addr
+	password := cfg.Password
+	maxIdle := cfg.MaxIdle
+	waitTimeout := time.Duration(cfg.WaitTimeout) * time.Second
+	connTimeout := time.Duration(cfg.ConnTimeout) * time.Second
+	readTimeout := time.Duration(cfg.ReadTimeout) * time.Second
+	writeTimeout := time.Duration(cfg.WriteTimeout) * time.Second
 
 	RedisConnPool = &redis.Pool{
 		MaxIdle:     maxIdle,
-		IdleTimeout: idleTimeout,
+		IdleTimeout: waitTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.DialTimeout("tcp", dsn, connTimeout, readTimeout, writeTimeout)
+			c, err := redis.DialTimeout("tcp", addr, connTimeout, readTimeout, writeTimeout)
 			if err != nil {
 				return nil, err
+			}
+			if password != "" {
+				if _, err := c.Do("AUTH", password); err != nil {
+					return nil, err
+				}
 			}
 			return c, err
 		},

@@ -20,15 +20,16 @@
 		"interval": 60
 	},
 	"alarm": {
-		"enabled": true,
-		"min_interval": 300,
-		"queue_pattern": "event:p%v",
-		"redis": {
-			"dsn": "127.0.0.1:6379",
-			"max_idle": 5,
-			"connect_timeout": 5000,
-			"read_timeout": 5000,
-			"write_timeout": 5000
-		}
+		"min_interval": 120,
+		"queue_pattern": "event:p%v"
+	},
+	"redis": {
+		"addr": "127.0.0.1:6379",
+		"password": "",
+		"max_idle": 5,
+		"connect_timeout": 5,
+		"read_timeout": 5,
+		"write_timeout": 5,
+		"wait_timeout": 240
 	}
 }

@@ -25,18 +25,18 @@ type HbsConfig struct {
 }
 
 type RedisConfig struct {
-	Dsn          string `json:"dsn"`
+	Addr         string `json:"addr"`
+	Password     string `json:"password"`
 	MaxIdle      int    `json:"max_idle"`
 	ConnTimeout  int    `json:"connect_timeout"`
 	ReadTimeout  int    `json:"read_timeout"`
 	WriteTimeout int    `json:"write_timeout"`
+	WaitTimeout  int    `json:"wait_timeout"`
 }
 
 type AlarmConfig struct {
-	Enabled      bool         `json:"enabled"`
-	MinInterval  int64        `json:"min_interval"`
-	QueuePattern string       `json:"queue_pattern"`
-	Redis        *RedisConfig `json:"redis"`
+	MinInterval  int64  `json:"min_interval"`
+	QueuePattern string `json:"queue_pattern"`
 }
 
 type LogConfig struct {
@@ -51,6 +51,7 @@ type GlobalConfig struct {
 	Rpc       *RpcConfig   `json:"rpc"`
 	Hbs       *HbsConfig   `json:"hbs"`
 	Alarm     *AlarmConfig `json:"alarm"`
+	Redis     *RedisConfig `json:"redis"`
 }
 
 var (
