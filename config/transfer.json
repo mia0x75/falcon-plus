@@ -49,5 +49,8 @@
 		"max_idle": 32,
 		"retry": 3,
 		"address": "127.0.0.1:8088"
+	},
+	"ignore": {
+		"fs.file.checksum": true
 	}
 }

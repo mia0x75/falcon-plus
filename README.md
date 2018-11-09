@@ -36,6 +36,9 @@
 - Code refactor
 
 
+transfer.json
+[+] ignore.*
+
 # Documentations
 
 - [Usage](http://book.open-falcon.com)

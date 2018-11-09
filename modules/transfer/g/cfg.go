@@ -65,14 +65,15 @@ type LogConfig struct {
 }
 
 type GlobalConfig struct {
-	Log     *LogConfig    `json:"log"`
-	MinStep int           `json:"min_step"` //最小周期,单位sec
-	Http    *HttpConfig   `json:"http"`
-	Rpc     *RpcConfig    `json:"rpc"`
-	Socket  *SocketConfig `json:"socket"`
-	Judge   *JudgeConfig  `json:"judge"`
-	Graph   *GraphConfig  `json:"graph"`
-	Tsdb    *TsdbConfig   `json:"tsdb"`
+	Log           *LogConfig      `json:"log"`
+	MinStep       int             `json:"min_step"` //最小周期,单位sec
+	Http          *HttpConfig     `json:"http"`
+	Rpc           *RpcConfig      `json:"rpc"`
+	Socket        *SocketConfig   `json:"socket"`
+	Judge         *JudgeConfig    `json:"judge"`
+	Graph         *GraphConfig    `json:"graph"`
+	Tsdb          *TsdbConfig     `json:"tsdb"`
+	IgnoreMetrics map[string]bool `json:"ignore"`
 }
 
 var (

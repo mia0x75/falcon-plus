@@ -105,6 +105,9 @@ func Push2GraphSendQueue(items []*cmodel.MetaData) {
 	cfg := g.Config().Graph
 
 	for _, item := range items {
+		if isMetricIgnored(item) {
+			continue
+		}
 		graphItem, err := convert2GraphItem(item)
 		if err != nil {
 			log.Println("E:", err)
@@ -177,6 +180,9 @@ func convert2GraphItem(d *cmodel.MetaData) (*cmodel.GraphItem, error) {
 // 将原始数据入到tsdb发送缓存队列
 func Push2TsdbSendQueue(items []*cmodel.MetaData) {
 	for _, item := range items {
+		if isMetricIgnored(item) {
+			continue
+		}
 		tsdbItem := convert2TsdbItem(item)
 		isSuccess := TsdbQueue.PushFront(tsdbItem)
 
@@ -202,4 +208,12 @@ func convert2TsdbItem(d *cmodel.MetaData) *cmodel.TsdbItem {
 
 func alignTs(ts int64, period int64) int64 {
 	return ts - ts%period
+}
+
+func isMetricIgnored(item *cmodel.MetaData) bool {
+	ignoreMetrics := g.Config().IgnoreMetrics
+	if b, ok := ignoreMetrics[item.Metric]; ok && b {
+		return true
+	}
+	return false
 }
