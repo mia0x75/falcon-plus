@@ -26,7 +26,6 @@ type HbsConfig struct {
 
 type RedisConfig struct {
 	Addr         string `json:"addr"`
-	Password     string `json:"password"`
 	MaxIdle      int    `json:"max_idle"`
 	ConnTimeout  int    `json:"connect_timeout"`
 	ReadTimeout  int    `json:"read_timeout"`

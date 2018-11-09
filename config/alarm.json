@@ -10,9 +10,6 @@
 		"addr": "%%REDIS%%",
 		"password": "",
 		"max_idle": 5,
-		"connect_timeout": 5,
-		"read_timeout": 5,
-		"write_timeout": 5,
 		"wait_timeout": 240
 	},
 	"queue": {

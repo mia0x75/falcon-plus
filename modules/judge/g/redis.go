@@ -12,7 +12,6 @@ var RedisConnPool *redis.Pool
 func InitRedisConnPool() {
 	cfg := Config().Redis
 	addr := cfg.Addr
-	password := cfg.Password
 	maxIdle := cfg.MaxIdle
 	waitTimeout := time.Duration(cfg.WaitTimeout) * time.Second
 	connTimeout := time.Duration(cfg.ConnTimeout) * time.Second
@@ -23,14 +22,14 @@ func InitRedisConnPool() {
 		MaxIdle:     maxIdle,
 		IdleTimeout: waitTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.DialTimeout("tcp", addr, connTimeout, readTimeout, writeTimeout)
+			do := []redis.DialOption{
+				redis.DialReadTimeout(readTimeout),
+				redis.DialWriteTimeout(writeTimeout),
+				redis.DialConnectTimeout(connTimeout),
+			}
+			c, err := redis.DialURL(addr, do...)
 			if err != nil {
 				return nil, err
-			}
-			if password != "" {
-				if _, err := c.Do("AUTH", password); err != nil {
-					return nil, err
-				}
 			}
 			return c, err
 		},

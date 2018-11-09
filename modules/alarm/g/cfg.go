@@ -14,13 +14,9 @@ type HttpConfig struct {
 }
 
 type RedisConfig struct {
-	Addr         string `json:"addr"`
-	Password     string `json:"password"`
-	MaxIdle      int    `json:"max_idle"`
-	ConnTimeout  int    `json:"connect_timeout"`
-	ReadTimeout  int    `json:"read_timeout"`
-	WriteTimeout int    `json:"write_timeout"`
-	WaitTimeout  int    `json:"wait_timeout"`
+	Addr        string `json:"addr"`
+	MaxIdle     int    `json:"max_idle"`
+	WaitTimeout int    `json:"wait_timeout"`
 }
 
 type QueueConfig struct {

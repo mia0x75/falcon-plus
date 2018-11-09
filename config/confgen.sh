@@ -1,7 +1,7 @@
 #!/bin/bash
 
 confs=(
-	'%%REDIS%%=127.0.0.1:6379'
+	'%%REDIS%%=redis://127.0.0.1:6379/0'
 	'%%MYSQL%%=root:root@tcp(127.0.0.1:3306)'
 	'%%API_DEFAULT_TOKEN%%=TOKEN'
 	'%%API_HTTP%%=127.0.0.1:6001'

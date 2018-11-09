@@ -58,10 +58,11 @@ func popEvent(queues []string) (*cmodel.Event, error) {
 	params[count] = 0
 
 	rc := g.RedisConnPool.Get()
-	defer rc.Close()
 	if rc == nil {
+		log.Println("cannot get redis connection")
 		return nil, errors.New("get redis connection failed")
 	}
+	defer rc.Close()
 
 	reply, err := redis.Strings(rc.Do("BRPOP", params...))
 	if err != nil {
