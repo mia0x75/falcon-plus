@@ -6,13 +6,14 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 	"github.com/toolkits/nux"
 	"github.com/toolkits/slice"
 )
 
 func PortMetrics() (L []*cmodel.MetricValue) {
-	reportPorts := g.ReportPorts()
-	sz := len(reportPorts)
+	ports := hbs.ReportPorts()
+	sz := len(ports)
 	if sz == 0 {
 		return
 	}
@@ -30,8 +31,8 @@ func PortMetrics() (L []*cmodel.MetricValue) {
 	}
 
 	for i := 0; i < sz; i++ {
-		tags := fmt.Sprintf("port=%d", reportPorts[i])
-		if slice.ContainsInt64(allTcpPorts, reportPorts[i]) || slice.ContainsInt64(allUdpPorts, reportPorts[i]) {
+		tags := fmt.Sprintf("port=%d", ports[i])
+		if slice.ContainsInt64(allTcpPorts, ports[i]) || slice.ContainsInt64(allUdpPorts, ports[i]) {
 			L = append(L, GaugeValue(g.NET_PORT_LISTEN, 1, tags))
 		} else {
 			L = append(L, GaugeValue(g.NET_PORT_LISTEN, 0, tags))

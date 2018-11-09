@@ -8,6 +8,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
 func SyncBuiltinMetrics() {
@@ -24,6 +25,7 @@ func syncBuiltinMetrics() {
 	for range time.Tick(d) {
 		var ports = []int64{}
 		var paths = []string{}
+		var files = make(map[string]int)
 		var procs = make(map[string]map[int]string)
 		var urls = make(map[string]string)
 
@@ -101,6 +103,27 @@ func syncBuiltinMetrics() {
 				continue
 			}
 
+			if metric.Metric == g.FS_FILE_CHECKSUM {
+				arr := strings.Split(metric.Tags, ",")
+				if len(arr) != 2 {
+					continue
+				}
+				path := strings.Split(arr[0], "=")
+				if len(path) != 2 {
+					continue
+				}
+				events := strings.Split(arr[1], "=")
+				if len(events) != 2 {
+					continue
+				}
+				if b, err := strconv.Atoi(events[1]); err == nil {
+					files[path[1]] = b
+				} else {
+					log.Println("metric strconv.Atoi event failed:", err)
+				}
+				continue
+			}
+
 			if metric.Metric == g.PROC_NUM {
 				arr := strings.Split(metric.Tags, ",")
 
@@ -118,9 +141,9 @@ func syncBuiltinMetrics() {
 			}
 		}
 
-		g.SetReportUrls(urls)
-		g.SetReportPorts(ports)
-		g.SetReportProcs(procs)
-		g.SetDuPaths(paths)
+		hbs.CacheReportUrls(urls)
+		hbs.CacheReportPorts(ports)
+		hbs.CacheReportProcs(procs)
+		hbs.CacheDuPaths(paths)
 	}
 }

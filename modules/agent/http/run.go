@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 	"github.com/toolkits/sys"
 )
 
@@ -15,7 +16,7 @@ func SetupRunRoutes() {
 			return
 		}
 
-		if g.IsTrustable(r.RemoteAddr) {
+		if hbs.IsTrustable(r.RemoteAddr) {
 			if r.ContentLength == 0 {
 				http.Error(w, "body is blank", http.StatusBadRequest)
 				return

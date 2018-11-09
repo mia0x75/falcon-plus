@@ -6,6 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
 func SyncTrustableIps() {
@@ -24,6 +25,6 @@ func syncTrustableIps() {
 			continue
 		}
 
-		g.SetTrustableIps(ips)
+		hbs.CacheTrustableIps(ips)
 	}
 }

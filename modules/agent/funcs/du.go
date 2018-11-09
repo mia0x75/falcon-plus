@@ -13,13 +13,14 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 	"github.com/toolkits/sys"
 )
 
 var timeout = 30
 
 func DuMetrics() (L []*cmodel.MetricValue) {
-	paths := g.DuPaths()
+	paths := hbs.DuPaths()
 	result := make(chan *cmodel.MetricValue, len(paths))
 	var wg sync.WaitGroup
 

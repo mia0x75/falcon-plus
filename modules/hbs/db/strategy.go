@@ -76,7 +76,7 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 
 func QueryBuiltinMetrics(tids string) ([]*cmodel.BuiltinMetric, error) {
 	sql := fmt.Sprintf(
-		"select metric, tags from strategy where tpl_id in (%s) and metric in ('net.port.listen', 'proc.num', 'du.bs', 'url.check.health')",
+		"select metric, tags from strategy where tpl_id in (%s) and metric in ('net.port.listen', 'proc.num', 'du.bs', 'url.check.health', 'fs.file.checksum')",
 		tids,
 	)
 

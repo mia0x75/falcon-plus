@@ -10,13 +10,14 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 	"github.com/toolkits/file"
 	"github.com/toolkits/sys"
 )
 
 func UrlMetrics() (L []*cmodel.MetricValue) {
-	reportUrls := g.ReportUrls()
-	sz := len(reportUrls)
+	urls := hbs.ReportUrls()
+	sz := len(urls)
 	if sz == 0 {
 		return
 	}
@@ -24,9 +25,9 @@ func UrlMetrics() (L []*cmodel.MetricValue) {
 	if err != nil {
 		hostname = "None"
 	}
-	for furl, timeout := range reportUrls {
-		tags := fmt.Sprintf("url=%v,timeout=%v,src=%v", furl, timeout, hostname)
-		if ok, _ := probeUrl(furl, timeout); !ok {
+	for url, timeout := range urls {
+		tags := fmt.Sprintf("url=%v,timeout=%v,src=%v", url, timeout, hostname)
+		if ok, _ := probeUrl(url, timeout); !ok {
 			L = append(L, GaugeValue(g.URL_CHECK_HEALTH, 0, tags))
 			continue
 		}

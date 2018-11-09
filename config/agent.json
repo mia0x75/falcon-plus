@@ -39,10 +39,5 @@
 		}
 	},
 	"default_tags": {},
-	"ignore": {
-		"df.inodes.total": true,
-		"df.inodes.free": true,
-		"df.inodes.used": true,
-		"df.inodes.used.percent": true
-	}
+	"ignore": {}
 }

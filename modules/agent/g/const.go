@@ -14,4 +14,5 @@ const (
 	NET_PORT_LISTEN  = "net.port.listen"
 	DU_BS            = "du.bs"
 	PROC_NUM         = "proc.num"
+	FS_FILE_CHECKSUM = "fs.file.checksum"
 )

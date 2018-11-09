@@ -6,6 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 	"github.com/toolkits/nux"
 )
 
@@ -18,13 +19,13 @@ func ProcMetrics() (L []*cmodel.MetricValue) {
 
 	pslen := len(ps)
 
-	reportProcs := g.ReportProcs()
-	sz := len(reportProcs)
+	procs := hbs.ReportProcs()
+	sz := len(procs)
 	if sz == 0 {
 		return
 	}
 
-	for tags, m := range reportProcs {
+	for tags, m := range procs {
 		cnt := 0
 		for i := 0; i < pslen; i++ {
 			if is_a(ps[i], m) {
