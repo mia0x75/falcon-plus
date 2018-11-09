@@ -9,40 +9,39 @@ import (
 func Init() {
 	log.Println("cache begin")
 
-	log.Println("#1 GroupPlugins...")
+	log.Println("#0 GroupPlugins...")
 	GroupPlugins.Init()
 
-	log.Println("#2 GroupTemplates...")
+	log.Println("#1 GroupTemplates...")
 	GroupTemplates.Init()
 
-	log.Println("#3 HostGroupsMap...")
+	log.Println("#2 HostGroupsMap...")
 	HostGroupsMap.Init()
 
-	log.Println("#4 HostMap...")
+	log.Println("#3 HostMap...")
 	HostMap.Init()
 
-	log.Println("#5 TemplateCache...")
+	log.Println("#4 TemplateCache...")
 	TemplateCache.Init()
 
-	log.Println("#6 Strategies...")
+	log.Println("#5 Strategies...")
 	Strategies.Init(TemplateCache.GetMap())
 
-	log.Println("#7 HostTemplateIds...")
+	log.Println("#6 HostTemplateIds...")
 	HostTemplateIds.Init()
 
-	log.Println("#8 ExpressionCache...")
+	log.Println("#7 ExpressionCache...")
 	ExpressionCache.Init()
 
-	log.Println("#9 MonitoredHosts...")
+	log.Println("#8 MonitoredHosts...")
 	MonitoredHosts.Init()
 
-	log.Println("#10 AgentsInfo...")
+	log.Println("#9 AgentsInfo...")
 	Agents.Init()
 
 	log.Println("cache done")
 
 	go LoopInit()
-
 }
 
 func LoopInit() {
