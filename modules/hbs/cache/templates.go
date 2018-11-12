@@ -47,14 +47,14 @@ func (this *SafeTemplateCache) GetMap() map[int]*cmodel.Template {
 }
 
 func (this *SafeTemplateCache) Init() {
-	ts, err := db.QueryTemplates()
+	m, err := db.QueryTemplates()
 	if err != nil {
 		return
 	}
 
 	this.Lock()
 	defer this.Unlock()
-	this.M = ts
+	this.M = m
 }
 
 type SafeHostTemplateIds struct {
