@@ -26,7 +26,7 @@ func StartCollectorCron() {
 		start := time.Now().Unix()
 		cnt := collectDataOnce()
 		end := time.Now().Unix()
-		log.Debugf("collect cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
+		log.Debugf("[D] collect cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.CollectorCronCnt.Incr()
@@ -76,9 +76,9 @@ func collectDataOnce() int {
 			defer sema.Release()
 			size, err := fetchItemsAndStore(keys, keySize)
 			if err != nil {
-				log.Printf("fetchItemAndStore fail, size:%v, error:%v", size, err)
+				log.Errorf("[E] fetchItemAndStore fail, size: %v, error: %v", size, err)
 			}
-			log.Debugf("fetchItemAndStore keys:%v, key_size:%v, ret_size:%v", keys, keySize, size)
+			log.Debugf("[D] fetchItemAndStore keys: %v, key_size: %v, ret_size: %v", keys, keySize, size)
 			rch <- size
 		}(fetchKeys, fetchSize)
 
@@ -126,7 +126,7 @@ func fetchItemsAndStore(fetchKeys []string, fetchSize int) (size int, errt error
 	// store items
 	fts := time.Now().Unix()
 	for _, glr := range resp {
-		//log.Printf("collect:%v\n", glr)
+		log.Infof("[I] collect: %v", glr)
 		if glr == nil || glr.Value == nil {
 			continue
 		}

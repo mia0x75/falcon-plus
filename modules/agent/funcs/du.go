@@ -20,7 +20,7 @@ import (
 var timeout = 30
 
 func DuMetrics() (L []*cmodel.MetricValue) {
-	paths := hbs.DuPaths()
+	paths := hbs.ReportPaths()
 	result := make(chan *cmodel.MetricValue, len(paths))
 	var wg sync.WaitGroup
 
@@ -30,7 +30,7 @@ func DuMetrics() (L []*cmodel.MetricValue) {
 			var err error
 			defer func() {
 				if err != nil {
-					log.Println(err)
+					log.Errorf("[E] %v", err)
 					result <- GaugeValue(g.DU_BS, -1, "path="+path)
 				}
 				wg.Done()

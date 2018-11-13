@@ -160,7 +160,6 @@ func (this *GraphItemMap) PushFront(key string,
 	if linkedList, exists := this.Get(key); exists {
 		linkedList.PushFront(item)
 	} else {
-		//log.Println("new key:", key)
 		safeList := &SafeLinkedList{L: list.New()}
 		safeList.L.PushFront(item)
 
@@ -221,7 +220,7 @@ func (this *GraphItemMap) ItemCnt(key string) int {
 func init() {
 	size := g.CACHE_TIME / g.FLUSH_DISK_STEP
 	if size < 0 {
-		log.Panicf("store.init, bad size %d\n", size)
+		log.Panicf("[P] store.init, bad size %d", size)
 	}
 
 	GraphItems = &GraphItemMap{

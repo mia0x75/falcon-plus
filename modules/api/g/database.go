@@ -47,7 +47,7 @@ func InitDB() (err error) {
 	portald.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Portal.WaitTimeout) * time.Second)
 	err = portald.DB().Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	dbp.Falcon = portald
 
@@ -63,7 +63,7 @@ func InitDB() (err error) {
 	graphd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Graph.WaitTimeout) * time.Second)
 	err = graphd.DB().Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	dbp.Graph = graphd
 
@@ -79,7 +79,7 @@ func InitDB() (err error) {
 	uicd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Uic.WaitTimeout) * time.Second)
 	err = uicd.DB().Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	dbp.Uic = uicd
 
@@ -95,7 +95,7 @@ func InitDB() (err error) {
 	dashd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Dashboard.WaitTimeout) * time.Second)
 	err = dashd.DB().Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	dbp.Dashboard = dashd
 
@@ -111,7 +111,7 @@ func InitDB() (err error) {
 	almd.DB().SetConnMaxLifetime(time.Duration(Config().Databases.Alarms.WaitTimeout) * time.Second)
 	err = almd.DB().Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	dbp.Alarm = almd
 

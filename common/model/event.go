@@ -25,7 +25,7 @@ func (this *Event) FormattedTime() string {
 
 func (this *Event) String() string {
 	return fmt.Sprintf(
-		"<Endpoint:%s, Status:%s, Strategy:%v, Expression:%v, LeftValue:%s, CurrentStep:%d, PushedTags:%v, TS:%s>",
+		"<Endpoint: %s, Status: %s, Strategy: %v, Expression: %v, LeftValue: %s, CurrentStep: %d, PushedTags: %v, TS: %s>",
 		this.Endpoint,
 		this.Status,
 		this.Strategy,

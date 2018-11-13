@@ -12,7 +12,7 @@ func lpush(queue, message string) {
 	defer rc.Close()
 	_, err := rc.Do("LPUSH", queue, message)
 	if err != nil {
-		log.Error("LPUSH redis", queue, "fail:", err, "message:", message)
+		log.Errorf("[E] LPUSH redis %s fail: %v dto: %s", queue, err, message)
 	}
 }
 
@@ -26,11 +26,11 @@ func WriteSms(content *g.AlarmDto) {
 
 	bs, err := json.Marshal(content)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
-	log.Debugf("write sms to queue, sms:%v, queue:%s", content, g.SMS_QUEUE_NAME)
+	log.Debugf("[D] write sms to queue, sms: %v, queue: %s", content, g.SMS_QUEUE_NAME)
 	lpush(g.SMS_QUEUE_NAME, string(bs))
 }
 
@@ -44,11 +44,11 @@ func WriteIM(content *g.AlarmDto) {
 
 	bs, err := json.Marshal(content)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
-	log.Debugf("write im to queue, im:%v, queue:%s", content, g.IM_QUEUE_NAME)
+	log.Debugf("[D] write im to queue, im: %v, queue: %s", content, g.IM_QUEUE_NAME)
 	lpush(g.IM_QUEUE_NAME, string(bs))
 }
 
@@ -62,10 +62,10 @@ func WriteMail(content *g.AlarmDto) {
 
 	bs, err := json.Marshal(content)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
-	log.Debugf("write mail to queue, mail:%v, queue:%s", content, g.MAIL_QUEUE_NAME)
+	log.Debugf("[D] write mail to queue, mail: %v, queue: %s", content, g.MAIL_QUEUE_NAME)
 	lpush(g.MAIL_QUEUE_NAME, string(bs))
 }

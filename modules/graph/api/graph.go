@@ -73,14 +73,14 @@ func handleItems(items []*cmodel.GraphItem) {
 
 		endpoint := items[i].Endpoint
 		if !g.IsValidString(endpoint) {
-			log.Debugf("invalid endpoint: %s", endpoint)
+			log.Debugf("[D] invalid endpoint: %s", endpoint)
 			pfc.Meter("invalidEnpoint", 1)
 			continue
 		}
 
 		counter := cutils.Counter(items[i].Metric, items[i].Tags)
 		if !g.IsValidString(counter) {
-			log.Debugf("invalid counter: %s/%s", endpoint, counter)
+			log.Debugf("[D] invalid counter: %s/%s", endpoint, counter)
 			pfc.Meter("invalidCounter", 1)
 			continue
 		}
@@ -303,7 +303,7 @@ func (this *Graph) Delete(params []*cmodel.GraphDeleteParam, resp *cmodel.GraphD
 	for _, param := range params {
 		err, tags := cutils.SplitTagsString(param.Tags)
 		if err != nil {
-			log.Error("invalid tags:", param.Tags, "error:", err)
+			log.Errorf("[E] invalid tags: %s error: %v", param.Tags, err)
 			continue
 		}
 

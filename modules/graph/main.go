@@ -21,29 +21,29 @@ import (
 
 func start_signal(pid int, cfg *g.GlobalConfig) {
 	sigs := make(chan os.Signal, 1)
-	log.Println(pid, "register signal notify")
+	log.Infof("[I] %d register signal notify", pid)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	for {
 		s := <-sigs
-		log.Println("recv", s)
+		log.Infof("[I] recv: %v", s)
 
 		switch s {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
-			log.Println("graceful shut down")
+			log.Info("[I] graceful shut down")
 			if cfg.Rpc.Enabled {
 				api.Close_chan <- 1
 				<-api.Close_done_chan
 			}
-			log.Println("rpc stop ok")
+			log.Info("[I] rpc stop ok")
 
 			rrdtool.Out_done_chan <- 1
 			rrdtool.FlushAll(true)
-			log.Println("rrdtool stop ok")
+			log.Info("[I] rrdtool stop ok")
 
 			g.DB.Close()
 
-			log.Println(pid, "exit")
+			log.Infof("[I] %d exit", pid)
 			os.Exit(0)
 		}
 	}
@@ -72,7 +72,7 @@ func main() {
 		os.Exit(0)
 	}
 	if g.Config().PerfCounter != nil {
-		log.Debugf("pfc config: %v", g.Config().PerfCounter)
+		log.Debugf("[D] pfc config: %v", g.Config().PerfCounter)
 		pfcg.PFCWithConfig(g.Config().PerfCounter)
 		pfc.Start()
 	}

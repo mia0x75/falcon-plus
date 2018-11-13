@@ -539,7 +539,7 @@ func GetServerStatus(session *mgo.Session) *ServerStatus {
 	d := bson.D{{"serverStatus", 1}, {"recordStats", 1}}
 	err := session.DB("admin").Run(d, result)
 	if err != nil {
-		log.Errorf("Failed to get server status: %s", err)
+		log.Errorf("[E] Failed to get server status: %s", err)
 		return nil
 	}
 

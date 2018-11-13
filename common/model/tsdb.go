@@ -14,7 +14,7 @@ type TsdbItem struct {
 
 func (this *TsdbItem) String() string {
 	return fmt.Sprintf(
-		"<Metric:%s, Tags:%v, Value:%v, TS:%d>",
+		"<Metric: %s, Tags: %v, Value: %v, TS: %d>",
 		this.Metric,
 		this.Tags,
 		this.Value,

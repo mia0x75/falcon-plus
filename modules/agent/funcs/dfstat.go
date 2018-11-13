@@ -13,7 +13,7 @@ func DeviceMetrics() (L []*cmodel.MetricValue) {
 	mountPoints, err := nux.ListMountPoint()
 
 	if err != nil {
-		log.Error("collect device metrics fail:", err)
+		log.Errorf("[E] collect device metrics fail: %v", err)
 		return
 	}
 
@@ -32,7 +32,7 @@ func DeviceMetrics() (L []*cmodel.MetricValue) {
 		fsSpec, fsFile, fsVfstype := mountPoints[idx][0], mountPoints[idx][1], mountPoints[idx][2]
 		if len(myMountPoints) > 0 {
 			if _, ok := myMountPoints[fsFile]; !ok {
-				log.Debug("mount point not matched with config", fsFile, "ignored.")
+				log.Debugf("[D] mount point not matched with config %s ignored.", fsFile)
 				continue
 			}
 		}
@@ -40,7 +40,7 @@ func DeviceMetrics() (L []*cmodel.MetricValue) {
 		var du *nux.DeviceUsage
 		du, err = nux.BuildDeviceUsage(fsSpec, fsFile, fsVfstype)
 		if err != nil {
-			log.Error(err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -87,7 +87,7 @@ func DeviceMetricsCheck() bool {
 	mountPoints, err := nux.ListMountPoint()
 
 	if err != nil {
-		log.Error("collect device metrics fail:", err)
+		log.Errorf("[E] collect device metrics fail: %v", err)
 		return false
 	}
 

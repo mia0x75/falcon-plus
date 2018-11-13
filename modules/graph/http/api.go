@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -70,7 +69,7 @@ func SetAPIRoutes() {
 
 	routes.GET("/api/v2/counter/migrate", func(c *gin.Context) {
 		counter := rrdtool.GetCounterV2()
-		log.Debug("migrating counter v2:", fmt.Sprintf("%+v", counter))
+		log.Debugf("[D] migrating counter v2: %v", counter)
 		c.JSON(200, counter)
 	})
 
@@ -85,15 +84,15 @@ func SetAPIRoutes() {
 		for _, in := range inputs {
 			err, tags := cutils.SplitTagsString(in.Tags)
 			if err != nil {
-				log.Error("split tags:", in.Tags, "error:", err)
+				log.Errorf("[E] split tags: %s error: %v", in.Tags, err)
 				continue
 			}
 
 			err = index.UpdateIndexOne(in.Endpoint, in.Metric, tags, in.Dstype, in.Step)
 			if err != nil {
-				log.Error("build index fail, item:", in, "error:", err)
+				log.Errorf("[E] build index fail, item: %v, error: %v", in, err)
 			} else {
-				log.Debug("build index manually", in)
+				log.Debugf("[D] build index manually, item: %v", in)
 			}
 		}
 		cutils.JSONR(c, 200, gin.H{"msg": "ok"})

@@ -31,7 +31,7 @@ func GetAggregatorListOfGrp(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDtmp)
 	if err != nil {
-		log.Debugf("grpIDtmp: %v", grpIDtmp)
+		log.Debugf("[D] grpIDtmp: %v", grpIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -70,7 +70,7 @@ func GetAggregator(c *gin.Context) {
 	}
 	aggID, err := strconv.Atoi(aggIDtmp)
 	if err != nil {
-		log.Debugf("aggIDtmp: %v", aggIDtmp)
+		log.Debugf("[D] aggIDtmp: %v", aggIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -188,7 +188,7 @@ func DeleteAggregator(c *gin.Context) {
 	}
 	aggID, err := strconv.Atoi(aggIDtmp)
 	if err != nil {
-		log.Debugf("aggIDtmp: %v", aggIDtmp)
+		log.Debugf("[D] aggIDtmp: %v", aggIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -214,6 +214,6 @@ func DeleteAggregator(c *gin.Context) {
 		h.JSONR(c, expecstatus, fmt.Sprintf("delete aggregator got error: %v", dt.Error))
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("aggregator:%v has been deleted", aggID))
+	h.JSONR(c, fmt.Sprintf("aggregator: %v has been deleted", aggID))
 	return
 }

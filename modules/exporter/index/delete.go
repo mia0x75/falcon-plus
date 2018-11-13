@@ -31,7 +31,7 @@ func DeleteIndex() {
 	startTs := time.Now().Unix()
 	deleteIndex()
 	endTs := time.Now().Unix()
-	log.Printf("deleteIndex, start %s, ts %ds", ntime.FormatTs(startTs), endTs-startTs)
+	log.Infof("[I] deleteIndex, start %s, ts %ds", ntime.FormatTs(startTs), endTs-startTs)
 
 	// statistics
 	proc.IndexDeleteCnt.Incr()
@@ -41,14 +41,14 @@ func DeleteIndex() {
 func deleteIndex() error {
 	dbConn, err := GetDbConn()
 	if err != nil {
-		log.Println("[ERROR] get dbConn fail", err)
+		log.Errorf("[E] get dbConn fail: %v", err)
 		return err
 	}
 	defer dbConn.Close()
 
 	ts := time.Now().Unix()
 	lastTs := ts - deteleStepInSec
-	log.Printf("deleteIndex, lastTs %d\n", lastTs)
+	log.Infof("[I] deleteIndex, lastTs %d", lastTs)
 
 	// reinit statistics
 	proc.IndexDeleteCnt.PutOther("deleteCntEndpoint", 0)
@@ -60,7 +60,7 @@ func deleteIndex() error {
 		// select
 		rows, err := dbConn.Query("SELECT id, endpoint FROM endpoint WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
@@ -69,25 +69,25 @@ func deleteIndex() error {
 			item := &Mdb.GraphEndpoint{}
 			err := rows.Scan(&item.Id, &item.Endpoint)
 			if err != nil {
-				log.Println(err)
+				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Println("will delete endpoint:", item)
+			log.Infof("[I] will delete endpoint: %v", item)
 			cnt++
 		}
 
 		if err = rows.Err(); err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		// delete
 		_, err = dbConn.Exec("DELETE FROM endpoint WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
-		log.Printf("delete endpoint, done, cnt %d\n", cnt)
+		log.Infof("[I] delete endpoint, done, cnt %d", cnt)
 
 		// statistics
 		proc.IndexDeleteCnt.PutOther("deleteCntEndpoint", cnt)
@@ -98,7 +98,7 @@ func deleteIndex() error {
 		// select
 		rows, err := dbConn.Query("SELECT id, tag, endpoint_id FROM tag_endpoint WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
@@ -107,25 +107,25 @@ func deleteIndex() error {
 			item := &Mdb.GraphTagEndpoint{}
 			err := rows.Scan(&item.Id, &item.Tag, &item.EndpointId)
 			if err != nil {
-				log.Println(err)
+				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Println("will delete tag_endpoint:", item)
+			log.Infof("[I] will delete tag_endpoint: %v", item)
 			cnt++
 		}
 
 		if err = rows.Err(); err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		// delete
 		_, err = dbConn.Exec("DELETE FROM tag_endpoint WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
-		log.Printf("delete tag_endpoint, done, cnt %d\n", cnt)
+		log.Infof("[I] delete tag_endpoint, done, cnt %d", cnt)
 
 		// statistics
 		proc.IndexDeleteCnt.PutOther("deleteCntTagEndpoint", cnt)
@@ -135,7 +135,7 @@ func deleteIndex() error {
 		// select
 		rows, err := dbConn.Query("SELECT id, endpoint_id, counter FROM endpoint_counter WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
@@ -144,25 +144,25 @@ func deleteIndex() error {
 			item := &Mdb.GraphEndpointCounter{}
 			err := rows.Scan(&item.Id, &item.EndpointId, &item.Counter)
 			if err != nil {
-				log.Println(err)
+				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Println("will delete endpoint_counter:", item)
+			log.Infof("[I] will delete endpoint_counter: %v", item)
 			cnt++
 		}
 
 		if err = rows.Err(); err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		// delete
 		_, err = dbConn.Exec("DELETE FROM endpoint_counter WHERE ts < ?", lastTs)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
-		log.Printf("delete endpoint_counter, done, cnt %d\n", cnt)
+		log.Infof("[I] delete endpoint_counter, done, cnt %d", cnt)
 
 		// statistics
 		proc.IndexDeleteCnt.PutOther("deleteCntEndpointCounter", cnt)

@@ -43,7 +43,7 @@ func Start() {
 
 func start() {
 	if !g.Config().Rpc.Enabled {
-		log.Println("rpc.Start warning, not enabled")
+		log.Info("[I] rpc.Start warning, not enabled")
 		return
 	}
 
@@ -52,14 +52,14 @@ func start() {
 	addr := g.Config().Rpc.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("rpc.Start error, net.ResolveTCPAddr fail, %s", err)
+		log.Fatalf("[F] rpc.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("rpc.Start error, listen %s fail, %s", addr, err)
+		log.Fatalf("[F] rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Printf("rpc listening %s", addr)
+		log.Infof("[I] rpc listening %s", addr)
 	}
 
 	go func() {
@@ -89,7 +89,7 @@ func start() {
 
 	select {
 	case <-Close_chan:
-		log.Println("rpc, recv sigout and exiting...")
+		log.Info("[I] rpc, recv sigout and exiting...")
 		listener.Close()
 		Close_done_chan <- 1
 

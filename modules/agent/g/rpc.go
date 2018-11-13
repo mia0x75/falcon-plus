@@ -39,7 +39,7 @@ func (this *SingleConnRpcClient) serverConn() error {
 	RETRY:
 		this.rpcClient, err = net.JsonRpcClient("tcp", addr, this.Timeout)
 		if err != nil {
-			log.Println("net.JsonRpcClient failed", err)
+			log.Errorf("[E] net.JsonRpcClient failed: %v", err)
 			if retry > 3 {
 				continue
 			}
@@ -48,7 +48,7 @@ func (this *SingleConnRpcClient) serverConn() error {
 			retry++
 			goto RETRY
 		}
-		log.Println("connected RPC server", addr)
+		log.Infof("[I] connected RPC server: %s", addr)
 
 		return nil
 	}
@@ -76,7 +76,7 @@ func (this *SingleConnRpcClient) Call(method string, args interface{}, reply int
 
 	select {
 	case <-time.After(timeout):
-		log.Printf("[WARN] rpc call timeout %v => %v", this.rpcClient, this.RpcServers)
+		log.Warnf("[W] rpc call timeout %v => %v", this.rpcClient, this.RpcServers)
 		this.close()
 		return errors.New("rpc call timeout")
 	case err := <-done:

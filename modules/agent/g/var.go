@@ -2,7 +2,6 @@ package g
 
 import (
 	"bytes"
-	"fmt"
 	"net"
 	"strings"
 	"time"
@@ -17,7 +16,7 @@ func InitLocalIp() {
 	for _, addr := range Config().Heartbeat.Addrs {
 		conn, err := net.DialTimeout("tcp", addr, time.Second*10)
 		if err != nil {
-			log.Println(fmt.Sprintf("connect to heartbeat server %s failed", addr))
+			log.Errorf("[E] connect to heartbeat server %s failed", addr)
 		} else {
 			defer conn.Close()
 			LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
@@ -72,13 +71,13 @@ func SendToTransfer(metrics []*cmodel.MetricValue) {
 		}
 	}
 	for _, m := range metrics {
-		log.Debugf("=> Metric %v\n", m)
+		log.Debugf("[D] => Metric %v", m)
 	}
 
-	log.Debugf("=> <Total=%d> %v\n", len(metrics), metrics[0])
+	log.Debugf("[D] => <Total=%d> %v", len(metrics), metrics[0])
 
 	var resp cmodel.TransferResponse
 	SendMetrics(metrics, &resp)
 
-	log.Debugln("<=", &resp)
+	log.Debugf("[D] <= %v", &resp)
 }

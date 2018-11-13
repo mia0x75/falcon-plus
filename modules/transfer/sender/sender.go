@@ -62,7 +62,7 @@ func start() {
 	// SendTasks依赖基础组件的初始化,要最后启动
 	startSendTasks()
 	startSenderCron()
-	log.Println("send.Start, ok")
+	log.Info("[I] send.Start, ok")
 }
 
 // 将数据 打入 某个Judge的发送缓存队列, 具体是哪一个Judge 由一致性哈希 决定
@@ -71,7 +71,7 @@ func Push2JudgeSendQueue(items []*cmodel.MetaData) {
 		pk := item.PK()
 		node, err := JudgeNodeRing.GetNode(pk)
 		if err != nil {
-			log.Println("E:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -110,7 +110,7 @@ func Push2GraphSendQueue(items []*cmodel.MetaData) {
 		}
 		graphItem, err := convert2GraphItem(item)
 		if err != nil {
-			log.Println("E:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 		pk := item.PK()
@@ -121,7 +121,7 @@ func Push2GraphSendQueue(items []*cmodel.MetaData) {
 
 		node, err := GraphNodeRing.GetNode(pk)
 		if err != nil {
-			log.Println("E:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

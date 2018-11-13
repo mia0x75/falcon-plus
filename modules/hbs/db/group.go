@@ -10,7 +10,7 @@ func QueryHostGroups() (map[int][]int, error) {
 	sql := "select grp_id, host_id from grp_host"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return m, err
 	}
 
@@ -19,7 +19,7 @@ func QueryHostGroups() (map[int][]int, error) {
 		var gid, hid int
 		err = rows.Scan(&gid, &hid)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

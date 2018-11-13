@@ -8,7 +8,7 @@ import (
 
 func HandleHeartbeatResponse(respone *model.HeartbeatResponse) {
 	if respone.ErrorMessage != "" {
-		log.Println("receive error message:", respone.ErrorMessage)
+		log.Errorf("[E] receive error message: %s", respone.ErrorMessage)
 		return
 	}
 
@@ -32,6 +32,6 @@ func HandleDesiredAgent(da *model.DesiredAgent) {
 	} else if da.Cmd == "stop" {
 		StopDesiredAgent(da)
 	} else {
-		log.Println("unknown cmd", da)
+		log.Warnf("[W] unknown cmd: %v", da)
 	}
 }

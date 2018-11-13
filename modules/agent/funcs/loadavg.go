@@ -9,7 +9,7 @@ import (
 func LoadAvgMetrics() []*cmodel.MetricValue {
 	load, err := nux.LoadAvg()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return nil
 	}
 

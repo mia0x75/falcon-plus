@@ -48,7 +48,7 @@ func initTransferClient(addr string) *SingleConnRpcClient {
 func updateMetrics(c *SingleConnRpcClient, metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) bool {
 	err := c.Call("Transfer.Update", metrics, resp)
 	if err != nil {
-		log.Println("call Transfer.Update fail:", c, err)
+		log.Errorf("[E] call Transfer.Update fail: %v, metrics: %v", err, metrics)
 		return false
 	}
 	return true

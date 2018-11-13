@@ -61,7 +61,7 @@ func DeleteInvalidItems() int {
 
 	pfc.Gauge("cache.GraphItemsCacheCnt", int64(currentCnt))
 	pfc.Gauge("cache.GraphItemsCacheInvalidCnt", int64(deleteCnt))
-	log.Printf("GraphItemsCache: Count=>%d, DeleteInvalid=>%d", currentCnt, deleteCnt)
+	log.Infof("[I] GraphItemsCache: Count=>%d, DeleteInvalid=>%d", currentCnt, deleteCnt)
 
 	return deleteCnt
 }
@@ -83,7 +83,7 @@ func DeleteInvalidHistory() int {
 
 	pfc.Gauge("cache.HistoryCacheCnt", int64(currentCnt))
 	pfc.Gauge("cache.HistoryCacheInvalidCnt", int64(deleteCnt))
-	log.Printf("HistoryCache: Count=>%d, DeleteInvalid=>%d", currentCnt, deleteCnt)
+	log.Infof("[I] HistoryCache: Count=>%d, DeleteInvalid=>%d", currentCnt, deleteCnt)
 
 	return deleteCnt
 }

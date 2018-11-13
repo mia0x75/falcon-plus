@@ -11,7 +11,7 @@ func QueryGroupTemplates() (map[int][]int, error) {
 	sql := "select grp_id, tpl_id from grp_tpl"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return m, err
 	}
 
@@ -20,7 +20,7 @@ func QueryGroupTemplates() (map[int][]int, error) {
 		var gid, tid int
 		err = rows.Scan(&gid, &tid)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -41,7 +41,7 @@ func QueryTemplates() (map[int]*cmodel.Template, error) {
 	sql := "select id, tpl_name, parent_id, action_id, create_user from tpl"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return templates, err
 	}
 
@@ -50,7 +50,7 @@ func QueryTemplates() (map[int]*cmodel.Template, error) {
 		t := cmodel.Template{}
 		err = rows.Scan(&t.Id, &t.Name, &t.ParentId, &t.ActionId, &t.Creator)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 		templates[t.Id] = &t
@@ -64,7 +64,7 @@ func QueryHostTemplateIds() (map[int][]int, error) {
 	ret := make(map[int][]int)
 	rows, err := DB.Query("select a.tpl_id, b.host_id from grp_tpl as a inner join grp_host as b on a.grp_id=b.grp_id")
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return ret, err
 	}
 
@@ -74,7 +74,7 @@ func QueryHostTemplateIds() (map[int][]int, error) {
 
 		err = rows.Scan(&tid, &hid)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

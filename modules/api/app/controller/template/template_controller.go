@@ -42,7 +42,7 @@ func GetTemplates(c *gin.Context) {
 		dt = db.Falcon.Where("tpl_name regexp ?", q).Find(&templates)
 	}
 	if dt.Error != nil {
-		log.Infof(dt.Error.Error())
+		log.Errorf("[E] %v", dt.Error)
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
@@ -70,7 +70,7 @@ func GetTemplatesSimple(c *gin.Context) {
 	q := c.DefaultQuery("q", ".+")
 	dt = db.Falcon.Select("id, tpl_name").Where("tpl_name regexp ?", q).Find(&templates)
 	if dt.Error != nil {
-		log.Infof(dt.Error.Error())
+		log.Errorf("[E] %v", dt.Error)
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
@@ -126,7 +126,7 @@ type APICreateTemplateInput struct {
 func CreateTemplate(c *gin.Context) {
 	var inputs APICreateTemplateInput
 	err := c.Bind(&inputs)
-	log.Debugf("CreateTemplate input: %v", inputs)
+	log.Debugf("[D] CreateTemplate input: %v", inputs)
 	if err != nil {
 		h.JSONR(c, badstatus, err)
 		return

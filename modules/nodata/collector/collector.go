@@ -18,12 +18,12 @@ var (
 
 func Start() {
 	if !g.Config().Collector.Enabled {
-		log.Println("collector.Start warning, not enabled")
+		log.Info("[I] collector.Start warning, not enabled")
 		return
 	}
 
 	go StartCollectorCron()
-	log.Println("collector.Start ok")
+	log.Info("[I] collector.Start ok")
 }
 
 // Interfaces Of ItemMap
@@ -70,6 +70,6 @@ func NewDataItem(ts int64, val float64, fstatus string, fts int64) *DataItem {
 }
 
 func (this *DataItem) String() string {
-	return fmt.Sprintf("ts:%s, value:%f, fts:%s, fstatus:%s",
+	return fmt.Sprintf("ts: %s, value: %f, fts: %s, fstatus: %s",
 		ttime.FormatTs(this.Ts), this.Value, ttime.FormatTs(this.FTs), this.FStatus)
 }

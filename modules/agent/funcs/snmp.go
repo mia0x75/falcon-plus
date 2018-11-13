@@ -9,7 +9,7 @@ import (
 func UdpMetrics() []*cmodel.MetricValue {
 	udp, err := nux.Snmp("Udp")
 	if err != nil {
-		log.Println("read snmp fail", err)
+		log.Errorf("[E] read snmp fail: %v", err)
 		return []*cmodel.MetricValue{}
 	}
 

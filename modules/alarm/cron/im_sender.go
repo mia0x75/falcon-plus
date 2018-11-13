@@ -39,16 +39,16 @@ func SendIM(im *g.AlarmDto) {
 	url := g.Config().Api.IM
 	if strings.TrimSpace(url) != "" {
 		if data, err := json.Marshal(im); err != nil {
-			log.Error(err)
+			log.Errorf("[ERROF] %v", err)
 			return
 		} else {
 			resp, err := cutils.Post(url, data)
 			if err != nil {
-				log.Errorf("send im fail, content:%v, error:%v", im, err)
+				log.Errorf("[E] send im fail, content: %v, error: %v", im, err)
 			}
-			log.Debugf("send im:%v, resp:%v, url:%s", im, resp, url)
+			log.Debugf("[D] send im: %v, resp: %v, url: %s", im, resp, url)
 		}
 	} else {
-		log.Debugf("im url:%s is blank, SKIP", url)
+		log.Debugf("[D] im url: %s is blank, SKIP", url)
 	}
 }

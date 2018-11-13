@@ -55,7 +55,7 @@ func Login(c *gin.Context) {
 		session.Uid = user.ID
 		db.Uic.Create(&session)
 	}
-	log.Debugf("session: %v", session)
+	log.Debugf("[D] session: %v", session)
 	resp := struct {
 		Sig   string `json:"sig,omitempty"`
 		Name  string `json:"name,omitempty"`
@@ -101,7 +101,7 @@ func AdminLogin(c *gin.Context) {
 		session.Uid = user.ID
 		db.Uic.Create(&session)
 	}
-	log.Debugf("session: %v", session)
+	log.Debugf("[D] session: %v", session)
 	resp := struct {
 		Sig   string `json:"sig,omitempty"`
 		Name  string `json:"name,omitempty"`

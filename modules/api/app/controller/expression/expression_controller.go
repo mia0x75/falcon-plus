@@ -59,7 +59,7 @@ func GetExpression(c *gin.Context) {
 	}
 	action := f.Action{ID: expression.ActionId}
 	if dt := db.Falcon.Find(&action); dt.Error != nil {
-		h.JSONR(c, badstatus, fmt.Sprintf("find action got error: %v", dt.Error.Error()))
+		h.JSONR(c, badstatus, fmt.Sprintf("find action got error: %v", dt.Error))
 		return
 	}
 	h.JSONR(c, map[string]interface{}{
@@ -202,7 +202,7 @@ func UpdateExrpession(c *gin.Context) {
 	expression := f.Expression{ID: inputs.ID}
 	if dt := tx.Find(&expression); dt.Error != nil {
 		h.JSONR(c, expecstatus, fmt.Sprintf(
-			"find expression got error:%v", dt.Error.Error()))
+			"find expression got error: %v", dt.Error.Error()))
 		tx.Rollback()
 		return
 	}
@@ -255,7 +255,7 @@ func UpdateExrpession(c *gin.Context) {
 		return
 	}
 	tx.Commit()
-	h.JSONR(c, fmt.Sprintf("expression:%v has been updated", inputs.ID))
+	h.JSONR(c, fmt.Sprintf("expression: %v has been updated", inputs.ID))
 	return
 }
 
@@ -293,6 +293,6 @@ func DeleteExpression(c *gin.Context) {
 		return
 	}
 	tx.Commit()
-	h.JSONR(c, fmt.Sprintf("expression:%d has been deleted", eid))
+	h.JSONR(c, fmt.Sprintf("expression: %d has been deleted", eid))
 	return
 }

@@ -22,7 +22,7 @@ func StartNdConfigCron() {
 		start := time.Now().Unix()
 		cnt, _ := syncNdConfig()
 		end := time.Now().Unix()
-		log.Debugf("config cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
+		log.Debugf("[D] config cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.ConfigCronCnt.Incr()
@@ -47,7 +47,7 @@ func syncNdConfig() (cnt int, errt error) {
 		metric := ndc.Metric
 		tags := ndc.Tags
 		if endpoint == "" {
-			log.Printf("bad config: %+v\n", ndc)
+			log.Warnf("[W] bad config: %+v", ndc)
 			continue
 		}
 		pk := cutils.PK(endpoint, metric, tags)

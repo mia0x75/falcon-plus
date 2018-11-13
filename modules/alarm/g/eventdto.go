@@ -42,7 +42,7 @@ type AlarmDto struct {
 
 func (this *AlarmDto) String() string {
 	return fmt.Sprintf(
-		"<Content:%s, Priority:P%d, Status:%s, Value:%s, Operator:%s Threshold:%s, Occur:%d, Uic:%s, Tos:%s>",
+		"<Content: %s, Priority:P%d, Status: %s, Value: %s, Operator: %s Threshold: %s, Occur: %d, Uic: %s, Tos: %s>",
 		this.Note,
 		this.Priority,
 		this.Status,

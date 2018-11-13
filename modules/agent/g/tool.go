@@ -26,7 +26,7 @@ func GetCurrPluginVersion() string {
 	cmd.Stdout = &out
 	err := cmd.Run()
 	if err != nil {
-		return fmt.Sprintf("Error:%s", err.Error())
+		return fmt.Sprintf("Error: %s", err.Error())
 	}
 
 	return strings.TrimSpace(out.String())

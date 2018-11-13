@@ -15,7 +15,7 @@ func init() {
 	g.ParseConfig("../cfg.example.json")
 	g.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("[F] %v", err)
 	}
 }
 
@@ -50,7 +50,7 @@ func TestAlarmEvents(t *testing.T) {
 			Post(fmt.Sprintf("%s/events", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status=1")
-		// log.Debugf("%v\n", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 2)
 	})
 	Convey("Get alarms Test 3, test pagging", t, func() {

@@ -129,7 +129,7 @@ func migrate_start(cfg *g.GlobalConfig) {
 
 			for i = 0; i < cfg.Migrate.Concurrency; i++ {
 				if clients[node][i], err = dial(addr, time.Second); err != nil {
-					log.Fatalf("node:%s addr:%s err:%s\n", node, addr, err)
+					log.Fatalf("[F] node: %s addr: %s error: %s", node, addr, err)
 				}
 				go net_task_worker(i, Net_task_ch[node], &clients[node][i], addr)
 			}
@@ -326,7 +326,7 @@ func fetch_rrd(client **rpc.Client, key string, addr string) error {
 				goto out
 			}
 		} else {
-			log.Println(err)
+			log.Errorf("[E] %v", err)
 		}
 		if err == rpc.ErrShutdown {
 			reconnection(client, addr)

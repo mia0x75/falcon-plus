@@ -31,7 +31,7 @@ func main() {
 	g.ParseConfig(*cfg)
 	cutils.InitLog(g.Config().Log.Level)
 	if g.Config().PerfCounter != nil {
-		log.Debugf("pfc config: %v", g.Config().PerfCounter)
+		log.Debugf("[D] pfc config: %v", g.Config().PerfCounter)
 		pfcg.PFCWithConfig(g.Config().PerfCounter)
 		pfc.Start()
 	}

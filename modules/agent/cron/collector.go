@@ -12,8 +12,9 @@ func InitDataHistory() {
 	go func() {
 		d := time.Duration(g.COLLECT_INTERVAL) * time.Second
 		for range time.Tick(d) {
-			funcs.UpdateCpuStat()
+			funcs.UpdateCpuStats()
 			funcs.UpdateDiskStats()
+			funcs.UpdateInconStats()
 		}
 	}()
 }

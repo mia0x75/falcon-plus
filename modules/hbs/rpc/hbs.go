@@ -150,7 +150,7 @@ func CalcInheritStrategies(allTpls map[int]*cmodel.Template, tids []int, tpl2Str
 
 			if stras, ok := tpl2Strategies[tid]; ok {
 				for _, s := range stras {
-					uuid := fmt.Sprintf("metric:%s/tags:%v", s.Metric, cutils.SortedTags(s.Tags))
+					uuid := fmt.Sprintf("metric: %s/tags: %v", s.Metric, cutils.SortedTags(s.Tags))
 					if _, ok2 := the_tid_stras[uuid]; ok2 {
 						the_tid_stras[uuid] = append(the_tid_stras[uuid], s)
 					} else {

@@ -43,7 +43,7 @@ func Start() {
 	var err error
 	// check data dir
 	if err = file.EnsureDirRW(cfg.RRD.Storage); err != nil {
-		log.Fatalln("rrdtool.Start error, bad data dir "+cfg.RRD.Storage+",", err)
+		log.Fatalf("[F] rrdtool.Start error, bad data dir %s, error: %v", cfg.RRD.Storage, err)
 	}
 
 	migrate_start(cfg)
@@ -51,7 +51,7 @@ func Start() {
 	// sync disk
 	go syncDisk()
 	go ioWorker()
-	log.Println("rrdtool.Start ok")
+	log.Info("[I] rrdtool.Start ok")
 }
 
 // RRA.Point.Size
@@ -228,11 +228,11 @@ func FlushAll(force bool) {
 	for i := 0; i < store.GraphItems.Size; i++ {
 		FlushRRD(i, force)
 		if i%n == 0 {
-			log.Debugf("flush hash idx:%03d size:%03d disk:%08d net:%08d\n",
+			log.Debugf("[D] flush hash idx: %03d size: %03d disk: %08d net: %08d\n",
 				i, store.GraphItems.Size, disk_counter, net_counter)
 		}
 	}
-	log.Printf("flush hash done (disk:%08d net:%08d)\n", disk_counter, net_counter)
+	log.Infof("[I] flush hash done (disk: %08d net: %08d)", disk_counter, net_counter)
 }
 
 func CommitByKey(key string) {
@@ -270,7 +270,7 @@ func PullByKey(key string) {
 	go func() {
 		err := <-done
 		if err != nil {
-			log.Printf("get %s from remote err[%s]\n", key, err)
+			log.Errorf("[E] get %s from remote error: %v", key, err)
 			return
 		}
 		atomic.AddUint64(&net_counter, 1)

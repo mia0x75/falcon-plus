@@ -20,7 +20,7 @@ var collectorCron = cron.New()
 
 func Start() {
 	if !g.Config().Collector.Enabled {
-		log.Println("collector.Start warning, not enable")
+		log.Info("[I] collector.Start warning, not enable")
 		return
 	}
 
@@ -33,7 +33,7 @@ func Start() {
 	}
 	// start
 	go startCollectorCron()
-	log.Println("collector.Start, ok")
+	log.Info("[I] collector.Start, ok")
 }
 
 func startCollectorCron() {
@@ -45,7 +45,7 @@ func collect() {
 	startTs := time.Now().Unix()
 	_collect()
 	endTs := time.Now().Unix()
-	log.Printf("collect, start %s, ts %ds\n", ntime.FormatTs(startTs), endTs-startTs)
+	log.Infof("[I] collect, start %s, ts %ds\n", ntime.FormatTs(startTs), endTs-startTs)
 
 	// statistics
 	proc.CollectorCronCnt.Incr()
@@ -81,14 +81,14 @@ func _collect() {
 		client.SetHeaders(headers)
 		body, err := client.Get()
 		if err != nil {
-			log.Printf(hostNamePort+", get statistics error,", err)
+			log.Infof("[I] %s, get statistics error: %v", hostNamePort, err)
 			continue
 		}
 
 		var data Dto
 		err = json.Unmarshal(body, &data)
 		if err != nil {
-			log.Println(hostNamePort+", get statistics error,", err)
+			log.Infof("[I] %s, get statistics error: %v", hostNamePort, err)
 			continue
 		}
 
@@ -125,7 +125,7 @@ func _collect() {
 		// format result
 		err = sendToTransfer(jsonList, g.Config().Collector.Agent)
 		if err != nil {
-			log.Println(hostNamePort, "send to transfer error,", err.Error())
+			log.Infof("[I] %s send to transfer error: %v", hostNamePort, err)
 		}
 	}
 }

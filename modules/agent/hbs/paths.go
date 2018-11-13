@@ -9,13 +9,13 @@ var (
 	pathsLock = new(sync.RWMutex)
 )
 
-func DuPaths() []string {
+func ReportPaths() []string {
 	pathsLock.RLock()
 	defer pathsLock.RUnlock()
 	return paths
 }
 
-func CacheDuPaths(value []string) {
+func CacheReportPaths(value []string) {
 	pathsLock.Lock()
 	defer pathsLock.Unlock()
 	paths = value

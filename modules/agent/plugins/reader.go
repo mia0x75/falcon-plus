@@ -26,7 +26,7 @@ func ListPlugins(relativePath string) map[string]*Plugin {
 
 	fs, err := ioutil.ReadDir(dir)
 	if err != nil {
-		log.Println("can not list files under", dir)
+		log.Errorf("[E] can not list files under: %s", dir)
 		return ret
 	}
 

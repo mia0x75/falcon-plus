@@ -28,7 +28,7 @@ func Start() {
 	initConnPools()
 	startSendTasks()
 	startSenderCron()
-	log.Println("send.Start, ok")
+	log.Info("[I] send.Start, ok")
 }
 
 func Push2SendQueue(items []*cmodel.MetaData) {

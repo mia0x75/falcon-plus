@@ -14,7 +14,7 @@ func QueryAgentsInfo() (map[string]*cmodel.AgentUpdateInfo, error) {
 	sql := "select hostname, ip, agent_version, plugin_version, update_at from host"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return m, err
 	}
 	defer rows.Close()
@@ -28,7 +28,7 @@ func QueryAgentsInfo() (map[string]*cmodel.AgentUpdateInfo, error) {
 		)
 		err = rows.Scan(&hostname, &ip, &agent_version, &plugin_version, &update_at)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 		m[hostname] = &cmodel.AgentUpdateInfo{
@@ -58,7 +58,7 @@ func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 
 	err := DB.QueryRow(sql).Scan(&hostname, &ip, &agent_version, &plugin_version)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
@@ -101,6 +101,6 @@ func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 
 	_, err = DB.Exec(sql)
 	if err != nil {
-		log.Println("exec", sql, "fail", err)
+		log.Errorf("[E] exec %s fail: %v", sql, err)
 	}
 }

@@ -9,15 +9,15 @@ import (
 func Start() {
 	cfg := g.Config()
 	if !cfg.Index.Enabled {
-		log.Println("index.Start warning, not enable")
+		log.Info("[I] index.Start warning, not enable")
 		return
 	}
 
 	InitDB()
 	if cfg.Index.AutoDelete {
 		StartIndexDeleteTask()
-		log.Println("index.Start warning, index cleaner enable")
+		log.Info("[I] index.Start warning, index cleaner enable")
 	}
 	go StartIndexUpdateAllTask()
-	log.Println("index.Start ok")
+	log.Info("[I] index.Start ok")
 }

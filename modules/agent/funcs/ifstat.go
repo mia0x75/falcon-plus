@@ -14,7 +14,7 @@ func NetMetrics() []*cmodel.MetricValue {
 func CoreNetMetrics(ifacePrefix []string) []*cmodel.MetricValue {
 	netIfs, err := nux.NetIfs(ifacePrefix)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return []*cmodel.MetricValue{}
 	}
 

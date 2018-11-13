@@ -93,7 +93,7 @@ func forward2JudgeTask(Q *list.SafeListLimited, node string, concurrent int) {
 
 			// statistics
 			if !sendOk {
-				log.Printf("send judge %s:%s fail: %v", node, addr, err)
+				log.Errorf("[E] send judge %s: %s fail: %v", node, addr, err)
 				proc.SendToJudgeFailCnt.IncrBy(int64(count))
 			} else {
 				proc.SendToJudgeCnt.IncrBy(int64(count))
@@ -138,7 +138,7 @@ func forward2GraphTask(Q *list.SafeListLimited, node string, addr string, concur
 
 			// statistics
 			if !sendOk {
-				log.Printf("send to graph %s:%s fail: %v", node, addr, err)
+				log.Errorf("[E] send to graph %s: %s fail: %v", node, addr, err)
 				proc.SendToGraphFailCnt.IncrBy(int64(count))
 			} else {
 				proc.SendToGraphCnt.IncrBy(int64(count))
@@ -183,7 +183,7 @@ func forward2TsdbTask(concurrent int) {
 
 			if err != nil {
 				proc.SendToTsdbFailCnt.IncrBy(int64(len(itemList)))
-				log.Println(err)
+				log.Errorf("[E] %v", err)
 				return
 			}
 		}(items)

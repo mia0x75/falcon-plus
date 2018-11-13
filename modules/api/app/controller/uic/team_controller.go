@@ -74,7 +74,7 @@ func Teams(c *gin.Context) {
 		cteam.Users = user
 		creatorName, err := t.GetCreatorName()
 		if err != nil {
-			log.Debug(err.Error())
+			log.Errorf("[E] %v", err)
 		}
 		cteam.TeamCreator = creatorName
 		outputs = append(outputs, cteam)
@@ -306,7 +306,7 @@ func GetTeam(c *gin.Context) {
 	var uidarr []uic.RelTeamUser
 	dt = db.Uic.Table("rel_team_user").Select("uid").Where(&uic.RelTeamUser{Tid: int64(team_id)}).Find(&uidarr)
 	if dt.Error != nil {
-		log.Debug(dt.Error)
+		log.Errorf("[E] %v", dt.Error)
 	}
 	var resp APIGetTeamOutput
 	resp.Team = team
@@ -316,7 +316,7 @@ func GetTeam(c *gin.Context) {
 		for _, v := range uidarr {
 			uids = append(uids, v.Uid)
 		}
-		log.Debugf("uids:%s", uids)
+		log.Debugf("[D] uids: %v", uids)
 		var users []uic.User
 
 		db.Uic.Table("user").Where("id IN (?)", uids).Find(&users)
@@ -343,7 +343,7 @@ func GetTeamByName(c *gin.Context) {
 	var uidarr []uic.RelTeamUser
 	dt = db.Uic.Table("rel_team_user").Select("uid").Where(&uic.RelTeamUser{Tid: team.ID}).Find(&uidarr)
 	if dt.Error != nil {
-		log.Debug(dt.Error)
+		log.Errorf("[E] %v", dt.Error)
 	}
 	var resp APIGetTeamOutput
 	resp.Team = team
@@ -353,7 +353,7 @@ func GetTeamByName(c *gin.Context) {
 		for _, v := range uidarr {
 			uids = append(uids, v.Uid)
 		}
-		log.Debugf("uids:%s", uids)
+		log.Debugf("[D] uids: %v", uids)
 		var users []uic.User
 		db.Uic.Table("user").Where("id IN (?)", uids).Find(&users)
 		resp.Users = users

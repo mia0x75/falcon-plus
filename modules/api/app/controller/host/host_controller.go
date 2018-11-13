@@ -18,7 +18,7 @@ func GetHostBindToWhichHostGroup(c *gin.Context) {
 	}
 	hostID, err := strconv.Atoi(HostIdTmp)
 	if err != nil {
-		log.Debugf("HostId: %v", HostIdTmp)
+		log.Debugf("[D] HostId: %v", HostIdTmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -44,7 +44,7 @@ func GetHostGroupWithTemplate(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDtmp)
 	if err != nil {
-		log.Debugf("grpIDtmp: %v", grpIDtmp)
+		log.Debugf("[D] grpIDtmp: %v", grpIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -81,7 +81,7 @@ func GetGrpsRelatedHost(c *gin.Context) {
 	}
 	hostID, err := strconv.Atoi(hostIDtmp)
 	if err != nil {
-		log.Debugf("host id: %v", hostIDtmp)
+		log.Debugf("[D] host id: %v", hostIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -104,7 +104,7 @@ func GetTplsRelatedHost(c *gin.Context) {
 	}
 	hostID, err := strconv.Atoi(hostIDtmp)
 	if err != nil {
-		log.Debugf("host id: %v", hostIDtmp)
+		log.Debugf("[D] host id: %v", hostIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}

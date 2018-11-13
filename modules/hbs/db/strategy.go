@@ -32,7 +32,7 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return ret, err
 	}
 
@@ -43,7 +43,7 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 		var tid int
 		err = rows.Scan(&s.Id, &s.Metric, &tags, &s.Func, &s.Operator, &s.RightValue, &s.MaxStep, &s.Priority, &s.Note, &tid)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -63,7 +63,7 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 		s.Tags = tt
 		s.Tpl = tpls[tid]
 		if s.Tpl == nil {
-			log.Printf("WARN: tpl is nil. strategy id=%d, tpl id=%d", s.Id, tid)
+			log.Warnf("[W] tpl is nil. strategy id=%d, tpl id=%d", s.Id, tid)
 			// 如果Strategy没有对应的Tpl，那就没有action，就没法报警，无需往后传递了
 			continue
 		}
@@ -84,7 +84,7 @@ func QueryBuiltinMetrics(tids string) ([]*cmodel.BuiltinMetric, error) {
 
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return ret, err
 	}
 
@@ -95,7 +95,7 @@ func QueryBuiltinMetrics(tids string) ([]*cmodel.BuiltinMetric, error) {
 		builtinMetric := cmodel.BuiltinMetric{}
 		err = rows.Scan(&builtinMetric.Metric, &builtinMetric.Tags)
 		if err != nil {
-			log.Println("WARN:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

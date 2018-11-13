@@ -13,7 +13,7 @@ type TransferResponse struct {
 
 func (this *TransferResponse) String() string {
 	return fmt.Sprintf(
-		"<Total=%v, Invalid:%v, Latency=%vms, Message:%s>",
+		"<Total=%v, Invalid: %v, Latency=%vms, Message: %s>",
 		this.Total,
 		this.Invalid,
 		this.Latency,

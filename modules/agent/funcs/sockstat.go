@@ -9,7 +9,7 @@ import (
 func SocketStatSummaryMetrics() (L []*cmodel.MetricValue) {
 	ssMap, err := nux.SocketStatSummary()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 

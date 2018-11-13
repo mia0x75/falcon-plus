@@ -39,16 +39,16 @@ func SendSms(sms *g.AlarmDto) {
 	url := g.Config().Api.Sms
 	if strings.TrimSpace(url) != "" {
 		if data, err := json.Marshal(sms); err != nil {
-			log.Error(err)
+			log.Errorf("[E] %v", err)
 			return
 		} else {
 			resp, err := cutils.Post(url, data)
 			if err != nil {
-				log.Errorf("send sms fail, content:%v, error:%v", sms, err)
+				log.Errorf("[E] send sms fail, content: %v, error: %v", sms, err)
 			}
-			log.Debugf("send sms:%v, resp:%v, url:%s", sms, resp, url)
+			log.Debugf("[D] send sms: %v, resp: %v, url: %s", sms, resp, url)
 		}
 	} else {
-		log.Debugf("sms url:%s is blank, SKIP", url)
+		log.Debugf("[D] sms url: %s is blank, SKIP", url)
 	}
 }

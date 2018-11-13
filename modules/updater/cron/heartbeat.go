@@ -34,12 +34,12 @@ func heartbeat() {
 	}
 
 	heartbeatRequest := BuildHeartbeatRequest(hostname, agentDirs)
-	log.Debugln("====>>>>")
-	log.Debugln(heartbeatRequest)
+	log.Debug("[D] ====>>>>")
+	log.Debugf("[D] %v", heartbeatRequest)
 
 	bs, err := json.Marshal(heartbeatRequest)
 	if err != nil {
-		log.Println("encode heartbeat request fail", err)
+		log.Errorf("[E] encode heartbeat request fail: %v", err)
 		return
 	}
 
@@ -49,19 +49,19 @@ func heartbeat() {
 	httpRequest.Body(bs)
 	httpResponse, err := httpRequest.Bytes()
 	if err != nil {
-		log.Printf("curl %s fail %v", url, err)
+		log.Errorf("[E] curl %s fail %v", url, err)
 		return
 	}
 
 	var heartbeatResponse model.HeartbeatResponse
 	err = json.Unmarshal(httpResponse, &heartbeatResponse)
 	if err != nil {
-		log.Println("decode heartbeat response fail", err)
+		log.Errorf("[E] decode heartbeat response fail: %v", err)
 		return
 	}
 
-	log.Debugln("<<<<====")
-	log.Debugln(heartbeatResponse)
+	log.Debug("[D] <<<<====")
+	log.Debugf("[D] %v", heartbeatResponse)
 
 	HandleHeartbeatResponse(&heartbeatResponse)
 

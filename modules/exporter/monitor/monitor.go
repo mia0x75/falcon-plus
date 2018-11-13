@@ -51,7 +51,7 @@ type AlarmDto struct {
 
 func (this *AlarmDto) String() string {
 	return fmt.Sprintf(
-		"<Content:%s, Priority:P%d, Status:%s, Value:%s, Operator:%s Threshold:%s, Occur:%d, Uic:%s, Tos:%s>",
+		"<Content: %s, Priority:P%d, Status: %s, Value: %s, Operator: %s Threshold: %s, Occur: %d, Uic: %s, Tos: %s>",
 		this.Note,
 		this.Priority,
 		this.Status,
@@ -73,7 +73,7 @@ var HealthState map[string]*State
 
 func Start() {
 	if !g.Config().Monitor.Enabled {
-		log.Println("monitor.Start warning, not enable")
+		log.Info("[I] monitor.Start warning, not enable")
 		return
 	}
 	// init url
@@ -90,7 +90,7 @@ func Start() {
 	go startMonitor()
 	go startJudge()
 
-	log.Println("monitor.Start, ok")
+	log.Info("[I] monitor.Start, ok")
 }
 
 func initClusters() {
@@ -164,7 +164,7 @@ func monitor() {
 					alarm.Occur = int(state.Errors)
 					alarmCache.Put(endpoint, alarm)
 				}
-				log.Errorf("%s, get health error.", endpoint)
+				log.Errorf("[E] %s, get health error.", endpoint)
 			} else {
 				if state.Errors >= 3 {
 					// problem restore
@@ -173,7 +173,7 @@ func monitor() {
 					alarmCache.Put(endpoint, alarm)
 				}
 				state.Errors = 0
-				log.Infof("%s, get health ok.", endpoint)
+				log.Infof("[I] %s, get health ok.", endpoint)
 			}
 		}(h.Tag, h.Endpoint)
 	}
@@ -197,13 +197,13 @@ func startJudge() {
 				continue
 			}
 			if data, err := json.Marshal(item.(*AlarmDto)); err != nil {
-				log.Infof("json marshal error:%v", err)
+				log.Errorf("[E] json marshal error: %v", err)
 			} else {
 				_, err := cutils.Post(g.Config().Monitor.Alarm.Url, data)
 				if err != nil {
-					log.Infof("alarm send request for health check error:%v", err)
+					log.Errorf("[E] alarm send request for health check error: %v", err)
 				} else {
-					log.Info("alarm send request for health check success\n")
+					log.Info("[I] alarm send request for health check success")
 					// statistics
 				}
 			}

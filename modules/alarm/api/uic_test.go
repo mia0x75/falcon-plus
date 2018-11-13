@@ -17,7 +17,7 @@ func TestUicAPI(t *testing.T) {
 	Convey("Get team users from api failed", t, func() {
 		r := CurlUic("plus-dev")
 		for _, x := range r {
-			log.Debugf("%#v", x)
+			log.Debug("[D] %#v", x)
 		}
 		So(len(r), ShouldEqual, 1)
 	})

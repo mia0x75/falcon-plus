@@ -12,7 +12,7 @@ import (
 func Start() {
 	InitCache()
 	go StartIndexUpdateIncrTask()
-	log.Debug("index.Start ok")
+	log.Debug("[D] index.Start ok")
 }
 
 // index收到一条新上报的监控数据,尝试用于增量更新索引
@@ -55,10 +55,10 @@ func RemoveItem(item *cmodel.GraphItem) {
 	checksum := item.Checksum()
 	key := g.FormRrdCacheKey(checksum, item.DsType, item.Step)
 	poped_items := store.GraphItems.PopAll(key)
-	log.Debugf("discard data of item:%v, size:%d", item, len(poped_items))
+	log.Debugf("[D] discard data of item: %v, size: %d", item, len(poped_items))
 
 	rrdFileName := g.RrdFileName(g.Config().RRD.Storage, md5, item.DsType, item.Step)
-	log.Debugf("GraphItem is: %+v, md5: %v, RrdFileName: %v", item, md5, rrdFileName)
+	log.Debugf("[D] GraphItem is: %+v, md5: %v, RrdFileName: %v", item, md5, rrdFileName)
 	file.Remove(rrdFileName)
-	log.Debug("remove rrdfile:", rrdFileName)
+	log.Debugf("[D] remove rrdfile: %s", rrdFileName)
 }

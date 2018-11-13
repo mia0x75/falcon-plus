@@ -86,13 +86,13 @@ func ParseUserSms(event *cmodel.Event, action *api.Action) {
 		content.Uic = action.Uic
 		bs, err := json.Marshal(content)
 		if err != nil {
-			log.Error("json marshal SmsDto fail:", err)
+			log.Errorf("[E] json marshal SmsDto fail: %v", err)
 			continue
 		}
 
 		_, err = rc.Do("LPUSH", queue, string(bs))
 		if err != nil {
-			log.Error("LPUSH redis", queue, "fail:", err, "dto:", string(bs))
+			log.Errorf("[E] LPUSH redis %s fail: %v dto: %s", queue, err, string(bs))
 		}
 	}
 }
@@ -112,13 +112,13 @@ func ParseUserMail(event *cmodel.Event, action *api.Action) {
 		content.Uic = action.Uic
 		bs, err := json.Marshal(content)
 		if err != nil {
-			log.Error("json marshal MailDto fail:", err)
+			log.Errorf("[E] json marshal MailDto fail: %v", err)
 			continue
 		}
 
 		_, err = rc.Do("LPUSH", queue, string(bs))
 		if err != nil {
-			log.Error("LPUSH redis", queue, "fail:", err, "dto:", string(bs))
+			log.Errorf("[E] LPUSH redis %s fail: %v dto: %s", queue, err, string(bs))
 		}
 	}
 }
@@ -138,13 +138,13 @@ func ParseUserIm(event *cmodel.Event, action *api.Action) {
 		content.Uic = action.Uic
 		bs, err := json.Marshal(content)
 		if err != nil {
-			log.Error("json marshal ImDto fail:", err)
+			log.Errorf("[E] json marshal ImDto fail: %v", err)
 			continue
 		}
 
 		_, err = rc.Do("LPUSH", queue, string(bs))
 		if err != nil {
-			log.Error("LPUSH redis", queue, "fail:", err, "dto:", string(bs))
+			log.Errorf("[E] LPUSH redis %s fail: %v dto: %s", queue, err, string(bs))
 		}
 	}
 }

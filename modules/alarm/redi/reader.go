@@ -19,7 +19,7 @@ func PopAllSms() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error(err)
+				log.Errorf("[E] %v", err)
 			}
 			break
 		}
@@ -31,7 +31,7 @@ func PopAllSms() []*g.AlarmDto {
 		var sms *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &sms)
 		if err != nil {
-			log.Error(err, reply)
+			log.Errorf("[E] reply: %s, error: %v", reply, err)
 			continue
 		}
 
@@ -52,7 +52,7 @@ func PopAllIM() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error(err)
+				log.Errorf("[E] %v", err)
 			}
 			break
 		}
@@ -64,7 +64,7 @@ func PopAllIM() []*g.AlarmDto {
 		var im *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &im)
 		if err != nil {
-			log.Error(err, reply)
+			log.Errorf("[E] reply: %s, error: %v", reply, err)
 			continue
 		}
 
@@ -85,7 +85,7 @@ func PopAllMail() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error(err)
+				log.Errorf("[E] %v", err)
 			}
 			break
 		}
@@ -97,7 +97,7 @@ func PopAllMail() []*g.AlarmDto {
 		var mail *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &mail)
 		if err != nil {
-			log.Error(err, reply)
+			log.Errorf("[E] reply: %s, error: %v", reply, err)
 			continue
 		}
 		ret = append(ret, mail)

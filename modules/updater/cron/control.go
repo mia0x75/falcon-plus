@@ -11,7 +11,7 @@ func Control(workdir, arg string) (string, error) {
 	cmd.Dir = workdir
 	bs, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Printf("cd %s; ./control %s fail %v. output: %s", workdir, arg, err, string(bs))
+		log.Errorf("[E] cd %s; ./control %s fail %v. output: %s", workdir, arg, err, string(bs))
 	}
 	return string(bs), err
 }

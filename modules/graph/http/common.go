@@ -15,7 +15,7 @@ func SetupCommonRoutes() {
 	//compatible with open-falcon v0.1
 	routes.GET("/counter/migrate", func(c *gin.Context) {
 		cnt := rrdtool.GetCounter()
-		log.Debug("migrating counter:", cnt)
+		log.Debugf("[D] migrating counter: %s", cnt)
 		c.JSON(200, gin.H{"msg": "ok", "counter": cnt})
 	})
 }

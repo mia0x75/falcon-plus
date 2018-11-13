@@ -17,7 +17,7 @@ func WorkerRun(item *g.Cluster) {
 	denominatorStr := cleanParam(item.Denominator)
 
 	if !expressionValid(numeratorStr) || !expressionValid(denominatorStr) {
-		log.Println("[W] invalid numerator or denominator", item)
+		log.Warnf("[W] invalid numerator or denominator, item: %v", item)
 		return
 	}
 
@@ -25,7 +25,7 @@ func WorkerRun(item *g.Cluster) {
 	needComputeDenominator := needCompute(denominatorStr)
 
 	if !needComputeNumerator && !needComputeDenominator {
-		log.Println("[W] no need compute", item)
+		log.Warnf("[W] no need compute, item: %v", item)
 		return
 	}
 
@@ -33,7 +33,7 @@ func WorkerRun(item *g.Cluster) {
 	denominatorOperands, denominatorOperators, denominatorComputeMode := parse(denominatorStr, needComputeDenominator)
 
 	if !operatorsValid(numeratorOperators) || !operatorsValid(denominatorOperators) {
-		log.Println("[W] operators invalid", item)
+		log.Warnf("[W] operators invalid, item: %v", item)
 		return
 	}
 
@@ -46,7 +46,7 @@ func WorkerRun(item *g.Cluster) {
 
 	valueMap, err := queryCounterLast(numeratorOperands, denominatorOperands, hostnames, now-int64(item.Step*3), now)
 	if err != nil {
-		log.Println("[E]", err, item)
+		log.Errorf("[E] call queryCounterLast fail, item: %v, error: %v", err, item)
 		return
 	}
 
@@ -61,9 +61,9 @@ func WorkerRun(item *g.Cluster) {
 			numeratorVal, err = compute(numeratorOperands, numeratorOperators, numeratorComputeMode, hostname, valueMap)
 
 			if err != nil {
-				log.Debugf("[W] [hostname:%s] [numerator:%s] id:%d, err:%v", hostname, item.Numerator, item.Id, err)
+				log.Warnf("[W] [hostname: %s] [numerator: %s] id: %d, error: %v", hostname, item.Numerator, item.Id, err)
 			} else {
-				log.Debugf("[D] [hostname:%s] [numerator:%s] id:%d, value:%0.4f", hostname, item.Numerator, item.Id, numeratorVal)
+				log.Debugf("[D] [hostname: %s] [numerator: %s] id: %d, value: %0.4f", hostname, item.Numerator, item.Id, numeratorVal)
 			}
 
 			if err != nil {
@@ -75,9 +75,9 @@ func WorkerRun(item *g.Cluster) {
 			denominatorVal, err = compute(denominatorOperands, denominatorOperators, denominatorComputeMode, hostname, valueMap)
 
 			if err != nil {
-				log.Debugf("[W] [hostname:%s] [denominator:%s] id:%d, err:%v", hostname, item.Denominator, item.Id, err)
+				log.Warnf("[W] [hostname: %s] [denominator: %s] id: %d, error: %v", hostname, item.Denominator, item.Id, err)
 			} else {
-				log.Debugf("[D] [hostname:%s] [denominator:%s] id:%d, value:%0.4f", hostname, item.Denominator, item.Id, denominatorVal)
+				log.Debugf("[D] [hostname: %s] [denominator: %s] id: %d, value: %0.4f", hostname, item.Denominator, item.Id, denominatorVal)
 			}
 
 			if err != nil {
@@ -85,7 +85,7 @@ func WorkerRun(item *g.Cluster) {
 			}
 		}
 
-		log.Debugf("[D] hostname:%s  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
+		log.Debugf("[D] hostname: %s  numerator: %0.4f  denominator: %0.4f  per: %0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
 		numerator += numeratorVal
 		denominator += denominatorVal
 		validCount++
@@ -97,7 +97,7 @@ func WorkerRun(item *g.Cluster) {
 		} else {
 			numerator, err = strconv.ParseFloat(numeratorStr, 64)
 			if err != nil {
-				log.Printf("[E] strconv.ParseFloat(%s) fail %v, id:%d", numeratorStr, err, item.Id)
+				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", numeratorStr, err, item.Id)
 				return
 			}
 		}
@@ -109,23 +109,28 @@ func WorkerRun(item *g.Cluster) {
 		} else {
 			denominator, err = strconv.ParseFloat(denominatorStr, 64)
 			if err != nil {
-				log.Printf("[E] strconv.ParseFloat(%s) fail %v, id:%d", denominatorStr, err, item.Id)
+				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", denominatorStr, err, item.Id)
 				return
 			}
 		}
 	}
 
 	if denominator == 0 {
-		log.Println("[W] denominator == 0, id:", item.Id)
+		log.Warnf("[W] denominator == 0, id: %d", item.Id)
 		return
 	}
 
 	if validCount == 0 {
-		log.Println("[W] validCount == 0, id:", item.Id)
+		log.Warnf("[W] validCount == 0, id: %d", item.Id)
 		return
 	}
 
-	log.Debugf("[D] hostname:all  numerator:%0.4f  denominator:%0.4f  per:%0.4f\n", numerator, denominator, numerator/denominator)
+	log.Debugf(
+		"[DEBUG] hostname:all  numerator: %0.4f  denominator: %0.4f  per: %0.4f",
+		numerator,
+		denominator,
+		numerator/denominator,
+	)
 	sender.Push(item.Endpoint, item.Metric, item.Tags, numerator/denominator, item.DsType, int64(item.Step))
 }
 

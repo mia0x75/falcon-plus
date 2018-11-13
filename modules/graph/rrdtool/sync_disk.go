@@ -53,7 +53,7 @@ func syncDisk() {
 			FlushRRD(idx, false)
 			idx++
 		case <-Out_done_chan:
-			log.Println("cron recv sigout and exit...")
+			log.Info("[I] cron recv sigout and exit...")
 			return
 		}
 	}

@@ -75,7 +75,7 @@ func CurlAction(id int) *Action {
 	var act Action
 	err := req.ToJson(&act)
 	if err != nil {
-		log.Errorf("curl %s fail: %v", uri, err)
+		log.Errorf("[E] curl %s fail: %v", uri, err)
 		return nil
 	}
 

@@ -134,6 +134,6 @@ func DeleteNoData(c *gin.Context) {
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("mockcfg:%d is deleted", nid))
+	h.JSONR(c, fmt.Sprintf("mockcfg: %d is deleted", nid))
 	return
 }

@@ -20,7 +20,6 @@ func UpdateDiskStats() error {
 	if err != nil {
 		return err
 	}
-
 	dsLock.Lock()
 	defer dsLock.Unlock()
 	for i := 0; i < len(dsList); i++ {
@@ -89,7 +88,7 @@ func IODelta(device string, f func([2]*nux.DiskStats) uint64) uint64 {
 func DiskIOMetrics() (L []*cmodel.MetricValue) {
 	dsList, err := nux.ListDiskStats()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
@@ -150,9 +149,15 @@ func IOStatsMetrics() (L []*cmodel.MetricValue) {
 		L = append(L, GaugeValue("disk.io.avgqu-sz", float64(IODelta(device, IOMsecWeightedTotal))/1000.0, tags))
 		L = append(L, GaugeValue("disk.io.await", await, tags))
 		L = append(L, GaugeValue("disk.io.svctm", svctm, tags))
-		tmp := float64(use) * 100.0 / float64(duration)
-		if tmp > 100.0 {
-			tmp = 100.0
+
+		var tmp float64
+		if duration == 0 {
+			tmp = 0
+		} else {
+			tmp = float64(use) * 100.0 / float64(duration)
+			if tmp > 100.0 {
+				tmp = 100.0
+			}
 		}
 		L = append(L, GaugeValue("disk.io.util", tmp, tags))
 	}

@@ -50,7 +50,7 @@ func SendMockOnce() int {
 	start := time.Now().Unix()
 	cnt, _ := sendMock()
 	end := time.Now().Unix()
-	log.Debugf("sender cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
+	log.Debugf("[D] sender cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
 
 	// statistics
 	g.SenderCronCnt.Incr()
@@ -92,7 +92,7 @@ func sendMock() (cnt int, errt error) {
 			time.Millisecond*time.Duration(connTimeout),
 			time.Millisecond*time.Duration(requTimeout))
 		if err == nil {
-			log.Debugln("send items:", items)
+			log.Debugf("[D] send items: %v", items)
 			cnt += cntonce
 		}
 	}
@@ -113,7 +113,7 @@ func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname str
 	// form request args
 	itemsBody, err := json.Marshal(items)
 	if err != nil {
-		log.Println(transUlr+", format body error,", err)
+		log.Errorf("[E] %s, format body error: %v", transUlr, err)
 		errt = err
 		return
 	}
@@ -127,7 +127,7 @@ func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname str
 	}
 	client.SetHeaders(headers)
 	if _, err := client.Post(itemsBody); err != nil {
-		log.Println(transUlr+", post to dest error,", err)
+		log.Errorf("[E] %s, post to dest error: %v", transUlr, err)
 		errt = err
 		return
 	}

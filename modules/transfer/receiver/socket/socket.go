@@ -19,14 +19,14 @@ func start() {
 	addr := g.Config().Socket.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
-		log.Fatalf("socket.Start error, net.ResolveTCPAddr fail, %s", err)
+		log.Fatalf("[F] socket.Start error, net.ResolveTCPAddr fail, %s", err)
 	}
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	if err != nil {
-		log.Fatalf("socket.Start error, listen %s fail, %s", addr, err)
+		log.Fatalf("[F] socket.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Println("socket listening", addr)
+		log.Infof("[I] socket listening: %s", addr)
 	}
 
 	defer listener.Close()
@@ -34,7 +34,7 @@ func start() {
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Println("listener.Accept occur error:", err)
+			log.Errorf("[E] listener.Accept occur error: %v", err)
 			continue
 		}
 

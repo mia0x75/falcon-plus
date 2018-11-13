@@ -36,9 +36,7 @@ func PostPush(L []*model.JsonMetaData) error {
 		return fmt.Errorf("status code %d != 200, response: %s", resp.StatusCode, content)
 	}
 
-	if Debug {
-		log.Println("[D] response:", content)
-	}
+	log.Debugf("[D] response: %s", content)
 
 	return nil
 }

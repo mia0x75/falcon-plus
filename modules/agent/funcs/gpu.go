@@ -9,7 +9,7 @@ import (
 // 需要load libnvidia-ml.so.1库
 func GpuMetrics() (L []*cmodel.MetricValue) {
 	if err := gonvml.Initialize(); err != nil {
-		log.Debugln("Initialize error: ", err)
+		log.Errorf("[E] Initialize error: %v", err)
 		return
 	}
 
@@ -17,7 +17,7 @@ func GpuMetrics() (L []*cmodel.MetricValue) {
 
 	count, err := gonvml.DeviceCount()
 	if err != nil {
-		log.Println("DeviceCount error: ", err)
+		log.Errorf("[E] DeviceCount error: %v", err)
 		return
 	}
 
@@ -37,13 +37,13 @@ func GpuMetrics() (L []*cmodel.MetricValue) {
 	for i := 0; i < int(count); i++ {
 		dev, err := gonvml.DeviceHandleByIndex(uint(i))
 		if err != nil {
-			log.Println("DeviceHandleByIndex error:", err)
+			log.Errorf("[E] DeviceHandleByIndex error: %v", err)
 			continue
 		}
 
 		uuid, err := dev.UUID()
 		if err != nil {
-			log.Println("dev.UUID error", err)
+			log.Errorf("[E] dev.UUID error: %v", err)
 		}
 
 		tag := "uuid=" + uuid
@@ -51,20 +51,20 @@ func GpuMetrics() (L []*cmodel.MetricValue) {
 		// 不是所有gpu都有风扇
 		fanSpeed, err := dev.FanSpeed()
 		if err != nil {
-			log.Println("dev.FanSpeed error: ", err)
+			log.Errorf("[E] dev.FanSpeed error: %v", err)
 		} else {
 			L = append(L, GaugeValue("gpu.fan.speed", fanSpeed, tag))
 		}
 
 		temperature, err = dev.Temperature()
 		if err != nil {
-			log.Println("dev.Temperature error: ", err)
+			log.Errorf("[E] dev.Temperature error: %v", err)
 			continue
 		}
 
 		totalMemory, usedMemory, err = dev.MemoryInfo()
 		if err != nil {
-			log.Println("dev.MemoryInfo error: ", err)
+			log.Errorf("[E] dev.MemoryInfo error: %v", err)
 			continue
 		}
 
@@ -74,7 +74,7 @@ func GpuMetrics() (L []*cmodel.MetricValue) {
 
 		gpuUtilization, memoryUtilization, err = dev.UtilizationRates()
 		if err != nil {
-			log.Println("dev.UtilizationRates error: ", err)
+			log.Errorf("[E] dev.UtilizationRates error: %v", err)
 			continue
 		}
 
@@ -83,7 +83,7 @@ func GpuMetrics() (L []*cmodel.MetricValue) {
 
 		powerUsage, err = dev.PowerUsage()
 		if err != nil {
-			log.Println("dev.PowerUsage error: ", err)
+			log.Errorf("[E] dev.PowerUsage error: %v", err)
 		}
 
 		// 单位换算为瓦特

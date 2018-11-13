@@ -26,7 +26,7 @@ func startSender() {
 
 		err := PostPush(L)
 		if err != nil {
-			log.Println("[E] push to transfer fail", err)
+			log.Errorf("[E] push to transfer fail: %v", err)
 		}
 	}
 }

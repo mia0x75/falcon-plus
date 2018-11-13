@@ -12,7 +12,7 @@ func QueryExpressions() (ret []*cmodel.Expression, err error) {
 	sql := "select id, expression, func, op, right_value, max_step, priority, note, action_id from expression where action_id>0 and pause=0"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return ret, err
 	}
 
@@ -33,13 +33,13 @@ func QueryExpressions() (ret []*cmodel.Expression, err error) {
 		)
 
 		if err != nil {
-			log.Println("WARN:", err)
+			log.Warnf("[W] %v", err)
 			continue
 		}
 
 		e.Metric, e.Tags, err = parseExpression(exp)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

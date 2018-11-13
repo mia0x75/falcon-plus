@@ -102,14 +102,14 @@ func postByJson(rw http.ResponseWriter, req *http.Request, url string) {
 	s := buf.String()
 	reqPost, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(s)))
 	if err != nil {
-		log.Println("Error =", err.Error())
+		log.Errorf("[E] %v", err)
 	}
 	reqPost.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(reqPost)
 	if err != nil {
-		log.Println("Error =", err.Error())
+		log.Errorf("[E] %v", err)
 	}
 	defer resp.Body.Close()
 
@@ -123,7 +123,7 @@ func postByForm(rw http.ResponseWriter, req *http.Request, url string) {
 	client := &http.Client{}
 	resp, err := client.PostForm(url, req.PostForm)
 	if err != nil {
-		log.Println("Error =", err.Error())
+		log.Errorf("[E] %v", err)
 	}
 	defer resp.Body.Close()
 
@@ -135,13 +135,13 @@ func postByForm(rw http.ResponseWriter, req *http.Request, url string) {
 func getRequest(rw http.ResponseWriter, url string) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Println("Error =", err.Error())
+		log.Errorf("[E] %v", err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println("Error =", err.Error())
+		log.Errorf("[E] %v", err)
 	}
 	defer resp.Body.Close()
 

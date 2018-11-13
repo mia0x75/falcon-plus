@@ -1,7 +1,6 @@
 package cron
 
 import (
-	"fmt"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -20,7 +19,8 @@ func reportAgentStatus() {
 	for range time.Tick(d) {
 		hostname, err := g.Hostname()
 		if err != nil {
-			hostname = fmt.Sprintf("error:%s", err.Error())
+			log.Errorf("[E] get hostname error: %v", err)
+			continue
 		}
 
 		req := cmodel.AgentReportRequest{
@@ -34,9 +34,9 @@ func reportAgentStatus() {
 		var resp cmodel.SimpleRpcResponse
 		err = g.HbsClient.Call("Agent.ReportStatus", req, &resp)
 		if err != nil || resp.Code != 0 {
-			log.Errorf("call Agent.ReportStatus fail: %v Request: %v Response: %v\n", err, req, resp)
+			log.Errorf("[E] call Agent.ReportStatus fail: %v Request: %v Response: %v\n", err, req, resp)
 		} else {
-			log.Debugf("call Agent.ReportStatus success. Request: %v Response: %v\n", req, resp)
+			log.Debugf("[D] call Agent.ReportStatus success. Request: %v Response: %v\n", req, resp)
 		}
 	}
 }

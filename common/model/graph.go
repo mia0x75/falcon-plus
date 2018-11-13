@@ -23,7 +23,7 @@ type GraphItem struct {
 
 func (this *GraphItem) String() string {
 	return fmt.Sprintf(
-		"<Endpoint:%s, Metric:%s, Tags:%v, Value:%v, TS:%d %v DsType:%s, Step:%d, Heartbeat:%d, Min:%s, Max:%s>",
+		"<Endpoint: %s, Metric: %s, Tags: %v, Value: %v, TS: %d %v DsType: %s, Step: %d, Heartbeat: %d, Min: %s, Max: %s>",
 		this.Endpoint,
 		this.Metric,
 		this.Tags,
@@ -115,7 +115,7 @@ func NewRRDData(ts int64, val float64) *RRDData {
 
 func (this *RRDData) String() string {
 	return fmt.Sprintf(
-		"<RRDData:Value:%v TS:%d %v>",
+		"<RRDData:Value: %v TS: %d %v>",
 		this.Value,
 		this.Timestamp,
 		MUtils.UnixTsFormat(this.Timestamp),

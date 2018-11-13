@@ -50,7 +50,7 @@ func GetPluginOfGrp(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDtmp)
 	if err != nil {
-		log.Debugf("grpIDtmp: %v", grpIDtmp)
+		log.Debugf("[D] grpIDtmp: %v", grpIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -71,7 +71,7 @@ func DeletePlugin(c *gin.Context) {
 	}
 	pluginID, err := strconv.Atoi(pluginIDtmp)
 	if err != nil {
-		log.Debugf("pluginIDtmp: %v", pluginIDtmp)
+		log.Debugf("[D] pluginIDtmp: %v", pluginIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -97,6 +97,6 @@ func DeletePlugin(c *gin.Context) {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("plugin:%v has been deleted", pluginID))
+	h.JSONR(c, fmt.Sprintf("plugin: %v has been deleted", pluginID))
 	return
 }

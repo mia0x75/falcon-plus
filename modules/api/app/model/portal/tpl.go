@@ -40,7 +40,12 @@ func (this Template) FindParentName() (name string, err error) {
 	db := g.Con()
 	dt := db.Falcon.Find(&ptpl)
 	if dt.Error != nil {
-		log.Debugf("tpl_id: %v find parent: %v with error: %s", this.ID, ptpl.ID, dt.Error.Error())
+		log.Debugf(
+			"[DEBUG] tpl_id: %v find parent: %v with error: %s",
+			this.ID,
+			ptpl.ID,
+			dt.Error,
+		)
 		return
 	}
 	name = ptpl.Name

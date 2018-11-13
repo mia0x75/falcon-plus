@@ -36,7 +36,7 @@ func NetstatMetrics() (L []*cmodel.MetricValue) {
 	tcpExts, err := nux.Netstat("TcpExt")
 
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 

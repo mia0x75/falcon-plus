@@ -9,7 +9,7 @@ import (
 func MemMetrics() []*cmodel.MetricValue {
 	m, err := nux.MemInfo()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return nil
 	}
 

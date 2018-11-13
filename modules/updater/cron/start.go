@@ -43,7 +43,7 @@ func Untar(da *model.DesiredAgent) error {
 	cmd.Dir = da.AgentVersionDir
 	err := cmd.Run()
 	if err != nil {
-		log.Println("tar zxf", da.TarballFilename, "fail", err)
+		log.Errorf("[E] tar zxf %s fail: %v", da.TarballFilename, err)
 		return err
 	}
 
@@ -84,7 +84,13 @@ func InsureNewVersionFiles(da *model.DesiredAgent) error {
 	downloadTarballCmd.Dir = da.AgentVersionDir
 	err = downloadTarballCmd.Run()
 	if err != nil {
-		log.Println("wget -q --no-check-certificate --auth-no-challenge --user=owl --password="+password, da.TarballUrl, "-O", da.TarballFilename, "fail", err)
+		log.Errorf(
+			"[ERROR] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
+			password,
+			da.TarballUrl,
+			da.TarballFilename,
+			err,
+		)
 		return err
 	}
 
@@ -92,7 +98,13 @@ func InsureNewVersionFiles(da *model.DesiredAgent) error {
 	downloadMd5Cmd.Dir = da.AgentVersionDir
 	err = downloadMd5Cmd.Run()
 	if err != nil {
-		log.Println("wget -q --no-check-certificate --auth-no-challenge --user=owl --password="+password, da.Md5Url, "-O", da.Md5Filename, "fail", err)
+		log.Errorf(
+			"[ERROR] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
+			password,
+			da.Md5Url,
+			da.Md5Filename,
+			err,
+		)
 		return err
 	}
 
@@ -122,13 +134,13 @@ func FilesReady(da *model.DesiredAgent) bool {
 func InsureDesiredAgentDirExists(da *model.DesiredAgent) error {
 	err := file.InsureDir(da.AgentDir)
 	if err != nil {
-		log.Println("insure dir", da.AgentDir, "fail", err)
+		log.Errorf("[E] insure dir %s fail: %v", da.AgentDir, err)
 		return err
 	}
 
 	err = file.InsureDir(da.AgentVersionDir)
 	if err != nil {
-		log.Println("insure dir", da.AgentVersionDir, "fail", err)
+		log.Errorf("[E] insure dir %s fail: %v", da.AgentVersionDir, err)
 	}
 	return err
 }

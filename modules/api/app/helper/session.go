@@ -22,20 +22,20 @@ func GetSession(c *gin.Context) (session WebSession, err error) {
 		err = errors.New("token key is not set")
 		return
 	}
-	log.Debugf("header: %v, apiToken: %v", c.Request.Header, apiToken)
+	log.Debugf("[D] header: %v, apiToken: %v", c.Request.Header, apiToken)
 	var websession WebSession
 	err = json.Unmarshal([]byte(apiToken), &websession)
 	if err != nil {
 		return
 	}
 	name = websession.Name
-	log.Debugf("session got name: %s", name)
+	log.Debugf("[D] session got name: %s", name)
 	if name == "" {
 		err = errors.New("token key:name is empty")
 		return
 	}
 	sig = websession.Sig
-	log.Debugf("session got sig: %s", sig)
+	log.Debugf("[D] session got sig: %s", sig)
 	if sig == "" {
 		err = errors.New("token key:sig is empty")
 		return

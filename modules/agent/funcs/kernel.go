@@ -9,21 +9,21 @@ import (
 func KernelMetrics() (L []*cmodel.MetricValue) {
 	maxFiles, err := nux.KernelMaxFiles()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 	L = append(L, GaugeValue("kernel.maxfiles", maxFiles))
 
 	maxProc, err := nux.KernelMaxProc()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 	L = append(L, GaugeValue("kernel.maxproc", maxProc))
 
 	allocateFiles, err := nux.KernelAllocateFiles()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 	L = append(L, GaugeValue("kernel.files.allocated", allocateFiles))

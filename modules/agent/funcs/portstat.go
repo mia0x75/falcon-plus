@@ -20,13 +20,13 @@ func PortMetrics() (L []*cmodel.MetricValue) {
 
 	allTcpPorts, err := nux.TcpPorts()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 
 	allUdpPorts, err := nux.UdpPorts()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 

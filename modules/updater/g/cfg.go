@@ -66,6 +66,6 @@ func ParseConfig(cfg string) error {
 
 	config = &c
 
-	log.Debugln("read config file:", cfg, "successfully")
+	log.Debugf("[D] read config file: %s successfully", cfg)
 	return nil
 }

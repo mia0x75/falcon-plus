@@ -28,7 +28,7 @@ func SetupPluginRoutes() {
 			cmd.Dir = dir
 			err := cmd.Run()
 			if err != nil {
-				w.Write([]byte(fmt.Sprintf("git pull in dir:%s fail. error: %s", dir, err)))
+				w.Write([]byte(fmt.Sprintf("git pull in dir: %s fail. error: %s", dir, err)))
 				return
 			}
 		} else {
@@ -37,7 +37,7 @@ func SetupPluginRoutes() {
 			cmd.Dir = parentDir
 			err := cmd.Run()
 			if err != nil {
-				w.Write([]byte(fmt.Sprintf("git clone in dir:%s fail. error: %s", parentDir, err)))
+				w.Write([]byte(fmt.Sprintf("git clone in dir: %s fail. error: %s", parentDir, err)))
 				return
 			}
 		}
@@ -58,7 +58,7 @@ func SetupPluginRoutes() {
 			cmd.Dir = dir
 			err := cmd.Run()
 			if err != nil {
-				w.Write([]byte(fmt.Sprintf("git reset --hard in dir:%s fail. error: %s", dir, err)))
+				w.Write([]byte(fmt.Sprintf("git reset --hard in dir: %s fail. error: %s", dir, err)))
 				return
 			}
 		}

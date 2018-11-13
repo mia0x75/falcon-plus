@@ -59,25 +59,25 @@ func popEvent(queues []string) (*cmodel.Event, error) {
 
 	rc := g.RedisConnPool.Get()
 	if rc == nil {
-		log.Println("cannot get redis connection")
+		log.Warn("[W] cannot get redis connection")
 		return nil, errors.New("get redis connection failed")
 	}
 	defer rc.Close()
 
 	reply, err := redis.Strings(rc.Do("BRPOP", params...))
 	if err != nil {
-		log.Errorf("get alarm event from redis fail: %v", err)
+		log.Errorf("[E] get alarm event from redis fail: %v", err)
 		return nil, err
 	}
 
 	var event cmodel.Event
 	err = json.Unmarshal([]byte(reply[1]), &event)
 	if err != nil {
-		log.Errorf("parse alarm event fail: %v", err)
+		log.Errorf("[E] parse alarm event fail: %v", err)
 		return nil, err
 	}
 
-	log.Debugf("pop event: %s", event.String())
+	log.Debugf("[D] pop event: %s", event.String())
 
 	//insert event into database
 	eventmodel.InsertEvent(&event)

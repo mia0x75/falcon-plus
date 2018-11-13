@@ -18,7 +18,7 @@ func GetHostsFromGroup(grpName string) map[string]int {
 
 	rows, err := DB.Query(q)
 	if err != nil {
-		log.Println("[ERROR]", err)
+		log.Errorf("[E] %v", err)
 		return hosts
 	}
 
@@ -28,7 +28,7 @@ func GetHostsFromGroup(grpName string) map[string]int {
 		hostname := ""
 		err = rows.Scan(&hid, &hostname)
 		if err != nil {
-			log.Println("[ERROR]", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 		if hid < 0 || hostname == "" {

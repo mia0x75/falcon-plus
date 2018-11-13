@@ -9,6 +9,7 @@ type AgentReportRequest struct {
 	IP            string
 	AgentVersion  string
 	PluginVersion string
+	Hostgroup     string
 	MachineID     string
 	Timezone      string
 	OS            *system
@@ -97,11 +98,12 @@ type network struct {
 
 func (this *AgentReportRequest) String() string {
 	return fmt.Sprintf(
-		"<Hostname:%s, IP:%s, AgentVersion:%s, PluginVersion:%s>",
+		"<Hostname: %s, IP: %s, AgentVersion: %s, PluginVersion: %s, Hostgroup: %s>",
 		this.Hostname,
 		this.IP,
 		this.AgentVersion,
 		this.PluginVersion,
+		this.Hostgroup,
 	)
 }
 
@@ -130,7 +132,7 @@ type AgentPluginsResponse struct {
 
 func (this *AgentPluginsResponse) String() string {
 	return fmt.Sprintf(
-		"<Plugins:%v, Timestamp:%v>",
+		"<Plugins: %v, Timestamp: %v>",
 		this.Plugins,
 		this.Timestamp,
 	)
@@ -158,7 +160,7 @@ type BuiltinMetricResponse struct {
 
 func (this *BuiltinMetricResponse) String() string {
 	return fmt.Sprintf(
-		"<Metrics:%v, Checksum:%s, Timestamp:%v>",
+		"<Metrics: %v, Checksum: %s, Timestamp: %v>",
 		this.Metrics,
 		this.Checksum,
 		this.Timestamp,

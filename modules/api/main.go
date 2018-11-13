@@ -33,7 +33,7 @@ func main() {
 	g.ParseConfig(*cfg)
 	cutils.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
-		log.Fatalln("open db fail:", err)
+		log.Fatalf("[F] open db fail: %v", err)
 		os.Exit(0)
 	}
 

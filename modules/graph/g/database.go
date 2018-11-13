@@ -13,7 +13,7 @@ var DB *sql.DB
 func InitDB() (err error) {
 	DB, err = sql.Open("mysql", Config().Database.Addr)
 	if err != nil {
-		log.Fatalln("open db fail:", err)
+		log.Fatalf("[F] open db fail: %v", err)
 	}
 
 	DB.SetMaxOpenConns(Config().Database.MaxConnections)
@@ -22,7 +22,7 @@ func InitDB() (err error) {
 
 	err = DB.Ping()
 	if err != nil {
-		log.Fatalln("ping db fail:", err)
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	return
 }

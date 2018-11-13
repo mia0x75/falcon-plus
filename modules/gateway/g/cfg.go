@@ -66,24 +66,24 @@ func Config() *GlobalConfig {
 
 func ParseConfig(cfg string) {
 	if cfg == "" {
-		log.Fatalln("use -c to specify configuration file")
+		log.Fatal("[F] use -c to specify configuration file")
 	}
 
 	if !file.IsExist(cfg) {
-		log.Fatalln("config file:", cfg, "is not existent. maybe you need `mv cfg.example.json cfg.json`")
+		log.Fatalf("[F] config file: %s is not existent. maybe you need `mv cfg.example.json cfg.json`", cfg)
 	}
 
 	ConfigFile = cfg
 
 	configContent, err := file.ToTrimString(cfg)
 	if err != nil {
-		log.Fatalln("read config file:", cfg, "fail:", err)
+		log.Fatalf("[F] read config file: %s fail: %v", cfg, err)
 	}
 
 	var c GlobalConfig
 	err = json.Unmarshal([]byte(configContent), &c)
 	if err != nil {
-		log.Fatalln("parse config file:", cfg, "fail:", err)
+		log.Fatalf("[F] parse config file: %s fail: %v", cfg, err)
 	}
 
 	// 配置文件正确性 校验, 不合法则直接 Exit(1)
@@ -100,5 +100,5 @@ func ParseConfig(cfg string) {
 	}
 	config = &c
 
-	log.Debugln("read config file:", cfg, "successfully")
+	log.Debugf("[D] read config file: %s successfully", cfg)
 }

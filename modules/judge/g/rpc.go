@@ -43,7 +43,7 @@ func (this *SingleConnRpcClient) insureConn() {
 				return
 			}
 
-			log.Printf("dial %s fail: %s", s, err)
+			log.Errorf("[E] dial %s fail: %s", s, err)
 		}
 
 		if retry > 6 {

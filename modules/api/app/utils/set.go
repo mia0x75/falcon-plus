@@ -36,7 +36,7 @@ func ConverIntStringToArray(eid string) (result []int) {
 	for _, e := range strings.Split(eid, ",") {
 		v, err := strconv.Atoi(e)
 		if err != nil {
-			log.Debug(err.Error())
+			log.Errorf("[E] %v", err)
 		} else {
 			result = append(result, v)
 		}

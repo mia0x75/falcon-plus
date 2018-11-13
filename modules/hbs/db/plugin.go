@@ -10,7 +10,7 @@ func QueryPlugins() (map[int][]string, error) {
 	sql := "select grp_id, dir from plugin_dir"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return m, err
 	}
 
@@ -23,7 +23,7 @@ func QueryPlugins() (map[int][]string, error) {
 
 		err = rows.Scan(&id, &dir)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

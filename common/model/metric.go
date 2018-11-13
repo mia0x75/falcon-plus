@@ -18,7 +18,7 @@ type MetricValue struct {
 
 func (this *MetricValue) String() string {
 	return fmt.Sprintf(
-		"<Endpoint:%s, Metric:%s, Type:%s, Tags:%s, Step:%d, Time:%d, Value:%v>",
+		"<Endpoint: %s, Metric: %s, Type: %s, Tags: %s, Step: %d, Time: %d, Value: %v>",
 		this.Endpoint,
 		this.Metric,
 		this.Type,
@@ -41,8 +41,16 @@ type JsonMetaData struct {
 }
 
 func (t *JsonMetaData) String() string {
-	return fmt.Sprintf("<JsonMetaData Endpoint:%s, Metric:%s, Tags:%s, DsType:%s, Step:%d, Value:%v, Timestamp:%d>",
-		t.Endpoint, t.Metric, t.Tags, t.CounterType, t.Step, t.Value, t.Timestamp)
+	return fmt.Sprintf(
+		"<JsonMetaData Endpoint: %s, Metric: %s, Tags: %s, DsType: %s, Step: %d, Value: %v, Timestamp: %d>",
+		t.Endpoint,
+		t.Metric,
+		t.Tags,
+		t.CounterType,
+		t.Step,
+		t.Value,
+		t.Timestamp,
+	)
 }
 
 type MetaData struct {
@@ -56,8 +64,15 @@ type MetaData struct {
 }
 
 func (t *MetaData) String() string {
-	return fmt.Sprintf("<MetaData Endpoint:%s, Metric:%s, Timestamp:%d, Step:%d, Value:%f, Tags:%v>",
-		t.Endpoint, t.Metric, t.Timestamp, t.Step, t.Value, t.Tags)
+	return fmt.Sprintf(
+		"<MetaData Endpoint: %s, Metric: %s, Timestamp: %d, Step: %d, Value: %f, Tags: %v>",
+		t.Endpoint,
+		t.Metric,
+		t.Timestamp,
+		t.Step,
+		t.Value,
+		t.Tags,
+	)
 }
 
 func (t *MetaData) PK() string {

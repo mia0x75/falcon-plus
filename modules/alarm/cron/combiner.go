@@ -143,7 +143,7 @@ func popAllSmsDto() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error("get SmsDto fail", err)
+				log.Errorf("[E] get SmsDto fail: %v", err)
 			}
 			break
 		}
@@ -155,7 +155,7 @@ func popAllSmsDto() []*g.AlarmDto {
 		var smsDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &smsDto)
 		if err != nil {
-			log.Errorf("json unmarshal SmsDto: %s fail: %v", reply, err)
+			log.Errorf("[E] json unmarshal SmsDto: %s fail: %v", reply, err)
 			continue
 		}
 		ret = append(ret, smsDto)
@@ -175,7 +175,7 @@ func popAllMailDto() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error("get MailDto fail", err)
+				log.Errorf("[E] get MailDto fail: %v", err)
 			}
 			break
 		}
@@ -187,7 +187,7 @@ func popAllMailDto() []*g.AlarmDto {
 		var mailDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &mailDto)
 		if err != nil {
-			log.Errorf("json unmarshal MailDto: %s fail: %v", reply, err)
+			log.Errorf("[E] json unmarshal MailDto: %s fail: %v", reply, err)
 			continue
 		}
 		ret = append(ret, mailDto)
@@ -207,7 +207,7 @@ func popAllImDto() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Error("get ImDto fail", err)
+				log.Errorf("[E] get ImDto fail: %v", err)
 			}
 			break
 		}
@@ -219,7 +219,7 @@ func popAllImDto() []*g.AlarmDto {
 		var imDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &imDto)
 		if err != nil {
-			log.Errorf("json unmarshal imDto: %s fail: %v", reply, err)
+			log.Errorf("[E] json unmarshal imDto: %s fail: %v", reply, err)
 			continue
 		}
 		ret = append(ret, imDto)

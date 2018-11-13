@@ -19,7 +19,7 @@ func InitLog(level string) (err error) {
 	case "panic":
 		log.SetLevel(log.PanicLevel)
 	default:
-		log.Fatal("log conf only allow [info, debug, warn, error, fatal, panic], please check your confguire")
+		log.Fatal("[F] log conf only allow [info, debug, warn, error, fatal, panic], please check your confguire")
 	}
 	return
 }

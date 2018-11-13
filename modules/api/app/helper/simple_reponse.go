@@ -32,7 +32,7 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 		if need_doc {
 			ds, _ := json.Marshal(body)
 			bodys := string(ds)
-			log.Debugf("body: %v, bodys: %v ", body, bodys)
+			log.Debugf("[D] body: %v, bodys: %v ", body, bodys)
 			c.Set("body_doc", bodys)
 		}
 	}()

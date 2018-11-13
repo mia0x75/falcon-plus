@@ -28,13 +28,13 @@ func BuildHeartbeatRequest(hostname string, agentDirs []string) model.HeartbeatR
 
 		version, err := f.ToTrimString(versionFile)
 		if err != nil {
-			log.Printf("read %s/.version fail: %v", agentDir, err)
+			log.Errorf("[E] read %s/.version fail: %v", agentDir, err)
 			continue
 		}
 
 		controlFile := path.Join(g.SelfDir, agentDir, version, "control")
 		if !f.IsExist(controlFile) {
-			log.Printf("%s is nonexistent", controlFile)
+			log.Warnf("[W] %s is nonexistent", controlFile)
 			continue
 		}
 
@@ -66,7 +66,7 @@ func BuildHeartbeatRequest(hostname string, agentDirs []string) model.HeartbeatR
 func ListAgentDirs() ([]string, error) {
 	agentDirs, err := f.DirsUnder(g.SelfDir)
 	if err != nil {
-		log.Println("list dirs under", g.SelfDir, "fail", err)
+		log.Errorf("[E] list dirs under %s fail: %v", g.SelfDir, err)
 	}
 	return agentDirs, err
 }

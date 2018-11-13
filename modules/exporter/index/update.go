@@ -46,12 +46,23 @@ func UpdateIndexOfOneGraph(graphAddr string, src string) {
 	// statistics
 	proc.IndexUpdateCnt.Incr()
 	if err == nil {
-		log.Printf("index update ok, %s, %s, start %s, ts %ds",
-			src, graphAddr, ntime.FormatTs(startTs), endTs-startTs)
+		log.Infof(
+			"[INFO] index update ok, %s, %s, start %s, ts %ds",
+			src,
+			graphAddr,
+			ntime.FormatTs(startTs),
+			endTs-startTs,
+		)
 	} else {
 		proc.IndexUpdateErrorCnt.Incr()
-		log.Printf("index update error, %s, %s, start %s, ts %ds, reason %v",
-			src, graphAddr, ntime.FormatTs(startTs), endTs-startTs, err)
+		log.Errorf(
+			"[ERROR] index update error, %s, %s, start %s, ts %ds, reason %v",
+			src,
+			graphAddr,
+			ntime.FormatTs(startTs),
+			endTs-startTs,
+			err,
+		)
 	}
 }
 
@@ -70,19 +81,19 @@ func updateIndexOfOneGraph(hostNamePort string) error {
 	client.SetHeaders(headers)
 	body, err := client.Get()
 	if err != nil {
-		log.Printf(hostNamePort+", index update error,", err)
+		log.Errorf("[E] %s, index update error: %v", hostNamePort, err)
 		return err
 	}
 
 	var data Dto
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		log.Println(hostNamePort+", index update error,", err)
+		log.Errorf("[E] %s, index update error: %v", hostNamePort, err)
 		return err
 	}
 
 	if data.Data != "ok" {
-		log.Println(hostNamePort+", index update error, bad result,", data.Data)
+		log.Infof("[I] %s, index update error, bad result: %s", hostNamePort, data.Data)
 		return err
 	}
 

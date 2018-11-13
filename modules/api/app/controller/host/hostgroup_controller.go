@@ -146,7 +146,7 @@ func UnBindAHostToHostGroup(c *gin.Context) {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("unbind host:%v of hostgroup: %v", inputs.HostID, inputs.HostGroupID))
+	h.JSONR(c, fmt.Sprintf("unbind host: %v of hostgroup: %v", inputs.HostID, inputs.HostGroupID))
 	return
 }
 
@@ -199,7 +199,7 @@ func DeleteHostGroup(c *gin.Context) {
 		return
 	}
 	tx.Commit()
-	h.JSONR(c, fmt.Sprintf("hostgroup:%v has been deleted", grpID))
+	h.JSONR(c, fmt.Sprintf("hostgroup: %v has been deleted", grpID))
 	return
 }
 
@@ -212,7 +212,7 @@ func GetHostGroup(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDtmp)
 	if err != nil {
-		log.Debugf("grpIDtmp: %v", grpIDtmp)
+		log.Debugf("[D] grpIDtmp: %v", grpIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -349,7 +349,7 @@ func GetTemplateOfHostGroup(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDtmp)
 	if err != nil {
-		log.Debugf("grpIDtmp: %v", grpIDtmp)
+		log.Debugf("[D] grpIDtmp: %v", grpIDtmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -396,7 +396,7 @@ func PatchHostGroupHost(c *gin.Context) {
 	}
 	grpID, err := strconv.Atoi(grpIDParams)
 	if err != nil {
-		log.Debugf("grpIDParams: %v", grpIDParams)
+		log.Debugf("[D] grpIDParams: %v", grpIDParams)
 		h.JSONR(c, badstatus, err)
 		return
 	}
@@ -473,7 +473,7 @@ func unbindHostToHostGroup(c *gin.Context, hostgroup f.HostGroup, hosts []string
 		if id, ok = dhost.Existing(); ok {
 			unbindHosts = append(unbindHosts, host)
 		} else {
-			log.Debugf("Host %s does not exists!", host)
+			log.Debugf("[D] Host %s does not exists!", host)
 			continue
 		}
 		if dt := db.Falcon.Where("grp_id = ? AND host_id = ?", hostgroup.ID, id).Delete(&f.GrpHost{}); dt.Error != nil {

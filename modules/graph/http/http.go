@@ -43,7 +43,7 @@ func Start() {
 
 func start() {
 	if !g.Config().Http.Enabled {
-		log.Println("http.Start warning, not enabled")
+		log.Info("[I] http.Start warning, not enabled")
 		return
 	}
 	if !cutils.IsDebug() {
@@ -57,6 +57,6 @@ func start() {
 	if addr == "" {
 		return
 	}
-	log.Printf("http listening %s", addr)
+	log.Infof("[I] http listening %s", addr)
 	go routes.Run(addr)
 }

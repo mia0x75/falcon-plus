@@ -26,7 +26,7 @@ func main() {
 	}
 
 	if err := g.ParseConfig(*cfg); err != nil {
-		log.Fatalln(err)
+		log.Fatalf("[F] %v", err)
 	}
 
 	cutils.InitLog(g.Config().Log.Level)
@@ -51,16 +51,16 @@ func main() {
 func CheckDependency() {
 	_, err := sys.CmdOut("wget", "--help")
 	if err != nil {
-		log.Fatalln("dependency wget not found")
+		log.Fatal("[F] dependency wget not found")
 	}
 
 	_, err = sys.CmdOut("md5sum", "--help")
 	if err != nil {
-		log.Fatalln("dependency md5sum not found")
+		log.Fatal("[F] dependency md5sum not found")
 	}
 
 	_, err = sys.CmdOut("tar", "--help")
 	if err != nil {
-		log.Fatalln("dependency tar not found")
+		log.Fatal("[F] dependency tar not found")
 	}
 }

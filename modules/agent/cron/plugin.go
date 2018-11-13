@@ -42,7 +42,7 @@ func syncMinePlugins() {
 		var resp cmodel.AgentPluginsResponse
 		err = g.HbsClient.Call("Agent.MinePlugins", req, &resp)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -53,7 +53,7 @@ func syncMinePlugins() {
 		pluginDirs = resp.Plugins
 		timestamp = resp.Timestamp
 
-		log.Debugln(&resp)
+		log.Debugf("[D] %v", &resp)
 
 		if len(pluginDirs) == 0 {
 			plugins.ClearAllPlugins()

@@ -116,7 +116,7 @@ func CurlUic(team string) []*uic.User {
 	var team_users APIGetTeamOutput
 	err := req.ToJson(&team_users)
 	if err != nil {
-		log.Errorf("curl %s fail: %v", uri, err)
+		log.Errorf("[E] curl %s fail: %v", uri, err)
 		return nil
 	}
 

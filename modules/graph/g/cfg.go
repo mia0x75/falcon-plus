@@ -73,24 +73,24 @@ func Config() *GlobalConfig {
 
 func ParseConfig(cfg string) {
 	if cfg == "" {
-		log.Fatalln("config file not specified: use -c $filename")
+		log.Fatal("[F] config file not specified: use -c $filename")
 	}
 
 	if !file.IsExist(cfg) {
-		log.Fatalln("config file specified not found:", cfg)
+		log.Fatalf("[F] config file specified not found: %v", cfg)
 	}
 
 	ConfigFile = cfg
 
 	configContent, err := file.ToTrimString(cfg)
 	if err != nil {
-		log.Fatalln("read config file", cfg, "error:", err.Error())
+		log.Fatalf("[F] read config file %s error: %v", cfg, err)
 	}
 
 	var c GlobalConfig
 	err = json.Unmarshal([]byte(configContent), &c)
 	if err != nil {
-		log.Fatalln("parse config file", cfg, "error:", err.Error())
+		log.Fatalf("[F] parse config file %s error: %v", cfg, err)
 	}
 
 	if c.Migrate.Enabled && len(c.Migrate.Cluster) == 0 {
@@ -99,7 +99,7 @@ func ParseConfig(cfg string) {
 
 	// 确保ioWorkerNum是2^N
 	if c.IOWorkerNum == 0 || (c.IOWorkerNum&(c.IOWorkerNum-1) != 0) {
-		log.Fatalf("IOWorkerNum must be 2^N, current IOWorkerNum is %v", c.IOWorkerNum)
+		log.Fatalf("[F] IOWorkerNum must be 2^N, current IOWorkerNum is %v", c.IOWorkerNum)
 	}
 
 	// 需要md5的前多少位参与ioWorker的分片计算
@@ -116,5 +116,5 @@ func ParseConfig(cfg string) {
 	// set config
 	atomic.StorePointer(&ptr, unsafe.Pointer(&c))
 
-	log.Debugln("read config file:", cfg, "successfully")
+	log.Debugf("[D] read config file: %s successfully", cfg)
 }

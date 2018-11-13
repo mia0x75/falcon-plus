@@ -15,8 +15,13 @@ type NodataItem struct {
 }
 
 func (this *NodataItem) String() string {
-	return fmt.Sprintf("{NodataItem counter:%s ts:%s fecthStatus:%s fetchTs:%s}",
-		this.Counter, ttime.FormatTs(this.Ts), this.FStatus, ttime.FormatTs(this.FTs))
+	return fmt.Sprintf(
+		"<NodataItem counter: %s ts: %s fecthStatus: %s fetchTs: %s>",
+		this.Counter,
+		ttime.FormatTs(this.Ts),
+		this.FStatus,
+		ttime.FormatTs(this.FTs),
+	)
 }
 
 type NodataConfig struct {
@@ -36,6 +41,16 @@ func NewNodataConfig(id int, name string, objType string, endpoint string, metri
 }
 
 func (this *NodataConfig) String() string {
-	return fmt.Sprintf("{NodataConfig id:%d, name:%s, objType:%s, endpoint:%s, metric:%s, tags:%s, type:%s, step:%d, mock:%f}",
-		this.Id, this.Name, this.ObjType, this.Endpoint, this.Metric, utils.SortedTags(this.Tags), this.Type, this.Step, this.Mock)
+	return fmt.Sprintf(
+		"<NodataConfig id: %d, name: %s, objType: %s, endpoint: %s, metric: %s, tags: %s, type: %s, step: %d, mock: %f>",
+		this.Id,
+		this.Name,
+		this.ObjType,
+		this.Endpoint,
+		this.Metric,
+		utils.SortedTags(this.Tags),
+		this.Type,
+		this.Step,
+		this.Mock,
+	)
 }

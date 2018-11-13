@@ -15,7 +15,7 @@ func init() {
 	g.ParseConfig("../cfg.example.json")
 	g.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("[F] %s", err)
 	}
 }
 
@@ -80,7 +80,7 @@ func TestAlarmEventCase(t *testing.T) {
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='PROBLEM'")
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 0)
 	})
 	Convey("Get alarmCase Test 3, test without status filter & limit feature", t, func() {
@@ -98,7 +98,7 @@ func TestAlarmEventCase(t *testing.T) {
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='OK'")
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 1)
 	})
 	Convey("Get alarmCase Test 4, test timerange filter", t, func() {
@@ -116,7 +116,7 @@ func TestAlarmEventCase(t *testing.T) {
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("status='OK'")
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 1)
 	})
 	Convey("Get alarmCase Test 3, test pagging feature", t, func() {
@@ -135,7 +135,7 @@ func TestAlarmEventCase(t *testing.T) {
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ := jsonql.NewStringQuery(resp.String())
 		check, _ := parser.Query("id='s_322_00c5f5c87a71bd4c686c0a4a0544b719'")
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 1)
 		resp, _ = rt.R().
 			SetHeader("Content-Type", "application/json").
@@ -150,7 +150,7 @@ func TestAlarmEventCase(t *testing.T) {
 			Post(fmt.Sprintf("%s/eventcases", host))
 		parser, _ = jsonql.NewStringQuery(resp.String())
 		check, _ = parser.Query("id='s_322_00a9b9f9f859d8436f9b643ea5a1fb5e'")
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(len(check.([]interface{})), ShouldEqual, 1)
 	})
 }

@@ -21,7 +21,7 @@ type Expression struct {
 
 func (this *Expression) String() string {
 	return fmt.Sprintf(
-		"<Id:%d, Metric:%s, Tags:%v, %s%s%s MaxStep:%d, P%d %s ActionId:%d>",
+		"<Id: %d, Metric: %s, Tags: %v, %s%s%s MaxStep: %d, P%d %s ActionId: %d>",
 		this.Id,
 		this.Metric,
 		this.Tags,

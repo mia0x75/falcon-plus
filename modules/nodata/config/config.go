@@ -19,7 +19,7 @@ var (
 
 func Start() {
 	if !g.Config().Database.Enabled {
-		log.Println("config.Start warning, not enabled")
+		log.Info("[I] config.Start warning, not enabled")
 		return
 	}
 
@@ -28,7 +28,7 @@ func Start() {
 		os.Exit(0)
 	}
 	StartNdConfigCron()
-	log.Println("config.Start ok")
+	log.Info("[I] config.Start ok")
 }
 
 // Interfaces Of StrategyMap

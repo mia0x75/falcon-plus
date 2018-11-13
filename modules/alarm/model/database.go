@@ -18,13 +18,13 @@ func InitDB() {
 	// register model
 	orm.RegisterModel(new(event.Events), new(event.EventCases))
 	if db, err := orm.GetDB(); err != nil {
-		log.Fatalln("open db fail:", err)
+		log.Fatalf("[F] open db fail: %v", err)
 	} else {
 		db.SetConnMaxLifetime(time.Duration(config.Database.WaitTimeout) * time.Second)
 
 		err = db.Ping()
 		if err != nil {
-			log.Fatalln("ping db fail:", err)
+			log.Fatalf("[F] ping db fail: %v", err)
 		}
 	}
 

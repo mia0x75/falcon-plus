@@ -39,16 +39,16 @@ func SendMail(mail *g.AlarmDto) {
 	url := g.Config().Api.Mail
 	if strings.TrimSpace(url) != "" {
 		if data, err := json.Marshal(mail); err != nil {
-			log.Error(err)
+			log.Errorf("[E] %v", err)
 			return
 		} else {
 			resp, err := cutils.Post(url, data)
 			if err != nil {
-				log.Errorf("send mail fail, content:%v, error:%v", mail, err)
+				log.Errorf("[E] send mail fail, content: %v, error: %v", mail, err)
 			}
-			log.Debugf("send mail:%v, resp:%v, url:%s", mail, resp, url)
+			log.Debugf("[D] send mail: %v, resp: %v, url: %s", mail, resp, url)
 		}
 	} else {
-		log.Debugf("mail url:%s is blank, SKIP", url)
+		log.Debugf("[D] mail url: %s is blank, SKIP", url)
 	}
 }

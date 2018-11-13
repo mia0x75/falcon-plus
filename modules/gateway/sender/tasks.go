@@ -76,7 +76,7 @@ func forward2TransferTask(Q *nlist.SafeListLimited, concurrent int32) {
 						TransferSendCnt[host].IncrBy(int64(count))
 					} else {
 						// statistics
-						log.Errorf("transfer update fail, items size:%d, error:%v, resp:%v", len(transItems), err, resp)
+						log.Errorf("[E] transfer update fail, items size: %d, error: %v, resp: %v", len(transItems), err, resp)
 						TransferSendFailCnt[host].IncrBy(int64(count))
 					}
 				}

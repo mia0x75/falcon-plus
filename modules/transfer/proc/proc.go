@@ -54,7 +54,7 @@ var (
 )
 
 func Start() {
-	log.Println("proc.Start, ok")
+	log.Info("[I] proc.Start, ok")
 }
 
 func GetAll() []interface{} {

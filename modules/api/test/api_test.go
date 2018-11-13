@@ -25,7 +25,7 @@ func init() {
 	api_host = fmt.Sprintf("http://localhost%s/api/v1", g.Config().Listen)
 
 	if err := g.InitDB(); err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("[F] %v", err)
 	}
 
 	init_testing_user()
@@ -46,9 +46,9 @@ func init_testing_user() {
 	db := g.Con()
 	if db.Uic.Table("user").Where("name = ?", test_user_name).First(&uic.User{}).RecordNotFound() {
 		if err := db.Uic.Table("user").Create(&user).Error; err != nil {
-			log.Fatal(err)
+			log.Fatalf("[F] %v", err)
 		}
-		log.Info("create_user:", test_user_name)
+		log.Infof("[I] create_user: %s", test_user_name)
 	}
 }
 
@@ -66,7 +66,7 @@ func get_session_token() (string, error) {
 	resp_obj := Resp{}
 	err := json.Unmarshal([]byte(resp.String()), &resp_obj)
 	if err != nil {
-		log.Error(err.Error())
+		log.Errorf("[E] %v", err)
 		return "", err
 	}
 	Apitoken := fmt.Sprintf(`{"name": "%s", "sig": "%s"}`, test_user_name, resp_obj.Sig)
@@ -130,7 +130,7 @@ func TestUser(t *testing.T) {
 		rt.SetHeader("Apitoken", apitoken)
 		resp, err := rt.R().Get(fmt.Sprintf("%s/user/auth_session", api_host))
 		if err != nil {
-			log.Error(err.Error())
+			log.Errorf("[E] %v", err)
 		}
 		So(resp.StatusCode(), ShouldEqual, 200)
 	})
@@ -141,7 +141,7 @@ func TestUser(t *testing.T) {
 		rt.SetHeader("Apitoken", invalid_apitoken)
 		resp, err := rt.R().Get(fmt.Sprintf("%s/user/auth_session", api_host))
 		if err != nil {
-			log.Error(err.Error())
+			log.Errorf("[E] %v", err)
 		}
 		So(resp.StatusCode(), ShouldEqual, 401)
 	})
@@ -152,7 +152,7 @@ func TestUser(t *testing.T) {
 		rt.SetHeader("Apitoken", apitoken)
 		resp, err := rt.R().Get(fmt.Sprintf("%s/user/logout", api_host))
 		if err != nil {
-			log.Error(err.Error())
+			log.Errorf("[E] %v", err)
 		}
 		So(resp.StatusCode(), ShouldEqual, 200)
 	})
@@ -226,7 +226,7 @@ func TestTeam(t *testing.T) {
 			SetHeader("Content-Type", "application/json").
 			SetBody(fmt.Sprintf(`{"team_name": "%s","resume": "i'm descript", "users": [1]}`, test_team_name)).
 			Post(fmt.Sprintf("%s/team", api_host))
-		log.Debug(resp.String())
+		log.Debugf("[D] %s", resp.String())
 		So(resp.StatusCode(), ShouldEqual, 200)
 	})
 
@@ -235,7 +235,7 @@ func TestTeam(t *testing.T) {
 		rt.SetHeader("Apitoken", apitoken)
 		resp, _ := rt.R().
 			Get(fmt.Sprintf("%s/team/name/%s", api_host, test_team_name))
-		log.Debugf("reponsed: %v, team_id: %v", resp.String(), test_team_name)
+		log.Debugf("[D] reponsed: %v, team_id: %v", resp.String(), test_team_name)
 		So(resp.StatusCode(), ShouldEqual, 200)
 
 		var j map[string]interface{}
@@ -252,7 +252,7 @@ func TestTeam(t *testing.T) {
 			rt.SetHeader("Apitoken", apitoken)
 			resp, _ := rt.R().
 				Delete(fmt.Sprintf("%s/team/%d", api_host, test_team_id))
-			log.Debugf("reponsed: %v, team_id: %v", resp.String(), test_team_id)
+			log.Debugf("[D] reponsed: %v, team_id: %v", resp.String(), test_team_id)
 			So(resp.StatusCode(), ShouldEqual, 200)
 		})
 	}

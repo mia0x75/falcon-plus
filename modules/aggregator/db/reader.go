@@ -14,7 +14,7 @@ func ReadClusterMonitorItems() (M map[string]*g.Cluster, err error) {
 	cfg := g.Config()
 	ids := cfg.Database.Ids
 	if len(ids) != 2 {
-		log.Fatalln("ids configuration error")
+		log.Fatal("[F] ids configuration error")
 	}
 
 	if ids[0] != -1 && ids[1] != -1 {
@@ -29,11 +29,11 @@ func ReadClusterMonitorItems() (M map[string]*g.Cluster, err error) {
 		}
 	}
 
-	log.Debugln(sql)
+	log.Debugf("[D] %s", sql)
 
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("[E]", err)
+		log.Errorf("[E] %v", err)
 		return M, err
 	}
 
@@ -42,7 +42,7 @@ func ReadClusterMonitorItems() (M map[string]*g.Cluster, err error) {
 		var c g.Cluster
 		err = rows.Scan(&c.Id, &c.GroupId, &c.Numerator, &c.Denominator, &c.Endpoint, &c.Metric, &c.Tags, &c.DsType, &c.Step, &c.LastUpdate)
 		if err != nil {
-			log.Println("[E]", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 

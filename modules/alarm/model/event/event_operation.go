@@ -35,10 +35,10 @@ func insertEvent(q orm.Ormer, eve *cmodel.Event) (res sql.Result, err error) {
 	).Exec()
 
 	if err != nil {
-		log.Errorf("insert event to db fail, error:%v", err)
+		log.Errorf("[E] insert event to db fail, error: %v", err)
 	} else {
 		lastid, _ := res.LastInsertId()
-		log.Debug("insert event to db succ, last_insert_id:", lastid)
+		log.Debugf("[D] insert event to db succ, last_insert_id: %d", lastid)
 	}
 	return
 }
@@ -49,8 +49,8 @@ func InsertEvent(eve *cmodel.Event) {
 	q.Raw("select * from event_cases where id = ?", eve.Id).QueryRows(&event)
 	var sqlLog sql.Result
 	var errRes error
-	log.Debugf("events: %v", eve)
-	log.Debugf("expression is null: %v", eve.Expression == nil)
+	log.Debugf("[D] events: %v", eve)
+	log.Debugf("[D] expression is null: %v", eve.Expression == nil)
 	if len(event) == 0 {
 		//create cases
 		sqltemplete := `INSERT INTO event_cases (
@@ -162,7 +162,7 @@ func InsertEvent(eve *cmodel.Event) {
 			).Exec()
 		}
 	}
-	log.Debugf("%v, %v", sqlLog, errRes)
+	log.Debugf("[D] %v, %v", sqlLog, errRes)
 	//insert case
 	insertEvent(q, eve)
 }
@@ -181,9 +181,9 @@ func DeleteEventOlder(before time.Time, limit int) {
 	q := orm.NewOrm()
 	resp, err := q.Raw(sqlTpl, t, limit).Exec()
 	if err != nil {
-		log.Errorf("delete event older than %v fail, error:%v", t, err)
+		log.Errorf("[E] delete event older than %v fail, error: %v", t, err)
 	} else {
 		affected, _ := resp.RowsAffected()
-		log.Debugf("delete event older than %v, rows affected:%v", t, affected)
+		log.Debugf("[D] delete event older than %v, rows affected: %v", t, affected)
 	}
 }

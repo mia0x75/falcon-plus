@@ -33,7 +33,7 @@ type CpuUsages struct {
 	Guest   float64
 }
 
-func UpdateCpuStat() error {
+func UpdateCpuStats() error {
 	ps, err := nux.CurrentProcStat()
 	if err != nil {
 		return err
@@ -52,9 +52,9 @@ func UpdateCpuStat() error {
 func cpunumTotal() uint64 {
 	num := runtime.NumCPU()
 	ss := strconv.Itoa(num)
-	b, e := strconv.ParseUint(ss, 10, 64)
-	if e != nil {
-		log.Println(e)
+	b, err := strconv.ParseUint(ss, 10, 64)
+	if err != nil {
+		log.Errorf("[E] %v", err)
 	}
 	return b
 }

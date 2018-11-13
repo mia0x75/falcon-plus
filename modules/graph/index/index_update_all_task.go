@@ -38,7 +38,7 @@ func UpdateIndexAllByDefaultStep() {
 func UpdateIndexAll(updateStepInSec int64) {
 	// 减少任务积压,但高并发时可能无效(AvailablePermits不是线程安全的)
 	if semaIndexUpdateAllTask.AvailablePermits() <= 0 {
-		log.Println("updateIndexAll, concurrent not available")
+		log.Info("[I] updateIndexAll, concurrent not available")
 		return
 	}
 
@@ -48,7 +48,7 @@ func UpdateIndexAll(updateStepInSec int64) {
 	startTs := time.Now().Unix()
 	cnt := updateIndexAll(updateStepInSec)
 	endTs := time.Now().Unix()
-	log.Printf("UpdateIndexAll, lastStartTs %s, updateStepInSec %d, lastTimeConsumingInSec %d\n",
+	log.Infof("[I] UpdateIndexAll, lastStartTs %s, updateStepInSec %d, lastTimeConsumingInSec %d\n",
 		ntime.FormatTs(startTs), updateStepInSec, endTs-startTs)
 
 	// statistics
@@ -140,18 +140,18 @@ func updateIndexFromOneItem(item *cmodel.GraphItem, conn *sql.DB) error {
 
 	_, err := conn.Exec(sqlStr, item.Endpoint, ts, ts)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return err
 	}
 	proc.IndexUpdateIncrDbEndpointInsertCnt.Incr()
 
 	err = conn.QueryRow("SELECT id FROM endpoint WHERE endpoint = ?", item.Endpoint).Scan(&endpointId)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return err
 	}
 	if endpointId <= 0 {
-		log.Errorf("no such endpoint in db, endpoint=%s", item.Endpoint)
+		log.Errorf("[E] no such endpoint in db, endpoint = %s", item.Endpoint)
 		return errors.New("no such endpoint")
 	}
 
@@ -164,7 +164,7 @@ func updateIndexFromOneItem(item *cmodel.GraphItem, conn *sql.DB) error {
 
 		_, err := conn.Exec(sqlStr, tag, endpointId, ts, ts)
 		if err != nil {
-			log.Error(err)
+			log.Errorf("[E] %v", err)
 			return err
 		}
 		proc.IndexUpdateIncrDbTagEndpointInsertCnt.Incr()
@@ -182,7 +182,7 @@ func updateIndexFromOneItem(item *cmodel.GraphItem, conn *sql.DB) error {
 
 	_, err = conn.Exec(sqlStr, endpointId, counter, item.Step, item.DsType, ts, ts, item.Step, item.DsType)
 	if err != nil {
-		log.Error(err)
+		log.Errorf("[E] %v", err)
 		return err
 	}
 	proc.IndexUpdateIncrDbEndpointCounterInsertCnt.Incr()

@@ -51,11 +51,11 @@ func PluginRun(plugin *Plugin) {
 	fpath := filepath.Join(g.Config().Plugin.Dir, plugin.FilePath)
 
 	if !file.IsExist(fpath) {
-		log.Println("no such plugin:", fpath)
+		log.Warnf("[W] no such plugin: %s", fpath)
 		return
 	}
 
-	log.Debugln(fpath, "running...")
+	log.Debugf("[D] %s running...", fpath)
 
 	cmd := exec.Command(fpath)
 	var stdout bytes.Buffer
@@ -65,10 +65,10 @@ func PluginRun(plugin *Plugin) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	err := cmd.Start()
 	if err != nil {
-		log.Printf("[ERROR] plugin start fail, error: %s\n", err)
+		log.Errorf("[E] plugin start fail, error: %s\n", err)
 		return
 	}
-	log.Debugln("plugin started:", fpath)
+	log.Debugf("[D] plugin started: %s", fpath)
 
 	err, isTimeout := sys.CmdRunWithTimeout(cmd, time.Duration(timeout)*time.Millisecond)
 
@@ -76,45 +76,45 @@ func PluginRun(plugin *Plugin) {
 	if errStr != "" {
 		logFile := filepath.Join(g.Config().Plugin.LogDir, plugin.FilePath+".stderr.log")
 		if _, err = file.WriteString(logFile, errStr); err != nil {
-			log.Printf("[ERROR] write log to %s fail, error: %s\n", logFile, err)
+			log.Errorf("[E] write log to %s fail, error: %s\n", logFile, err)
 		}
 	}
 
 	if isTimeout {
 		// has be killed
 		if err == nil {
-			log.Debugln("[INFO] timeout and kill process", fpath, "successfully")
+			log.Infof("[I] timeout and kill process %s successfully", fpath)
 		}
 
 		if err != nil {
-			log.Println("[ERROR] kill process", fpath, "occur error:", err)
+			log.Errorf("[E] kill process %s occur error: %v", fpath, err)
 		}
 
 		return
 	}
 
 	if err != nil {
-		log.Println("[ERROR] exec plugin", fpath, "fail. error:", err)
+		log.Errorf("[E] exec plugin %s fail. error: %v", fpath, err)
 		return
 	}
 
 	// exec successfully
 	data := stdout.Bytes()
 	if len(data) == 0 {
-		log.Debugln("[DEBUG] stdout of", fpath, "is blank")
+		log.Debugf("[D] stdout of %s is blank", fpath)
 		return
 	}
 
 	var metrics []*cmodel.MetricValue
 	err = json.Unmarshal(data, &metrics)
 	if err != nil {
-		log.Printf("[ERROR] json.Unmarshal stdout of %s fail. error:%s stdout: \n%s\n", fpath, err, stdout.String())
+		log.Errorf("[E] json.Unmarshal stdout of %s fail. error: %s stdout: \n%s\n", fpath, err, stdout.String())
 		return
 	}
 
 	hostname, err := g.Hostname()
 	if err != nil {
-		log.Println("[ERROR] get hostname fail")
+		log.Errorf("[E] get hostname fail: %v", err)
 		return
 	}
 	// 如果插件中没有配置Endpoint 则使用当前agent 的Endpint

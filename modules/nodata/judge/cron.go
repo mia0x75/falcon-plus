@@ -24,7 +24,7 @@ func StartJudgeCron() {
 		start := time.Now().Unix()
 		judge()
 		end := time.Now().Unix()
-		log.Debugf("judge cron, time %ds, start %s\n", end-start, ttime.FormatTs(start))
+		log.Debugf("[D] judge cron, time %ds, start %s", end-start, ttime.FormatTs(start))
 
 		// statistics
 		g.JudgeCronCnt.Incr()

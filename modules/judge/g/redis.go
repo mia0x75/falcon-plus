@@ -40,7 +40,7 @@ func InitRedisConnPool() {
 func PingRedis(c redis.Conn, t time.Time) error {
 	_, err := c.Do("ping")
 	if err != nil {
-		log.Println("[ERROR] ping redis fail", err)
+		log.Errorf("[E] ping redis fail: %s", err)
 	}
 	return err
 }

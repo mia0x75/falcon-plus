@@ -28,7 +28,7 @@ func (this Worker) Start() {
 			case <-this.Ticker.C:
 				WorkerRun(this.ClusterItem)
 			case <-this.Quit:
-				log.Debugln("[I] drop worker", this.ClusterItem)
+				log.Debugf("[D] drop worker %v", this.ClusterItem)
 				this.Ticker.Stop()
 				return
 			}
@@ -60,7 +60,7 @@ func createWorkerIfNeed(m map[string]*g.Cluster) {
 	for key, item := range m {
 		if _, ok := Workers[key]; !ok {
 			if item.Step <= 0 {
-				log.Println("[W] invalid cluster(step <= 0):", item)
+				log.Warnf("[W] invalid cluster(step <= 0): %v", item)
 				continue
 			}
 			worker := NewWorker(item)

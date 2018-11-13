@@ -163,7 +163,7 @@ func UpdateStrategy(c *gin.Context) {
 		ID: inputs.ID,
 	}
 	if dt := db.Falcon.Find(&strategy); dt.Error != nil {
-		h.JSONR(c, expecstatus, fmt.Sprintf("find strategy got error:%v", dt.Error))
+		h.JSONR(c, expecstatus, fmt.Sprintf("find strategy got error: %v", dt.Error))
 		return
 	}
 	ustrategy := map[string]interface{}{
@@ -181,7 +181,7 @@ func UpdateStrategy(c *gin.Context) {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("stragtegy:%d has been updated", strategy.ID))
+	h.JSONR(c, fmt.Sprintf("stragtegy: %d has been updated", strategy.ID))
 	return
 }
 
@@ -201,7 +201,7 @@ func DeleteStrategy(c *gin.Context) {
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
-	h.JSONR(c, fmt.Sprintf("strategy:%d has been deleted", sid))
+	h.JSONR(c, fmt.Sprintf("strategy: %d has been deleted", sid))
 	return
 }
 

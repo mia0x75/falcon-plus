@@ -98,7 +98,7 @@ func CreateUser(c *gin.Context) {
 		session.Uid = user.ID
 		db.Uic.Create(&session)
 	}
-	log.Debugf("%v", session)
+	log.Debugf("[D] %v", session)
 	response["sig"] = session.Sig
 	response["name"] = user.Name
 	h.JSONR(c, http.StatusOK, response)
@@ -527,7 +527,7 @@ func ChangeRoleOfUser(c *gin.Context) {
 	case "no":
 		user.Role = 0
 	}
-	log.Debugf("inputs got %v, user: %v", inputs, user)
+	log.Debugf("[D] inputs got %v, user: %v", inputs, user)
 	dt := db.Uic.Save(&user)
 	if dt.Error != nil {
 		h.JSONR(c, http.StatusExpectationFailed, dt.Error)

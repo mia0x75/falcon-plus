@@ -14,7 +14,7 @@ func QueryHosts() (map[string]int, error) {
 	sql := "select id, hostname from host"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return m, err
 	}
 
@@ -27,7 +27,7 @@ func QueryHosts() (map[string]int, error) {
 
 		err = rows.Scan(&id, &hostname)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -43,7 +43,7 @@ func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
 	sql := fmt.Sprintf("select id, hostname from host where maintain_begin > %d or maintain_end < %d", now, now)
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Println("ERROR:", err)
+		log.Errorf("[E] %v", err)
 		return hosts, err
 	}
 
@@ -52,7 +52,7 @@ func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
 		t := cmodel.Host{}
 		err = rows.Scan(&t.Id, &t.Name)
 		if err != nil {
-			log.Println("WARN:", err)
+			log.Warnf("[W] %v", err)
 			continue
 		}
 		hosts[t.Id] = &t

@@ -21,7 +21,7 @@ func syncTrustableIps() {
 		var ips string
 		err := g.HbsClient.Call("Agent.TrustableIps", cmodel.NullRpcRequest{}, &ips)
 		if err != nil {
-			log.Println("ERROR: call Agent.TrustableIps fail", err)
+			log.Errorf("[E] call Agent.TrustableIps fail: %v", err)
 			continue
 		}
 

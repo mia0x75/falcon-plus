@@ -15,7 +15,7 @@ func init() {
 	g.ParseConfig("../cfg.example.json")
 	g.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("[F] %v", err)
 	}
 }
 
@@ -79,7 +79,7 @@ func TestAlarmEventNote(t *testing.T) {
 				"case_id": "a000001"
 			}`, eventId)).
 			Post(fmt.Sprintf("%s/event_note", host))
-		log.Debugf("%v", resp.String())
+		log.Debugf("[D] %s", resp.String())
 		resp, _ = rt.R().
 			SetQueryParams(map[string]string{
 				"event_id": eventId,

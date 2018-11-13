@@ -32,7 +32,7 @@ var (
 )
 
 func StartProc() {
-	log.Println("g.StartProc ok")
+	log.Info("[I] g.StartProc ok")
 }
 
 func GetAllCounters() []interface{} {

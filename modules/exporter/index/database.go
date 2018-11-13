@@ -15,9 +15,9 @@ func InitDB() {
 	var err error
 	DB, err = GetDbConn()
 	if err != nil {
-		log.Fatalln("open db fail:", err)
+		log.Fatalf("[F] open db fail: %v", err)
 	} else {
-		log.Println("index:InitDB ok")
+		log.Infof("[I] index:InitDB ok")
 	}
 }
 

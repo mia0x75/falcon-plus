@@ -16,16 +16,16 @@ func init() {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("[F] %v", err)
 	}
 
 	err = g.InitLog("debug")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("[F] %v", err)
 	}
 	err = g.InitDB(viper.GetBool("db.db_bug"), viper.GetViper())
 	if err != nil {
-		log.Fatalf("db conn failed with error %s", err.Error())
+		log.Fatalf("[F] db conn failed with error %s", err)
 	}
 
 	Start(viper.GetStringMapString("graphs.cluster"))

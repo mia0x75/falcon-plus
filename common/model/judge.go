@@ -16,13 +16,14 @@ type JudgeItem struct {
 }
 
 func (this *JudgeItem) String() string {
-	return fmt.Sprintf("<Endpoint:%s, Metric:%s, Value:%f, Timestamp:%d, JudgeType:%s Tags:%v>",
+	return fmt.Sprintf("<Endpoint: %s, Metric: %s, Value: %f, Timestamp: %d, JudgeType: %s Tags: %v>",
 		this.Endpoint,
 		this.Metric,
 		this.Value,
 		this.Timestamp,
 		this.JudgeType,
-		this.Tags)
+		this.Tags,
+	)
 }
 
 func (this *JudgeItem) PrimaryKey() string {

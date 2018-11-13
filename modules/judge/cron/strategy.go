@@ -25,7 +25,7 @@ func syncStrategies() {
 	var strategiesResponse cmodel.StrategiesResponse
 	err := g.HbsClient.Call("Hbs.GetStrategies", cmodel.NullRpcRequest{}, &strategiesResponse)
 	if err != nil {
-		log.Println("[ERROR] Hbs.GetStrategies:", err)
+		log.Errorf("[E] Hbs.GetStrategies: %v", err)
 		return
 	}
 
@@ -38,9 +38,8 @@ func rebuildStrategyMap(strategiesResponse *cmodel.StrategiesResponse) {
 	for _, hs := range strategiesResponse.HostStrategies {
 		hostname := hs.Hostname
 		if hostname == g.Config().DebugHost {
-			log.Debugln(hostname, "strategies:")
 			bs, _ := json.Marshal(hs.Strategies)
-			log.Debugln(string(bs))
+			log.Debugf("[D] %s, strategies: %s", hostname, string(bs))
 		}
 		for _, strategy := range hs.Strategies {
 			key := fmt.Sprintf("%s/%s", hostname, strategy.Metric)
@@ -59,7 +58,7 @@ func syncExpression() {
 	var expressionResponse cmodel.ExpressionResponse
 	err := g.HbsClient.Call("Hbs.GetExpressions", cmodel.NullRpcRequest{}, &expressionResponse)
 	if err != nil {
-		log.Println("[ERROR] Hbs.GetExpressions:", err)
+		log.Errorf("[E] Hbs.GetExpressions: %v", err)
 		return
 	}
 

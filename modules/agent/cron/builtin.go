@@ -6,6 +6,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/google/go-cmp/cmp"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
@@ -42,7 +43,7 @@ func syncBuiltinMetrics() {
 		var resp cmodel.BuiltinMetricResponse
 		err = g.HbsClient.Call("Agent.BuiltinMetrics", req, &resp)
 		if err != nil {
-			log.Println("ERROR:", err)
+			log.Errorf("[E] %v", err)
 			continue
 		}
 
@@ -74,8 +75,9 @@ func syncBuiltinMetrics() {
 				if _, err := strconv.ParseInt(stime[1], 10, 64); err == nil {
 					urls[url[1]] = stime[1]
 				} else {
-					log.Println("metric ParseInt timeout failed:", err)
+					log.Errorf("[E] metric ParseInt timeout failed: %v", err)
 				}
+				continue
 			}
 
 			if metric.Metric == g.NET_PORT_LISTEN {
@@ -87,9 +89,8 @@ func syncBuiltinMetrics() {
 				if port, err := strconv.ParseInt(arr[1], 10, 64); err == nil {
 					ports = append(ports, port)
 				} else {
-					log.Println("metrics ParseInt failed:", err)
+					log.Errorf("[E] metrics ParseInt failed: %v", err)
 				}
-
 				continue
 			}
 
@@ -119,7 +120,7 @@ func syncBuiltinMetrics() {
 				if b, err := strconv.Atoi(events[1]); err == nil {
 					files[path[1]] = b
 				} else {
-					log.Println("metric strconv.Atoi event failed:", err)
+					log.Errorf("[E] metric strconv.Atoi event failed: %v", err)
 				}
 				continue
 			}
@@ -138,12 +139,24 @@ func syncBuiltinMetrics() {
 				}
 
 				procs[metric.Tags] = tmpMap
+				continue
 			}
 		}
 
-		hbs.CacheReportUrls(urls)
-		hbs.CacheReportPorts(ports)
-		hbs.CacheReportProcs(procs)
-		hbs.CacheDuPaths(paths)
+		if !cmp.Equal(urls, hbs.ReportUrls()) {
+			hbs.CacheReportUrls(urls)
+		}
+		if !cmp.Equal(ports, hbs.ReportPorts()) {
+			hbs.CacheReportPorts(ports)
+		}
+		if !cmp.Equal(procs, hbs.ReportProcs()) {
+			hbs.CacheReportProcs(procs)
+		}
+		if !cmp.Equal(paths, hbs.ReportPaths()) {
+			hbs.CacheReportPaths(paths)
+		}
+		if !cmp.Equal(files, hbs.ReportFiles()) {
+			hbs.CacheReportFiles(files)
+		}
 	}
 }

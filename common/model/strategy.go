@@ -21,7 +21,7 @@ type Strategy struct {
 
 func (this *Strategy) String() string {
 	return fmt.Sprintf(
-		"<Id:%d, Metric:%s, Tags:%v, %s%s%s MaxStep:%d, P%d, %s, %v>",
+		"<Id: %d, Metric: %s, Tags: %v, %s%s%s MaxStep: %d, P%d, %s, %v>",
 		this.Id,
 		this.Metric,
 		this.Tags,

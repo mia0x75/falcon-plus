@@ -21,7 +21,7 @@ func (this *Judge) Send(items []*cmodel.JudgeItem, resp *cmodel.SimpleRpcRespons
 	now := time.Now().Unix()
 	for index, item := range items {
 		exists := g.FilterMap.Exists(item.Metric)
-		log.Debugf("data received: item -> %d, value -> %v\n", index, item)
+		log.Debugf("[D] data received: item -> %d, value -> %v\n", index, item)
 		if !exists {
 			continue
 		}

@@ -14,7 +14,7 @@ type Template struct {
 
 func (this *Template) String() string {
 	return fmt.Sprintf(
-		"<Id:%d, Name:%s, ParentId:%d, ActionId:%d, Creator:%s>",
+		"<Id: %d, Name: %s, ParentId: %d, ActionId: %d, Creator: %s>",
 		this.Id,
 		this.Name,
 		this.ParentId,

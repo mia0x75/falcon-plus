@@ -269,7 +269,7 @@ func QueryGraphLastPoint(c *gin.Context) {
 	for _, param := range inputs {
 		one_resp, err := grh.Last(param)
 		if err != nil {
-			log.Warn("query last point from graph fail:", err)
+			log.Errorf("[E] query last point from graph fail: %v", err)
 		} else {
 			respData = append(respData, one_resp)
 		}
@@ -321,7 +321,7 @@ func DeleteGraphEndpoint(c *gin.Context) {
 				param.Metric = fields[0]
 				param.Tags = fields[1]
 			} else {
-				log.Error("invalid counter", row.Counter)
+				log.Errorf("[E] invalid counter %s", row.Counter)
 				continue
 			}
 			params = append(params, param)
@@ -420,7 +420,7 @@ func DeleteGraphCounter(c *gin.Context) {
 			param.Metric = fields[0]
 			param.Tags = fields[1]
 		} else {
-			log.Error("invalid counter", row.Counter)
+			log.Errorf("[E] invalid counter %s", row.Counter)
 			continue
 		}
 		params = append(params, param)
@@ -450,10 +450,10 @@ func DeleteGraphCounter(c *gin.Context) {
 func fetchData(hostname string, counter string, consolFun string, startTime int64, endTime int64, step int) (resp *cmodel.GraphQueryResponse, err error) {
 	hostnameNew := strings.Split(hostname, "_")[0]
 	qparm := grh.GenQParam(hostnameNew, counter, consolFun, startTime, endTime, step)
-	log.Debugf("qparm: %v", qparm)
+	log.Debugf("[D] qparm: %v", qparm)
 	resp, err = grh.QueryOne(qparm)
 	if err != nil {
-		log.Debugf("query graph got error: %s", err.Error())
+		log.Debugf("[D] query graph got error: %s", err.Error())
 	}
 	return
 }

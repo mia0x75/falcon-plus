@@ -122,7 +122,7 @@ func cutEndpointCounterHelp(regexpKey string) (hosts []string, counter string) {
 			counter = strings.Replace(counterTmp, "#", "\\.", -1)
 		}
 	} else {
-		log.Errorf("grafana query inputs error: %v", regexpKey)
+		log.Errorf("[E] grafana query inputs error: %v", regexpKey)
 	}
 	return
 }
@@ -259,7 +259,7 @@ func GrafanaMainQuery(c *gin.Context) {
 		h.JSONR(c, badstatus, err.Error())
 		return
 	}
-	log.Debugf("got query string: %s", inputs.Query)
+	log.Debugf("[D] got query string: %s", inputs.Query)
 	output := []APIGrafanaMainQueryOutputs{}
 	if inputs.Query == "!N!" {
 		output = repsonseDefault(inputs.Limit)
@@ -299,7 +299,7 @@ func GrafanaRender(c *gin.Context) {
 	for _, target := range inputs.Target {
 		hosts, counter := cutEndpointCounterHelp(target)
 		//clean characters
-		log.Debug(counter)
+		log.Debugf("[D] %s", counter)
 		re := regexp.MustCompile("\\\\.\\$\\s*$")
 		flag := re.MatchString(counter)
 		counter = re.ReplaceAllString(counter, "")
@@ -324,7 +324,7 @@ func GrafanaRender(c *gin.Context) {
 			for _, c := range counterArr {
 				resp, err := fetchData(host, c, inputs.ConsolFun, inputs.From, inputs.Until, inputs.Step)
 				if err != nil {
-					log.Debugf("query graph got error with: %v", inputs)
+					log.Debugf("[D] query graph got error with: %v", inputs)
 				} else {
 					respList = append(respList, resp)
 				}

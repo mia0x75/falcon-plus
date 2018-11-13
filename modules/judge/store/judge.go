@@ -45,7 +45,7 @@ func CheckStrategy(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 func judgeItemWithStrategy(L *SafeLinkedList, strategy cmodel.Strategy, firstItem *cmodel.JudgeItem, now int64) {
 	fn, err := ParseFuncFromString(strategy.Func, strategy.Operator, strategy.RightValue)
 	if err != nil {
-		log.Printf("[ERROR] parse func %s fail: %v. strategy id: %d", strategy.Func, err, strategy.Id)
+		log.Errorf("[E] parse func %s fail: %v. strategy id: %d", strategy.Func, err, strategy.Id)
 		return
 	}
 
@@ -72,7 +72,7 @@ func sendEvent(event *cmodel.Event) {
 
 	bs, err := json.Marshal(event)
 	if err != nil {
-		log.Printf("json marshal event %v fail: %v", event, err)
+		log.Errorf("[E] json marshal event %v fail: %v", event, err)
 		return
 	}
 
@@ -80,12 +80,12 @@ func sendEvent(event *cmodel.Event) {
 	redisKey := fmt.Sprintf(g.Config().Alarm.QueuePattern, event.Priority())
 	rc := g.RedisConnPool.Get()
 	if rc == nil {
-		log.Println("cannot get redis connection")
+		log.Info("[I] cannot get redis connection")
 		return
 	}
 	defer rc.Close()
 	if _, err := rc.Do("LPUSH", redisKey, string(bs)); err != nil {
-		log.Printf("send event to redis failed, err: %v", err)
+		log.Errorf("[E] send event to redis failed, error: %v", err)
 		return
 	}
 }
@@ -174,7 +174,7 @@ func copyItemTags(item *cmodel.JudgeItem) map[string]string {
 func judgeItemWithExpression(L *SafeLinkedList, expression *cmodel.Expression, firstItem *cmodel.JudgeItem, now int64) {
 	fn, err := ParseFuncFromString(expression.Func, expression.Operator, expression.RightValue)
 	if err != nil {
-		log.Printf("[ERROR] parse func %s fail: %v. expression id: %d", expression.Func, err, expression.Id)
+		log.Errorf("[E] parse func %s fail: %v. expression id: %d", expression.Func, err, expression.Id)
 		return
 	}
 

@@ -13,7 +13,7 @@ import (
 func ProcMetrics() (L []*cmodel.MetricValue) {
 	ps, err := nux.AllProcs()
 	if err != nil {
-		log.Println(err)
+		log.Errorf("[E] %v", err)
 		return
 	}
 

@@ -36,6 +36,6 @@ func startHttpServer() {
 		MaxHeaderBytes: 1 << 30,
 	}
 
-	log.Printf("http listening %s", addr)
-	log.Fatalln(s.ListenAndServe())
+	log.Infof("[I] http listening %s", addr)
+	log.Fatalf("[F] %v", s.ListenAndServe())
 }

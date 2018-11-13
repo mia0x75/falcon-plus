@@ -13,7 +13,7 @@ func AuthSessionMidd(c *gin.Context) {
 	auth, err := h.SessionChecking(c)
 	if !g.Config().SkipAuth {
 		if err != nil || auth != true {
-			log.Debugf("error: %v, auth: %v", err.Error(), auth)
+			log.Errorf("[E] %v, auth: %v", err, auth)
 			c.Set("auth", auth)
 			h.JSONR(c, http.StatusUnauthorized, err)
 			c.Abort()

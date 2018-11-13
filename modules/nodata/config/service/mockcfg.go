@@ -28,7 +28,7 @@ func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 	q := fmt.Sprintf("SELECT id,name,obj,obj_type,metric,tags,dstype,step,mock FROM mockcfg")
 	rows, err := DB.Query(q)
 	if err != nil {
-		log.Println("db.query error, mockcfg", err)
+		log.Errorf("[E] db.query error, mockcfg: %v", err)
 		return ret
 	}
 
@@ -38,14 +38,14 @@ func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 		tags := ""
 		err := rows.Scan(&t.Id, &t.Name, &t.Obj, &t.ObjType, &t.Metric, &tags, &t.Type, &t.Step, &t.Mock)
 		if err != nil {
-			log.Println("db.scan error, mockcfg", err)
+			log.Errorf("[E] db.scan error, mockcfg: %v", err)
 			continue
 		}
 		t.Tags = cutils.DictedTagstring(tags)
 
 		err = checkMockCfg(&t)
 		if err != nil {
-			log.Println("check mockcfg, error:", err)
+			log.Errorf("[E] check mockcfg, error: %v", err)
 			continue
 		}
 
@@ -66,10 +66,10 @@ func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 
 			if isSpuerNodataCfg(val, ncfg) {
 				// val is spuer than ncfg, so drop ncfg
-				log.Printf("nodata.mockcfg conflict, %s, used %s, drop %s", uuid, val.Name, ncfg.Name)
+				log.Warnf("[W] nodata.mockcfg conflict, %s, used %s, drop %s", uuid, val.Name, ncfg.Name)
 			} else {
 				ret[uuid] = ncfg // overwrite the old one
-				log.Printf("nodata.mockcfg conflict, %s, used %s, drop %s", uuid, ncfg.Name, val.Name)
+				log.Warnf("[W] nodata.mockcfg conflict, %s, used %s, drop %s", uuid, ncfg.Name, val.Name)
 			}
 		}
 	}

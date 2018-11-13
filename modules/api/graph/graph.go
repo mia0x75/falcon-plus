@@ -45,14 +45,14 @@ func Start() {
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			log.Error("graph got painc")
-			log.Error(fmt.Sprintf("%s", r))
+			log.Error("[E] graph got painc")
+			log.Errorf("[E] %s", r)
 			Start()
 		}
 	}()
 	initNodeRings(addrs)
 	initConnPools(addrs)
-	log.Println("graph.Start ok")
+	log.Info("[I] graph.Start ok")
 }
 
 func GenQParam(endpoint string, counter string, consolFun string, stime int64, etime int64, step int) cmodel.GraphQueryParam {
@@ -141,7 +141,7 @@ func Delete(params []*cmodel.GraphDeleteParam) {
 		var tags map[string]string
 		err, tags = cutils.SplitTagsString(tags_str)
 		if err != nil {
-			log.Error("invalid tags:", tags_str, "error:", err)
+			log.Errorf("[E] invalid tags: %s error: %v", tags_str, err)
 			continue
 		}
 		counter := cutils.Counter(metric, tags)
@@ -162,20 +162,20 @@ func Delete(params []*cmodel.GraphDeleteParam) {
 	for pk, node_params := range nodes {
 		pool, addr, err := selectPoolByPK(pk)
 		if err != nil {
-			log.Errorf("select backend node fail, pool:%v, addr:%v, pk:%v, error:%v", pool, addr, pk, err)
+			log.Errorf("[E] select backend node fail, pool: %v, addr: %v, pk: %v, error: %v", pool, addr, pk, err)
 			continue
 		}
 
 		conn, err := pool.Fetch()
 		if err != nil {
-			log.Errorf("fetch conn fail, pool:%v, error:%v", pool, err)
+			log.Errorf("[E] fetch conn fail, pool: %v, error: %v", pool, err)
 			continue
 		}
 
 		rpcConn := conn.(*rpcpool.RpcClient)
 		if rpcConn.Closed() {
 			pool.ForceClose(conn)
-			log.Errorf("conn has been closed, rpcConn:%v", rpcConn)
+			log.Errorf("[E] conn has been closed, rpcConn: %v", rpcConn)
 			continue
 		}
 
@@ -189,15 +189,15 @@ func Delete(params []*cmodel.GraphDeleteParam) {
 		select {
 		case <-time.After(time.Duration(callTimeout) * time.Millisecond):
 			pool.ForceClose(conn)
-			log.Errorf("%s, call timeout. proc: %s", addr, pool.Proc())
+			log.Errorf("[E] %s, call timeout. proc: %s", addr, pool.Proc())
 		case r := <-ch:
 			if r.Err != nil {
 				pool.ForceClose(conn)
-				log.Errorf("%s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
+				log.Errorf("[E] %s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
 			} else {
 				pool.Release(conn)
 			}
-			log.Debugf("Graph.Delete, params:%v, resp:%v", node_params, r.Resp)
+			log.Debugf("[D] Graph.Delete, params: %v, resp: %v", node_params, r.Resp)
 		}
 	}
 }
@@ -362,7 +362,7 @@ func selectPoolByPK(pk string) (rpool *connp.ConnPool, raddr string, rerr error)
 
 	pool, found := GraphConnPools.Get(addr)
 	if !found {
-		log.Errorf("pool :%v", pool)
+		log.Errorf("[E] pool: %v", pool)
 		return nil, addr, errors.New("addr not found")
 	}
 
@@ -399,7 +399,7 @@ func Hosts() []string {
 			m := strings.Split(d, ",")
 			ss = append(ss, m[1])
 		} else {
-			log.Debug(d)
+			log.Debugf("[D] %s", d)
 		}
 	}
 	return ss
