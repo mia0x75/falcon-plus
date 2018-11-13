@@ -61,9 +61,21 @@ func WorkerRun(item *g.Cluster) {
 			numeratorVal, err = compute(numeratorOperands, numeratorOperators, numeratorComputeMode, hostname, valueMap)
 
 			if err != nil {
-				log.Warnf("[W] [hostname: %s] [numerator: %s] id: %d, error: %v", hostname, item.Numerator, item.Id, err)
+				log.Errorf(
+					"[E] [hostname: %s] [numerator: %s] id: %d, error: %v",
+					hostname,
+					item.Numerator,
+					item.Id,
+					err,
+				)
 			} else {
-				log.Debugf("[D] [hostname: %s] [numerator: %s] id: %d, value: %0.4f", hostname, item.Numerator, item.Id, numeratorVal)
+				log.Debugf(
+					"[D] [hostname: %s] [numerator: %s] id: %d, value: %0.4f",
+					hostname,
+					item.Numerator,
+					item.Id,
+					numeratorVal,
+				)
 			}
 
 			if err != nil {
@@ -75,9 +87,21 @@ func WorkerRun(item *g.Cluster) {
 			denominatorVal, err = compute(denominatorOperands, denominatorOperators, denominatorComputeMode, hostname, valueMap)
 
 			if err != nil {
-				log.Warnf("[W] [hostname: %s] [denominator: %s] id: %d, error: %v", hostname, item.Denominator, item.Id, err)
+				log.Errorf(
+					"[E] [hostname: %s] [denominator: %s] id: %d, error: %v",
+					hostname,
+					item.Denominator,
+					item.Id,
+					err,
+				)
 			} else {
-				log.Debugf("[D] [hostname: %s] [denominator: %s] id: %d, value: %0.4f", hostname, item.Denominator, item.Id, denominatorVal)
+				log.Debugf(
+					"[D] [hostname: %s] [denominator: %s] id: %d, value: %0.4f",
+					hostname,
+					item.Denominator,
+					item.Id,
+					denominatorVal,
+				)
 			}
 
 			if err != nil {
@@ -85,7 +109,13 @@ func WorkerRun(item *g.Cluster) {
 			}
 		}
 
-		log.Debugf("[D] hostname: %s  numerator: %0.4f  denominator: %0.4f  per: %0.4f\n", hostname, numeratorVal, denominatorVal, numeratorVal/denominatorVal)
+		log.Debugf(
+			"[D] hostname: %s  numerator: %0.4f  denominator: %0.4f  per: %0.4f\n",
+			hostname,
+			numeratorVal,
+			denominatorVal,
+			numeratorVal/denominatorVal,
+		)
 		numerator += numeratorVal
 		denominator += denominatorVal
 		validCount++
