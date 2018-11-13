@@ -23,15 +23,15 @@ var (
 )
 
 type event struct {
-	Op   string
-	Path string
+	Op     string
+	File   string
+	Source string
 }
 
 func Setup() {
 	w = watcher.New()
 	w.IgnoreHiddenFiles(true)
 	d := time.Duration(g.COLLECT_INTERVAL) * time.Second
-	w.Start(d)
 
 	go func() {
 		for {
@@ -39,11 +39,14 @@ func Setup() {
 			case e := <-w.Event:
 				if !e.IsDir() {
 					lock.Lock()
-					events = append(events, &event{
-						Op:   strings.ToLower(fmt.Sprintf("%s", e.Op)),
-						Path: e.Path,
-					})
+					ie := &event{
+						Op:     strings.ToLower(fmt.Sprintf("%s", e.Op)),
+						Source: e.WatchFileInfo.Source,
+						File:   e.Path,
+					}
+					events = append(events, ie)
 					lock.Unlock()
+					log.Debugf("[D] fs.file.checksum, inotify event: %v", ie)
 				}
 			case err := <-w.Error:
 				log.Errorf("[E] incron error: %v", err)
@@ -52,54 +55,47 @@ func Setup() {
 			}
 		}
 	}()
+	w.Add("/etc/my.cnf.d/")
+	w.Add("/etc/my.cnf")
+	w.Start(d)
 }
 
 func UpdateInconStats() {
 	once.Do(Setup)
 
-	files := hbs.ReportFiles()
+	files := hbs.ReportSources()
 
 	if files == nil || len(files) == 0 {
-		for index, fi := range w.WatchedFiles() {
-			if fi.IsDir() {
-				w.RemoveRecursive(index)
-			} else {
-				w.Remove(index)
-			}
+		for index, _ := range w.WatchedFiles() {
+			w.Remove(index)
 		}
 		return
 	}
 
-	for file, recursive := range files {
+	for _, file := range files {
 		if _, found := w.WatchedFiles()[file]; !found {
-			if recursive > 0 {
-				w.AddRecursive(file)
-			} else {
-				w.Add(file)
-			}
+			w.Add(file)
 		}
 	}
 
-	for index, fi := range w.WatchedFiles() {
-		if _, found := files[index]; !found {
-			if fi.IsDir() {
-				w.RemoveRecursive(index)
-			} else {
-				w.Remove(index)
-			}
+	for key, file := range w.WatchedFiles() {
+		if _, found := files[key]; !found {
+			w.Remove(file.Source)
 		}
 	}
+	log.Debugf("[D] watched files: %v", w.WatchedFiles())
 }
 
-func FilesMetrics() (L []*cmodel.MetricValue) {
+func IncronMetrics() (L []*cmodel.MetricValue) {
 	lock.Lock()
 	defer lock.Unlock()
 	if len(events) == 0 {
 		return
 	}
 	for _, e := range events {
-		tags := fmt.Sprintf("file=%s,op=%s", e.Path, e.Op)
+		tags := fmt.Sprintf("source=%s,file=%s,op=%s", e.Source, e.File, e.Op)
 		L = append(L, GaugeValue(g.FS_FILE_CHECKSUM, 1, tags))
+		log.Debugf("[D] fs.file.checksum, tags: %s", tags)
 	}
 	events = make([]*event, 0)
 	return

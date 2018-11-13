@@ -26,7 +26,7 @@ func syncBuiltinMetrics() {
 	for range time.Tick(d) {
 		var ports = []int64{}
 		var paths = []string{}
-		var files = make(map[string]int)
+		var sources = make(map[string]string)
 		var procs = make(map[string]map[int]string)
 		var urls = make(map[string]string)
 
@@ -105,22 +105,15 @@ func syncBuiltinMetrics() {
 			}
 
 			if metric.Metric == g.FS_FILE_CHECKSUM {
-				arr := strings.Split(metric.Tags, ",")
+				arr := strings.Split(metric.Tags, "=")
 				if len(arr) != 2 {
 					continue
 				}
-				path := strings.Split(arr[0], "=")
-				if len(path) != 2 {
-					continue
-				}
-				events := strings.Split(arr[1], "=")
-				if len(events) != 2 {
-					continue
-				}
-				if b, err := strconv.Atoi(events[1]); err == nil {
-					files[path[1]] = b
+				if arr[0] == "source" {
+					sources[arr[1]] = strings.TrimSpace(arr[1])
 				} else {
-					log.Errorf("[E] metric strconv.Atoi event failed: %v", err)
+					log.Errorf("[E] invalid tag: %s", arr[0])
+					continue
 				}
 				continue
 			}
@@ -155,8 +148,8 @@ func syncBuiltinMetrics() {
 		if !cmp.Equal(paths, hbs.ReportPaths()) {
 			hbs.CacheReportPaths(paths)
 		}
-		if !cmp.Equal(files, hbs.ReportFiles()) {
-			hbs.CacheReportFiles(files)
+		if !cmp.Equal(sources, hbs.ReportSources()) {
+			hbs.CacheReportSources(sources)
 		}
 	}
 }

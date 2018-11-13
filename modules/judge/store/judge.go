@@ -15,10 +15,10 @@ func Judge(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 }
 
 func CheckStrategy(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
-	key := fmt.Sprintf("%s/%s", firstItem.Endpoint, firstItem.Metric)
 	strategyMap := g.StrategyMap.Get()
-	strategies, exists := strategyMap[key]
+	strategies, exists := strategyMap[fmt.Sprintf("%s/%s", firstItem.Endpoint, firstItem.Metric)]
 	if !exists {
+		log.Debug("[D] cannot find corresponding strategy")
 		return
 	}
 
@@ -27,8 +27,8 @@ func CheckStrategy(L *SafeLinkedList, firstItem *cmodel.JudgeItem, now int64) {
 		// 比如lg-dinp-docker01.bj配置了两个proc.num的策略，一个name=docker，一个name=agent
 		// 所以此处要排除掉一部分
 		related := true
-		for tagKey, tagVal := range s.Tags {
-			if myVal, exists := firstItem.Tags[tagKey]; !exists || myVal != tagVal {
+		for k, v := range s.Tags {
+			if val, exists := firstItem.Tags[k]; !exists || v != val {
 				related = false
 				break
 			}
@@ -51,9 +51,9 @@ func judgeItemWithStrategy(L *SafeLinkedList, strategy cmodel.Strategy, firstIte
 
 	historyData, leftValue, isTriggered, isEnough := fn.Compute(L)
 	if !isEnough {
+		log.Debug("[D] fn.Computer(L) returns not enough")
 		return
 	}
-
 	event := &cmodel.Event{
 		Id:         fmt.Sprintf("s_%d_%s", strategy.Id, firstItem.PrimaryKey()),
 		Strategy:   &strategy,
@@ -191,9 +191,7 @@ func judgeItemWithExpression(L *SafeLinkedList, expression *cmodel.Expression, f
 		EventTime:  firstItem.Timestamp,
 		PushedTags: firstItem.Tags,
 	}
-
 	sendEventIfNeed(historyData, isTriggered, now, event, expression.MaxStep)
-
 }
 
 func sendEventIfNeed(historyData []*cmodel.HistoryData, isTriggered bool, now int64, event *cmodel.Event, maxStep int) {
