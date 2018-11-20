@@ -45,8 +45,7 @@ func Start() {
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			log.Error("[E] graph got painc")
-			log.Errorf("[E] %s", r)
+			log.Errorf("[E] graph got painc:%v", r)
 			Start()
 		}
 	}()

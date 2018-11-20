@@ -48,5 +48,6 @@ func Routes(r *gin.Engine) {
 	t.GET("/name/:team_name", GetTeamByName)
 	t.POST("/", CreateTeam)
 	t.PUT("/", UpdateTeam)
+	t.POST("/team/user", AddTeamUsers)
 	t.DELETE("/:team_id", DeleteTeam)
 }
