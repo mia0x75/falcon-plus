@@ -20,11 +20,16 @@ type RedisConfig struct {
 }
 
 type QueueConfig struct {
-	HighQueues    []string `json:"high_queues"`
-	LowQueues     []string `json:"low_queues"`
-	UserIMQueue   string   `json:"user_im_queue"`
-	UserSmsQueue  string   `json:"user_sms_queue"`
-	UserMailQueue string   `json:"user_mail_queue"`
+	HighQueues    []string       `json:"high_queues"`
+	LowQueues     []string       `json:"low_queues"`
+	InstantQueues *ChannelConfig `json:"instant_queues"`
+	LatentQueues  *ChannelConfig `json:"latent_queues"`
+}
+
+type ChannelConfig struct {
+	IMQueue   string `json:"im"`
+	SmsQueue  string `json:"sms"`
+	MailQueue string `json:"mail"`
 }
 
 type ApiConfig struct {

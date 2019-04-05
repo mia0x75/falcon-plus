@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Check check the status of open-falcon modules
 var Check = &cobra.Command{
 	Use:   "check [Module ...]",
 	Short: "Check the status of Open-Falcon modules",

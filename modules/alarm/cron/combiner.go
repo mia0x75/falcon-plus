@@ -134,7 +134,7 @@ func combineSms() {
 
 func popAllSmsDto() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.Config().Queue.UserSmsQueue
+	queue := g.Config().Queue.LatentQueues.SmsQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -166,7 +166,7 @@ func popAllSmsDto() []*g.AlarmDto {
 
 func popAllMailDto() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.Config().Queue.UserMailQueue
+	queue := g.Config().Queue.LatentQueues.MailQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -198,7 +198,7 @@ func popAllMailDto() []*g.AlarmDto {
 
 func popAllImDto() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.Config().Queue.UserIMQueue
+	queue := g.Config().Queue.LatentQueues.IMQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()

@@ -23,9 +23,16 @@
 			"event:p5",
 			"event:p6"
 		],
-		"user_im_queue": "/queue/user/im",
-		"user_sms_queue": "/queue/user/sms",
-		"user_mail_queue": "/queue/user/mail"
+		"instant_queues": {
+			"im": "/q/im",
+			"sms": "/q/im",
+			"mail": "/q/im"
+		},
+		"latent_queues": {
+			"im": "/q/user/im",
+			"sms": "/q/user/sms",
+			"mail": "/q/user/mail"
+		}
 	},
 	"api": {
 		"im": "http://127.0.0.1:10086/wechat",

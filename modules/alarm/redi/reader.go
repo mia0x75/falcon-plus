@@ -10,7 +10,7 @@ import (
 
 func PopAllSms() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.SMS_QUEUE_NAME
+	queue := g.Config().Queue.InstantQueues.SmsQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -43,7 +43,7 @@ func PopAllSms() []*g.AlarmDto {
 
 func PopAllIM() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.IM_QUEUE_NAME
+	queue := g.Config().Queue.InstantQueues.IMQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -76,7 +76,7 @@ func PopAllIM() []*g.AlarmDto {
 
 func PopAllMail() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.MAIL_QUEUE_NAME
+	queue := g.Config().Queue.InstantQueues.MailQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()

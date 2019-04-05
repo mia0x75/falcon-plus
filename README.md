@@ -1,3 +1,6 @@
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![Badge](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu/#/zh_CN)
+
 # Falcon+
 
 ![Open-Falcon](./logo.png)
@@ -7,8 +10,8 @@
 - Add updater module
 - Rename falcon_portal to portal
 - Potential bug fix
-- Put all config files to /etc/mfp
-- Change all output log files to /var/log/mfp
+- Put all config files to /etc/fpm
+- Change all output log files to /var/log/fpm
 - Naming consistency
 - Builtin mysql monitor
 - Builtin redis monitor

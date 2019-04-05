@@ -44,18 +44,18 @@ func init() {
 	}
 
 	cfgOf = map[string]string{
-		"agent":      "/etc/mfp/agent.json",
-		"aggregator": "/etc/mfp/aggregator.json",
-		"graph":      "/etc/mfp/graph.json",
-		"hbs":        "/etc/mfp/hbs.json",
-		"judge":      "/etc/mfp/judge.json",
-		"nodata":     "/etc/mfp/nodata.json",
-		"transfer":   "/etc/mfp/transfer.json",
-		"gateway":    "/etc/mfp/gateway.json",
-		"api":        "/etc/mfp/api.json",
-		"alarm":      "/etc/mfp/alarm.json",
-		"updater":    "/etc/mfp/updater.json",
-		"exporter":   "/etc/mfp/exporter.json",
+		"agent":      "/etc/fpm/agent.json",
+		"aggregator": "/etc/fpm/aggregator.json",
+		"graph":      "/etc/fpm/graph.json",
+		"hbs":        "/etc/fpm/hbs.json",
+		"judge":      "/etc/fpm/judge.json",
+		"nodata":     "/etc/fpm/nodata.json",
+		"transfer":   "/etc/fpm/transfer.json",
+		"gateway":    "/etc/fpm/gateway.json",
+		"api":        "/etc/fpm/api.json",
+		"alarm":      "/etc/fpm/alarm.json",
+		"updater":    "/etc/fpm/updater.json",
+		"exporter":   "/etc/fpm/exporter.json",
 	}
 
 	ModuleApps = map[string]string{
@@ -74,18 +74,18 @@ func init() {
 	}
 
 	logpathOf = map[string]string{
-		"agent":      "/var/log/mfp/agent.log",
-		"aggregator": "/var/log/mfp/aggregator.log",
-		"graph":      "/var/log/mfp/graph.log",
-		"hbs":        "/var/log/mfp/hbs.log",
-		"judge":      "/var/log/mfp/judge.log",
-		"nodata":     "/var/log/mfp/nodata.log",
-		"transfer":   "/var/log/mfp/transfer.log",
-		"gateway":    "/var/log/mfp/gateway.log",
-		"api":        "/var/log/mfp/api.log",
-		"alarm":      "/var/log/mfp/alarm.log",
-		"updater":    "/var/log/mfp/updater.log",
-		"exporter":   "/var/log/mfp/exporter.log",
+		"agent":      "/var/log/fpm/agent.log",
+		"aggregator": "/var/log/fpm/aggregator.log",
+		"graph":      "/var/log/fpm/graph.log",
+		"hbs":        "/var/log/fpm/hbs.log",
+		"judge":      "/var/log/fpm/judge.log",
+		"nodata":     "/var/log/fpm/nodata.log",
+		"transfer":   "/var/log/fpm/transfer.log",
+		"gateway":    "/var/log/fpm/gateway.log",
+		"api":        "/var/log/fpm/api.log",
+		"alarm":      "/var/log/fpm/alarm.log",
+		"updater":    "/var/log/fpm/updater.log",
+		"exporter":   "/var/log/fpm/exporter.log",
 	}
 
 	PidOf = map[string]string{
@@ -120,21 +120,25 @@ func init() {
 	}
 }
 
+// Bin returns executable bin file path of the specify module
 func Bin(name string) string {
 	p, _ := filepath.Abs(BinOf[name])
 	return p
 }
 
+// Cfg returns config file path of the specify module
 func Cfg(name string) string {
 	p, _ := filepath.Abs(cfgOf[name])
 	return p
 }
 
+// LogPath returns the log file path of the specify module
 func LogPath(name string) string {
 	p, _ := filepath.Abs(logpathOf[name])
 	return p
 }
 
+// LogDir return the log folder of the specify module
 func LogDir(name string) string {
 	d, _ := filepath.Abs(filepath.Dir(logpathOf[name]))
 	return d

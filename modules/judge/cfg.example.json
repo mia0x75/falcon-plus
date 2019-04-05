@@ -21,7 +21,7 @@
 	},
 	"alarm": {
 		"min_interval": 120,
-		"queue_pattern": "event:p%v"
+		"queue_pattern": "event:p%d"
 	},
 	"redis": {
 		"addr": "redis://127.0.0.1:6379/0",

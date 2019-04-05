@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Monitor run external tail command
 var Monitor = &cobra.Command{
 	Use:   "monitor [Module ...]",
 	Short: "Display an Open-Falcon module's log",
@@ -38,7 +39,7 @@ func monitor(c *cobra.Command, args []string) error {
 	if len(args) < 1 {
 		return c.Usage()
 	}
-	var tailArgs []string = []string{"-f"}
+	tailArgs := []string{"-f"}
 	for _, moduleName := range args {
 		if err := checkMonReq(moduleName); err != nil {
 			return err

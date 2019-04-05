@@ -30,8 +30,8 @@ func WriteSms(content *g.AlarmDto) {
 		return
 	}
 
-	log.Debugf("[D] write sms to queue, sms: %v, queue: %s", content, g.SMS_QUEUE_NAME)
-	lpush(g.SMS_QUEUE_NAME, string(bs))
+	log.Debugf("[D] write sms to queue, sms: %v, queue: %s", content, g.Config().Queue.InstantQueues.SmsQueue)
+	lpush(g.Config().Queue.InstantQueues.SmsQueue, string(bs))
 }
 
 func WriteIM(content *g.AlarmDto) {
@@ -48,8 +48,8 @@ func WriteIM(content *g.AlarmDto) {
 		return
 	}
 
-	log.Debugf("[D] write im to queue, im: %v, queue: %s", content, g.IM_QUEUE_NAME)
-	lpush(g.IM_QUEUE_NAME, string(bs))
+	log.Debugf("[D] write im to queue, im: %v, queue: %s", content, g.Config().Queue.InstantQueues.IMQueue)
+	lpush(g.Config().Queue.InstantQueues.IMQueue, string(bs))
 }
 
 func WriteMail(content *g.AlarmDto) {
@@ -66,6 +66,6 @@ func WriteMail(content *g.AlarmDto) {
 		return
 	}
 
-	log.Debugf("[D] write mail to queue, mail: %v, queue: %s", content, g.MAIL_QUEUE_NAME)
-	lpush(g.MAIL_QUEUE_NAME, string(bs))
+	log.Debugf("[D] write mail to queue, mail: %v, queue: %s", content, g.Config().Queue.InstantQueues.MailQueue)
+	lpush(g.Config().Queue.InstantQueues.MailQueue, string(bs))
 }
