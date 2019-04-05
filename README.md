@@ -5,7 +5,7 @@
 
 ![Open-Falcon](./logo.png)
 
-# 系统改进
+# Enhancements
 
 - Add updater module
 - Rename falcon_portal to portal
