@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/open-falcon/falcon-plus/g"
 	"github.com/spf13/cobra"
+
+	"github.com/open-falcon/falcon-plus/g"
 )
 
 // Check check the status of open-falcon modules

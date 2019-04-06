@@ -9,13 +9,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
+	log "github.com/sirupsen/logrus"
+	"github.com/toolkits/consistent"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
-	"github.com/toolkits/consistent"
 )
 
 const (

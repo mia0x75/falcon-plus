@@ -1272,7 +1272,11 @@ func (c *ClusterClient) defaultProcessPipeline(cmds []Cmder) error {
 				}
 
 				err = c.pipelineProcessCmds(node, cn, cmds, failedCmds)
-				node.Client.releaseConnStrict(cn, err)
+				if err == nil || internal.IsRedisError(err) {
+					node.Client.connPool.Put(cn)
+				} else {
+					node.Client.connPool.Remove(cn)
+				}
 			}(node, cmds)
 		}
 
@@ -1462,7 +1466,11 @@ func (c *ClusterClient) defaultProcessTxPipeline(cmds []Cmder) error {
 					}
 
 					err = c.txPipelineProcessCmds(node, cn, cmds, failedCmds)
-					node.Client.releaseConnStrict(cn, err)
+					if err == nil || internal.IsRedisError(err) {
+						node.Client.connPool.Put(cn)
+					} else {
+						node.Client.connPool.Remove(cn)
+					}
 				}(node, cmds)
 			}
 

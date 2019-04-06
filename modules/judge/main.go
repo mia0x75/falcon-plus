@@ -21,7 +21,14 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Println(g.VERSION)
+		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+			"Version", g.Version,
+			"Git commit", g.Git,
+			"Compile", g.Compile,
+			"Distro", g.Distro,
+			"Kernel", g.Kernel,
+			"Branch", g.Branch,
+		)
 		os.Exit(0)
 	}
 

@@ -5,10 +5,11 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/updater/g"
-	"github.com/open-falcon/ops-common/model"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
+
+	"github.com/open-falcon/falcon-plus/modules/updater/g"
+	"github.com/open-falcon/falcon-plus/modules/updater/model"
 )
 
 func StopDesiredAgent(da *model.DesiredAgent) {

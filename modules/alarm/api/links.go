@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/toolkits/net/httplib"
+
+	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
 func LinkToSMS(content string) (string, error) {

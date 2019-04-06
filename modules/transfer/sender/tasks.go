@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	nsema "github.com/toolkits/concurrent/semaphore"
+	"github.com/toolkits/container/list"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
-	nsema "github.com/toolkits/concurrent/semaphore"
-	"github.com/toolkits/container/list"
 )
 
 // send

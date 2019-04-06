@@ -3,13 +3,14 @@ package sender
 import (
 	"fmt"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	rings "github.com/toolkits/consistent/rings"
+	nlist "github.com/toolkits/container/list"
+
 	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
-	rings "github.com/toolkits/consistent/rings"
-	nlist "github.com/toolkits/container/list"
 )
 
 const (

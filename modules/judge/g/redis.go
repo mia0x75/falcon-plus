@@ -3,8 +3,8 @@ package g
 import (
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gomodule/redigo/redis"
+	log "github.com/sirupsen/logrus"
 )
 
 var RedisConnPool *redis.Pool

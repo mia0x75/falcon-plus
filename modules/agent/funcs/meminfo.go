@@ -1,9 +1,10 @@
 package funcs
 
 import (
-	log "github.com/Sirupsen/logrus"
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
+
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 func MemMetrics() []*cmodel.MetricValue {
@@ -14,9 +15,9 @@ func MemMetrics() []*cmodel.MetricValue {
 	}
 
 	memFree := m.MemFree + m.Buffers + m.Cached
-	//if m.MemAvailable > 0 {
-	//	memFree = m.MemAvailable
-	//}
+	if m.MemAvailable > 0 {
+		memFree = m.MemAvailable
+	}
 	memUsed := m.MemTotal - memFree
 
 	pmemFree := 0.0

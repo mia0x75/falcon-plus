@@ -176,16 +176,12 @@ type sentinelFailover struct {
 	masterName  string
 	_masterAddr string
 	sentinel    *SentinelClient
-	pubsub      *PubSub
 }
 
 func (c *sentinelFailover) Close() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.sentinel != nil {
-		return c.closeSentinel()
-	}
-	return nil
+	return c.closeSentinel()
 }
 
 func (c *sentinelFailover) Pool() *pool.ConnPool {
@@ -226,25 +222,20 @@ func (c *sentinelFailover) masterAddr() (string, error) {
 		sentinel := NewSentinelClient(&Options{
 			Addr: sentinelAddr,
 
-			MaxRetries: c.opt.MaxRetries,
-
 			DialTimeout:  c.opt.DialTimeout,
 			ReadTimeout:  c.opt.ReadTimeout,
 			WriteTimeout: c.opt.WriteTimeout,
 
-			PoolSize:           c.opt.PoolSize,
-			PoolTimeout:        c.opt.PoolTimeout,
-			IdleTimeout:        c.opt.IdleTimeout,
-			IdleCheckFrequency: c.opt.IdleCheckFrequency,
-
-			TLSConfig: c.opt.TLSConfig,
+			PoolSize:    c.opt.PoolSize,
+			PoolTimeout: c.opt.PoolTimeout,
+			IdleTimeout: c.opt.IdleTimeout,
 		})
 
 		masterAddr, err := sentinel.GetMasterAddrByName(c.masterName).Result()
 		if err != nil {
 			internal.Logf("sentinel: GetMasterAddrByName master=%q failed: %s",
 				c.masterName, err)
-			_ = sentinel.Close()
+			sentinel.Close()
 			continue
 		}
 
@@ -305,27 +296,13 @@ func (c *sentinelFailover) switchMaster(addr string) {
 func (c *sentinelFailover) setSentinel(sentinel *SentinelClient) {
 	c.discoverSentinels(sentinel)
 	c.sentinel = sentinel
-
-	c.pubsub = sentinel.Subscribe("+switch-master")
-	go c.listen(c.pubsub)
+	go c.listen(sentinel)
 }
 
 func (c *sentinelFailover) closeSentinel() error {
-	var firstErr error
-
-	err := c.pubsub.Close()
-	if err != nil && firstErr == err {
-		firstErr = err
-	}
-	c.pubsub = nil
-
-	err = c.sentinel.Close()
-	if err != nil && firstErr == err {
-		firstErr = err
-	}
+	err := c.sentinel.Close()
 	c.sentinel = nil
-
-	return firstErr
+	return err
 }
 
 func (c *sentinelFailover) discoverSentinels(sentinel *SentinelClient) {
@@ -350,7 +327,10 @@ func (c *sentinelFailover) discoverSentinels(sentinel *SentinelClient) {
 	}
 }
 
-func (c *sentinelFailover) listen(pubsub *PubSub) {
+func (c *sentinelFailover) listen(sentinel *SentinelClient) {
+	pubsub := sentinel.Subscribe("+switch-master")
+	defer pubsub.Close()
+
 	ch := pubsub.Channel()
 	for {
 		msg, ok := <-ch

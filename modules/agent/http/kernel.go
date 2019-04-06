@@ -3,10 +3,11 @@ package http
 import (
 	"net/http"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/toolkits/nux"
 	"github.com/toolkits/sys"
+
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
 func SetupKernelRoutes() {

@@ -1,8 +1,9 @@
 package sender
 
 import (
-	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	nlist "github.com/toolkits/container/list"
+
+	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 )
 
 func initSendQueues() {

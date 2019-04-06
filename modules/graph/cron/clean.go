@@ -4,8 +4,9 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/index"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"

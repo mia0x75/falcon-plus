@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	nsema "github.com/toolkits/concurrent/semaphore"
+	ntime "github.com/toolkits/time"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	proc "github.com/open-falcon/falcon-plus/modules/graph/proc"
-	nsema "github.com/toolkits/concurrent/semaphore"
-	ntime "github.com/toolkits/time"
 )
 
 const (

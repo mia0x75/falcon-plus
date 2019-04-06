@@ -3,7 +3,7 @@ package cron
 import (
 	"os/exec"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func Control(workdir, arg string) (string, error) {

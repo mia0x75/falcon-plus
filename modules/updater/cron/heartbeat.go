@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/updater/g"
-	"github.com/open-falcon/ops-common/model"
-	"github.com/open-falcon/ops-common/utils"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/net/httplib"
+
+	"github.com/open-falcon/falcon-plus/modules/updater/g"
+	"github.com/open-falcon/falcon-plus/modules/updater/model"
+	"github.com/open-falcon/falcon-plus/modules/updater/utils"
 )
 
 func Heartbeat() {

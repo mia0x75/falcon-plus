@@ -27,7 +27,7 @@
 	"http": {
 		"listen": "%%AGENT_HTTP%%",
 		"backdoor": false,
-		"root": "/usr/share/mfp/agent"
+		"root": "/usr/share/fpm/agent"
 	},
 	"collector": {
 		"system": {

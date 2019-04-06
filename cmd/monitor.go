@@ -6,8 +6,9 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/open-falcon/falcon-plus/g"
 	"github.com/spf13/cobra"
+
+	"github.com/open-falcon/falcon-plus/g"
 )
 
 // Monitor run external tail command

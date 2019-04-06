@@ -6,9 +6,10 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/alarm/g"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/net/httplib"
+
+	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
 //TODO:use api/app/model/portal/action.go

@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/open-falcon/falcon-plus/cmd"
 	"github.com/spf13/cobra"
+
+	"github.com/open-falcon/falcon-plus/cmd"
+	"github.com/open-falcon/falcon-plus/g"
 )
 
 var versionFlag bool
@@ -14,7 +16,14 @@ var RootCmd = &cobra.Command{
 	Use: "open-falcon",
 	RunE: func(c *cobra.Command, args []string) error {
 		if versionFlag {
-			fmt.Printf("Open-Falcon version %s, build %s\n", Version, GitCommit)
+			fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+				"Version", g.Version,
+				"Git commit", g.Git,
+				"Compile", g.Compile,
+				"Distro", g.Distro,
+				"Kernel", g.Kernel,
+				"Branch", g.Branch,
+			)
 			return nil
 		}
 		return c.Usage()

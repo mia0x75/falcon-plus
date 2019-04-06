@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	tsema "github.com/toolkits/concurrent/semaphore"
+	tcron "github.com/toolkits/cron"
+	"github.com/toolkits/net/httplib"
+	ttime "github.com/toolkits/time"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/common/sdk/requests"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
-	tsema "github.com/toolkits/concurrent/semaphore"
-	tcron "github.com/toolkits/cron"
-	"github.com/toolkits/net/httplib"
-	ttime "github.com/toolkits/time"
 )
 
 var (

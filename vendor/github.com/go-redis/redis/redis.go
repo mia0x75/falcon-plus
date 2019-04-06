@@ -77,20 +77,14 @@ func (c *baseClient) getConn() (*pool.Conn, error) {
 	return cn, nil
 }
 
-func (c *baseClient) releaseConn(cn *pool.Conn, err error) {
+func (c *baseClient) releaseConn(cn *pool.Conn, err error) bool {
 	if internal.IsBadConn(err, false) {
 		c.connPool.Remove(cn)
-	} else {
-		c.connPool.Put(cn)
+		return false
 	}
-}
 
-func (c *baseClient) releaseConnStrict(cn *pool.Conn, err error) {
-	if err == nil || internal.IsRedisError(err) {
-		c.connPool.Put(cn)
-	} else {
-		c.connPool.Remove(cn)
-	}
+	c.connPool.Put(cn)
+	return true
 }
 
 func (c *baseClient) initConn(cn *pool.Conn) error {
@@ -254,7 +248,12 @@ func (c *baseClient) generalProcessPipeline(cmds []Cmder, p pipelineProcessor) e
 		}
 
 		canRetry, err := p(cn, cmds)
-		c.releaseConnStrict(cn, err)
+
+		if err == nil || internal.IsRedisError(err) {
+			c.connPool.Put(cn)
+			break
+		}
+		c.connPool.Remove(cn)
 
 		if !canRetry || !internal.IsRetryableError(err, true) {
 			break
@@ -324,7 +323,7 @@ func txPipelineReadQueued(rd *proto.Reader, cmds []Cmder) error {
 		return err
 	}
 
-	for range cmds {
+	for _ = range cmds {
 		err = statusCmd.readReply(rd)
 		if err != nil && !internal.IsRedisError(err) {
 			return err

@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	cron "github.com/toolkits/cron"
+	ntime "github.com/toolkits/time"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
-	cron "github.com/toolkits/cron"
-	ntime "github.com/toolkits/time"
 )
 
 const (

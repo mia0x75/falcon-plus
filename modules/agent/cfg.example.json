@@ -28,7 +28,7 @@
 	"http": {
 		"listen": ":1988",
 		"backdoor": false,
-		"root": "/usr/share/mfp/agent"
+		"root": "/usr/share/fpm/agent"
 	},
 	"collector": {
 		"system": {

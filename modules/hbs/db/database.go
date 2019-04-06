@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 

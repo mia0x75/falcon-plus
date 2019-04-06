@@ -1,7 +1,7 @@
 #!/bin/bash
 
 confs=(
-	'%%REDIS%%=redis://127.0.0.1:6379/0'
+	'%%REDIS%%=redis:\/\/127.0.0.1:6379\/0'
 	'%%MYSQL%%=root:root@tcp(127.0.0.1:3306)'
 	'%%API_DEFAULT_TOKEN%%=TOKEN'
 	'%%API_HTTP%%=127.0.0.1:6001'
@@ -31,13 +31,7 @@ configurer() {
 		search="${i%%=*}"
 		replace="${i##*=}"
 
-		uname=`uname`
-		if [ "$uname" == "Darwin" ] ; then
-			# Note the "" and -e  after -i, needed in OS X
-			find ./out/*/*.json -type f -exec sed -i .tpl -e "s/${search}/${replace}/g" {} \;
-		else
-			find ./out/*/*.json -type f -exec sed -i "s/${search}/${replace}/g" {} \;
-		fi
+		find ./out/*/*.json -type f -exec sed -i -e "s/${search}/${replace}/g" {} \;
 	done
 }
 configurer

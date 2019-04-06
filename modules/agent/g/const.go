@@ -8,7 +8,6 @@ package g
 // 5.1.1: 修复往多个transfer发送数据的时候crash的问题
 // 5.1.2: ignore mount point when blocks=0
 const (
-	VERSION          = "5.1.3"
 	COLLECT_INTERVAL = 1
 	URL_CHECK_HEALTH = "url.check.health"
 	NET_PORT_LISTEN  = "net.port.listen"

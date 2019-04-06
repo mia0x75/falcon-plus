@@ -4,8 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/open-falcon/falcon-plus/g"
 	"github.com/spf13/cobra"
+
+	"github.com/open-falcon/falcon-plus/g"
 )
 
 var Restart = &cobra.Command{

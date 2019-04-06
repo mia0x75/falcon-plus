@@ -1,8 +1,9 @@
 package funcs
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"github.com/mindprince/gonvml"
+	log "github.com/sirupsen/logrus"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	cmodel "github.com/open-falcon/common/model"
+	log "github.com/sirupsen/logrus"
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 

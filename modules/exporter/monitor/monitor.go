@@ -7,11 +7,12 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	"github.com/open-falcon/falcon-plus/modules/exporter/g"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/container/nmap"
 	"github.com/toolkits/cron"
+
+	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 )
 
 var (

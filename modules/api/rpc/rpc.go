@@ -6,7 +6,8 @@ import (
 	"net/rpc/jsonrpc"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 

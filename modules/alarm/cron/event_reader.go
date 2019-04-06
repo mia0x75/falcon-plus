@@ -5,8 +5,9 @@ import (
 	"errors"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gomodule/redigo/redis"
+	log "github.com/sirupsen/logrus"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	eventmodel "github.com/open-falcon/falcon-plus/modules/alarm/model/event"

@@ -4,13 +4,14 @@ import (
 	"math/rand"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
+	log "github.com/sirupsen/logrus"
+	nsema "github.com/toolkits/concurrent/semaphore"
+	nlist "github.com/toolkits/container/list"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
-	nsema "github.com/toolkits/concurrent/semaphore"
-	nlist "github.com/toolkits/container/list"
 )
 
 func startSendTasks() {

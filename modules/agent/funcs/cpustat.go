@@ -6,9 +6,10 @@ import (
 	"strconv"
 	"sync"
 
-	log "github.com/Sirupsen/logrus"
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
+
+	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
 const (

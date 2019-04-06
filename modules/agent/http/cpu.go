@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"runtime"
 
+	"github.com/toolkits/nux"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
-	"github.com/toolkits/nux"
 )
 
 func SetupCpuRoutes() {

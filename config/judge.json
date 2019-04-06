@@ -21,15 +21,14 @@
 	},
 	"alarm": {
 		"min_interval": 120,
-		"queue_pattern": "event:p%d",
-		"redis": {
-			"addr": "%%REDIS%%",
-			"password": "",
-			"max_idle": 5,
-			"connect_timeout": 5,
-			"read_timeout": 5,
-			"write_timeout": 5,
-			"wait_timeout": 240
-		}
+		"queue_pattern": "/q/event:p%d"
+	},
+	"redis": {
+		"addr": "%%REDIS%%",
+		"max_idle": 5,
+		"connect_timeout": 5,
+		"read_timeout": 5,
+		"write_timeout": 5,
+		"wait_timeout": 240
 	}
 }

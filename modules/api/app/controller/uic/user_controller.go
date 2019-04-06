@@ -8,11 +8,11 @@ import (
 	"text/template"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
-
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
+
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"

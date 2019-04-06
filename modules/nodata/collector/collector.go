@@ -3,11 +3,12 @@ package collector
 import (
 	"fmt"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/nodata/g"
+	log "github.com/sirupsen/logrus"
 	tlist "github.com/toolkits/container/list"
 	"github.com/toolkits/container/nmap"
 	ttime "github.com/toolkits/time"
+
+	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
 // 主动收集到的监控数据 的缓存

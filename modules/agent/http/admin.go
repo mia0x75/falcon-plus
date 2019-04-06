@@ -5,10 +5,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/toolkits/file"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
-	"github.com/toolkits/file"
 )
 
 func SetupAdminRoutes() {

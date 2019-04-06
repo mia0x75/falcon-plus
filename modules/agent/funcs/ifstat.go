@@ -1,10 +1,11 @@
 package funcs
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/toolkits/nux"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
-	"github.com/toolkits/nux"
 )
 
 func NetMetrics() []*cmodel.MetricValue {

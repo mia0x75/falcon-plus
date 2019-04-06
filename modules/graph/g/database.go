@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
+	log "github.com/sirupsen/logrus"
 )
 
 var DB *sql.DB

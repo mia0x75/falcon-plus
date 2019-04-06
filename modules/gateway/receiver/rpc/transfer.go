@@ -5,6 +5,7 @@ import (
 	"time"
 
 	pfc "github.com/mia0x75/gopfc/metric"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"

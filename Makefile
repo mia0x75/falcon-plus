@@ -3,9 +3,11 @@ TARGET = open-falcon
 PACKAGES ?= $(shell go list ./... | grep -v /vendor/)
 GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
 GOFMT ?= gofmt "-s"
+GO_VERSION_MIN=1.10
 VERSION := $(shell cat VERSION)
+export GO111MODULE=on
 
-all: $(CMD) $(TARGET)
+all: fmt $(CMD) $(TARGET)
 
 .PHONY: misspell-check
 misspell-check:
@@ -31,7 +33,8 @@ vet:
 	go vet $(PACKAGES)
 
 fmt:
-	$(GOFMT) -w $(GOFILES)
+	@bash ./genver.sh $(GO_VERSION_MIN)
+	$(GOFMT) -l -s -w $(GOFILES)
 
 .PHONY: fmt-check
 fmt-check:
@@ -44,14 +47,14 @@ fmt-check:
 	fi;
 
 $(CMD):
-	go build -o bin/falcon-$@ ./modules/$@
-	# strip bin/$@/falcon-$@
+	go build -o bin/$@/falcon-$@ ./modules/$@
+	strip bin/$@/falcon-$@
 
 .PHONY: $(TARGET)
 $(TARGET): $(GOFILES)
-	go build -ldflags "-X main.GitCommit=`git rev-parse --short HEAD` -X main.Version=$(VERSION)" -o open-falcon
+	go build -ldflags "-X main.GitCommit=`git rev-parse --short HEAD` -X main.Version=$(VERSION)" -o bin/open-falcon
 
-checkbin: bin/ config/ open-falcon
+checkbin: bin/ config/
 
 pack: checkbin
 	@if [ -e out ] ; then rm -rf out; fi
@@ -65,9 +68,13 @@ pack: checkbin
 	@cp -r ./modules/api/data ./out/api/
 	@mkdir out/graph/data
 	@bash ./config/confgen.sh
-	@cp $(TARGET) ./out/$(TARGET)
+	@cp bin/$(TARGET) ./out/$(TARGET)
 	tar -C out -zcf open-falcon-v$(VERSION).tar.gz .
 	@rm -rf out
+
+.PHONY: test
+test:
+	@go test ./modules/api/test
 
 clean:
 	@rm -rf ./bin

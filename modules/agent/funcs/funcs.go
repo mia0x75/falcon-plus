@@ -27,7 +27,6 @@ func BuildMappers() {
 				NetstatMetrics,
 				ProcMetrics,
 				UdpMetrics,
-				IncronMetrics,
 			},
 			Interval: interval,
 		},

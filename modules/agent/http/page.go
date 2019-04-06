@@ -5,9 +5,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/agent/g"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
+
+	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
 func SetupPageRoutes() {

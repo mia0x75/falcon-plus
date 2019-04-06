@@ -18,15 +18,17 @@ import (
 func main() {
 	cfg := flag.String("c", "cfg.json", "configuration file")
 	version := flag.Bool("v", false, "show version")
-	versionGit := flag.Bool("vg", false, "show version")
 	flag.Parse()
 
 	if *version {
-		fmt.Println(g.VERSION)
-		os.Exit(0)
-	}
-	if *versionGit {
-		fmt.Println(g.VERSION, g.COMMIT)
+		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+			"Version", g.Version,
+			"Git commit", g.Git,
+			"Compile", g.Compile,
+			"Distro", g.Distro,
+			"Kernel", g.Kernel,
+			"Branch", g.Branch,
+		)
 		os.Exit(0)
 	}
 

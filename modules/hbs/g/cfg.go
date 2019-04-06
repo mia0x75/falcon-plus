@@ -1,10 +1,15 @@
+// change log:
+// 1.0.7: code refactor for open source
+// 1.0.8: bugfix loop init cache
+// 1.0.9: update host table anyway
+// 1.1.0: remove Checksum when query plugins
 package g
 
 import (
 	"encoding/json"
 	"sync"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 

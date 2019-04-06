@@ -5,7 +5,8 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 

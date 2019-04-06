@@ -7,12 +7,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/toolkits/sys"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/updater/cron"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/falcon-plus/modules/updater/http"
-	"github.com/toolkits/sys"
 )
 
 func main() {
@@ -21,7 +22,14 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Println(g.VERSION)
+		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+			"Version", g.Version,
+			"Git commit", g.Git,
+			"Compile", g.Compile,
+			"Distro", g.Distro,
+			"Kernel", g.Kernel,
+			"Branch", g.Branch,
+		)
 		os.Exit(0)
 	}
 

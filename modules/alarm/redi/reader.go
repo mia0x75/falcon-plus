@@ -3,8 +3,9 @@ package redi
 import (
 	"encoding/json"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gomodule/redigo/redis"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 

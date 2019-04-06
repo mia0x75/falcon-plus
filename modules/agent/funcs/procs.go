@@ -3,11 +3,12 @@ package funcs
 import (
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"github.com/toolkits/nux"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
-	"github.com/toolkits/nux"
 )
 
 func ProcMetrics() (L []*cmodel.MetricValue) {
@@ -18,6 +19,7 @@ func ProcMetrics() (L []*cmodel.MetricValue) {
 	}
 
 	pslen := len(ps)
+	L = append(L, GaugeValue(g.PROC_NUM, pslen))
 
 	procs := hbs.ReportProcs()
 	sz := len(procs)

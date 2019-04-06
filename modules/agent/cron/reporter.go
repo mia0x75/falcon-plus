@@ -3,7 +3,8 @@ package cron
 import (
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
@@ -26,7 +27,7 @@ func reportAgentStatus() {
 		req := cmodel.AgentReportRequest{
 			Hostname:      hostname,
 			IP:            g.IP(),
-			AgentVersion:  g.VERSION,
+			AgentVersion:  g.Version,
 			PluginVersion: g.GetCurrPluginVersion(),
 			// TODO: Add system information to support inventory management
 		}

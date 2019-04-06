@@ -14,15 +14,15 @@
 	},
 	"queue": {
 		"high_queues": [
-			"event:p0",
-			"event:p1",
-			"event:p2"
+			"/q/event:p0",
+			"/q/event:p1",
+			"/q/event:p2"
 		],
 		"low_queues": [
-			"event:p3",
-			"event:p4",
-			"event:p5",
-			"event:p6"
+			"/q/event:p3",
+			"/q/event:p4",
+			"/q/event:p5",
+			"/q/event:p6"
 		],
 		"instant_queues": {
 			"im": "/q/im",

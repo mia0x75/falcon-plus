@@ -7,3 +7,16 @@ docs/_site
 .idea
 .vscode/
 open-falcon
+g/g.go
+modules/agent/g/g.go
+modules/aggregator/g/g.go
+modules/alarm/g/g.go
+modules/api/g/g.go
+modules/exporter/g/g.go
+modules/gateway/g/g.go
+modules/graph/g/g.go
+modules/hbs/g/g.go
+modules/judge/g/g.go
+modules/nodata/g/g.go
+modules/transfer/g/g.go
+modules/updater/g/g.go

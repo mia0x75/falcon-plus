@@ -1,9 +1,10 @@
 package cron
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
-	"github.com/open-falcon/ops-common/model"
+	"github.com/open-falcon/falcon-plus/modules/updater/model"
 )
 
 func HandleHeartbeatResponse(respone *model.HeartbeatResponse) {

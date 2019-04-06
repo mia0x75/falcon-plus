@@ -4,9 +4,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/toolkits/sys"
+
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
-	"github.com/toolkits/sys"
 )
 
 func SetupRunRoutes() {

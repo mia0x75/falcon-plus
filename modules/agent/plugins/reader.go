@@ -6,27 +6,22 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
-	"github.com/toolkits/file"
 )
 
-// key: sys/ntp/60_ntp.py
-func ListPlugins(relativePath string) map[string]*Plugin {
+// ListPlugins return: dict{sys/ntp/60_ntp.py : *Plugin}
+func ListPlugins(scriptPath string) map[string]*Plugin {
 	ret := make(map[string]*Plugin)
-	if relativePath == "" {
+	if scriptPath == "" {
 		return ret
 	}
 
-	dir := filepath.Join(g.Config().Plugin.Dir, relativePath)
-
-	if !file.IsExist(dir) || file.IsFile(dir) {
-		return ret
-	}
-
-	fs, err := ioutil.ReadDir(dir)
+	absPath := filepath.Join(g.Config().Plugin.Dir, scriptPath)
+	fs, err := ioutil.ReadDir(absPath)
 	if err != nil {
-		log.Errorf("[E] can not list files under: %s", dir)
+		log.Errorf("[E] can not list files under: %s", absPath)
 		return ret
 	}
 
@@ -48,10 +43,9 @@ func ListPlugins(relativePath string) map[string]*Plugin {
 			continue
 		}
 
-		fpath := filepath.Join(relativePath, filename)
-		plugin := &Plugin{FilePath: fpath, MTime: f.ModTime().Unix(), Cycle: cycle}
+		fpath := filepath.Join(scriptPath, filename)
+		plugin := &Plugin{FilePath: fpath, MTime: f.ModTime().Unix(), Cycle: cycle, Args: ""}
 		ret[fpath] = plugin
 	}
-
 	return ret
 }

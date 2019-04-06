@@ -3,10 +3,11 @@ package http
 import (
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
 	yaag_gin "github.com/betacraft/yaag/gin"
 	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller/alarm"
 	"github.com/open-falcon/falcon-plus/modules/api/app/controller/dashboard_graph"

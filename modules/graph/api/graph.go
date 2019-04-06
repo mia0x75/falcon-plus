@@ -5,8 +5,9 @@ import (
 	"math"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
+	log "github.com/sirupsen/logrus"
+
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"

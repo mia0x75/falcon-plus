@@ -8,10 +8,11 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/ops-common/model"
-	"github.com/open-falcon/ops-common/utils"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
+
+	"github.com/open-falcon/falcon-plus/modules/updater/model"
+	"github.com/open-falcon/falcon-plus/modules/updater/utils"
 )
 
 func StartDesiredAgent(da *model.DesiredAgent) {

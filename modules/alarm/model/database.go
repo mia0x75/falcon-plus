@@ -3,9 +3,10 @@ package model
 import (
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	log "github.com/sirupsen/logrus"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/model/event"

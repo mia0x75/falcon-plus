@@ -3,9 +3,10 @@ package api
 import (
 	"testing"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/alarm/g"
+	log "github.com/sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
 func init() {

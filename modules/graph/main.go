@@ -7,9 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc"
 	pfcg "github.com/mia0x75/gopfc/g"
+	log "github.com/sirupsen/logrus"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
@@ -52,15 +53,17 @@ func start_signal(pid int, cfg *g.GlobalConfig) {
 func main() {
 	cfg := flag.String("c", "cfg.json", "specify config file")
 	version := flag.Bool("v", false, "show version")
-	versionGit := flag.Bool("vg", false, "show version and git commit log")
 	flag.Parse()
 
 	if *version {
-		fmt.Println(g.VERSION)
-		os.Exit(0)
-	}
-	if *versionGit {
-		fmt.Println(g.VERSION, g.COMMIT)
+		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+			"Version", g.Version,
+			"Git commit", g.Git,
+			"Compile", g.Compile,
+			"Distro", g.Distro,
+			"Kernel", g.Kernel,
+			"Branch", g.Branch,
+		)
 		os.Exit(0)
 	}
 

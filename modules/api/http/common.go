@@ -5,9 +5,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/toolkits/file"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
-	"github.com/toolkits/file"
 )
 
 func SetupCommonRoutes() {
@@ -16,7 +17,7 @@ func SetupCommonRoutes() {
 	})
 
 	routes.GET("/version", func(c *gin.Context) {
-		c.Writer.Write([]byte(fmt.Sprintf("%s\n", g.VERSION)))
+		c.Writer.Write([]byte(fmt.Sprintf("%s\n", g.Version)))
 	})
 
 	routes.GET("/workdir", func(c *gin.Context) {

@@ -14,7 +14,6 @@ func InitDataHistory() {
 		for range time.Tick(d) {
 			funcs.UpdateCpuStats()
 			funcs.UpdateDiskStats()
-			funcs.UpdateInconStats()
 		}
 	}()
 }

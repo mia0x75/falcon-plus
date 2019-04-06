@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	log "github.com/Sirupsen/logrus"
 	pfcg "github.com/mia0x75/gopfc/g"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 )
 

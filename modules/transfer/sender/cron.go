@@ -4,9 +4,10 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
+	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/container/list"
+
+	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 )
 
 const (

@@ -3,8 +3,9 @@ package utils
 import (
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
+
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
@@ -25,7 +26,7 @@ func AuthSessionMidd(c *gin.Context) {
 
 func CORS() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		context.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		context.Writer.Header().Add("Access-Control-Allow-Origin", context.Request.Header.Get("Origin"))
 		context.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		context.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE, PATCH")
 		context.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Apitoken")

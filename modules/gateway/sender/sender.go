@@ -1,13 +1,14 @@
 package sender
 
 import (
-	log "github.com/Sirupsen/logrus"
 	pfc "github.com/mia0x75/gopfc/metric"
+	log "github.com/sirupsen/logrus"
+	nlist "github.com/toolkits/container/list"
+	nproc "github.com/toolkits/proc"
+
 	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
-	nlist "github.com/toolkits/container/list"
-	nproc "github.com/toolkits/proc"
 )
 
 const (

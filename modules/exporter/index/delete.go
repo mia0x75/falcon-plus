@@ -3,11 +3,11 @@ package index
 import (
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	Mdb "github.com/open-falcon/common/db"
+	log "github.com/sirupsen/logrus"
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 
+	Mdb "github.com/open-falcon/common/db"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
 

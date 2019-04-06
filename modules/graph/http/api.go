@@ -4,14 +4,15 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
+	"github.com/toolkits/file"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/index"
 	"github.com/open-falcon/falcon-plus/modules/graph/rrdtool"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
-	"github.com/toolkits/file"
 )
 
 type APIIndexItemInput struct {
@@ -28,7 +29,7 @@ func SetAPIRoutes() {
 	})
 
 	routes.GET("/api/v2/version", func(c *gin.Context) {
-		cutils.JSONR(c, 200, gin.H{"value": g.VERSION})
+		cutils.JSONR(c, 200, gin.H{"value": g.Version})
 	})
 
 	routes.GET("/api/v2/workdir", func(c *gin.Context) {

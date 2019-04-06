@@ -614,7 +614,11 @@ func (c *Ring) defaultProcessPipeline(cmds []Cmder) error {
 				}
 
 				canRetry, err := shard.Client.pipelineProcessCmds(cn, cmds)
-				shard.Client.releaseConnStrict(cn, err)
+				if err == nil || internal.IsRedisError(err) {
+					shard.Client.connPool.Put(cn)
+					return
+				}
+				shard.Client.connPool.Remove(cn)
 
 				if canRetry && internal.IsRetryableError(err, true) {
 					mu.Lock()

@@ -35,9 +35,38 @@
 - Add health monitor into exporter module
 - Support multiple hbs in agent module
 - Remove GPU related metrics
+- Remove alarm callback
+- Push original JSON in alarm module
 - Save statistic metrics from /statistics/all (gateway.stats/exporter.stats/graph.stats)
+- hbs enhancement
 - Code refactor
 
+# TODO 0.4.0
+- [DONE] 支持Redis连接密码设定
+- [TODO] 增加文件系统文件变更监控，对重要文件的变更发出告警
+- [TODO] 告警配置支持表达式，而不仅仅是常量，比如对于mysql.Thread_running > 2 * cpu.num + 2发出告警
+- [TODO] API查询历史数据时，对于当前数据合并缓存内容，确保数据展现的及时性
+- [TODO] 整合滴滴的日志内容监控
+
+# 0.4.0改动
+
+USE portal;
+ALTER TABLE strategy MODIFY right_value VARCHAR(200);
+ALTER TABLE expression MODIFY right_value VARCHAR(200);
+
+alarm.json
+[+] redis.waittime_timeout 不可以为空
+[>] redis.queue.* => queue.*
+
+
+judge.json
+[>] alarm.redis.dsn => alarm.redis.addr
+[>] alarm.redis.connect_timeout => unit second
+[>] alarm.redis.read_timeout => unit second
+[>] alarm.redis.write_timeout => unit second
+[+] alarm.redis.waittime_timeout 不可以为空
+[-] alarm.enable 必须enable
+[>] alarm.redis.* => redis.*
 
 transfer.json
 [+] ignore.*

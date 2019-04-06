@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/toolkits/file"
+
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
-	"github.com/toolkits/file"
 )
 
 func SetupCommonRoutes() {
@@ -15,7 +16,7 @@ func SetupCommonRoutes() {
 	})
 
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(g.VERSION))
+		w.Write([]byte(g.Version))
 	})
 
 	http.HandleFunc("/workdir", func(w http.ResponseWriter, r *http.Request) {

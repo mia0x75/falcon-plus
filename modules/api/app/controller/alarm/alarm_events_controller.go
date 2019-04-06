@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	alm "github.com/open-falcon/falcon-plus/modules/api/app/model/alarm"
 )
@@ -188,7 +189,7 @@ func EventsGet(c *gin.Context) {
 		inputs.Limit = 50
 	}
 	// TODO:
-	perparedSql := fmt.Sprintf("select id, event_caseId, cond, status, timestamp from events %s order by timestamp DESC limit %d,%d", filterCollector, inputs.Page, inputs.Limit)
+	perparedSql := fmt.Sprintf("select id, step, event_caseId, cond, status, timestamp from events %s order by timestamp DESC limit %d,%d", filterCollector, inputs.Page, inputs.Limit)
 	db.Alarm.Raw(perparedSql).Scan(&evens)
 	h.JSONR(c, evens)
 }
