@@ -26,6 +26,7 @@ func Routes(r *gin.Engine) {
 	a.Use(utils.AuthSessionMidd)
 	a.GET("/current", UserInfo) // /current -> /
 	a.GET("/u/:uid", GetUser)
+	a.PUT("/u/:uid", UpdateUser)
 	a.GET("/name/:user_name", GetUserByName)
 	a.PUT("/update", UpdateCurrentUser) // /update -> /
 	a.PUT("/cgpasswd", ChangePassword)

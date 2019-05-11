@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -39,6 +40,22 @@ func ConverIntStringToArray(eid string) (result []int) {
 			log.Errorf("[E] %v", err)
 		} else {
 			result = append(result, v)
+		}
+	}
+	return
+}
+
+func ConvertIntStringToList(eid string) (result string) {
+	for i, e := range strings.Split(eid, ",") {
+		v, err := strconv.Atoi(e)
+		if err != nil {
+			log.Debug(err.Error())
+		} else {
+			if i == 0 {
+				result = fmt.Sprintf("%d", v)
+			} else {
+				result = fmt.Sprintf("%s,%d", result, v)
+			}
 		}
 	}
 	return

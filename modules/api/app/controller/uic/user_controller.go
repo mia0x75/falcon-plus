@@ -214,12 +214,58 @@ func GetUser(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	fuser := uic.User{ID: int64(uid)}
-	if dt := db.Uic.Table("user").Find(&fuser); dt.Error != nil {
+	fuser := uic.User{}
+	if dt := db.Uic.Table("user").Where("id = ?", uid).Find(&fuser); dt.Error != nil {
 		h.JSONR(c, http.StatusInternalServerError, dt.Error)
 		return
 	}
 	h.JSONR(c, fuser)
+	return
+}
+
+func UpdateUser(c *gin.Context) {
+	uidtmp := c.Params.ByName("uid")
+	if uidtmp == "" {
+		h.JSONR(c, badstatus, "user id is missing")
+		return
+	}
+	uid, err := strconv.Atoi(uidtmp)
+	if err != nil {
+		h.JSONR(c, badstatus, err)
+		return
+	}
+
+	var inputs APIUserUpdateInput
+	err = c.BindJSON(&inputs)
+	switch {
+	case err != nil:
+		h.JSONR(c, http.StatusExpectationFailed, err)
+		return
+	case utils.HasDangerousCharacters(inputs.Cnname):
+		h.JSONR(c, http.StatusBadRequest, "name pattern is invalid")
+		return
+	}
+
+	user := uic.User{}
+	db.Uic.Table("user").Where("id = ?", uid).Scan(&user)
+	if user.ID == 0 {
+		h.JSONR(c, http.StatusBadRequest, "user does not exist")
+		return
+	}
+
+	uuser := map[string]interface{}{
+		"Cnname": inputs.Cnname,
+		"Email":  inputs.Email,
+		"Phone":  inputs.Phone,
+		"IM":     inputs.IM,
+		"QQ":     inputs.QQ,
+	}
+	dt := db.Uic.Model(&user).Where("id = ?", uid).Update(uuser)
+	if dt.Error != nil {
+		h.JSONR(c, http.StatusExpectationFailed, dt.Error)
+		return
+	}
+	h.JSONR(c, "user info updated")
 	return
 }
 
@@ -328,8 +374,7 @@ func GetUserTeams(c *gin.Context) {
 	}
 	teams := []uic.Team{}
 	if len(tids) > 0 {
-		dt = db.Uic.Table("team").Where("id in (?)", tids).Find(&teams)
-		if dt.Error != nil {
+		if dt = db.Uic.Table("team").Where("id in (?)", tids).Find(&teams); dt.Error != nil {
 			h.JSONR(c, http.StatusExpectationFailed, dt.Error)
 			return
 		}

@@ -7,8 +7,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// RedisConnPool TODO:
 var RedisConnPool *redis.Pool
 
+// InitRedisConnPool TODO:
 func InitRedisConnPool() {
 	cfg := Config().Redis
 	addr := cfg.Addr
@@ -37,6 +39,7 @@ func InitRedisConnPool() {
 	}
 }
 
+// PingRedis TODO:
 func PingRedis(c redis.Conn, t time.Time) error {
 	_, err := c.Do("ping")
 	if err != nil {

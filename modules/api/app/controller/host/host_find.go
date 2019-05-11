@@ -8,6 +8,7 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// FindByMaintain TODO:
 func FindByMaintain(c *gin.Context) {
 	var dt *gorm.DB
 	var hosts = []f.Host{}
@@ -18,15 +19,18 @@ func FindByMaintain(c *gin.Context) {
 	h.JSONR(c, hosts)
 }
 
+// APIFindByMetricInput TODO:
 type APIFindByMetricInput struct {
 	Metric string `json:"metric"`
 }
 
+// RMetric TODO:
 type RMetric struct {
 	Strategy f.Strategy `json:"strategy"`
 	Hosts    []string   `json:"hosts"`
 }
 
+// FindByMetric TODO:
 func FindByMetric(c *gin.Context) {
 	var inputs APIFindByMetricInput
 	if err := c.Bind(&inputs); err != nil {
@@ -41,22 +45,22 @@ func FindByMetric(c *gin.Context) {
 		return
 	}
 	for _, stg := range stgs {
-		var grp_tpls = []f.GrpTpl{}
-		if dt = db.Falcon.Where("tpl_id = ?", stg.TplId).Find(&grp_tpls); dt.Error != nil {
+		var grpTpls = []f.GrpTpl{}
+		if dt = db.Falcon.Where("tpl_id = ?", stg.TplId).Find(&grpTpls); dt.Error != nil {
 			h.JSONR(c, badstatus, dt.Error)
 			return
 		}
-		if len(grp_tpls) == 0 {
+		if len(grpTpls) == 0 {
 			continue
 		}
 		var hosts = []string{}
-		for _, grp_tpl := range grp_tpls {
-			var tmp_hosts = []f.Host{}
-			if dt = db.Falcon.Joins("JOIN grp_host on host.id = grp_host.host_id AND grp_host.grp_id = ?", grp_tpl.GrpID).Find(&tmp_hosts); dt.Error != nil {
+		for _, tpl := range grpTpls {
+			var tmpHosts = []f.Host{}
+			if dt = db.Falcon.Joins("JOIN grp_host on host.id = grp_host.host_id AND grp_host.grp_id = ?", tpl.GrpID).Find(&tmpHosts); dt.Error != nil {
 				h.JSONR(c, badstatus, dt.Error)
 				return
 			}
-			for _, host := range tmp_hosts {
+			for _, host := range tmpHosts {
 				hosts = append(hosts, host.Hostname)
 			}
 		}

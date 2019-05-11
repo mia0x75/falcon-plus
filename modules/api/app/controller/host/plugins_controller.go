@@ -11,11 +11,13 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// APICreatePluginInput TODO:
 type APICreatePluginInput struct {
-	GrpId   int64  `json:"hostgroup_id" binding:"required"`
+	GrpID   int64  `json:"hostgroup_id" binding:"required"`
 	DirPath string `json:"dir_path" binding:"required"`
 }
 
+// CreatePlugin TODO:
 func CreatePlugin(c *gin.Context) {
 	var inputs APICreatePluginInput
 	if err := c.Bind(&inputs); err != nil {
@@ -24,7 +26,7 @@ func CreatePlugin(c *gin.Context) {
 	}
 	user, _ := h.GetUser(c)
 	if !user.IsAdmin() {
-		hostgroup := f.HostGroup{ID: inputs.GrpId}
+		hostgroup := f.HostGroup{ID: inputs.GrpID}
 		if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
 			h.JSONR(c, expecstatus, dt.Error)
 			return
@@ -34,7 +36,7 @@ func CreatePlugin(c *gin.Context) {
 			return
 		}
 	}
-	plugin := f.Plugin{Dir: inputs.DirPath, GrpId: inputs.GrpId, CreateUser: user.Name}
+	plugin := f.Plugin{Dir: inputs.DirPath, GrpId: inputs.GrpID, CreateUser: user.Name}
 	if dt := db.Falcon.Save(&plugin); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
@@ -43,6 +45,7 @@ func CreatePlugin(c *gin.Context) {
 	return
 }
 
+// GetPluginOfGrp TODO:
 func GetPluginOfGrp(c *gin.Context) {
 	grpIDtmp := c.Params.ByName("host_group")
 	if grpIDtmp == "" {
@@ -64,6 +67,7 @@ func GetPluginOfGrp(c *gin.Context) {
 	return
 }
 
+// DeletePlugin TODO:
 func DeletePlugin(c *gin.Context) {
 	pluginIDtmp := c.Params.ByName("id")
 	if pluginIDtmp == "" {
@@ -76,15 +80,15 @@ func DeletePlugin(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	plugin := f.Plugin{ID: int64(pluginID)}
-	if dt := db.Falcon.Find(&plugin); dt.Error != nil {
+	plugin := f.Plugin{}
+	if dt := db.Falcon.Where("id = ?", pluginID).Find(&plugin); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
 	user, _ := h.GetUser(c)
 	if !user.IsAdmin() {
-		hostgroup := f.HostGroup{ID: plugin.GrpId}
-		if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+		hostgroup := f.HostGroup{}
+		if dt := db.Falcon.Where("id = ?", plugin.GrpId).Find(&hostgroup); dt.Error != nil {
 			h.JSONR(c, expecstatus, dt.Error)
 			return
 		}
@@ -94,7 +98,7 @@ func DeletePlugin(c *gin.Context) {
 		}
 	}
 
-	if dt := db.Falcon.Delete(&plugin); dt.Error != nil {
+	if dt := db.Falcon.Where("id = ?", pluginID).Delete(&plugin); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}

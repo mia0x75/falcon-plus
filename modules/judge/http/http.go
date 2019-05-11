@@ -9,21 +9,23 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 
+// SetupRoutes TODO:
 func SetupRoutes() {
 	SetupCommonRoutes()
 	SetupProcRoutes()
 }
 
+// Start TODO:
 func Start() {
-	go startHttpServer()
+	go startHTTPServer()
 }
 
-func startHttpServer() {
-	if !g.Config().Http.Enabled {
+func startHTTPServer() {
+	if !g.Config().HTTP.Enabled {
 		return
 	}
 
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

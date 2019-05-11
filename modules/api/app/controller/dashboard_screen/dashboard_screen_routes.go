@@ -14,6 +14,7 @@ var db g.DBPool
 const badstatus = http.StatusBadRequest
 const expecstatus = http.StatusExpectationFailed
 
+// Routes 路由表
 func Routes(r *gin.Engine) {
 	db = g.Con()
 	g := r.Group("/api/v1/dashboard")

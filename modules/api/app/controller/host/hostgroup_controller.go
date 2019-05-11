@@ -16,6 +16,7 @@ import (
 	u "github.com/open-falcon/falcon-plus/modules/api/app/utils"
 )
 
+// GetHostGroups TODO:
 func GetHostGroups(c *gin.Context) {
 	var (
 		limit int
@@ -46,10 +47,12 @@ func GetHostGroups(c *gin.Context) {
 	return
 }
 
+// APICrateHostGroup TODO:
 type APICrateHostGroup struct {
 	Name string `json:"name" binding:"required"`
 }
 
+// CreateHostGroup TODO:
 func CreateHostGroup(c *gin.Context) {
 	var inputs APICrateHostGroup
 	if err := c.Bind(&inputs); err != nil {
@@ -66,11 +69,13 @@ func CreateHostGroup(c *gin.Context) {
 	return
 }
 
+// APIBindHostToHostGroupInput TODO:
 type APIBindHostToHostGroupInput struct {
 	Hosts       []string `json:"hosts" binding:"required"`
 	HostGroupID int64    `json:"hostgroup_id" binding:"required"`
 }
 
+// BindHostToHostGroup TODO:
 func BindHostToHostGroup(c *gin.Context) {
 	var inputs APIBindHostToHostGroupInput
 	if err := c.Bind(&inputs); err != nil {
@@ -120,11 +125,13 @@ func BindHostToHostGroup(c *gin.Context) {
 	return
 }
 
+// APIUnBindAHostToHostGroup TODO:
 type APIUnBindAHostToHostGroup struct {
 	HostID      int64 `json:"host_id" binding:"required"`
 	HostGroupID int64 `json:"hostgroup_id" binding:"required"`
 }
 
+// UnBindAHostToHostGroup TODO:
 func UnBindAHostToHostGroup(c *gin.Context) {
 	var inputs APIUnBindAHostToHostGroup
 	if err := c.Bind(&inputs); err != nil {
@@ -151,6 +158,7 @@ func UnBindAHostToHostGroup(c *gin.Context) {
 	return
 }
 
+// DeleteHostGroup TODO:
 func DeleteHostGroup(c *gin.Context) {
 	grpIDtmp := c.Params.ByName("host_group")
 	if grpIDtmp == "" {
@@ -163,9 +171,9 @@ func DeleteHostGroup(c *gin.Context) {
 		return
 	}
 	user, _ := h.GetUser(c)
-	hostgroup := f.HostGroup{ID: int64(grpID)}
+	hostgroup := f.HostGroup{}
 	if !user.IsAdmin() {
-		if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+		if dt := db.Falcon.Where("id = ?", grpID).Find(&hostgroup); dt.Error != nil {
 			h.JSONR(c, badstatus, dt.Error)
 			return
 		}
@@ -194,7 +202,7 @@ func DeleteHostGroup(c *gin.Context) {
 		return
 	}
 	//finally delete hostgroup
-	if dt := tx.Delete(&f.HostGroup{ID: int64(grpID)}); dt.Error != nil {
+	if dt := tx.Where("id = ?", grpID).Delete(&f.HostGroup{}); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		tx.Rollback()
 		return
@@ -204,6 +212,7 @@ func DeleteHostGroup(c *gin.Context) {
 	return
 }
 
+// GetHostGroup TODO:
 func GetHostGroup(c *gin.Context) {
 	grpIDtmp := c.Params.ByName("host_group")
 	q := c.DefaultQuery("q", ".+")
@@ -217,8 +226,8 @@ func GetHostGroup(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	hostgroup := f.HostGroup{ID: int64(grpID)}
-	if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+	hostgroup := f.HostGroup{}
+	if dt := db.Falcon.Where("id = ?", grpID).Find(&hostgroup); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
@@ -244,12 +253,14 @@ func GetHostGroup(c *gin.Context) {
 	return
 }
 
+// APIHostGroupInputs TODO:
 type APIHostGroupInputs struct {
 	ID   int64  `json:"id" binding:"required"`
 	Name string `json:"grp_name" binding:"required"`
 	//create_user string `json:"create_user" binding:"required"`
 }
 
+// PutHostGroup TODO:
 func PutHostGroup(c *gin.Context) {
 	var inputs APIHostGroupInputs
 	err := c.BindJSON(&inputs)
@@ -282,11 +293,13 @@ func PutHostGroup(c *gin.Context) {
 	return
 }
 
+// APIBindTemplateToGroupInputs TODO:
 type APIBindTemplateToGroupInputs struct {
 	TplID int64 `json:"tpl_id"`
 	GrpID int64 `json:"grp_id"`
 }
 
+// BindTemplateToGroup TODO:
 func BindTemplateToGroup(c *gin.Context) {
 	var inputs APIBindTemplateToGroupInputs
 	if err := c.Bind(&inputs); err != nil {
@@ -300,7 +313,7 @@ func BindTemplateToGroup(c *gin.Context) {
 	}
 	db.Falcon.Where("grp_id = ? and tpl_id = ?", inputs.GrpID, inputs.TplID).Find(&grpTpl)
 	if grpTpl.BindUser != "" {
-		h.JSONR(c, badstatus, errors.New("this binding already existing, reject!"))
+		h.JSONR(c, badstatus, errors.New("This binding already existing, reject"))
 		return
 	}
 	grpTpl.BindUser = user.Name
@@ -312,11 +325,13 @@ func BindTemplateToGroup(c *gin.Context) {
 	return
 }
 
+// APIUnBindTemplateToGroupInputs TODO:
 type APIUnBindTemplateToGroupInputs struct {
 	TplID int64 `json:"tpl_id"`
 	GrpID int64 `json:"grp_id"`
 }
 
+// UnBindTemplateToGroup TODO:
 func UnBindTemplateToGroup(c *gin.Context) {
 	var inputs APIUnBindTemplateToGroupInputs
 	if err := c.Bind(&inputs); err != nil {
@@ -331,7 +346,7 @@ func UnBindTemplateToGroup(c *gin.Context) {
 	db.Falcon.Where("grp_id = ? and tpl_id = ?", inputs.GrpID, inputs.TplID).Find(&grpTpl)
 	switch {
 	case !user.IsAdmin() && grpTpl.BindUser != user.Name:
-		h.JSONR(c, badstatus, errors.New("You don't have permission can do this."))
+		h.JSONR(c, badstatus, errors.New("You don't have permission can do this"))
 		return
 	}
 	if dt := db.Falcon.Where("grp_id = ? and tpl_id = ?", inputs.GrpID, inputs.TplID).Delete(&grpTpl); dt.Error != nil {
@@ -342,6 +357,7 @@ func UnBindTemplateToGroup(c *gin.Context) {
 	return
 }
 
+// GetTemplateOfHostGroup TODO:
 func GetTemplateOfHostGroup(c *gin.Context) {
 	grpIDtmp := c.Params.ByName("host_group")
 	if grpIDtmp == "" {
@@ -354,8 +370,8 @@ func GetTemplateOfHostGroup(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	hostgroup := f.HostGroup{ID: int64(grpID)}
-	if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+	hostgroup := f.HostGroup{}
+	if dt := db.Falcon.Where("id = ?", grpID).Find(&hostgroup); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
@@ -378,11 +394,13 @@ func GetTemplateOfHostGroup(c *gin.Context) {
 	return
 }
 
+// APIPatchHostGroupHost TODO:
 type APIPatchHostGroupHost struct {
 	Action string   `json:"action" binding:"required"`
 	Hosts  []string `json:"hosts" binding:"required"`
 }
 
+// PatchHostGroupHost TODO:
 func PatchHostGroupHost(c *gin.Context) {
 	var inputs APIPatchHostGroupHost
 	if err := c.Bind(&inputs); err != nil {
@@ -410,8 +428,8 @@ func PatchHostGroupHost(c *gin.Context) {
 
 	user, _ := h.GetUser(c)
 
-	hostgroup := f.HostGroup{ID: int64(grpID)}
-	if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+	hostgroup := f.HostGroup{}
+	if dt := db.Falcon.Where("id = ?", grpID).Find(&hostgroup); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}

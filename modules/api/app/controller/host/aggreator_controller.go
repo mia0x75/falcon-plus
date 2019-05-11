@@ -12,6 +12,7 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// GetAggregatorListOfGrp TODO:
 func GetAggregatorListOfGrp(c *gin.Context) {
 	var (
 		limit int
@@ -63,6 +64,7 @@ func GetAggregatorListOfGrp(c *gin.Context) {
 	return
 }
 
+// GetAggregator TODO:
 func GetAggregator(c *gin.Context) {
 	aggIDtmp := c.Params.ByName("id")
 	if aggIDtmp == "" {
@@ -75,8 +77,8 @@ func GetAggregator(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	aggregator := f.Cluster{ID: int64(aggID)}
-	if dt := db.Falcon.Find(&aggregator); dt.Error != nil {
+	aggregator := f.Cluster{}
+	if dt := db.Falcon.Where("id = ?", aggID).Find(&aggregator); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
@@ -84,8 +86,9 @@ func GetAggregator(c *gin.Context) {
 	return
 }
 
+// APICreateAggregatorInput TODO:
 type APICreateAggregatorInput struct {
-	GrpId       int64  `json:"hostgroup_id" binding:"required"`
+	GrpID       int64  `json:"hostgroup_id" binding:"required"`
 	Numerator   string `json:"numerator" binding:"required"`
 	Denominator string `json:"denominator" binding:"required"`
 	Endpoint    string `json:"endpoint" binding:"required"`
@@ -95,6 +98,7 @@ type APICreateAggregatorInput struct {
 	// DsType      string `json:"ds_type" binding:"exists"`
 }
 
+// CreateAggregator TODO:
 func CreateAggregator(c *gin.Context) {
 	var inputs APICreateAggregatorInput
 	if err := c.Bind(&inputs); err != nil {
@@ -103,7 +107,7 @@ func CreateAggregator(c *gin.Context) {
 	}
 	user, _ := h.GetUser(c)
 	if !user.IsAdmin() {
-		hostgroup := f.HostGroup{ID: inputs.GrpId}
+		hostgroup := f.HostGroup{ID: inputs.GrpID}
 		if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
 			h.JSONR(c, expecstatus, fmt.Sprintf("find hostgroup error: %v", dt.Error.Error()))
 			return
@@ -114,7 +118,7 @@ func CreateAggregator(c *gin.Context) {
 		}
 	}
 	agg := f.Cluster{
-		GrpId:       inputs.GrpId,
+		GrpId:       inputs.GrpID,
 		Numerator:   inputs.Numerator,
 		Denominator: inputs.Denominator,
 		Endpoint:    inputs.Endpoint,
@@ -131,6 +135,7 @@ func CreateAggregator(c *gin.Context) {
 	return
 }
 
+// APIUpdateAggregatorInput TODO:
 type APIUpdateAggregatorInput struct {
 	ID          int64  `json:"id" binding:"required"`
 	Numerator   string `json:"numerator" binding:"required"`
@@ -142,6 +147,7 @@ type APIUpdateAggregatorInput struct {
 	// DsType      string `json:"ds_type" binding:"exists"`
 }
 
+// UpdateAggregator TODO:
 func UpdateAggregator(c *gin.Context) {
 	var inputs APIUpdateAggregatorInput
 	if err := c.Bind(&inputs); err != nil {
@@ -181,6 +187,7 @@ func UpdateAggregator(c *gin.Context) {
 	return
 }
 
+// DeleteAggregator TODO:
 func DeleteAggregator(c *gin.Context) {
 	aggIDtmp := c.Params.ByName("id")
 	if aggIDtmp == "" {
@@ -193,15 +200,15 @@ func DeleteAggregator(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	aggregator := f.Cluster{ID: int64(aggID)}
-	if dt := db.Falcon.Find(&aggregator); dt.Error != nil {
+	aggregator := f.Cluster{}
+	if dt := db.Falcon.Where("id = ?", aggID).Find(&aggregator); dt.Error != nil {
 		h.JSONR(c, expecstatus, fmt.Sprintf("find aggregator got error: %v", dt.Error.Error()))
 		return
 	}
 	user, _ := h.GetUser(c)
 	if !user.IsAdmin() {
-		hostgroup := f.HostGroup{ID: aggregator.GrpId}
-		if dt := db.Falcon.Find(&hostgroup); dt.Error != nil {
+		hostgroup := f.HostGroup{}
+		if dt := db.Falcon.Where("id = ?", aggregator.GrpId).Find(&hostgroup); dt.Error != nil {
 			h.JSONR(c, expecstatus, fmt.Sprintf("find hostgroup got error: %v", dt.Error.Error()))
 			return
 		}

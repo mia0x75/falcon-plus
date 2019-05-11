@@ -1,6 +1,7 @@
 package g
 
 import (
+	"errors"
 	"math"
 	"net/rpc"
 	"sync"
@@ -10,35 +11,37 @@ import (
 	"github.com/toolkits/net"
 )
 
-type SingleConnRpcClient struct {
+// SingleConnRPCClient TODO:
+type SingleConnRPCClient struct {
 	sync.Mutex
-	rpcClient  *rpc.Client
-	RpcServers []string
-	Timeout    time.Duration
+	rpcClient   *rpc.Client
+	RPCServers  []string
+	Timeout     time.Duration
+	CallTimeout time.Duration
 }
 
-func (this *SingleConnRpcClient) close() {
-	if this.rpcClient != nil {
-		this.rpcClient.Close()
-		this.rpcClient = nil
+func (rpc *SingleConnRPCClient) close() {
+	if rpc.rpcClient != nil {
+		rpc.rpcClient.Close()
+		rpc.rpcClient = nil
 	}
 }
 
-func (this *SingleConnRpcClient) insureConn() {
-	if this.rpcClient != nil {
+func (rpc *SingleConnRPCClient) insureConn() {
+	if rpc.rpcClient != nil {
 		return
 	}
 
 	var err error
-	var retry int = 1
+	retry := 1
 
 	for {
-		if this.rpcClient != nil {
+		if rpc.rpcClient != nil {
 			return
 		}
 
-		for _, s := range this.RpcServers {
-			this.rpcClient, err = net.JsonRpcClient("tcp", s, this.Timeout)
+		for _, s := range rpc.RPCServers {
+			rpc.rpcClient, err = net.JsonRpcClient("tcp", s, rpc.Timeout)
 			if err == nil {
 				return
 			}
@@ -56,15 +59,28 @@ func (this *SingleConnRpcClient) insureConn() {
 	}
 }
 
-func (this *SingleConnRpcClient) Call(method string, args interface{}, reply interface{}) error {
-	this.Lock()
-	defer this.Unlock()
+// Call TODO:
+func (rpc *SingleConnRPCClient) Call(method string, args interface{}, reply interface{}) error {
+	rpc.Lock()
+	defer rpc.Unlock()
 
-	this.insureConn()
+	rpc.insureConn()
 
-	err := this.rpcClient.Call(method, args, reply)
+	done := make(chan error, 1)
+	go func() {
+		done <- rpc.rpcClient.Call(method, args, reply)
+	}()
+
+	var err error
+
+	select {
+	case <-time.After(rpc.CallTimeout):
+		err = errors.New("call hbs timeout")
+	case err = <-done:
+	}
+
 	if err != nil {
-		this.close()
+		rpc.close()
 	}
 
 	return err

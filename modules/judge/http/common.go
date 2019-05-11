@@ -10,6 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 )
 
+// SetupCommonRoutes TODO:
 func SetupCommonRoutes() {
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("ok"))

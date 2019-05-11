@@ -14,6 +14,7 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// GetExpressionList TODO:
 func GetExpressionList(c *gin.Context) {
 	var (
 		limit int
@@ -42,6 +43,7 @@ func GetExpressionList(c *gin.Context) {
 	return
 }
 
+// GetExpression TODO:
 func GetExpression(c *gin.Context) {
 	eidtmp := c.Params.ByName("eid")
 	if eidtmp == "" {
@@ -53,8 +55,8 @@ func GetExpression(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	expression := f.Expression{ID: int64(eid)}
-	if dt := db.Falcon.Find(&expression); dt.Error != nil {
+	expression := f.Expression{}
+	if dt := db.Falcon.Where("id = ?", eid).Find(&expression); dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
@@ -70,6 +72,7 @@ func GetExpression(c *gin.Context) {
 	return
 }
 
+// APICreateExrpessionInput TODO:
 type APICreateExrpessionInput struct {
 	Expression string    `json:"expression" binding:"required"`
 	Func       string    `json:"func" binding:"required"`
@@ -82,6 +85,7 @@ type APICreateExrpessionInput struct {
 	Action     ActionTmp `json:"action" binding:"required"`
 }
 
+// ActionTmp TODO:
 type ActionTmp struct {
 	UIC                []string `json:"uic" binding:"required"`
 	URL                string   `json:"url" binding:"exists"`
@@ -92,18 +96,20 @@ type ActionTmp struct {
 	AfterCallbackMail  int      `json:"after_callback_mail" binding:"exists"`
 }
 
-func (this APICreateExrpessionInput) CheckFormat() (err error) {
+// CheckFormat TODO:
+func (input APICreateExrpessionInput) CheckFormat() (err error) {
 	validOp := regexp.MustCompile(`^(>|=|<|!)(=)?$`)
 	validRightValue := regexp.MustCompile(`^\-?\d+(\.\d+)?$`)
 	switch {
-	case !validOp.MatchString(this.Op):
+	case !validOp.MatchString(input.Op):
 		err = errors.New("op's formating is not vaild")
-	case !validRightValue.MatchString(this.RightValue):
+	case !validRightValue.MatchString(input.RightValue):
 		err = errors.New("right_value's formating is not vaild")
 	}
 	return
 }
 
+// CreateExrpession TODO:
 func CreateExrpession(c *gin.Context) {
 	var inputs APICreateExrpessionInput
 	if err := c.Bind(&inputs); err != nil {
@@ -153,6 +159,7 @@ func CreateExrpession(c *gin.Context) {
 	return
 }
 
+// APIUpdateExrpessionInput TODO:
 type APIUpdateExrpessionInput struct {
 	ID         int64      `json:"id"  binding:"required"`
 	Expression string     `json:"expression" binding:"required"`
@@ -166,6 +173,7 @@ type APIUpdateExrpessionInput struct {
 	Action     ActionTmpU `json:"action" binding:"required"`
 }
 
+// ActionTmpU TODO:
 type ActionTmpU struct {
 	UIC                []string `json:"uic" binding:"required"`
 	URL                string   `json:"url" binding:"exists"`
@@ -176,18 +184,20 @@ type ActionTmpU struct {
 	AfterCallbackMail  int      `json:"after_callback_mail" binding:"exists"`
 }
 
-func (this APIUpdateExrpessionInput) CheckFormat() (err error) {
+// CheckFormat TODO:
+func (input APIUpdateExrpessionInput) CheckFormat() (err error) {
 	validOp := regexp.MustCompile(`^(>|=|<|!)(=)?$`)
 	validRightValue := regexp.MustCompile(`^\d+$`)
 	switch {
-	case !validOp.MatchString(this.Op):
+	case !validOp.MatchString(input.Op):
 		err = errors.New("op's formating is not vaild")
-	case !validRightValue.MatchString(this.RightValue):
+	case !validRightValue.MatchString(input.RightValue):
 		err = errors.New("right_value's formating is not vaild")
 	}
 	return
 }
 
+// UpdateExrpession TODO:
 func UpdateExrpession(c *gin.Context) {
 	var inputs APIUpdateExrpessionInput
 	if err := c.Bind(&inputs); err != nil {
@@ -260,6 +270,7 @@ func UpdateExrpession(c *gin.Context) {
 	return
 }
 
+// DeleteExpression TODO:
 func DeleteExpression(c *gin.Context) {
 	eidtmp := c.Params.ByName("eid")
 	if eidtmp == "" {
@@ -273,9 +284,9 @@ func DeleteExpression(c *gin.Context) {
 	}
 	tx := db.Falcon.Begin()
 	user, _ := h.GetUser(c)
-	expression := f.Expression{ID: int64(eid)}
+	expression := f.Expression{}
 	if !user.IsAdmin() {
-		tx.Find(&expression)
+		tx.Where("id = ?", eid).Find(&expression)
 		if expression.CreateUser != user.Name {
 			h.JSONR(c, badstatus, "You don't have permission!")
 			tx.Rollback()
@@ -288,7 +299,7 @@ func DeleteExpression(c *gin.Context) {
 		tx.Rollback()
 		return
 	}
-	if dt := tx.Delete(&expression); dt.Error != nil {
+	if dt := tx.Where("id = ?", eid).Delete(&expression); dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		tx.Rollback()
 		return

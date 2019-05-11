@@ -7,16 +7,18 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 	alm "github.com/open-falcon/falcon-plus/modules/api/app/model/alarm"
 )
 
+// APIGetNotesOfAlarmInputs TODO:
 type APIGetNotesOfAlarmInputs struct {
 	StartTime int64 `json:"startTime" form:"startTime"`
 	EndTime   int64 `json:"endTime" form:"endTime"`
 	//id
-	EventId string `json:"event_id" form:"event_id"`
+	EventID string `json:"event_id" form:"event_id"`
 	Status  string `json:"status" form:"status"`
 	//number of reacord's limit on each page
 	Limit int `json:"limit" form:"limit"`
@@ -26,26 +28,26 @@ type APIGetNotesOfAlarmInputs struct {
 
 func (input APIGetNotesOfAlarmInputs) checkInputsContain() error {
 	if input.StartTime == 0 && input.EndTime == 0 {
-		if input.EventId == "" {
-			return errors.New("startTime, endTime OR event_id, You have to at least pick one on the request.")
+		if input.EventID == "" {
+			return errors.New("StartTime, endTime OR event_id, You have to at least pick one on the request")
 		}
 	}
 	return nil
 }
 
-func (s APIGetNotesOfAlarmInputs) collectFilters() string {
+func (input APIGetNotesOfAlarmInputs) collectFilters() string {
 	tmp := []string{}
-	if s.StartTime != 0 {
-		tmp = append(tmp, fmt.Sprintf("timestamp >= FROM_UNIXTIME(%v)", s.StartTime))
+	if input.StartTime != 0 {
+		tmp = append(tmp, fmt.Sprintf("timestamp >= FROM_UNIXTIME(%v)", input.StartTime))
 	}
-	if s.EndTime != 0 {
-		tmp = append(tmp, fmt.Sprintf("timestamp <= FROM_UNIXTIME(%v)", s.EndTime))
+	if input.EndTime != 0 {
+		tmp = append(tmp, fmt.Sprintf("timestamp <= FROM_UNIXTIME(%v)", input.EndTime))
 	}
-	if s.Status != "" {
-		tmp = append(tmp, fmt.Sprintf("status = '%s'", s.Status))
+	if input.Status != "" {
+		tmp = append(tmp, fmt.Sprintf("status = '%s'", input.Status))
 	}
-	if s.EventId != "" {
-		tmp = append(tmp, fmt.Sprintf("event_caseId = '%s'", s.EventId))
+	if input.EventID != "" {
+		tmp = append(tmp, fmt.Sprintf("event_caseId = '%s'", input.EventID))
 	}
 	filterStrTmp := strings.Join(tmp, " AND ")
 	if filterStrTmp != "" {
@@ -54,15 +56,38 @@ func (s APIGetNotesOfAlarmInputs) collectFilters() string {
 	return filterStrTmp
 }
 
+func (input APIGetNotesOfAlarmInputs) collectDBFilters(database *gorm.DB, tableName string, columns []string) *gorm.DB {
+	filterDB := database.Table(tableName)
+	// nil columns mean select all columns
+	if columns != nil && len(columns) != 0 {
+		filterDB = filterDB.Select(columns)
+	}
+	if input.StartTime != 0 {
+		filterDB = filterDB.Where("timestamp >= FROM_UNIXTIME(?)", input.StartTime)
+	}
+	if input.EndTime != 0 {
+		filterDB = filterDB.Where("timestamp <= FROM_UNIXTIME(?)", input.EndTime)
+	}
+	if input.Status != "" {
+		filterDB = filterDB.Where("status = ?", input.Status)
+	}
+	if input.EventID != "" {
+		filterDB = filterDB.Where("event_caseId = ?", input.EventID)
+	}
+	return filterDB
+}
+
+// APIGetNotesOfAlarmOuput TODO:
 type APIGetNotesOfAlarmOuput struct {
-	EventCaseId string     `json:"event_caseId"`
+	EventCaseID string     `json:"event_caseId"`
 	Note        string     `json:"note"`
-	CaseId      string     `json:"case_id"`
+	CaseID      string     `json:"case_id"`
 	Status      string     `json:"status"`
 	Timestamp   *time.Time `json:"timestamp"`
 	UserName    string     `json:"user"`
 }
 
+// GetNotesOfAlarm TODO:
 func GetNotesOfAlarm(c *gin.Context) {
 	var inputs APIGetNotesOfAlarmInputs
 	if err := c.Bind(&inputs); err != nil {
@@ -73,26 +98,21 @@ func GetNotesOfAlarm(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	filterCollector := inputs.collectFilters()
 	//for get correct table name
+	f := alm.EventNote{}
+	noteDB := inputs.collectDBFilters(db.Alarm, f.TableName(), []string{"id", "event_caseId", "note", "case_id", "status", "timestamp", "user_id"})
 	notes := []alm.EventNote{}
-	if inputs.Limit == 0 || inputs.Limit >= 50 {
+	if inputs.Limit <= 0 || inputs.Limit >= 50 {
 		inputs.Limit = 50
 	}
-	// TODO:
-	perparedSql := fmt.Sprintf(
-		"select id, event_caseId, note, case_id, status, timestamp, user_id from event_note %s order by timestamp DESC limit %d,%d",
-		filterCollector,
-		inputs.Page,
-		inputs.Limit,
-	)
-	db.Alarm.Raw(perparedSql).Scan(&notes)
+	step := (inputs.Page - 1) * inputs.Limit
+	noteDB.Order("timestamp DESC").Offset(step).Limit(inputs.Limit).Scan(&notes)
 	output := []APIGetNotesOfAlarmOuput{}
 	for _, n := range notes {
 		output = append(output, APIGetNotesOfAlarmOuput{
-			EventCaseId: n.EventCaseId,
+			EventCaseID: n.EventCaseId,
 			Note:        n.Note,
-			CaseId:      n.CaseId,
+			CaseID:      n.CaseId,
 			Status:      n.Status,
 			Timestamp:   n.Timestamp,
 			UserName:    n.GetUserName(),
@@ -101,15 +121,17 @@ func GetNotesOfAlarm(c *gin.Context) {
 	h.JSONR(c, output)
 }
 
+// APIAddNotesToAlarmInputs TODO:
 type APIAddNotesToAlarmInputs struct {
-	EventId string `json:"event_id" form:"event_id" binding:"required"`
+	EventID string `json:"event_id" form:"event_id" binding:"required"`
 	Note    string `json:"note" form:"note" binding:"required"`
 	Status  string `json:"status" form:"status" binding:"required"`
-	CaseId  string `json:"case_id" form:"case_id"`
+	CaseID  string `json:"case_id" form:"case_id"`
 }
 
-func (s APIAddNotesToAlarmInputs) CheckingFormating() error {
-	switch s.Status {
+// CheckingFormating TODO:
+func (input APIAddNotesToAlarmInputs) CheckingFormating() error {
+	switch input.Status {
 	case "in progress":
 		return nil
 	case "unresolved":
@@ -121,10 +143,11 @@ func (s APIAddNotesToAlarmInputs) CheckingFormating() error {
 	case "comment":
 		return nil
 	default:
-		return errors.New(`params status: only accepect ["in progress", "unresolved", "resolved", "ignored", "comment"]`)
+		return errors.New(`Params status: only accepect ["in progress", "unresolved", "resolved", "ignored", "comment"]`)
 	}
 }
 
+// AddNotesToAlarm TODO:
 func AddNotesToAlarm(c *gin.Context) {
 	var inputs APIAddNotesToAlarmInputs
 	if err := c.Bind(&inputs); err != nil {
@@ -140,8 +163,8 @@ func AddNotesToAlarm(c *gin.Context) {
 		UserId:      user.ID,
 		Note:        inputs.Note,
 		Status:      inputs.Status,
-		EventCaseId: inputs.EventId,
-		CaseId:      inputs.CaseId,
+		EventCaseId: inputs.EventID,
+		CaseId:      inputs.CaseID,
 	}
 	dt := db.Alarm.Begin()
 	if err := dt.Save(&Anote); err.Error != nil {
@@ -162,8 +185,8 @@ func AddNotesToAlarm(c *gin.Context) {
 	}
 	dt.Commit()
 	h.JSONR(c, map[string]string{
-		"id":      inputs.EventId,
-		"message": fmt.Sprintf("add note to %s successfuled", inputs.EventId),
+		"id":      inputs.EventID,
+		"message": fmt.Sprintf("add note to %s successfuled", inputs.EventID),
 	})
 	return
 }

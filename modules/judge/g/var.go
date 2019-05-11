@@ -7,12 +7,14 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// SafeStrategyMap TODO:
 type SafeStrategyMap struct {
 	sync.RWMutex
 	// endpoint:metric => [strategy1, strategy2 ...]
 	M map[string][]cmodel.Strategy
 }
 
+// SafeExpressionMap TODO:
 type SafeExpressionMap struct {
 	sync.RWMutex
 	// metric:tag1 => [exp1, exp2 ...]
@@ -20,78 +22,91 @@ type SafeExpressionMap struct {
 	M map[string][]*cmodel.Expression
 }
 
+// SafeEventMap TODO:
 type SafeEventMap struct {
 	sync.RWMutex
 	M map[string]*cmodel.Event
 }
 
+// SafeFilterMap TODO:
 type SafeFilterMap struct {
 	sync.RWMutex
 	M map[string]string
 }
 
+// TODO:
 var (
-	HbsClient     *SingleConnRpcClient
+	HBSClient     *SingleConnRPCClient
 	StrategyMap   = &SafeStrategyMap{M: make(map[string][]cmodel.Strategy)}
 	ExpressionMap = &SafeExpressionMap{M: make(map[string][]*cmodel.Expression)}
 	LastEvents    = &SafeEventMap{M: make(map[string]*cmodel.Event)}
 	FilterMap     = &SafeFilterMap{M: make(map[string]string)}
 )
 
+// InitHbsClient TODO:
 func InitHbsClient() {
-	HbsClient = &SingleConnRpcClient{
-		RpcServers: Config().Hbs.Servers,
-		Timeout:    time.Duration(Config().Hbs.Timeout) * time.Millisecond,
+	HBSClient = &SingleConnRPCClient{
+		RPCServers:  Config().HBS.Servers,
+		Timeout:     time.Duration(Config().HBS.Timeout) * time.Millisecond,
+		CallTimeout: time.Duration(3000) * time.Millisecond,
 	}
 }
 
-func (this *SafeStrategyMap) ReInit(m map[string][]cmodel.Strategy) {
-	this.Lock()
-	defer this.Unlock()
-	this.M = m
+// ReInit TODO:
+func (cache *SafeStrategyMap) ReInit(m map[string][]cmodel.Strategy) {
+	cache.Lock()
+	defer cache.Unlock()
+	cache.M = m
 }
 
-func (this *SafeStrategyMap) Get() map[string][]cmodel.Strategy {
-	this.RLock()
-	defer this.RUnlock()
-	return this.M
+// Get TODO:
+func (cache *SafeStrategyMap) Get() map[string][]cmodel.Strategy {
+	cache.RLock()
+	defer cache.RUnlock()
+	return cache.M
 }
 
-func (this *SafeExpressionMap) ReInit(m map[string][]*cmodel.Expression) {
-	this.Lock()
-	defer this.Unlock()
-	this.M = m
+// ReInit TODO:
+func (cache *SafeExpressionMap) ReInit(m map[string][]*cmodel.Expression) {
+	cache.Lock()
+	defer cache.Unlock()
+	cache.M = m
 }
 
-func (this *SafeExpressionMap) Get() map[string][]*cmodel.Expression {
-	this.RLock()
-	defer this.RUnlock()
-	return this.M
+// Get TODO:
+func (cache *SafeExpressionMap) Get() map[string][]*cmodel.Expression {
+	cache.RLock()
+	defer cache.RUnlock()
+	return cache.M
 }
 
-func (this *SafeEventMap) Get(key string) (*cmodel.Event, bool) {
-	this.RLock()
-	defer this.RUnlock()
-	event, exists := this.M[key]
+// Get TODO:
+func (cache *SafeEventMap) Get(key string) (*cmodel.Event, bool) {
+	cache.RLock()
+	defer cache.RUnlock()
+	event, exists := cache.M[key]
 	return event, exists
 }
 
-func (this *SafeEventMap) Set(key string, event *cmodel.Event) {
-	this.Lock()
-	defer this.Unlock()
-	this.M[key] = event
+// Set TODO:
+func (cache *SafeEventMap) Set(key string, event *cmodel.Event) {
+	cache.Lock()
+	defer cache.Unlock()
+	cache.M[key] = event
 }
 
-func (this *SafeFilterMap) ReInit(m map[string]string) {
-	this.Lock()
-	defer this.Unlock()
-	this.M = m
+// ReInit TODO:
+func (cache *SafeFilterMap) ReInit(m map[string]string) {
+	cache.Lock()
+	defer cache.Unlock()
+	cache.M = m
 }
 
-func (this *SafeFilterMap) Exists(key string) bool {
-	this.RLock()
-	defer this.RUnlock()
-	if _, ok := this.M[key]; ok {
+// Exists TODO:
+func (cache *SafeFilterMap) Exists(key string) bool {
+	cache.RLock()
+	defer cache.RUnlock()
+	if _, ok := cache.M[key]; ok {
 		return true
 	}
 	return false

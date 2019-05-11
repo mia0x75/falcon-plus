@@ -14,11 +14,13 @@ import (
 	pm "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// APIGrafanaMainQueryInputs TODO:
 type APIGrafanaMainQueryInputs struct {
 	Limit int    `json:"limit"  form:"limit"`
 	Query string `json:"query"  form:"query"`
 }
 
+// APIGrafanaMainQueryOutputs TODO:
 type APIGrafanaMainQueryOutputs struct {
 	Expandable bool   `json:"expandable"`
 	Text       string `json:"text"`
@@ -205,7 +207,7 @@ func addAddItionalItems(items []APIGrafanaMainQueryOutputs, regexpKey string) (r
 	return
 }
 
-func findEndpointIdByEndpointList(hosts []string) []int64 {
+func findEndpointIDByEndpointList(hosts []string) []int64 {
 	//for get right table name
 	enpsHelp := m.Endpoint{}
 	enps := []m.Endpoint{}
@@ -228,7 +230,7 @@ func responseCounterRegexp(regexpKey string) (result []APIGrafanaMainQueryOutput
 	if len(hosts) == 0 || counter == "" {
 		return
 	}
-	hostIds := findEndpointIdByEndpointList(hosts)
+	hostIds := findEndpointIDByEndpointList(hosts)
 	//if not any endpoint matched
 	if len(hostIds) == 0 {
 		return
@@ -236,7 +238,7 @@ func responseCounterRegexp(regexpKey string) (result []APIGrafanaMainQueryOutput
 	//for get right table name
 	countHelp := m.EndpointCounter{}
 	counters := []m.EndpointCounter{}
-	db.Graph.Table(countHelp.TableName()).Where("endpoint_id IN (?) AND counter regexp ?", hostIds, counter).Scan(&counters)
+	db.Graph.Table(countHelp.TableName()).Where("endpoint_id IN (?)", hostIds).Where("counter regexp ?", counter).Scan(&counters)
 	//if not any counter matched
 	if len(counters) == 0 {
 		return
@@ -252,6 +254,7 @@ func responseCounterRegexp(regexpKey string) (result []APIGrafanaMainQueryOutput
 	return
 }
 
+// GrafanaMainQuery TODO:
 func GrafanaMainQuery(c *gin.Context) {
 	inputs := APIGrafanaMainQueryInputs{}
 	inputs.Limit = 1000
@@ -277,6 +280,7 @@ func GrafanaMainQuery(c *gin.Context) {
 	return
 }
 
+// APIGrafanaRenderInput TODO:
 type APIGrafanaRenderInput struct {
 	Target        []string `json:"target" form:"target"  binding:"required"`
 	From          int64    `json:"from" form:"from" binding:"required"`
@@ -287,6 +291,7 @@ type APIGrafanaRenderInput struct {
 	ConsolFun     string   `json:"consolFun" form:"consolFun"`
 }
 
+// GrafanaRender TODO:
 func GrafanaRender(c *gin.Context) {
 	inputs := APIGrafanaRenderInput{}
 	//set default step is 60
@@ -307,7 +312,7 @@ func GrafanaRender(c *gin.Context) {
 		counter = strings.Replace(counter, "\\.%", ".+", -1)
 		ecHelp := m.EndpointCounter{}
 		counters := []m.EndpointCounter{}
-		hostIds := findEndpointIdByEndpointList(hosts)
+		hostIds := findEndpointIDByEndpointList(hosts)
 		if flag {
 			db.Graph.Table(ecHelp.TableName()).Select("distinct counter").Where("endpoint_id IN (?) AND counter = ?", hostIds, counter).Scan(&counters)
 		} else {

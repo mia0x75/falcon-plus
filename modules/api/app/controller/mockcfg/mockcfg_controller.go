@@ -51,8 +51,8 @@ func GetNoData(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	mockcfg := f.Mockcfg{ID: int64(nid)}
-	if dt := db.Falcon.Find(&mockcfg); dt.Error != nil {
+	mockcfg := f.Mockcfg{}
+	if dt := db.Falcon.Where("id = ?", nid).Find(&mockcfg); dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}
@@ -130,8 +130,8 @@ func DeleteNoData(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	mockcfg := f.Mockcfg{ID: int64(nid)}
-	if dt := db.Falcon.Delete(&mockcfg); dt.Error != nil {
+	mockcfg := f.Mockcfg{}
+	if dt := db.Falcon.Where("id = ?", nid).Delete(&mockcfg); dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		return
 	}

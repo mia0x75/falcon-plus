@@ -357,8 +357,8 @@ func GetTeam(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	team := uic.Team{ID: int64(team_id)}
-	dt := db.Uic.Find(&team)
+	team := uic.Team{}
+	dt := db.Uic.Where("id = ?", team_id).Find(&team)
 	if dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		return

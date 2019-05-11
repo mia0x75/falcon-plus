@@ -25,11 +25,13 @@ var (
 	localStepCache = tcache.New(600*time.Second, 60*time.Second)
 )
 
+// APIEndpointObjGetInputs TODO:
 type APIEndpointObjGetInputs struct {
 	Endpoints []string `json:"endpoints" form:"endpoints"`
 	Deadline  int64    `json:"deadline" form:"deadline"`
 }
 
+// EndpointObjGet TODO:
 func EndpointObjGet(c *gin.Context) {
 	inputs := APIEndpointObjGetInputs{
 		Deadline: 0,
@@ -43,7 +45,7 @@ func EndpointObjGet(c *gin.Context) {
 		return
 	}
 
-	var result []m.Endpoint = []m.Endpoint{}
+	result := []m.Endpoint{}
 	dt := db.Graph.Table("endpoint").
 		Where("endpoint in (?) and ts >= ?", inputs.Endpoints, inputs.Deadline).
 		Scan(&result)
@@ -60,6 +62,7 @@ func EndpointObjGet(c *gin.Context) {
 	h.JSONR(c, endpoints)
 }
 
+// APIEndpointRegexpQueryInputs TODO:
 type APIEndpointRegexpQueryInputs struct {
 	Q     string `json:"q" form:"q"`
 	Label string `json:"tags" form:"tags"`
@@ -67,13 +70,15 @@ type APIEndpointRegexpQueryInputs struct {
 	Page  int    `json:"page" form:"page"`
 }
 
-func IsIp(ip string) (b bool) {
+// IsIP TODO:
+func IsIP(ip string) (b bool) {
 	if m, _ := regexp.MatchString("^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$", ip); !m {
 		return false
 	}
 	return true
 }
 
+// EndpointRegexpQuery TODO:
 func EndpointRegexpQuery(c *gin.Context) {
 	inputs := APIEndpointRegexpQueryInputs{
 		//set default is 500
@@ -99,7 +104,7 @@ func EndpointRegexpQuery(c *gin.Context) {
 	if inputs.Q != "" {
 		qsNew = strings.Split(inputs.Q, " ")
 		for _, each := range qsNew {
-			if IsIp(each) {
+			if IsIP(each) {
 				db.Falcon.Table("host").Select("hostname").Where("ip in (?)", each).Scan(&enphostname)
 				qs = append(qs, enphostname.Hostname)
 			} else {
@@ -108,20 +113,20 @@ func EndpointRegexpQuery(c *gin.Context) {
 		}
 	}
 
-	var offset int = 0
+	var offset int
 	if inputs.Page > 1 {
 		offset = (inputs.Page - 1) * inputs.Limit
 	}
 
 	var endpoint []m.Endpoint
-	var endpoint_id []int
+	var endpointIDs []int
 	var dt *gorm.DB
 	if len(labels) != 0 {
 		dt = db.Graph.Table("endpoint_counter").Select("distinct endpoint_id")
 		for _, trem := range labels {
 			dt = dt.Where(" counter like ? ", "%"+strings.TrimSpace(trem)+"%")
 		}
-		dt = dt.Limit(inputs.Limit).Offset(offset).Pluck("distinct endpoint_id", &endpoint_id)
+		dt = dt.Limit(inputs.Limit).Offset(offset).Pluck("distinct endpoint_id", &endpointIDs)
 		if dt.Error != nil {
 			h.JSONR(c, http.StatusBadRequest, dt.Error)
 			return
@@ -130,18 +135,18 @@ func EndpointRegexpQuery(c *gin.Context) {
 	if len(qs) != 0 {
 		dt = db.Graph.Table("endpoint").
 			Select("endpoint, id")
-		if len(endpoint_id) != 0 {
-			dt = dt.Where("id in (?)", endpoint_id)
+		if len(endpointIDs) != 0 {
+			dt = dt.Where("id in (?)", endpointIDs)
 		}
 
 		for _, trem := range qs {
 			dt = dt.Where(" endpoint regexp ? ", strings.TrimSpace(trem))
 		}
 		dt.Limit(inputs.Limit).Offset(offset).Scan(&endpoint)
-	} else if len(endpoint_id) != 0 {
+	} else if len(endpointIDs) != 0 {
 		dt = db.Graph.Table("endpoint").
 			Select("endpoint, id").
-			Where("id in (?)", endpoint_id).
+			Where("id in (?)", endpointIDs).
 			Scan(&endpoint)
 	}
 	if dt.Error != nil {
@@ -159,6 +164,7 @@ func EndpointRegexpQuery(c *gin.Context) {
 	h.JSONR(c, endpoints)
 }
 
+// EndpointCounterRegexpQuery TODO:
 func EndpointCounterRegexpQuery(c *gin.Context) {
 	eid := c.DefaultQuery("eid", "")
 	metricQuery := c.DefaultQuery("metricQuery", ".+")
@@ -174,21 +180,23 @@ func EndpointCounterRegexpQuery(c *gin.Context) {
 		h.JSONR(c, http.StatusBadRequest, err)
 		return
 	}
-	var offset int = 0
+	var offset int
 	if page > 1 {
 		offset = (page - 1) * limit
 	}
+	eidArray := []string{}
 	if eid == "" {
 		h.JSONR(c, http.StatusBadRequest, "eid is missing")
 	} else {
-		eids := utils.ConverIntStringToArray(eid)
-		if len(eids) == 0 {
+		eids := utils.ConvertIntStringToList(eid)
+		if eids == "" {
 			h.JSONR(c, http.StatusBadRequest, "input error, please check your input info.")
 			return
 		}
+		eidArray = strings.Split(eids, ",")
 
 		var counters []m.EndpointCounter
-		dt := db.Graph.Table("endpoint_counter").Select("endpoint_id, counter, step, type").Where("endpoint_id IN (?)", eids)
+		dt := db.Graph.Table("endpoint_counter").Select("endpoint_id, counter, step, type").Where("endpoint_id IN (?)", eidArray)
 		if metricQuery != "" {
 			qs := strings.Split(metricQuery, " ")
 			if len(qs) > 0 {
@@ -224,6 +232,7 @@ func EndpointCounterRegexpQuery(c *gin.Context) {
 	return
 }
 
+// APIQueryGraphDrawData TODO:
 type APIQueryGraphDrawData struct {
 	HostNames []string `json:"hostnames" binding:"required"`
 	Counters  []string `json:"counters" binding:"required"`
@@ -233,6 +242,7 @@ type APIQueryGraphDrawData struct {
 	Step      int      `json:"step"`
 }
 
+// QueryGraphDrawData TODO:
 func QueryGraphDrawData(c *gin.Context) {
 	var inputs APIQueryGraphDrawData
 	var err error
@@ -259,6 +269,7 @@ func QueryGraphDrawData(c *gin.Context) {
 	h.JSONR(c, respData)
 }
 
+// QueryGraphLastPoint TODO:
 func QueryGraphLastPoint(c *gin.Context) {
 	var inputs []cmodel.GraphLastParam
 	if err := c.Bind(&inputs); err != nil {
@@ -268,19 +279,20 @@ func QueryGraphLastPoint(c *gin.Context) {
 	respData := []*cmodel.GraphLastResp{}
 
 	for _, param := range inputs {
-		one_resp, err := grh.Last(param)
+		resp, err := grh.Last(param)
 		if err != nil {
 			log.Errorf("[E] query last point from graph fail: %v", err)
 		} else {
-			respData = append(respData, one_resp)
+			respData = append(respData, resp)
 		}
 	}
 
 	h.JSONR(c, respData)
 }
 
+// DeleteGraphEndpoint TODO:
 func DeleteGraphEndpoint(c *gin.Context) {
-	var inputs []string = []string{}
+	inputs := []string{}
 	if err := c.Bind(&inputs); err != nil {
 		h.JSONR(c, badstatus, err)
 		return
@@ -288,7 +300,7 @@ func DeleteGraphEndpoint(c *gin.Context) {
 
 	type DBRows struct {
 		Endpoint  string
-		CounterId int
+		CounterID int
 		Counter   string
 		Type      string
 		Step      int
@@ -304,11 +316,11 @@ func DeleteGraphEndpoint(c *gin.Context) {
 		return
 	}
 
-	var affected_counter int64 = 0
-	var affected_endpoint int64 = 0
+	var affectedCounter int64
+	var affectedEndpoint int64
 
 	if len(rows) > 0 {
-		var params []*cmodel.GraphDeleteParam = []*cmodel.GraphDeleteParam{}
+		params := []*cmodel.GraphDeleteParam{}
 		for _, row := range rows {
 			param := &cmodel.GraphDeleteParam{
 				Endpoint: row.Endpoint,
@@ -333,9 +345,9 @@ func DeleteGraphEndpoint(c *gin.Context) {
 	tx := db.Graph.Begin()
 
 	if len(rows) > 0 {
-		var cids []int = make([]int, len(rows))
+		cids := make([]int, len(rows))
 		for i, row := range rows {
-			cids[i] = row.CounterId
+			cids[i] = row.CounterID
 		}
 
 		dt = tx.Table("endpoint_counter").Where("id in (?)", cids).Delete(&m.EndpointCounter{})
@@ -344,7 +356,7 @@ func DeleteGraphEndpoint(c *gin.Context) {
 			tx.Rollback()
 			return
 		}
-		affected_counter = dt.RowsAffected
+		affectedCounter = dt.RowsAffected
 
 		dt = tx.Exec(`delete from tag_endpoint where endpoint_id in 
 			(select id from endpoint where endpoint in (?))`, inputs)
@@ -361,22 +373,24 @@ func DeleteGraphEndpoint(c *gin.Context) {
 		tx.Rollback()
 		return
 	}
-	affected_endpoint = dt.RowsAffected
+	affectedEndpoint = dt.RowsAffected
 	tx.Commit()
 
 	h.JSONR(c, map[string]int64{
-		"affected_endpoint": affected_endpoint,
-		"affected_counter":  affected_counter,
+		"affected_endpoint": affectedEndpoint,
+		"affected_counter":  affectedCounter,
 	})
 }
 
+// APIGraphDeleteCounterInputs TODO:
 type APIGraphDeleteCounterInputs struct {
 	Endpoints []string `json:"endpoints" binding:"required"`
 	Counters  []string `json:"counters" binding:"required"`
 }
 
+// DeleteGraphCounter TODO:
 func DeleteGraphCounter(c *gin.Context) {
-	var inputs APIGraphDeleteCounterInputs = APIGraphDeleteCounterInputs{}
+	inputs := APIGraphDeleteCounterInputs{}
 	if err := c.Bind(&inputs); err != nil {
 		h.JSONR(c, badstatus, err)
 		return
@@ -384,7 +398,7 @@ func DeleteGraphCounter(c *gin.Context) {
 
 	type DBRows struct {
 		Endpoint  string
-		CounterId int
+		CounterID int
 		Counter   string
 		Type      string
 		Step      int
@@ -407,7 +421,7 @@ func DeleteGraphCounter(c *gin.Context) {
 		return
 	}
 
-	var params []*cmodel.GraphDeleteParam = []*cmodel.GraphDeleteParam{}
+	params := []*cmodel.GraphDeleteParam{}
 	for _, row := range rows {
 		param := &cmodel.GraphDeleteParam{
 			Endpoint: row.Endpoint,
@@ -429,9 +443,9 @@ func DeleteGraphCounter(c *gin.Context) {
 	grh.Delete(params)
 
 	tx := db.Graph.Begin()
-	var cids []int = make([]int, len(rows))
+	cids := make([]int, len(rows))
 	for i, row := range rows {
-		cids[i] = row.CounterId
+		cids[i] = row.CounterID
 	}
 
 	dt = tx.Table("endpoint_counter").Where("id in (?)", cids).Delete(&m.EndpointCounter{})
@@ -440,11 +454,11 @@ func DeleteGraphCounter(c *gin.Context) {
 		tx.Rollback()
 		return
 	}
-	affected_counter := dt.RowsAffected
+	affectedRows := dt.RowsAffected
 	tx.Commit()
 
 	h.JSONR(c, map[string]int64{
-		"affected_counter": affected_counter,
+		"affected_counter": affectedRows,
 	})
 }
 
@@ -460,8 +474,8 @@ func fetchData(hostname string, counter string, consolFun string, startTime int6
 }
 
 func getCounterStep(endpoint, counter string) (step int, err error) {
-	cache_key := fmt.Sprintf("step:%s/%s", endpoint, counter)
-	s, found := localStepCache.Get(cache_key)
+	key := fmt.Sprintf("step:%s/%s", endpoint, counter)
+	s, found := localStepCache.Get(key)
 	if found && s != nil {
 		step = s.(int)
 		return
@@ -479,7 +493,7 @@ func getCounterStep(endpoint, counter string) (step int, err error) {
 		return
 	}
 	step = rows[0]
-	localStepCache.Set(cache_key, step, tcache.DefaultExpiration)
+	localStepCache.Set(key, step, tcache.DefaultExpiration)
 
 	return
 }

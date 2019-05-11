@@ -13,7 +13,7 @@ import (
 
 func SyncStrategies() {
 	go func() {
-		d := time.Duration(g.Config().Hbs.Interval) * time.Second
+		d := time.Duration(g.Config().HBS.Interval) * time.Second
 		for range time.Tick(d) {
 			syncStrategies()
 			syncExpression()
@@ -24,7 +24,7 @@ func SyncStrategies() {
 
 func syncStrategies() {
 	var strategiesResponse cmodel.StrategiesResponse
-	err := g.HbsClient.Call("Hbs.GetStrategies", cmodel.NullRpcRequest{}, &strategiesResponse)
+	err := g.HBSClient.Call("Hbs.GetStrategies", cmodel.NullRpcRequest{}, &strategiesResponse)
 	if err != nil {
 		log.Errorf("[E] Hbs.GetStrategies: %v", err)
 		return
@@ -57,7 +57,7 @@ func rebuildStrategyMap(strategiesResponse *cmodel.StrategiesResponse) {
 
 func syncExpression() {
 	var expressionResponse cmodel.ExpressionResponse
-	err := g.HbsClient.Call("Hbs.GetExpressions", cmodel.NullRpcRequest{}, &expressionResponse)
+	err := g.HBSClient.Call("Hbs.GetExpressions", cmodel.NullRpcRequest{}, &expressionResponse)
 	if err != nil {
 		log.Errorf("[E] Hbs.GetExpressions: %v", err)
 		return

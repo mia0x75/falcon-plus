@@ -9,6 +9,7 @@ import (
 	h "github.com/open-falcon/falcon-plus/modules/api/app/helper"
 )
 
+// APISetMaintainInput TODO:
 type APISetMaintainInput struct {
 	Hosts []string `json:"hosts"`
 	Ids   []int64  `json:"ids"`
@@ -16,6 +17,7 @@ type APISetMaintainInput struct {
 	End   int64    `json:"maintain_end" binding:"required"`
 }
 
+// SetMaintain TODO:
 func SetMaintain(c *gin.Context) {
 	var dt *gorm.DB
 	var inputs APISetMaintainInput
@@ -44,11 +46,13 @@ func SetMaintain(c *gin.Context) {
 	h.JSONR(c, fmt.Sprintf("Through: %s, Affect row: %d", method, dt.RowsAffected))
 }
 
+// APIUnsetMaintainInput TODO:
 type APIUnsetMaintainInput struct {
 	Hosts []string `json:"hosts"`
 	Ids   []int64  `json:"ids"`
 }
 
+// UnsetMaintain TODO:
 func UnsetMaintain(c *gin.Context) {
 	var dt *gorm.DB
 	var inputs APIUnsetMaintainInput

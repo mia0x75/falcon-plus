@@ -14,12 +14,13 @@ var db g.DBPool
 const badstatus = http.StatusBadRequest
 const expecstatus = http.StatusExpectationFailed
 
+// Routes 路由表
 func Routes(r *gin.Engine) {
 	db = g.Con()
 	g := r.Group("/api/v1/alarm")
 	g.Use(utils.AuthSessionMidd)
-	g.POST("/eventcases", AlarmLists)
-	g.GET("/eventcases", AlarmLists)
+	g.POST("/eventcases", Lists)
+	g.GET("/eventcases", Lists)
 	g.POST("/events", EventsGet)
 	g.GET("/events", EventsGet)
 	g.POST("/event_note", AddNotesToAlarm)

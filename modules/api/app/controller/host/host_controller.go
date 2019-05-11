@@ -11,32 +11,34 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
+// GetHostBindToWhichHostGroup TODO:
 func GetHostBindToWhichHostGroup(c *gin.Context) {
-	HostIdTmp := c.Params.ByName("host_id")
-	if HostIdTmp == "" {
+	HostIDTmp := c.Params.ByName("host_id")
+	if HostIDTmp == "" {
 		h.JSONR(c, badstatus, "host id is missing")
 		return
 	}
-	hostID, err := strconv.Atoi(HostIdTmp)
+	hostID, err := strconv.Atoi(HostIDTmp)
 	if err != nil {
-		log.Debugf("[D] HostId: %v", HostIdTmp)
+		log.Debugf("[D] HostId: %v", HostIDTmp)
 		h.JSONR(c, badstatus, err)
 		return
 	}
 	grpHostMap := []f.GrpHost{}
 	db.Falcon.Select("grp_id").Where("host_id = ?", hostID).Find(&grpHostMap)
-	grpIds := []int64{}
+	grpIDs := []int64{}
 	for _, g := range grpHostMap {
-		grpIds = append(grpIds, g.GrpID)
+		grpIDs = append(grpIDs, g.GrpID)
 	}
 	hostgroups := []f.HostGroup{}
-	if len(grpIds) != 0 {
-		db.Falcon.Where("id in (？)", grpIds).Find(&hostgroups)
+	if len(grpIDs) != 0 {
+		db.Falcon.Where("id in (？)", grpIDs).Find(&hostgroups)
 	}
 	h.JSONR(c, hostgroups)
 	return
 }
 
+// GetHostGroupWithTemplate TODO:
 func GetHostGroupWithTemplate(c *gin.Context) {
 	grpIDtmp := c.Params.ByName("host_group")
 	if grpIDtmp == "" {
@@ -74,6 +76,7 @@ func GetHostGroupWithTemplate(c *gin.Context) {
 	return
 }
 
+// GetGrpsRelatedHost TODO:
 func GetGrpsRelatedHost(c *gin.Context) {
 	hostIDtmp := c.Params.ByName("host_id")
 	if hostIDtmp == "" {
@@ -87,8 +90,8 @@ func GetGrpsRelatedHost(c *gin.Context) {
 		return
 	}
 
-	host := f.Host{ID: int64(hostID)}
-	if dt := db.Falcon.Find(&host); dt.Error != nil {
+	host := f.Host{}
+	if dt := db.Falcon.Where("id = ?", hostID).Find(&host); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
@@ -97,6 +100,7 @@ func GetGrpsRelatedHost(c *gin.Context) {
 	return
 }
 
+// GetTplsRelatedHost TODO:
 func GetTplsRelatedHost(c *gin.Context) {
 	hostIDtmp := c.Params.ByName("host_id")
 	if hostIDtmp == "" {
@@ -109,16 +113,18 @@ func GetTplsRelatedHost(c *gin.Context) {
 		h.JSONR(c, badstatus, err)
 		return
 	}
-	host := f.Host{ID: int64(hostID)}
-	if dt := db.Falcon.Find(&host); dt.Error != nil {
+	host := f.Host{}
+	if dt := db.Falcon.Where("id = ?", hostID).Find(&host); dt.Error != nil {
 		h.JSONR(c, expecstatus, dt.Error)
 		return
 	}
 	tpls := host.RelatedTpl()
+	log.Debugf("[D] hostid: %d", host.ID)
 	h.JSONR(c, tpls)
 	return
 }
 
+// GetGrpsRelatedEndpoint TODO:
 func GetGrpsRelatedEndpoint(c *gin.Context) {
 	hostNameTmp := c.Params.ByName("endpoint_name")
 	if hostNameTmp == "" {
@@ -133,12 +139,12 @@ func GetGrpsRelatedEndpoint(c *gin.Context) {
 		grps := host.RelatedGrp()
 		h.JSONR(c, grps)
 		return
-	} else {
-		h.JSONR(c, badstatus, "endpoint is missing")
-		return
 	}
+	h.JSONR(c, badstatus, "endpoint is missing")
+	return
 }
 
+// GetHosts TODO:
 func GetHosts(c *gin.Context) {
 	var (
 		limit int

@@ -10,6 +10,7 @@ import (
 	m "github.com/open-falcon/falcon-plus/modules/api/app/model/dashboard"
 )
 
+// ScreenCreate TODO:
 func ScreenCreate(c *gin.Context) {
 	pid := c.DefaultPostForm("pid", "0")
 	name := c.DefaultPostForm("name", "")
@@ -45,6 +46,7 @@ func ScreenCreate(c *gin.Context) {
 	h.JSONR(c, map[string]interface{}{"pid": ipid, "id": sid, "name": name})
 }
 
+// ScreenGet TODO:
 func ScreenGet(c *gin.Context) {
 	id := c.Param("screen_id")
 
@@ -64,6 +66,7 @@ func ScreenGet(c *gin.Context) {
 	h.JSONR(c, screen)
 }
 
+// ScreenGetsByPid TODO:
 func ScreenGetsByPid(c *gin.Context) {
 	id := c.Param("pid")
 
@@ -83,6 +86,7 @@ func ScreenGetsByPid(c *gin.Context) {
 	h.JSONR(c, screens)
 }
 
+// ScreenGetsAll TODO:
 func ScreenGetsAll(c *gin.Context) {
 	limit := c.DefaultQuery("limit", "500")
 	screens := []m.DashboardScreen{}
@@ -95,6 +99,7 @@ func ScreenGetsAll(c *gin.Context) {
 	h.JSONR(c, screens)
 }
 
+// ScreenDelete TODO:
 func ScreenDelete(c *gin.Context) {
 	id := c.Param("screen_id")
 
@@ -114,6 +119,7 @@ func ScreenDelete(c *gin.Context) {
 	h.JSONR(c, "ok")
 }
 
+// ScreenUpdate TODO:
 func ScreenUpdate(c *gin.Context) {
 	id := c.Param("screen_id")
 
@@ -123,11 +129,11 @@ func ScreenUpdate(c *gin.Context) {
 		return
 	}
 
-	new_data := map[string]interface{}{}
+	data := map[string]interface{}{}
 	pid := c.PostForm("pid")
 	name := c.PostForm("name")
 	if name != "" {
-		new_data["name"] = name
+		data["name"] = name
 	}
 
 	if pid != "" {
@@ -136,10 +142,10 @@ func ScreenUpdate(c *gin.Context) {
 			h.JSONR(c, badstatus, "invalid screen pid")
 			return
 		}
-		new_data["pid"] = ipid
+		data["pid"] = ipid
 	}
 
-	dt := db.Dashboard.Table("dashboard_screen").Where("id = ?", sid).Update(new_data)
+	dt := db.Dashboard.Table("dashboard_screen").Where("id = ?", sid).Update(data)
 	if dt.Error != nil {
 		h.JSONR(c, badstatus, dt.Error)
 		return

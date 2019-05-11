@@ -10,6 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/judge/store"
 )
 
+// SetupProcRoutes TODO:
 func SetupProcRoutes() {
 	// e.g. /strategy/lg-dinp-docker01.bj/cpu.idle
 	http.HandleFunc("/strategy/", func(w http.ResponseWriter, r *http.Request) {
