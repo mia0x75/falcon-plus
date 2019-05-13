@@ -12,12 +12,14 @@ var (
 	procsLock = new(sync.RWMutex)
 )
 
+// ReportProcs TODO:
 func ReportProcs() map[string]map[int]string {
 	procsLock.RLock()
 	defer procsLock.RUnlock()
 	return procs
 }
 
+// CacheReportProcs TODO:
 func CacheReportProcs(value map[string]map[int]string) {
 	procsLock.Lock()
 	defer procsLock.Unlock()

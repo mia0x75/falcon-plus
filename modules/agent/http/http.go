@@ -9,9 +9,10 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// SetupRoutes TODO:
 func SetupRoutes() {
 	SetupAdminRoutes()
-	SetupCpuRoutes()
+	SetupCPURoutes()
 	SetupDfRoutes()
 	SetupHealthRoutes()
 	SetupIoStatRoutes()
@@ -24,12 +25,13 @@ func SetupRoutes() {
 	SetupSystemRoutes()
 }
 
+// Start 启动Web服务
 func Start() {
 	go start()
 }
 
 func start() {
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

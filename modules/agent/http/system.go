@@ -11,6 +11,7 @@ import (
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )
 
+// SetupSystemRoutes TODO:
 func SetupSystemRoutes() {
 	http.HandleFunc("/system/date", func(w http.ResponseWriter, req *http.Request) {
 		cutils.RenderDataJson(w, time.Now().Format("2006-01-02 15:04:05"))

@@ -17,12 +17,14 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// PluginScheduler TODO:
 type PluginScheduler struct {
 	Ticker *time.Ticker
 	Plugin *Plugin
 	Quit   chan struct{}
 }
 
+// NewPluginScheduler TODO:
 func NewPluginScheduler(p *Plugin) *PluginScheduler {
 	scheduler := PluginScheduler{Plugin: p}
 	scheduler.Ticker = time.NewTicker(time.Duration(p.Cycle) * time.Second)
@@ -30,25 +32,27 @@ func NewPluginScheduler(p *Plugin) *PluginScheduler {
 	return &scheduler
 }
 
-func (this *PluginScheduler) Schedule() {
+// Schedule TODO:
+func (ps *PluginScheduler) Schedule() {
 	go func() {
 		for {
 			select {
-			case <-this.Ticker.C:
-				PluginRun(this.Plugin)
-			case <-this.Quit:
-				this.Ticker.Stop()
+			case <-ps.Ticker.C:
+				PluginRun(ps.Plugin)
+			case <-ps.Quit:
+				ps.Ticker.Stop()
 				return
 			}
 		}
 	}()
 }
 
-func (this *PluginScheduler) Stop() {
-	close(this.Quit)
+// Stop TODO:
+func (ps *PluginScheduler) Stop() {
+	close(ps.Quit)
 }
 
-// using ',' as the seprator of args and '\,' to espace
+// PluginArgsParse using ',' as the seprator of args and '\,' to espace
 func PluginArgsParse(rawArgs string) []string {
 	ss := strings.Split(rawArgs, "\\,")
 
@@ -91,6 +95,7 @@ func PluginArgsParse(rawArgs string) []string {
 	return ret
 }
 
+// PluginRun TODO:
 func PluginRun(plugin *Plugin) {
 	timeout := plugin.Cycle*1000 - 500
 	fpath := filepath.Join(g.Config().Plugin.Dir, plugin.FilePath)
@@ -107,8 +112,8 @@ func PluginRun(plugin *Plugin) {
 	if args == "" {
 		cmd = exec.Command(fpath)
 	} else {
-		arg_list := PluginArgsParse(args)
-		cmd = exec.Command(fpath, arg_list...)
+		argList := PluginArgsParse(args)
+		cmd = exec.Command(fpath, argList...)
 	}
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout

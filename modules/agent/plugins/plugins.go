@@ -1,5 +1,6 @@
 package plugins
 
+// Plugin 运行插件相关的信息
 type Plugin struct {
 	FilePath string
 	MTime    int64
@@ -7,11 +8,13 @@ type Plugin struct {
 	Args     string
 }
 
+// TODO:
 var (
 	Plugins              = make(map[string]*Plugin)
 	PluginsWithScheduler = make(map[string]*PluginScheduler)
 )
 
+// DelNoUsePlugins TODO:
 func DelNoUsePlugins(newPlugins map[string]*Plugin) {
 	for currKey, currPlugin := range Plugins {
 		newPlugin, ok := newPlugins[currKey]
@@ -21,6 +24,7 @@ func DelNoUsePlugins(newPlugins map[string]*Plugin) {
 	}
 }
 
+// AddNewPlugins TODO:
 func AddNewPlugins(newPlugins map[string]*Plugin) {
 	for fpath, newPlugin := range newPlugins {
 		if _, ok := Plugins[fpath]; ok && newPlugin.MTime == Plugins[fpath].MTime {
@@ -34,6 +38,7 @@ func AddNewPlugins(newPlugins map[string]*Plugin) {
 	}
 }
 
+// ClearAllPlugins TODO:
 func ClearAllPlugins() {
 	for k := range Plugins {
 		deletePlugin(k)

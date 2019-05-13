@@ -41,8 +41,8 @@ func main() {
 	g.ParseConfig(*cfg)
 
 	cutils.InitLog(g.Config().Log.Level)
-	g.InitLocalIp()
-	g.InitRpcClients()
+	g.InitLocalIP()
+	g.InitRPCClients()
 
 	funcs.BuildMappers()
 

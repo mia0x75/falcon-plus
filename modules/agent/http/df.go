@@ -10,6 +10,7 @@ import (
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )
 
+// SetupDfRoutes TODO:
 func SetupDfRoutes() {
 	http.HandleFunc("/page/df", func(w http.ResponseWriter, r *http.Request) {
 		mountPoints, err := nux.ListMountPoint()
@@ -18,7 +19,7 @@ func SetupDfRoutes() {
 			return
 		}
 
-		var ret [][]interface{} = make([][]interface{}, 0)
+		ret := make([][]interface{}, 0)
 		for idx := range mountPoints {
 			var du *nux.DeviceUsage
 			du, err = nux.BuildDeviceUsage(mountPoints[idx][0], mountPoints[idx][1], mountPoints[idx][2])

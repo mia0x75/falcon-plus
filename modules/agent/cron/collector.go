@@ -8,16 +8,18 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// InitDataHistory TODO:
 func InitDataHistory() {
 	go func() {
 		d := time.Duration(g.COLLECT_INTERVAL) * time.Second
 		for range time.Tick(d) {
-			funcs.UpdateCpuStats()
+			funcs.UpdateCPUStats()
 			funcs.UpdateDiskStats()
 		}
 	}()
 }
 
+// Collect TODO:
 func Collect() {
 	if len(g.Config().Transfer.Addrs) == 0 {
 		return

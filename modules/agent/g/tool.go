@@ -9,6 +9,7 @@ import (
 	"github.com/toolkits/file"
 )
 
+// GetCurrPluginVersion TODO:
 func GetCurrPluginVersion() string {
 	if !Config().Plugin.Enabled {
 		return "plugin not enabled"

@@ -11,6 +11,7 @@ import (
 	"github.com/toolkits/file"
 )
 
+// PluginConfig 插件配置信息
 type PluginConfig struct {
 	Enabled bool   `json:"enabled"`
 	Dir     string `json:"dir"`
@@ -18,24 +19,28 @@ type PluginConfig struct {
 	LogDir  string `json:"logs"`
 }
 
+// HeartbeatConfig 心跳服务器配置信息
 type HeartbeatConfig struct {
 	Addrs    []string `json:"addrs"`
 	Interval int      `json:"interval"`
 	Timeout  int      `json:"timeout"`
 }
 
+// TransferConfig 数据中转服务器配置信息
 type TransferConfig struct {
 	Addrs    []string `json:"addrs"`
 	Interval int      `json:"interval"`
 	Timeout  int      `json:"timeout"`
 }
 
-type HttpConfig struct {
+// HTTPConfig TODO:
+type HTTPConfig struct {
 	Listen   string `json:"listen"`
 	Backdoor bool   `json:"backdoor"`
 	Root     string `json:"root"`
 }
 
+// CollectorConfig TODO:
 type CollectorConfig struct {
 	System  *SystemConfig  `json:"system"`
 	MySQL   *MySQLConfig   `json:"mysql"`
@@ -45,12 +50,14 @@ type CollectorConfig struct {
 	Nginx   *NginxConfig   `json:"nginx"`
 }
 
+// SystemConfig TODO:
 type SystemConfig struct {
 	IfacePrefix []string `json:"iface_prefix"`
 	MountPoint  []string `json:"mount_point"`
 	Interval    int      `json:"interval"`
 }
 
+// MySQLConfig TODO:
 type MySQLConfig struct {
 	Enabled  bool   `json:"enabled"`
 	Host     string `json:"host"`
@@ -60,6 +67,7 @@ type MySQLConfig struct {
 	Interval int    `json:"interval"`
 }
 
+// RedisConfig TODO:
 type RedisConfig struct {
 	Enabled  bool   `json:"enabled"`
 	Host     string `json:"cluster_name"`
@@ -68,6 +76,7 @@ type RedisConfig struct {
 	Interval int    `json:"interval"`
 }
 
+// MongoDBConfig TODO:
 type MongoDBConfig struct {
 	Enabled  bool   `json:"enabled"`
 	Host     string `json:"host"`
@@ -77,20 +86,24 @@ type MongoDBConfig struct {
 	Interval int    `json:"interval"`
 }
 
+// JmxConfig TODO:
 type JmxConfig struct {
 	Enabled  bool `json:"enabled"`
 	Interval int  `json:"interval"`
 }
 
+// NginxConfig TODO:
 type NginxConfig struct {
 	Enabled  bool `json:"enabled"`
 	Interval int  `json:"interval"`
 }
 
+// LogConfig TODO:
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// GlobalConfig TODO:
 type GlobalConfig struct {
 	Log           *LogConfig        `json:"log"`
 	Hostname      string            `json:"hostname"`
@@ -98,24 +111,27 @@ type GlobalConfig struct {
 	Plugin        *PluginConfig     `json:"plugin"`
 	Heartbeat     *HeartbeatConfig  `json:"heartbeat"`
 	Transfer      *TransferConfig   `json:"transfer"`
-	Http          *HttpConfig       `json:"http"`
+	HTTP          *HTTPConfig       `json:"http"`
 	Collector     *CollectorConfig  `json:"collector"`
 	DefaultTags   map[string]string `json:"default_tags"`
 	IgnoreMetrics map[string]bool   `json:"ignore"`
 }
 
+// TODO:
 var (
 	ConfigFile string
 	config     *GlobalConfig
 	lock       = new(sync.RWMutex)
 )
 
+// Config 获取配置信息
 func Config() *GlobalConfig {
 	lock.RLock()
 	defer lock.RUnlock()
 	return config
 }
 
+// Hostname TODO:
 func Hostname() (string, error) {
 	hostname := Config().Hostname
 	if hostname != "" {
@@ -157,6 +173,7 @@ func Hostname() (string, error) {
 	return hostname, err
 }
 
+// IP TODO:
 func IP() string {
 	ip := Config().IP
 	if ip != "" {
@@ -164,13 +181,14 @@ func IP() string {
 		return ip
 	}
 
-	if len(LocalIp) > 0 {
-		ip = LocalIp
+	if len(LocalIP) > 0 {
+		ip = LocalIP
 	}
 
 	return ip
 }
 
+// ParseConfig 读取并解析配置
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] use -c to specify configuration file")

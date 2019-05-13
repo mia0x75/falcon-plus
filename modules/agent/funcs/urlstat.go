@@ -16,7 +16,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
-func UrlMetrics() (L []*cmodel.MetricValue) {
+// URLMetrics TODO:
+func URLMetrics() (L []*cmodel.MetricValue) {
 	urls := hbs.ReportUrls()
 	sz := len(urls)
 	if sz == 0 {
@@ -28,7 +29,7 @@ func UrlMetrics() (L []*cmodel.MetricValue) {
 	}
 	for url, timeout := range urls {
 		tags := fmt.Sprintf("url=%v,timeout=%v,src=%v", url, timeout, hostname)
-		if ok, _ := probeUrl(url, timeout); !ok {
+		if ok, _ := probeURL(url, timeout); !ok {
 			L = append(L, GaugeValue(g.URL_CHECK_HEALTH, 0, tags))
 			continue
 		}
@@ -37,7 +38,7 @@ func UrlMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
-func probeUrl(furl string, timeout string) (bool, error) {
+func probeURL(furl string, timeout string) (bool, error) {
 	bs, err := sys.CmdOutBytes("curl", "--max-filesize", "102400", "-I", "-m", timeout, "-o", "/dev/null", "-s", "-w", "%{http_code}", furl)
 	if err != nil {
 		log.Errorf("[E] probe url %s fail, error: %v", furl, err)

@@ -21,7 +21,8 @@ var (
 	psLock          = new(sync.RWMutex)
 )
 
-type CpuUsages struct {
+// CPUUsages TODO:
+type CPUUsages struct {
 	User    float64
 	Nice    float64
 	System  float64
@@ -34,7 +35,8 @@ type CpuUsages struct {
 	Guest   float64
 }
 
-func UpdateCpuStats() error {
+// UpdateCPUStats TODO:
+func UpdateCPUStats() error {
 	ps, err := nux.CurrentProcStat()
 	if err != nil {
 		return err
@@ -60,7 +62,8 @@ func cpunumTotal() uint64 {
 	return b
 }
 
-func CpuUsagesSummary() (cpuUsages *CpuUsages, switches uint64, prepared bool) {
+// CPUUsagesSummary TODO:
+func CPUUsagesSummary() (cpuUsages *CPUUsages, switches uint64, prepared bool) {
 	psLock.RLock()
 	defer psLock.RUnlock()
 
@@ -81,7 +84,7 @@ func CpuUsagesSummary() (cpuUsages *CpuUsages, switches uint64, prepared bool) {
 	dt := procStatHistory[0].Cpu.Total - procStatHistory[1].Cpu.Total
 
 	if dt == 0 {
-		cpuUsages = &CpuUsages{
+		cpuUsages = &CPUUsages{
 			User:    0.0,
 			Nice:    0.0,
 			System:  0.0,
@@ -109,7 +112,7 @@ func CpuUsagesSummary() (cpuUsages *CpuUsages, switches uint64, prepared bool) {
 		busy := user + nice + system + iowait + irq + softirq + steal + guest
 		idle := 100.0 - busy
 
-		cpuUsages = &CpuUsages{
+		cpuUsages = &CPUUsages{
 			User:    user,
 			Nice:    nice,
 			System:  system,
@@ -127,8 +130,9 @@ func CpuUsagesSummary() (cpuUsages *CpuUsages, switches uint64, prepared bool) {
 	return
 }
 
-func CpuMetrics() []*cmodel.MetricValue {
-	cpuUsages, currentCpuSwitches, prepared := CpuUsagesSummary()
+// CPUMetrics TODO:
+func CPUMetrics() []*cmodel.MetricValue {
+	cpuUsages, currentCPUSwitches, prepared := CPUUsagesSummary()
 
 	if !prepared {
 		return []*cmodel.MetricValue{}
@@ -145,6 +149,6 @@ func CpuMetrics() []*cmodel.MetricValue {
 	softirq := GaugeValue("cpu.softirq", cpuUsages.SoftIrq)
 	steal := GaugeValue("cpu.steal", cpuUsages.Steal)
 	guest := GaugeValue("cpu.guest", cpuUsages.Guest)
-	switches := CounterValue("cpu.switches", currentCpuSwitches)
+	switches := CounterValue("cpu.switches", currentCPUSwitches)
 	return []*cmodel.MetricValue{cpunum, idle, busy, user, nice, system, iowait, irq, softirq, steal, guest, switches}
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// SetupKernelRoutes TODO:
 func SetupKernelRoutes() {
 	http.HandleFunc("/proc/kernel/hostname", func(w http.ResponseWriter, r *http.Request) {
 		data, err := g.Hostname()

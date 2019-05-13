@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// PortMetrics TODO:
 func PortMetrics() (L []*cmodel.MetricValue) {
 	ports := hbs.ReportPorts()
 	sz := len(ports)
@@ -19,13 +20,13 @@ func PortMetrics() (L []*cmodel.MetricValue) {
 		return
 	}
 
-	allTcpPorts, err := nux.TcpPorts()
+	allTCPPorts, err := nux.TcpPorts()
 	if err != nil {
 		log.Errorf("[E] %v", err)
 		return
 	}
 
-	allUdpPorts, err := nux.UdpPorts()
+	allUDPPorts, err := nux.UdpPorts()
 	if err != nil {
 		log.Errorf("[E] %v", err)
 		return
@@ -33,7 +34,7 @@ func PortMetrics() (L []*cmodel.MetricValue) {
 
 	for i := 0; i < sz; i++ {
 		tags := fmt.Sprintf("port=%d", ports[i])
-		if slice.ContainsInt64(allTcpPorts, ports[i]) || slice.ContainsInt64(allUdpPorts, ports[i]) {
+		if slice.ContainsInt64(allTCPPorts, ports[i]) || slice.ContainsInt64(allUDPPorts, ports[i]) {
 			L = append(L, GaugeValue(g.NET_PORT_LISTEN, 1, tags))
 		} else {
 			L = append(L, GaugeValue(g.NET_PORT_LISTEN, 0, tags))

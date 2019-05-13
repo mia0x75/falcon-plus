@@ -11,29 +11,33 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
-var LocalIp string
+// LocalIP TODO:
+var LocalIP string
 
-func InitLocalIp() {
+// InitLocalIP TODO:
+func InitLocalIP() {
 	for _, addr := range Config().Heartbeat.Addrs {
 		conn, err := net.DialTimeout("tcp", addr, time.Second*10)
 		if err != nil {
 			log.Errorf("[E] connect to heartbeat server %s failed", addr)
 		} else {
 			defer conn.Close()
-			LocalIp = strings.Split(conn.LocalAddr().String(), ":")[0]
+			LocalIP = strings.Split(conn.LocalAddr().String(), ":")[0]
 			break
 		}
 	}
 }
 
+// TODO:
 var (
-	HbsClient *SingleConnRpcClient
+	HbsClient *SingleConnRPCClient
 )
 
-func InitRpcClients() {
+// InitRPCClients TODO:
+func InitRPCClients() {
 	if len(Config().Heartbeat.Addrs) > 0 {
-		HbsClient = &SingleConnRpcClient{
-			RpcServers: Config().Heartbeat.Addrs,
+		HbsClient = &SingleConnRPCClient{
+			RPCServers: Config().Heartbeat.Addrs,
 			Timeout:    time.Duration(Config().Heartbeat.Timeout) * time.Millisecond,
 		}
 	} else {
@@ -41,6 +45,7 @@ func InitRpcClients() {
 	}
 }
 
+// SendToTransfer TODO:
 func SendToTransfer(metrics []*cmodel.MetricValue) {
 	if len(metrics) == 0 {
 		return
@@ -49,24 +54,24 @@ func SendToTransfer(metrics []*cmodel.MetricValue) {
 	dt := Config().DefaultTags
 	if len(dt) > 0 {
 		var buf bytes.Buffer
-		default_tags_list := []string{}
+		list := []string{}
 		for k, v := range dt {
 			buf.Reset()
 			buf.WriteString(k)
 			buf.WriteString("=")
 			buf.WriteString(v)
-			default_tags_list = append(default_tags_list, buf.String())
+			list = append(list, buf.String())
 		}
-		default_tags := strings.Join(default_tags_list, ",")
+		defaultTags := strings.Join(list, ",")
 
 		for i, x := range metrics {
 			buf.Reset()
 			if x.Tags == "" {
-				metrics[i].Tags = default_tags
+				metrics[i].Tags = defaultTags
 			} else {
 				buf.WriteString(metrics[i].Tags)
 				buf.WriteString(",")
-				buf.WriteString(default_tags)
+				buf.WriteString(defaultTags)
 				metrics[i].Tags = buf.String()
 			}
 		}

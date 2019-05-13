@@ -8,6 +8,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// SetupPushRoutes 接受指标的本地推送
 func SetupPushRoutes() {
 	http.HandleFunc("/v1/push", func(w http.ResponseWriter, req *http.Request) {
 		if req.ContentLength == 0 {

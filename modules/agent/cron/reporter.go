@@ -9,6 +9,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// ReportAgentStatus 向心跳服务器上报Agent信息
 func ReportAgentStatus() {
 	if len(g.Config().Heartbeat.Addrs) > 0 {
 		go reportAgentStatus()

@@ -13,6 +13,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// SyncBuiltinMetrics TODO:
 func SyncBuiltinMetrics() {
 	if len(g.Config().Heartbeat.Addrs) > 0 {
 		go syncBuiltinMetrics()
@@ -20,8 +21,8 @@ func SyncBuiltinMetrics() {
 }
 
 func syncBuiltinMetrics() {
-	var timestamp int64 = -1
-	var checksum string = "nil"
+	timestamp := int64(-1)
+	checksum := "nil"
 
 	d := time.Duration(g.Config().Heartbeat.Interval) * time.Second
 	for range time.Tick(d) {

@@ -11,33 +11,34 @@ import (
 	"github.com/toolkits/net"
 )
 
-type SingleConnRpcClient struct {
+// SingleConnRPCClient TODO:
+type SingleConnRPCClient struct {
 	sync.Mutex
 	rpcClient  *rpc.Client
-	RpcServers []string
+	RPCServers []string
 	Timeout    time.Duration
 }
 
-func (this *SingleConnRpcClient) close() {
-	if this.rpcClient != nil {
-		this.rpcClient.Close()
-		this.rpcClient = nil
+func (rpc *SingleConnRPCClient) close() {
+	if rpc.rpcClient != nil {
+		rpc.rpcClient.Close()
+		rpc.rpcClient = nil
 	}
 }
 
-func (this *SingleConnRpcClient) serverConn() error {
-	if this.rpcClient != nil {
+func (rpc *SingleConnRPCClient) serverConn() error {
+	if rpc.rpcClient != nil {
 		return nil
 	}
 
 	var err error
 	var retry int
 
-	for _, addr := range this.RpcServers {
+	for _, addr := range rpc.RPCServers {
 		retry = 1
 
 	RETRY:
-		this.rpcClient, err = net.JsonRpcClient("tcp", addr, this.Timeout)
+		rpc.rpcClient, err = net.JsonRpcClient("tcp", addr, rpc.Timeout)
 		if err != nil {
 			log.Errorf("[E] net.JsonRpcClient failed: %v", err)
 			if retry > 3 {
@@ -56,12 +57,12 @@ func (this *SingleConnRpcClient) serverConn() error {
 	return errors.New("connect to RPC servers failed")
 }
 
-func (this *SingleConnRpcClient) Call(method string, args interface{}, reply interface{}) error {
+// Call TODO:
+func (rpc *SingleConnRPCClient) Call(method string, args interface{}, reply interface{}) error {
+	rpc.Lock()
+	defer rpc.Unlock()
 
-	this.Lock()
-	defer this.Unlock()
-
-	err := this.serverConn()
+	err := rpc.serverConn()
 	if err != nil {
 		return err
 	}
@@ -70,18 +71,18 @@ func (this *SingleConnRpcClient) Call(method string, args interface{}, reply int
 	done := make(chan error, 1)
 
 	go func() {
-		err := this.rpcClient.Call(method, args, reply)
+		err := rpc.rpcClient.Call(method, args, reply)
 		done <- err
 	}()
 
 	select {
 	case <-time.After(timeout):
-		log.Warnf("[W] rpc call timeout %v => %v", this.rpcClient, this.RpcServers)
-		this.close()
+		log.Warnf("[W] rpc call timeout %v => %v", rpc.rpcClient, rpc.RPCServers)
+		rpc.close()
 		return errors.New("rpc call timeout")
 	case err := <-done:
 		if err != nil {
-			this.close()
+			rpc.close()
 			return err
 		}
 	}

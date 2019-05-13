@@ -10,6 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// SyncTrustableIps TODO:
 func SyncTrustableIps() {
 	if len(g.Config().Heartbeat.Addrs) > 0 {
 		go syncTrustableIps()

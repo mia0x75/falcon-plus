@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// SetupAdminRoutes TODO:
 func SetupAdminRoutes() {
 	http.HandleFunc("/exit", func(w http.ResponseWriter, r *http.Request) {
 		if hbs.IsTrustable(r.RemoteAddr) {

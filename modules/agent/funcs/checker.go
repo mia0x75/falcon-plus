@@ -7,6 +7,7 @@ import (
 	"github.com/toolkits/sys"
 )
 
+// CheckCollector TODO:
 func CheckCollector() {
 	output := make(map[string]bool)
 

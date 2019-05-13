@@ -11,6 +11,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// ProcMetrics TODO:
 func ProcMetrics() (L []*cmodel.MetricValue) {
 	ps, err := nux.AllProcs()
 	if err != nil {
@@ -30,7 +31,7 @@ func ProcMetrics() (L []*cmodel.MetricValue) {
 	for tags, m := range procs {
 		cnt := 0
 		for i := 0; i < pslen; i++ {
-			if is_a(ps[i], m) {
+			if isA(ps[i], m) {
 				cnt++
 			}
 		}
@@ -41,7 +42,7 @@ func ProcMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
-func is_a(p *nux.Proc, m map[int]string) bool {
+func isA(p *nux.Proc, m map[int]string) bool {
 	// only one kv pair
 	for key, val := range m {
 		if key == 1 {

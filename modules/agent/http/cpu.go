@@ -11,7 +11,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 )
 
-func SetupCpuRoutes() {
+// SetupCPURoutes TODO:
+func SetupCPURoutes() {
 	http.HandleFunc("/proc/cpu/num", func(w http.ResponseWriter, r *http.Request) {
 		cutils.RenderDataJson(w, runtime.NumCPU())
 	})
@@ -22,7 +23,7 @@ func SetupCpuRoutes() {
 	})
 
 	http.HandleFunc("/page/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
-		cpuUsages, _, prepared := funcs.CpuUsagesSummary()
+		cpuUsages, _, prepared := funcs.CPUUsagesSummary()
 		if !prepared {
 			cutils.RenderMsgJson(w, "not prepared")
 			return
@@ -45,7 +46,7 @@ func SetupCpuRoutes() {
 	})
 
 	http.HandleFunc("/proc/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
-		cpuUsages, _, prepared := funcs.CpuUsagesSummary()
+		cpuUsages, _, prepared := funcs.CPUUsagesSummary()
 		if !prepared {
 			cutils.RenderMsgJson(w, "not prepared")
 			return

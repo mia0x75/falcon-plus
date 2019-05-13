@@ -10,11 +10,13 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// TODO:
 var (
-	TransferClientsLock *sync.RWMutex                   = new(sync.RWMutex)
-	TransferClients     map[string]*SingleConnRpcClient = map[string]*SingleConnRpcClient{}
+	TransferClientsLock                                 = new(sync.RWMutex)
+	TransferClients     map[string]*SingleConnRPCClient = map[string]*SingleConnRPCClient{}
 )
 
+// SendMetrics TODO:
 func SendMetrics(metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) {
 	rand.Seed(time.Now().UnixNano())
 	for _, i := range rand.Perm(len(Config().Transfer.Addrs)) {
@@ -31,12 +33,12 @@ func SendMetrics(metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) {
 	}
 }
 
-func initTransferClient(addr string) *SingleConnRpcClient {
+func initTransferClient(addr string) *SingleConnRPCClient {
 	addrs := []string{
 		addr,
 	}
-	var c *SingleConnRpcClient = &SingleConnRpcClient{
-		RpcServers: addrs,
+	c := &SingleConnRPCClient{
+		RPCServers: addrs,
 		Timeout:    time.Duration(Config().Transfer.Timeout) * time.Millisecond,
 	}
 	TransferClientsLock.Lock()
@@ -46,7 +48,7 @@ func initTransferClient(addr string) *SingleConnRpcClient {
 	return c
 }
 
-func updateMetrics(c *SingleConnRpcClient, metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) bool {
+func updateMetrics(c *SingleConnRPCClient, metrics []*cmodel.MetricValue, resp *cmodel.TransferResponse) bool {
 	err := c.Call("Transfer.Update", metrics, resp)
 	if err != nil {
 		log.Errorf("[E] call Transfer.Update fail: %v, metrics: %v", err, metrics)
@@ -55,7 +57,7 @@ func updateMetrics(c *SingleConnRpcClient, metrics []*cmodel.MetricValue, resp *
 	return true
 }
 
-func getTransferClient(addr string) *SingleConnRpcClient {
+func getTransferClient(addr string) *SingleConnRPCClient {
 	TransferClientsLock.RLock()
 	defer TransferClientsLock.RUnlock()
 

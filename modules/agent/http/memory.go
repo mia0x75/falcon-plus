@@ -8,6 +8,7 @@ import (
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
 )
 
+// SetupMemoryRoutes TODO:
 func SetupMemoryRoutes() {
 	http.HandleFunc("/page/memory", func(w http.ResponseWriter, r *http.Request) {
 		mem, err := nux.MemInfo()

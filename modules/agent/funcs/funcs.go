@@ -17,7 +17,7 @@ func BuildMappers() {
 	Mappers = []FuncsAndInterval{
 		{
 			Fs: []func() []*cmodel.MetricValue{
-				CpuMetrics,
+				CPUMetrics,
 				NetMetrics,
 				KernelMetrics,
 				LoadAvgMetrics,
@@ -26,7 +26,7 @@ func BuildMappers() {
 				IOStatsMetrics,
 				NetstatMetrics,
 				ProcMetrics,
-				UdpMetrics,
+				UDPMetrics,
 			},
 			Interval: interval,
 		},
@@ -51,7 +51,7 @@ func BuildMappers() {
 		},
 		{
 			Fs: []func() []*cmodel.MetricValue{
-				UrlMetrics,
+				URLMetrics,
 			},
 			Interval: interval,
 		},

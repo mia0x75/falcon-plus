@@ -7,6 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// SocketStatSummaryMetrics TODO:
 func SocketStatSummaryMetrics() (L []*cmodel.MetricValue) {
 	ssMap, err := nux.SocketStatSummary()
 	if err != nil {

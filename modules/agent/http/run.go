@@ -10,9 +10,10 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
+// SetupRunRoutes TODO:
 func SetupRunRoutes() {
 	http.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
-		if !g.Config().Http.Backdoor {
+		if !g.Config().HTTP.Backdoor {
 			w.Write([]byte("/run disabled"))
 			return
 		}

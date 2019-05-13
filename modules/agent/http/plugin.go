@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/plugins"
 )
 
+// SetupPluginRoutes TODO:
 func SetupPluginRoutes() {
 	http.HandleFunc("/plugin/update", func(w http.ResponseWriter, r *http.Request) {
 		if !g.Config().Plugin.Enabled {

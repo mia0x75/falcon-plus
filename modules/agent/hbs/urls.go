@@ -9,12 +9,14 @@ var (
 	urlsLock = new(sync.RWMutex)
 )
 
+// ReportUrls TODO:
 func ReportUrls() map[string]string {
 	urlsLock.RLock()
 	defer urlsLock.RUnlock()
 	return urls
 }
 
+// CacheReportUrls TODO:
 func CacheReportUrls(value map[string]string) {
 	urlsLock.RLock()
 	defer urlsLock.RUnlock()

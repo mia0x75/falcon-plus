@@ -7,7 +7,8 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
-func UdpMetrics() []*cmodel.MetricValue {
+// UDPMetrics TODO:
+func UDPMetrics() []*cmodel.MetricValue {
 	udp, err := nux.Snmp("Udp")
 	if err != nil {
 		log.Errorf("[E] read snmp fail: %v", err)
