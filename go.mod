@@ -2,6 +2,7 @@ module github.com/open-falcon/falcon-plus
 
 replace (
 	cloud.google.com/go => github.com/googleapis/google-cloud-go v0.36.0
+	github.com/open-falcon/rrdlite => github.com/mia0x75/rrdlite v0.0.0-20190522073135-a9f1021dcb07
 
 	golang.org/x/build => github.com/golang/build v0.0.0-20190228010158-44b79b8774a7
 	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190227175134-215aa809caaf
@@ -31,7 +32,7 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
-	github.com/google/go-cmp v0.2.0
+	github.com/google/go-cmp v0.3.0
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
@@ -40,12 +41,11 @@ require (
 	github.com/mindprince/gonvml v0.0.0-20180514031326-b364b296c732
 	github.com/niean/gotools v0.0.0-20151221085310-ff3f51fc5c60 // indirect
 	github.com/open-falcon/common v0.0.0-20160912145637-b9ba65549217
-	github.com/open-falcon/rrdlite v0.0.0-20170412122036-7d8646c85cc5
+	github.com/open-falcon/rrdlite v0.0.0-00010101000000-000000000000
 	github.com/radovskyb/watcher v1.0.6
 	github.com/satori/go.uuid v1.2.0
-	github.com/sirupsen/logrus v1.4.1
-	github.com/spf13/cobra v0.0.3
-	github.com/spf13/pflag v1.0.3 // indirect
+	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/cobra v0.0.4
 	github.com/toolkits/cache v0.0.0-20190218093630-cfb07b7585e5
 	github.com/toolkits/concurrent v0.0.0-20150624120057-a4371d70e3e3
 	github.com/toolkits/conn_pool v0.0.0-20170512061817-2b758bec1177
@@ -55,7 +55,7 @@ require (
 	github.com/toolkits/cron v0.0.0-20150624115642-bebc2953afa6
 	github.com/toolkits/file v0.0.0-20160325033739-a5b3c5147e07
 	github.com/toolkits/net v0.0.0-20160910085801-3f39ab6fe3ce
-	github.com/toolkits/nux v0.0.0-20190312004434-44d006618852
+	github.com/toolkits/nux v0.0.0-20190518082632-850a4b9b4156
 	github.com/toolkits/proc v0.0.0-20170520054645-8c734d0eb018
 	github.com/toolkits/slice v0.0.0-20141116085117-e44a80af2484
 	github.com/toolkits/sys v0.0.0-20170615103026-1f33b217ffaf
