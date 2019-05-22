@@ -9,11 +9,12 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// QueryExpressions TODO:
 func QueryExpressions() (ret []*cmodel.Expression, err error) {
-	sql := "select id, expression, func, op, right_value, max_step, priority, note, action_id from expression where action_id>0 and pause=0"
-	rows, err := DB.Query(sql)
+	q := "select id, expression, func, op, right_value, max_step, priority, note, action_id from expression where action_id>0 and pause=0"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return ret, err
 	}
 
@@ -34,13 +35,13 @@ func QueryExpressions() (ret []*cmodel.Expression, err error) {
 		)
 
 		if err != nil {
-			log.Warnf("[W] %v", err)
+			log.Warnf("[W] row scan error:%v", err)
 			continue
 		}
 
 		e.Metric, e.Tags, err = parseExpression(exp)
 		if err != nil {
-			log.Errorf("[E] %v", err)
+			log.Errorf("[E] parse expression error:%v", err)
 			continue
 		}
 

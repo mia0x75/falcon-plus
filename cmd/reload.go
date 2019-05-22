@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Reload TODO:
 var Reload = &cobra.Command{
 	Use:   "reload [Module ...]",
 	Short: "Reload an Open-Falcon module's configuration file",

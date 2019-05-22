@@ -4,13 +4,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// QueryHostGroups TODO:
 func QueryHostGroups() (map[int][]int, error) {
 	m := make(map[int][]int)
 
-	sql := "select grp_id, host_id from grp_host"
-	rows, err := DB.Query(sql)
+	q := "select grp_id, host_id from grp_host"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return m, err
 	}
 

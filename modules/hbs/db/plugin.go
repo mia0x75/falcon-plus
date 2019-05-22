@@ -4,13 +4,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// QueryPlugins TODO:
 func QueryPlugins() (map[int][]string, error) {
 	m := make(map[int][]string)
 
-	sql := "select grp_id, dir from plugin_dir"
-	rows, err := DB.Query(sql)
+	q := "select grp_id, dir from plugin_dir"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return m, err
 	}
 

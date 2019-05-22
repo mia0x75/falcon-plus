@@ -20,14 +20,14 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/graph/rrdtool"
 )
 
-func start_signal(pid int, cfg *g.GlobalConfig) {
+func start(pid int, cfg *g.GlobalConfig) {
 	sigs := make(chan os.Signal, 1)
-	log.Infof("[I] %d register signal notify", pid)
+	log.Debugf("[D] %d register signal notify", pid)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	for {
 		s := <-sigs
-		log.Infof("[I] recv: %v", s)
+		log.Infof("[D] recv: %v", s)
 
 		switch s {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
@@ -44,7 +44,7 @@ func start_signal(pid int, cfg *g.GlobalConfig) {
 
 			g.DB.Close()
 
-			log.Infof("[I] %d exit", pid)
+			log.Debugf("[D] %d exit", pid)
 			os.Exit(0)
 		}
 	}
@@ -92,5 +92,5 @@ func main() {
 	http.Start()
 	cron.CleanCache()
 
-	start_signal(os.Getpid(), g.Config())
+	start(os.Getpid(), g.Config())
 }

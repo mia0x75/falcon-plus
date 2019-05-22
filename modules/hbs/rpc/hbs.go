@@ -8,13 +8,16 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 )
 
+// Hbs TODO:
 type Hbs int
 
+// GetExpressions 获取表达式
 func (t *Hbs) GetExpressions(req cmodel.NullRpcRequest, reply *cmodel.ExpressionResponse) error {
 	reply.Expressions = cache.ExpressionCache.Get()
 	return nil
 }
 
+// GetStrategies 获取策略
 func (t *Hbs) GetStrategies(req cmodel.NullRpcRequest, reply *cmodel.StrategiesResponse) error {
 	reply.HostStrategies = []*cmodel.HostStrategy{}
 	// 一个机器ID对应多个模板ID
@@ -72,6 +75,7 @@ func (t *Hbs) GetStrategies(req cmodel.NullRpcRequest, reply *cmodel.StrategiesR
 	return nil
 }
 
+// Tpl2Strategies TODO:
 func Tpl2Strategies(strategies map[int]*cmodel.Strategy) map[int][]*cmodel.Strategy {
 	ret := make(map[int][]*cmodel.Strategy)
 	for _, s := range strategies {
@@ -87,6 +91,7 @@ func Tpl2Strategies(strategies map[int]*cmodel.Strategy) map[int][]*cmodel.Strat
 	return ret
 }
 
+// CalcInheritStrategies TODO:
 func CalcInheritStrategies(allTpls map[int]*cmodel.Template, tids []int, tpl2Strategies map[int][]*cmodel.Strategy) []cmodel.Strategy {
 	// 根据模板的继承关系，找到每个机器对应的模板全量
 	/**

@@ -12,8 +12,10 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
+// Agent TODO:
 type Agent int
 
+// MinePlugins TODO:
 func (t *Agent) MinePlugins(args cmodel.AgentHeartbeatRequest, reply *cmodel.AgentPluginsResponse) error {
 	if args.Hostname == "" {
 		return nil
@@ -25,6 +27,7 @@ func (t *Agent) MinePlugins(args cmodel.AgentHeartbeatRequest, reply *cmodel.Age
 	return nil
 }
 
+// ReportStatus agent上报自身状态
 func (t *Agent) ReportStatus(args *cmodel.AgentReportRequest, reply *cmodel.SimpleRpcResponse) error {
 	if args.Hostname == "" {
 		reply.Code = 1
@@ -36,13 +39,13 @@ func (t *Agent) ReportStatus(args *cmodel.AgentReportRequest, reply *cmodel.Simp
 	return nil
 }
 
-// 需要checksum一下来减少网络开销？其实白名单通常只会有一个或者没有，无需checksum
+// TrustableIps 需要checksum一下来减少网络开销？其实白名单通常只会有一个或者没有，无需checksum
 func (t *Agent) TrustableIps(args *cmodel.NullRpcRequest, ips *string) error {
 	*ips = strings.Join(g.Config().Trustable, ",")
 	return nil
 }
 
-// agent按照server端的配置，按需采集的metric，比如net.port.listen port=22 或者 proc.num name=zabbix_agentd
+// BuiltinMetrics agent按照server端的配置，按需采集的metric，比如net.port.listen port=22 或者 proc.num name=zabbix_agentd
 func (t *Agent) BuiltinMetrics(args *cmodel.AgentHeartbeatRequest, reply *cmodel.BuiltinMetricResponse) error {
 	if args.Hostname == "" {
 		return nil
@@ -69,6 +72,7 @@ func (t *Agent) BuiltinMetrics(args *cmodel.AgentHeartbeatRequest, reply *cmodel
 	return nil
 }
 
+// DigestBuiltinMetrics TODO:
 func DigestBuiltinMetrics(items []*cmodel.BuiltinMetric) string {
 	sort.Sort(cmodel.BuiltinMetricSlice(items))
 

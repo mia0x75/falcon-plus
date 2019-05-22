@@ -6,13 +6,14 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// QueryGroupTemplates TODO:
 func QueryGroupTemplates() (map[int][]int, error) {
 	m := make(map[int][]int)
 
-	sql := "select grp_id, tpl_id from grp_tpl"
-	rows, err := DB.Query(sql)
+	q := "select grp_id, tpl_id from grp_tpl"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return m, err
 	}
 
@@ -35,14 +36,14 @@ func QueryGroupTemplates() (map[int][]int, error) {
 	return m, nil
 }
 
-// 获取所有的策略模板列表
+// QueryTemplates 获取所有的策略模板列表
 func QueryTemplates() (map[int]*cmodel.Template, error) {
 	templates := make(map[int]*cmodel.Template)
 
-	sql := "select id, tpl_name, parent_id, action_id, create_user from tpl"
-	rows, err := DB.Query(sql)
+	q := "select id, tpl_name, parent_id, action_id, create_user from tpl"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return templates, err
 	}
 
@@ -60,12 +61,13 @@ func QueryTemplates() (map[int]*cmodel.Template, error) {
 	return templates, nil
 }
 
-// 一个机器ID对应了多个模板ID
+// QueryHostTemplateIds 一个机器ID对应了多个模板ID
 func QueryHostTemplateIds() (map[int][]int, error) {
 	ret := make(map[int][]int)
-	rows, err := DB.Query("select a.tpl_id, b.host_id from grp_tpl as a inner join grp_host as b on a.grp_id=b.grp_id")
+	q := "select a.tpl_id, b.host_id from grp_tpl as a inner join grp_host as b on a.grp_id = b.grp_id"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return ret, err
 	}
 

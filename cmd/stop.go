@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/g"
 )
 
+// Stop TODO:
 var Stop = &cobra.Command{
 	Use:   "stop [Module ...]",
 	Short: "Stop Open-Falcon modules",
@@ -34,12 +35,12 @@ func stop(c *cobra.Command, args []string) error {
 	for i := l; i >= 0; i-- {
 		moduleName := args[i]
 		if !g.HasModule(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] absent\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "absent")
 			continue
 		}
 
 		if !g.IsRunning(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "down")
 			continue
 		}
 
@@ -53,10 +54,10 @@ func stop(c *cobra.Command, args []string) error {
 			time.Sleep(100 * time.Millisecond)
 		}
 		if err == nil {
-			fmt.Print("[", g.ModuleApps[moduleName], "] down\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "down")
 			continue
 		} else {
-			fmt.Print("[", g.ModuleApps[moduleName], "] error\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "error")
 		}
 	}
 	return nil

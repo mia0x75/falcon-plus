@@ -11,6 +11,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
+// Start 启动服务
 func Start() {
 	go start()
 }
@@ -30,7 +31,7 @@ func start() {
 	if err != nil {
 		log.Fatalf("[F] rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Infof("[I] rpc listening: %s", addr)
+		log.Infof("[I] rpc listening %s", addr)
 	}
 
 	go func() {

@@ -11,7 +11,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
-// 获取所有的Strategy列表
+// QueryStrategies 获取所有的Strategy列表
 func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, error) {
 	ret := make(map[int]*cmodel.Strategy)
 
@@ -20,7 +20,7 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 	}
 
 	now := time.Now().Format("15:04")
-	sql := fmt.Sprintf(
+	q := fmt.Sprintf(
 		"select %s from strategy as s where (s.run_begin='' and s.run_end='') "+
 			"or (s.run_begin <= '%s' and s.run_end >= '%s')"+
 			"or (s.run_begin > s.run_end and !(s.run_begin > '%s' and s.run_end < '%s'))",
@@ -31,9 +31,9 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 		now,
 	)
 
-	rows, err := DB.Query(sql)
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return ret, err
 	}
 
@@ -75,17 +75,18 @@ func QueryStrategies(tpls map[int]*cmodel.Template) (map[int]*cmodel.Strategy, e
 	return ret, nil
 }
 
+// QueryBuiltinMetrics TODO:
 func QueryBuiltinMetrics(tids string) ([]*cmodel.BuiltinMetric, error) {
-	sql := fmt.Sprintf(
+	q := fmt.Sprintf(
 		"select metric, tags from strategy where tpl_id in (%s) and metric in ('net.port.listen', 'proc.num', 'du.bs', 'url.check.health', 'fs.file.checksum')",
 		tids,
 	)
 
 	ret := []*cmodel.BuiltinMetric{}
 
-	rows, err := DB.Query(sql)
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return ret, err
 	}
 

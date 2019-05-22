@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/g"
 )
 
+// Start TODO:
 var Start = &cobra.Command{
 	Use:   "start [Module ...]",
 	Short: "Start Open-Falcon modules",
@@ -25,8 +26,11 @@ Modules:
 	SilenceErrors: true,
 }
 
-var PreqOrderFlag bool
-var ConsoleOutputFlag bool
+// 变量定义
+var (
+	PreqOrderFlag     bool
+	ConsoleOutputFlag bool
+)
 
 func cmdArgs(name string) []string {
 	return []string{"-c", g.Cfg(name)}
@@ -94,23 +98,23 @@ func start(c *cobra.Command, args []string) error {
 
 	for _, moduleName := range args {
 		if !g.HasModule(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] absent\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "absent")
 			continue
 		}
 
 		if !g.HasCfg(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] missing cfg\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "missing cfg")
 			continue
 		}
 
 		// Skip starting if the module is already running
 		if g.IsRunning(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], g.Pid(moduleName))
 			continue
 		}
 
 		if err := execModule(ConsoleOutputFlag, moduleName); err != nil {
-			fmt.Print("[", g.ModuleApps[moduleName], "] error\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "error")
 			continue
 		}
 
@@ -120,10 +124,10 @@ func start(c *cobra.Command, args []string) error {
 			time.Sleep(100 * time.Millisecond)
 		}
 		if isStarted(moduleName) {
-			fmt.Print("[", g.ModuleApps[moduleName], "] ", g.Pid(moduleName), "\n")
+			fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], g.Pid(moduleName))
 			continue
 		}
-		fmt.Print("[", g.ModuleApps[moduleName], "] ", "failed\n")
+		fmt.Printf("[%-20s] %s\n", g.ModuleApps[moduleName], "failed")
 	}
 	return nil
 }

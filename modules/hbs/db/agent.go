@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -10,70 +11,74 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
 )
 
+// QueryAgentsInfo TODO:
 func QueryAgentsInfo() (map[string]*cmodel.AgentUpdateInfo, error) {
 	m := make(map[string]*cmodel.AgentUpdateInfo)
 	sql := "select hostname, ip, agent_version, plugin_version, update_at from host"
 	rows, err := DB.Query(sql)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", sql, err)
 		return m, err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var (
-			hostname       string
-			ip             string
-			agent_version  string
-			plugin_version string
-			update_at      time.Time
+			hostname      string
+			ip            string
+			agentVersion  string
+			pluginVersion string
+			updateAt      time.Time
 		)
-		err = rows.Scan(&hostname, &ip, &agent_version, &plugin_version, &update_at)
+		err = rows.Scan(&hostname, &ip, &agentVersion, &pluginVersion, &updateAt)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			continue
 		}
 		m[hostname] = &cmodel.AgentUpdateInfo{
-			LastUpdate: update_at.UnixNano(),
+			LastUpdate: updateAt.UnixNano(),
 			ReportRequest: &cmodel.AgentReportRequest{
 				Hostname:      hostname,
 				IP:            ip,
-				AgentVersion:  agent_version,
-				PluginVersion: plugin_version,
+				AgentVersion:  agentVersion,
+				PluginVersion: pluginVersion,
 			},
 		}
 	}
 	return m, nil
 }
 
+// UpdateAgent TODO:
 func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 	var (
-		hostname       string
-		ip             string
-		agent_version  string
-		plugin_version string
+		hostname      string
+		ip            string
+		agentVersion  string
+		pluginVersion string
 	)
 
-	sql := fmt.Sprintf("select hostname, ip, agent_version, plugin_version from host where hostname = '%s'",
+	q := fmt.Sprintf("select hostname, ip, agent_version, plugin_version from host where hostname = '%s'",
 		agentInfo.ReportRequest.Hostname,
 	)
 
-	err := DB.QueryRow(sql).Scan(&hostname, &ip, &agent_version, &plugin_version)
+	err := DB.QueryRow(q).Scan(&hostname, &ip, &agentVersion, &pluginVersion)
 	if err != nil {
-		log.Errorf("[E] %v", err)
-		return
+		if err != sql.ErrNoRows {
+			log.Errorf("[E] exec %s fail: %v", q, err)
+			return
+		}
 	}
 
 	if agentInfo.ReportRequest.Hostname == hostname &&
 		agentInfo.ReportRequest.IP == ip &&
-		agentInfo.ReportRequest.AgentVersion == agent_version &&
-		agentInfo.ReportRequest.PluginVersion == plugin_version {
+		agentInfo.ReportRequest.AgentVersion == agentVersion &&
+		agentInfo.ReportRequest.PluginVersion == pluginVersion {
 		return
 	}
 
-	sql = ""
+	q = ""
 	if g.Config().Hosts == "" {
-		if hostname == "" && ip == "" && agent_version == "" && plugin_version == "" {
-			sql = fmt.Sprintf(
+		if hostname == "" && ip == "" && agentVersion == "" && pluginVersion == "" {
+			q = fmt.Sprintf(
 				"insert into host(hostname, ip, agent_version, plugin_version) values ('%s', '%s', '%s', '%s')",
 				agentInfo.ReportRequest.Hostname,
 				agentInfo.ReportRequest.IP,
@@ -81,8 +86,8 @@ func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 				agentInfo.ReportRequest.PluginVersion,
 			)
 		} else {
-			sql = fmt.Sprintf(
-				"update host set ip='%s', agent_version='%s', plugin_version='%s' where hostname='%s'",
+			q = fmt.Sprintf(
+				"update host set ip = '%s', agent_version = '%s', plugin_version = '%s' where hostname = '%s'",
 				agentInfo.ReportRequest.IP,
 				agentInfo.ReportRequest.AgentVersion,
 				agentInfo.ReportRequest.PluginVersion,
@@ -91,8 +96,8 @@ func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 		}
 	} else {
 		// sync, just update
-		sql = fmt.Sprintf(
-			"update host set ip='%s', agent_version='%s', plugin_version='%s' where hostname='%s'",
+		q = fmt.Sprintf(
+			"update host set ip = '%s', agent_version = '%s', plugin_version = '%s' where hostname = '%s'",
 			agentInfo.ReportRequest.IP,
 			agentInfo.ReportRequest.AgentVersion,
 			agentInfo.ReportRequest.PluginVersion,
@@ -100,8 +105,8 @@ func UpdateAgent(agentInfo *cmodel.AgentUpdateInfo) {
 		)
 	}
 
-	_, err = DB.Exec(sql)
+	_, err = DB.Exec(q)
 	if err != nil {
-		log.Errorf("[E] exec %s fail: %v", sql, err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 	}
 }

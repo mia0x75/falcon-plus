@@ -9,6 +9,7 @@ import (
 	"github.com/open-falcon/falcon-plus/g"
 )
 
+// Restart TODO:
 var Restart = &cobra.Command{
 	Use:   "restart [Module ...]",
 	Short: "Restart Open-Falcon modules",

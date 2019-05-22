@@ -9,13 +9,14 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// QueryHosts TODO:
 func QueryHosts() (map[string]int, error) {
 	m := make(map[string]int)
 
-	sql := "select id, hostname from host"
-	rows, err := DB.Query(sql)
+	q := "select id, hostname from host"
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return m, err
 	}
 
@@ -38,13 +39,14 @@ func QueryHosts() (map[string]int, error) {
 	return m, nil
 }
 
+// QueryMonitoredHosts TODO:
 func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
 	hosts := make(map[int]*cmodel.Host)
 	now := time.Now().Unix()
-	sql := fmt.Sprintf("select id, hostname from host where maintain_begin > %d or maintain_end < %d", now, now)
-	rows, err := DB.Query(sql)
+	q := fmt.Sprintf("select id, hostname from host where maintain_begin > %d or maintain_end < %d", now, now)
+	rows, err := DB.Query(q)
 	if err != nil {
-		log.Errorf("[E] %v", err)
+		log.Errorf("[E] exec %s fail: %v", q, err)
 		return hosts, err
 	}
 

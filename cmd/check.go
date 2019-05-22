@@ -33,9 +33,9 @@ func check(c *cobra.Command, args []string) error {
 		}
 
 		if g.IsRunning(moduleName) {
-			fmt.Printf("%20s %10s %15s \n", g.ModuleApps[moduleName], "UP", g.Pid(moduleName))
+			fmt.Printf("[%-20s] %10s %15s \n", g.ModuleApps[moduleName], "up", g.Pid(moduleName))
 		} else {
-			fmt.Printf("%20s %10s %15s \n", g.ModuleApps[moduleName], "DOWN", "-")
+			fmt.Printf("[%-20s] %10s %15s \n", g.ModuleApps[moduleName], "down", "-")
 		}
 	}
 

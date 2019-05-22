@@ -27,7 +27,7 @@ func start() {
 	if err != nil {
 		log.Fatalf("[F] socket.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Infof("[I] socket listening: %s", addr)
+		log.Infof("[I] socket listening %s", addr)
 	}
 
 	defer listener.Close()

@@ -32,7 +32,7 @@ func start() {
 	if err != nil {
 		log.Fatalf("[F] rpc.Start error, listen %s fail, %s", addr, err)
 	} else {
-		log.Infof("[I] rpc listening: %s", addr)
+		log.Infof("[I] rpc listening %s", addr)
 	}
 
 	for {
