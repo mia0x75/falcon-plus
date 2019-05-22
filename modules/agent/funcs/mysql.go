@@ -9,13 +9,14 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // TODO:
 	log "github.com/sirupsen/logrus"
 
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// TODO:
 const (
 	TimeOut        = 30      //
 	Origin         = "GAUGE" //
@@ -408,6 +409,7 @@ func GetIsReadOnly(db *sql.DB) (int, error) {
 	return readOnly, nil
 }
 
+// MySQLMetrics TODO:
 func MySQLMetrics() (L []*cmodel.MetricValue) {
 	if g.Config().Collector.MySQL == nil {
 		return nil
@@ -469,6 +471,7 @@ func MySQLMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
+// Query TODO:
 func Query(db *sql.DB, sql string) ([]map[string]interface{}, error) {
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -618,6 +621,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 	return append(data, []*cmodel.MetricValue{ioDelay, slaveReadOnly}...), nil
 }
 
+// GetLastNum TODO:
 func GetLastNum(str string, split string) int {
 	parts := strings.Split(str, split)
 	if len(parts) < 2 {

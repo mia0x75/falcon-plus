@@ -13,6 +13,7 @@ import (
 	eventmodel "github.com/open-falcon/falcon-plus/modules/alarm/model/event"
 )
 
+// ReadHighEvent 读取高优先级的告警队列
 func ReadHighEvent() {
 	queues := g.Config().Queue.HighQueues
 	if len(queues) == 0 {
@@ -31,6 +32,7 @@ func ReadHighEvent() {
 	}()
 }
 
+// ReadLowEvent 读取低优先级的告警队列
 func ReadLowEvent() {
 	queues := g.Config().Queue.LowQueues
 	if len(queues) == 0 {

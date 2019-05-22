@@ -7,6 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// USES TODO:
 var USES = map[string]struct{}{
 	"PruneCalled":        {},
 	"LockDroppedIcmps":   {},
@@ -33,6 +34,7 @@ var USES = map[string]struct{}{
 	"TCPMinTTLDrop":      {},
 }
 
+// NetstatMetrics TODO:
 func NetstatMetrics() (L []*cmodel.MetricValue) {
 	tcpExts, err := nux.Netstat("TcpExt")
 

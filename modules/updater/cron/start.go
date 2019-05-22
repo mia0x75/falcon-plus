@@ -15,6 +15,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/utils"
 )
 
+// StartDesiredAgent TODO:
 func StartDesiredAgent(da *model.DesiredAgent) {
 	if err := InsureDesiredAgentDirExists(da); err != nil {
 		return
@@ -39,6 +40,7 @@ func StartDesiredAgent(da *model.DesiredAgent) {
 	file.WriteString(path.Join(da.AgentDir, ".version"), da.Version)
 }
 
+// Untar TODO:
 func Untar(da *model.DesiredAgent) error {
 	cmd := exec.Command("tar", "zxf", da.TarballFilename)
 	cmd.Dir = da.AgentVersionDir
@@ -51,6 +53,7 @@ func Untar(da *model.DesiredAgent) error {
 	return nil
 }
 
+// ControlStartIn TODO:
 func ControlStartIn(workdir string) error {
 	out, err := ControlStatus(workdir)
 	if err == nil && strings.Contains(out, "started") {
@@ -72,6 +75,7 @@ func ControlStartIn(workdir string) error {
 	return err
 }
 
+// InsureNewVersionFiles TODO:
 func InsureNewVersionFiles(da *model.DesiredAgent) error {
 	if FilesReady(da) {
 		return nil
@@ -111,11 +115,11 @@ func InsureNewVersionFiles(da *model.DesiredAgent) error {
 
 	if utils.Md5sumCheck(da.AgentVersionDir, da.Md5Filename) {
 		return nil
-	} else {
-		return fmt.Errorf("md5sum -c fail")
 	}
+	return fmt.Errorf("md5sum -c fail")
 }
 
+// FilesReady TODO:
 func FilesReady(da *model.DesiredAgent) bool {
 	if !file.IsExist(da.Md5Filepath) {
 		return false
@@ -132,6 +136,7 @@ func FilesReady(da *model.DesiredAgent) bool {
 	return utils.Md5sumCheck(da.AgentVersionDir, da.Md5Filename)
 }
 
+// InsureDesiredAgentDirExists TODO:
 func InsureDesiredAgentDirExists(da *model.DesiredAgent) error {
 	err := file.InsureDir(da.AgentDir)
 	if err != nil {

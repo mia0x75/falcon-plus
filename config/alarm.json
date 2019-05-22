@@ -44,7 +44,7 @@
 		"token": "%%API_DEFAULT_TOKEN%%"
 	},
 	"database": {
-		"addr": "%%MYSQL%%/alarms?charset=utf8&loc=Asia%2FChongqing",
+		"addr": "%%MYSQL%%/alarms?charset=utf8mb4&loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
 		"wait_timeout": 30

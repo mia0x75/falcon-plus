@@ -91,28 +91,28 @@ func convertLine2MetaData(fields []string) (item *cmodel.MetaData, err error) {
 		return
 	}
 
-	type_ := g.COUNTER
+	ct := g.COUNTER
 	if len(fields) >= 5 {
-		type_ = fields[4]
+		ct = fields[4]
 	}
 
-	if type_ != g.DERIVE && type_ != g.GAUGE && type_ != g.COUNTER {
+	if ct != g.DERIVE && ct != g.GAUGE && ct != g.COUNTER {
 		err = fmt.Errorf("invalid_counter_type")
 		return
 	}
 
 	var step int64 = g.DEFAULT_STEP
 	if len(fields) == 6 {
-		dst_args := strings.Split(fields[5], ":")
-		if len(dst_args) == 1 {
-			step, err = strconv.ParseInt(dst_args[0], 10, 64)
+		args := strings.Split(fields[5], ":")
+		if len(args) == 1 {
+			step, err = strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
 				return
 			}
-		} else if len(dst_args) == 4 {
+		} else if len(args) == 4 {
 			// for backend-compatible
 			// heartbeat:min:max:step
-			step, err = strconv.ParseInt(dst_args[3], 10, 64)
+			step, err = strconv.ParseInt(args[3], 10, 64)
 			if err != nil {
 				return
 			}
@@ -128,7 +128,7 @@ func convertLine2MetaData(fields []string) (item *cmodel.MetaData, err error) {
 		Timestamp:   ts,
 		Step:        step,
 		Value:       v,
-		CounterType: type_,
+		CounterType: ct,
 		Tags:        make(map[string]string),
 	}
 

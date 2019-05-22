@@ -10,6 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// DeviceMetrics TODO:
 func DeviceMetrics() (L []*cmodel.MetricValue) {
 	mountPoints, err := nux.ListMountPoint()
 
@@ -26,8 +27,8 @@ func DeviceMetrics() (L []*cmodel.MetricValue) {
 		}
 	}
 
-	var diskTotal uint64 = 0
-	var diskUsed uint64 = 0
+	var diskTotal uint64
+	var diskUsed uint64
 
 	for idx := range mountPoints {
 		fsSpec, fsFile, fsVfstype := mountPoints[idx][0], mountPoints[idx][1], mountPoints[idx][2]
@@ -84,6 +85,7 @@ func DeviceMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
+// DeviceMetricsCheck TODO:
 func DeviceMetricsCheck() bool {
 	mountPoints, err := nux.ListMountPoint()
 

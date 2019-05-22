@@ -11,7 +11,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/nodata/judge"
 )
 
-func SetupProcHttpRoutes() {
+// SetupProcRoutes 设置路由
+func SetupProcRoutes() {
 	// counters
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
 		cutils.RenderDataJson(w, g.GetAllCounters())

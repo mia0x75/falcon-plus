@@ -4,31 +4,31 @@
 	},
 	"databases": {
 		"portal": {
-			"addr": "%%MYSQL%%/portal?charset=utf8&parseTime=True&loc=Local",
+			"addr": "%%MYSQL%%/portal?charset=utf8mb4&loc=Local&parseTime=true",
 			"max_idle": 4,
 			"max_connections": 8,
 			"wait_timeout": 30
 		},
 		"graph": {
-			"addr": "%%MYSQL%%/graph?charset=utf8&parseTime=True&loc=Local",
+			"addr": "%%MYSQL%%/graph?charset=utf8mb4&loc=Local&parseTime=true",
 			"max_idle": 4,
 			"max_connections": 8,
 			"wait_timeout": 30
 		},
 		"uic": {
-			"addr": "%%MYSQL%%/uic?charset=utf8&parseTime=True&loc=Local",
+			"addr": "%%MYSQL%%/uic?charset=utf8mb4&loc=Local&parseTime=true",
 			"max_idle": 4,
 			"max_connections": 8,
 			"wait_timeout": 30
 		},
 		"dashboard": {
-			"addr": "%%MYSQL%%/dashboard?charset=utf8&parseTime=True&loc=Local",
+			"addr": "%%MYSQL%%/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
 			"max_idle": 4,
 			"max_connections": 8,
 			"wait_timeout": 30
 		},
 		"alarms": {
-			"addr": "%%MYSQL%%/alarms?charset=utf8&parseTime=True&loc=Local",
+			"addr": "%%MYSQL%%/alarms?charset=utf8mb4&loc=Local&parseTime=true",
 			"max_idle": 4,
 			"max_connections": 8,
 			"wait_timeout": 30

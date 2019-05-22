@@ -23,6 +23,7 @@ import (
 	"runtime"
 )
 
+// 常量定义
 const (
 	Version = "${version}"
 	Git     = "${git}"

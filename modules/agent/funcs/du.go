@@ -20,6 +20,7 @@ import (
 
 var timeout = 30
 
+// DuMetrics TODO:
 func DuMetrics() (L []*cmodel.MetricValue) {
 	paths := hbs.ReportPaths()
 	result := make(chan *cmodel.MetricValue, len(paths))
@@ -49,7 +50,7 @@ func DuMetrics() (L []*cmodel.MetricValue) {
 			}
 			err, isTimeout := sys.CmdRunWithTimeout(cmd, time.Duration(timeout)*time.Second)
 			if isTimeout {
-				err = errors.New(fmt.Sprintf("exec cmd : du -bs %s timeout", path))
+				err = fmt.Errorf(fmt.Sprintf("exec cmd : du -bs %s timeout", path))
 				return
 			}
 
@@ -60,19 +61,19 @@ func DuMetrics() (L []*cmodel.MetricValue) {
 			}
 
 			if err != nil {
-				err = errors.New(fmt.Sprintf("du -bs %s failed: %s", path, err.Error()))
+				err = fmt.Errorf(fmt.Sprintf("du -bs %s failed: %s", path, err.Error()))
 				return
 			}
 
 			arr := strings.Fields(stdout.String())
 			if len(arr) < 2 {
-				err = errors.New(fmt.Sprintf("du -bs %s failed: %s", path, "return fields < 2"))
+				err = fmt.Errorf(fmt.Sprintf("du -bs %s failed: %s", path, "return fields < 2"))
 				return
 			}
 
 			size, err := strconv.ParseUint(arr[0], 10, 64)
 			if err != nil {
-				err = errors.New(fmt.Sprintf("cannot parse du -bs %s output", path))
+				err = fmt.Errorf(fmt.Sprintf("cannot parse du -bs %s output", path))
 				return
 			}
 			result <- GaugeValue(g.DU_BS, size, "path="+path)

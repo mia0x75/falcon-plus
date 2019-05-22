@@ -7,6 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// KernelMetrics TODO:
 func KernelMetrics() (L []*cmodel.MetricValue) {
 	maxFiles, err := nux.KernelMaxFiles()
 	if err != nil {

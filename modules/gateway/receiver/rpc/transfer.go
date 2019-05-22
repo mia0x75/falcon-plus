@@ -12,17 +12,20 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/sender"
 )
 
+// Transfer TODO:
 type Transfer int
 
-func (this *Transfer) Ping(req cmodel.NullRpcRequest, resp *cmodel.SimpleRpcResponse) error {
+// Ping TODO:
+func (t *Transfer) Ping(req cmodel.NullRpcRequest, resp *cmodel.SimpleRpcResponse) error {
 	return nil
 }
 
+// Update TODO:
 func (t *Transfer) Update(args []*cmodel.MetricValue, reply *cmodel.TransferResponse) error {
 	return RecvMetricValues(args, reply, "rpc")
 }
 
-// process new metric values
+// RecvMetricValues process new metric values
 func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse, from string) error {
 	start := time.Now()
 	reply.Invalid = 0

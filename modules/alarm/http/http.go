@@ -10,19 +10,21 @@ import (
 
 var routes *gin.Engine
 
+// SetupRoutes 设置路由
 func SetupRoutes() {
 	SetupCommonRoutes()
 }
 
+// Start 启动服务
 func Start() {
 	go start()
 }
 
 func start() {
-	if !g.Config().Http.Enabled {
+	if !g.Config().HTTP.Enabled {
 		return
 	}
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

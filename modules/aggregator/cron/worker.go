@@ -8,12 +8,14 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 )
 
+// Worker TODO:
 type Worker struct {
 	Ticker      *time.Ticker
 	ClusterItem *g.Cluster
 	Quit        chan struct{}
 }
 
+// NewWorker TODO:
 func NewWorker(ci *g.Cluster) Worker {
 	w := Worker{}
 	w.Ticker = time.NewTicker(time.Duration(ci.Step) * time.Second)
@@ -22,26 +24,31 @@ func NewWorker(ci *g.Cluster) Worker {
 	return w
 }
 
-func (this Worker) Start() {
+// Start TODO:
+func (w Worker) Start() {
 	go func() {
 		for {
 			select {
-			case <-this.Ticker.C:
-				WorkerRun(this.ClusterItem)
-			case <-this.Quit:
-				log.Debugf("[D] drop worker %v", this.ClusterItem)
-				this.Ticker.Stop()
+			case <-w.Ticker.C:
+				WorkerRun(w.ClusterItem)
+			case <-w.Quit:
+				log.Debugf("[D] drop worker %v", w.ClusterItem)
+				w.Ticker.Stop()
 				return
 			}
 		}
 	}()
 }
 
-func (this Worker) Drop() {
-	close(this.Quit)
+// Drop TODO:
+func (w Worker) Drop() {
+	close(w.Quit)
 }
 
-var Workers = make(map[string]Worker)
+// TODO:
+var (
+	Workers = make(map[string]Worker)
+)
 
 func deleteNoUseWorker(m map[string]*g.Cluster) {
 	del := []string{}

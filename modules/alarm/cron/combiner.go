@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
 
+// CombineSms 合并短信告警
 func CombineSms() {
 	go func() {
 		d := time.Duration(1) * time.Minute
@@ -22,6 +23,7 @@ func CombineSms() {
 	}()
 }
 
+// CombineMail 合并邮件告警
 func CombineMail() {
 	go func() {
 		d := time.Duration(1) * time.Minute
@@ -32,6 +34,7 @@ func CombineMail() {
 	}()
 }
 
+// CombineIM 合并IM告警
 func CombineIM() {
 	go func() {
 		d := time.Duration(1) * time.Minute

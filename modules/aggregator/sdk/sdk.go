@@ -13,9 +13,10 @@ import (
 	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
 )
 
-func HostnamesByID(group_id int64) ([]string, error) {
-	uri := fmt.Sprintf("%s/api/v1/hostgroup/%d", g.Config().Api.Api, group_id)
-	req, err := requests.CurlPlus(uri, "GET", "aggregator", g.Config().Api.Token,
+// HostnamesByID TODO:
+func HostnamesByID(groupID int64) ([]string, error) {
+	uri := fmt.Sprintf("%s/api/v1/hostgroup/%d", g.Config().API.API, groupID)
+	req, err := requests.CurlPlus(uri, "GET", "aggregator", g.Config().API.Token,
 		map[string]string{}, map[string]string{})
 
 	if err != nil {
@@ -44,21 +45,22 @@ func HostnamesByID(group_id int64) ([]string, error) {
 	return hosts, nil
 }
 
+// QueryLastPoints TODO:
 func QueryLastPoints(endpoints, counters []string) (resp []*cmodel.GraphLastResp, err error) {
 	cfg := g.Config()
-	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.Api.Api)
+	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.API.API)
 
 	var req *httplib.BeegoHttpRequest
 	headers := map[string]string{"Content-type": "application/json"}
-	req, err = requests.CurlPlus(uri, "POST", "aggregator", cfg.Api.Token,
+	req, err = requests.CurlPlus(uri, "POST", "aggregator", cfg.API.Token,
 		headers, map[string]string{})
 
 	if err != nil {
 		return
 	}
 
-	req.SetTimeout(time.Duration(cfg.Api.ConnectTimeout)*time.Millisecond,
-		time.Duration(cfg.Api.RequestTimeout)*time.Millisecond)
+	req.SetTimeout(time.Duration(cfg.API.ConnectTimeout)*time.Millisecond,
+		time.Duration(cfg.API.RequestTimeout)*time.Millisecond)
 
 	body := []*cmodel.GraphLastParam{}
 	for _, e := range endpoints {

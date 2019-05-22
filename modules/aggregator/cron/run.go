@@ -13,6 +13,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/aggregator/sdk"
 )
 
+// WorkerRun TODO:
 func WorkerRun(item *g.Cluster) {
 	numeratorStr := cleanParam(item.Numerator)
 	denominatorStr := cleanParam(item.Denominator)

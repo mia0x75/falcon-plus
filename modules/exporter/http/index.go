@@ -7,7 +7,8 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/exporter/index"
 )
 
-func SetupIndexHttpRoutes() {
+// SetupIndexRoutes 设置路由
+func SetupIndexRoutes() {
 	http.HandleFunc("/index/delete", func(w http.ResponseWriter, r *http.Request) {
 		index.DeleteIndex()
 		cutils.RenderDataJson(w, "ok")

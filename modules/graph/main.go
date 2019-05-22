@@ -32,7 +32,7 @@ func start_signal(pid int, cfg *g.GlobalConfig) {
 		switch s {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
 			log.Info("[I] graceful shut down")
-			if cfg.Rpc.Enabled {
+			if cfg.RPC.Enabled {
 				api.Close_chan <- 1
 				<-api.Close_done_chan
 			}

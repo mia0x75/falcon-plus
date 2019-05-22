@@ -17,10 +17,10 @@ func SetupRoutes() {
 
 // Start TODO:
 func Start() {
-	go startHTTPServer()
+	go start()
 }
 
-func startHTTPServer() {
+func start() {
 	if !g.Config().HTTP.Enabled {
 		return
 	}

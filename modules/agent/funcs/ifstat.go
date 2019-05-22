@@ -8,10 +8,12 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// NetMetrics TODO:
 func NetMetrics() []*cmodel.MetricValue {
 	return CoreNetMetrics(g.Config().Collector.System.IfacePrefix)
 }
 
+// CoreNetMetrics TODO:
 func CoreNetMetrics(ifacePrefix []string) []*cmodel.MetricValue {
 	netIfs, err := nux.NetIfs(ifacePrefix)
 	if err != nil {

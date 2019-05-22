@@ -13,15 +13,18 @@ import (
 	"github.com/toolkits/file"
 )
 
-type HttpConfig struct {
+// HTTPConfig HTTP配置
+type HTTPConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
+// LogConfig 日志配置
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// DatabaseConfig 数据库配置
 type DatabaseConfig struct {
 	Addr           string `json:"addr"`
 	MaxIdle        int    `json:"max_idle"`
@@ -29,6 +32,7 @@ type DatabaseConfig struct {
 	WaitTimeout    int    `json:"wait_timeout"`
 }
 
+// GlobalConfig HBS模块配置
 type GlobalConfig struct {
 	Log            *LogConfig      `json:"log"`
 	Hosts          string          `json:"hosts"`
@@ -37,21 +41,24 @@ type GlobalConfig struct {
 	MaxIdle        int             `json:"max_idle"`
 	Listen         string          `json:"listen"`
 	Trustable      []string        `json:"trustable"`
-	Http           *HttpConfig     `json:"http"`
+	HTTP           *HTTPConfig     `json:"http"`
 }
 
+// 变量定义
 var (
 	ConfigFile string
 	config     *GlobalConfig
 	configLock = new(sync.RWMutex)
 )
 
+// Config 获取HBS模块配置
 func Config() *GlobalConfig {
 	configLock.RLock()
 	defer configLock.RUnlock()
 	return config
 }
 
+// ParseConfig 解析配置文件
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] use -c to specify configuration file")

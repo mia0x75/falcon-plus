@@ -9,26 +9,25 @@ import (
 	prpc "github.com/open-falcon/falcon-plus/modules/transfer/receiver/rpc"
 )
 
-func api_push_datapoints(rw http.ResponseWriter, req *http.Request) {
-	if req.ContentLength == 0 {
-		http.Error(rw, "blank body", http.StatusBadRequest)
-		return
-	}
+// SetupAPIRoutes 设置路由
+func SetupAPIRoutes() {
+	http.HandleFunc("/api/push", func(w http.ResponseWriter, r *http.Request) {
+		if r.ContentLength == 0 {
+			http.Error(w, "blank body", http.StatusBadRequest)
+			return
+		}
 
-	decoder := json.NewDecoder(req.Body)
-	var metrics []*cmodel.MetricValue
-	err := decoder.Decode(&metrics)
-	if err != nil {
-		http.Error(rw, "decode error", http.StatusBadRequest)
-		return
-	}
+		decoder := json.NewDecoder(r.Body)
+		var metrics []*cmodel.MetricValue
+		err := decoder.Decode(&metrics)
+		if err != nil {
+			http.Error(w, "decode error", http.StatusBadRequest)
+			return
+		}
 
-	reply := &cmodel.TransferResponse{}
-	prpc.RecvMetricValues(metrics, reply, "http")
+		reply := &cmodel.TransferResponse{}
+		prpc.RecvMetricValues(metrics, reply, "http")
 
-	cutils.RenderDataJson(rw, reply)
-}
-
-func SetupApiRoutes() {
-	http.HandleFunc("/api/push", api_push_datapoints)
+		cutils.RenderDataJson(w, reply)
+	})
 }

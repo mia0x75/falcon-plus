@@ -13,25 +13,30 @@ import (
 	"github.com/toolkits/file"
 )
 
+// File TODO:
 type File struct {
 	Filename string
 	Body     []byte
 }
 
-type HttpConfig struct {
+// HTTPConfig HTTP配置
+type HTTPConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
-type RpcConfig struct {
+// RPCConfig RPC配置
+type RPCConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
+// RRDConfig RRD配置
 type RRDConfig struct {
 	Storage string `json:"storage"`
 }
 
+// DatabaseConfig 数据库配置
 type DatabaseConfig struct {
 	Addr           string `json:"addr"`
 	MaxIdle        int    `json:"max_idle"`
@@ -39,15 +44,17 @@ type DatabaseConfig struct {
 	WaitTimeout    int    `json:"wait_timeout"`
 }
 
+// LogConfig 日志配置
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// GlobalConfig Graph模块配置
 type GlobalConfig struct {
 	Log            *LogConfig      `json:"log"`
 	Pid            string          `json:"pid"`
-	Http           *HttpConfig     `json:"http"`
-	Rpc            *RpcConfig      `json:"rpc"`
+	HTTP           *HTTPConfig     `json:"http"`
+	RPC            *RPCConfig      `json:"rpc"`
 	RRD            *RRDConfig      `json:"rrd"`
 	Database       *DatabaseConfig `json:"database"`
 	ExecuteTimeout int32           `json:"execute_timeout"`
@@ -62,15 +69,18 @@ type GlobalConfig struct {
 	PerfCounter *pfcg.GlobalConfig `json:"pfc"`
 }
 
+// 变量定义
 var (
 	ConfigFile string
 	ptr        unsafe.Pointer
 )
 
+// Config 获取Graph模块配置
 func Config() *GlobalConfig {
 	return (*GlobalConfig)(atomic.LoadPointer(&ptr))
 }
 
+// ParseConfig 解析配置文件
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] config file not specified: use -c $filename")
@@ -107,7 +117,7 @@ func ParseConfig(cfg string) {
 
 	if c.PerfCounter != nil {
 		c.PerfCounter.Debug = c.Log.Level == "debug"
-		port := strings.Split(c.Http.Listen, ":")[1]
+		port := strings.Split(c.HTTP.Listen, ":")[1]
 		if c.PerfCounter.Tags == "" {
 			c.PerfCounter.Tags = fmt.Sprintf("port=%s", port)
 		} else {

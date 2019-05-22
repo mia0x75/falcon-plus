@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/model"
 )
 
+// StopDesiredAgent TODO:
 func StopDesiredAgent(da *model.DesiredAgent) {
 	if !file.IsExist(da.ControlFilepath) {
 		return
@@ -20,6 +21,7 @@ func StopDesiredAgent(da *model.DesiredAgent) {
 	ControlStopIn(da.AgentVersionDir)
 }
 
+// StopAgentOf TODO:
 func StopAgentOf(agentName, newVersion string) error {
 	agentDir := path.Join(g.SelfDir, agentName)
 	versionFile := path.Join(agentDir, ".version")
@@ -49,6 +51,7 @@ func StopAgentOf(agentName, newVersion string) error {
 	return ControlStopIn(versionDir)
 }
 
+// ControlStopIn TODO:
 func ControlStopIn(workdir string) error {
 	if !file.IsExist(workdir) {
 		return nil

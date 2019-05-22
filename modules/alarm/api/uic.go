@@ -106,20 +106,20 @@ func CurlUic(team string) []*uic.User {
 		return []*uic.User{}
 	}
 
-	uri := fmt.Sprintf("%s/api/v1/team/name/%s", g.Config().Api.Api, team)
+	uri := fmt.Sprintf("%s/api/v1/team/name/%s", g.Config().API.API, team)
 	req := httplib.Get(uri).SetTimeout(2*time.Second, 10*time.Second)
 	token, _ := json.Marshal(map[string]string{
 		"name": "falcon-alarm",
-		"sig":  g.Config().Api.Token,
+		"sig":  g.Config().API.Token,
 	})
 	req.Header("Apitoken", string(token))
 
-	var team_users APIGetTeamOutput
-	err := req.ToJson(&team_users)
+	var teamUsers APIGetTeamOutput
+	err := req.ToJson(&teamUsers)
 	if err != nil {
 		log.Errorf("[E] curl %s fail: %v", uri, err)
 		return nil
 	}
 
-	return team_users.Users
+	return teamUsers.Users
 }

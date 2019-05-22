@@ -7,6 +7,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 )
 
+// SleepRandomDuration 随即挂起
 func SleepRandomDuration() {
 	ns := int64(g.Config().Interval) * 1000000000
 	// 以当前时间为随机数种子，如果所有ops-updater在同一时间启动，系统时间是相同的，那么随机种子就是一样的

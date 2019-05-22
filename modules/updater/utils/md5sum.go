@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// Md5sumCheck 计算md5
 func Md5sumCheck(workdir, md5file string) bool {
 	cmd := exec.Command("md5sum", "-c", md5file)
 	cmd.Dir = workdir

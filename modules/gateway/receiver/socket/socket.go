@@ -8,6 +8,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
+// Start 启动TCP服务
 func Start() {
 	go start()
 }

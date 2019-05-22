@@ -14,7 +14,7 @@
 		"storage": "./data/6070"
 	},
 	"database": {
-		"addr": "root:@tcp(127.0.0.1:3306)/graph?loc=Local&parseTime=true",
+		"addr": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8mb4&loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
 		"wait_timeout": 30

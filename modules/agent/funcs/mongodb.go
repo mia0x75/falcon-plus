@@ -80,12 +80,12 @@ type IndexCounterStats struct {
 	MissRatio float64 `bson:"missRatio"`
 }
 
-// StorageEngineStats
+// StorageEngineStats TODO:
 type StorageEngineStats struct {
 	Name string `bson:"name"`
 }
 
-// blockmanager stats
+// WTBlockManagerStats TODO:
 type WTBlockManagerStats struct {
 	MappedBytesRead  float64 `bson:"mapped bytes read"`
 	BytesRead        float64 `bson:"bytes read"`
@@ -96,6 +96,7 @@ type WTBlockManagerStats struct {
 	BlocksWritten    float64 `bson:"blocks written"`
 }
 
+// RocksDbStatsCounters TODO:
 type RocksDbStatsCounters struct {
 	NumKeysWritten         float64 `bson:"num-keys-written"`
 	NumKeysRead            float64 `bson:"num-keys-read"`
@@ -113,6 +114,7 @@ type RocksDbStatsCounters struct {
 	CompactionBytesWritten float64 `bson:"compaction-bytes-written"`
 }
 
+// RocksDbStats TODO:
 type RocksDbStats struct {
 	NumImmutableMemTable       string                `bson:"num-immutable-mem-table"`
 	MemTableFlushPending       string                `bson:"mem-table-flush-pending"`
@@ -135,11 +137,13 @@ type RocksDbStats struct {
 	Counters                   *RocksDbStatsCounters `bson:"counters,omitempty"`
 }
 
+// RocksDbLevelStatsFiles TODO:
 type RocksDbLevelStatsFiles struct {
 	Num         float64
 	CompThreads float64
 }
 
+// RocksDbLevelStats TODO:
 type RocksDbLevelStats struct {
 	Level    string
 	Files    *RocksDbLevelStatsFiles
@@ -161,7 +165,7 @@ type RocksDbLevelStats struct {
 	KeyDrop  float64
 }
 
-// cache stats
+// WTCacheStats cache stats
 type WTCacheStats struct {
 	BytesTotal         float64 `bson:"bytes currently in the cache"`
 	BytesDirty         float64 `bson:"tracked dirty bytes in the cache"`
@@ -179,7 +183,7 @@ type WTCacheStats struct {
 	PagesDirty         float64 `bson:"tracked dirty pages in the cache"`
 }
 
-// log stats
+// WTLogStats log stats
 type WTLogStats struct {
 	TotalBufferSize         float64 `bson:"total log buffer size"`
 	TotalSizeCompressed     float64 `bson:"total size of compressed records"`
@@ -198,13 +202,13 @@ type WTLogStats struct {
 	LogWrites               float64 `bson:"log write operations"`
 }
 
-// session stats
+// WTSessionStats session stats
 type WTSessionStats struct {
 	Cursors  float64 `bson:"open cursor count"`
 	Sessions float64 `bson:"open session count"`
 }
 
-// transaction stats
+// WTTransactionStats transaction stats
 type WTTransactionStats struct {
 	Begins               float64 `bson:"transaction begins"`
 	Checkpoints          float64 `bson:"transaction checkpoints"`
@@ -218,19 +222,20 @@ type WTTransactionStats struct {
 	RolledBack           float64 `bson:"transactions rolled back"`
 }
 
-// concurrenttransaction stats
+// WTConcurrentTransactionsTypeStats concurrenttransaction stats
 type WTConcurrentTransactionsTypeStats struct {
 	Out          float64 `bson:"out"`
 	Available    float64 `bson:"available"`
 	TotalTickets float64 `bson:"totalTickets"`
 }
 
+// WTConcurrentTransactionsStats TODO:
 type WTConcurrentTransactionsStats struct {
 	Write *WTConcurrentTransactionsTypeStats `bson:"read"`
 	Read  *WTConcurrentTransactionsTypeStats `bson:"write"`
 }
 
-// WiredTiger stats
+// WiredTigerStats WiredTiger stats
 type WiredTigerStats struct {
 	BlockManager           *WTBlockManagerStats           `bson:"block-manager"`
 	Cache                  *WTCacheStats                  `bson:"cache"`
@@ -498,6 +503,7 @@ type ServerStatus struct {
 	WiredTiger         *WiredTigerStats     `bson:"wiredTiger"`         //
 }
 
+// NewMongoDB TODO:
 func NewMongoDB() *mgo.Session {
 	db, err := mgo.Dial("localhost")
 	if err != nil {
@@ -508,6 +514,7 @@ func NewMongoDB() *mgo.Session {
 
 var mgoTags string
 
+// MongoDBMetrics TODO:
 func MongoDBMetrics() (L []*cmodel.MetricValue) {
 	if g.Config().Collector.MongoDB == nil {
 		return nil
@@ -527,6 +534,7 @@ func MongoDBMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
+// MongoDBStatInfo TODO:
 func MongoDBStatInfo(session *mgo.Session) (L []*cmodel.MetricValue) {
 	var serverStatus = GetServerStatus(session)
 	fmt.Println(serverStatus.Version)

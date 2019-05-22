@@ -2,29 +2,31 @@ package http
 
 import (
 	"net/http"
-	_ "net/http/pprof"
+	_ "net/http/pprof" // TODO:
 
 	log "github.com/sirupsen/logrus"
 
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
+// SetupRoutes 设置路由
 func SetupRoutes() {
 	SetupCommonRoutes()
-	SetupProcHttpRoutes()
-	SetupDebugHttpRoutes()
+	SetupProcRoutes()
+	SetupDebugRoutes()
 }
 
+// Start 启动服务
 func Start() {
-	go startHttpServer()
+	go start()
 }
 
-func startHttpServer() {
-	if !g.Config().Http.Enabled {
+func start() {
+	if !g.Config().HTTP.Enabled {
 		return
 	}
 
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

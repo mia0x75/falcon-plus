@@ -11,6 +11,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// NewRedis TODO:
 func NewRedis() *redis.Client {
 	c := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", g.Config().Collector.Redis.Host, g.Config().Collector.Redis.Port),
@@ -22,6 +23,7 @@ func NewRedis() *redis.Client {
 
 var tags string
 
+// RedisMetrics TODO:
 func RedisMetrics() (L []*cmodel.MetricValue) {
 	if g.Config().Collector.Redis == nil {
 		return nil
@@ -41,6 +43,7 @@ func RedisMetrics() (L []*cmodel.MetricValue) {
 	return
 }
 
+// RedisStatInfo TODO:
 func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	monitorKeys := map[string]string{
 		"connected_clients":              "GAUGE", // 当前已连接的客户端个数
@@ -189,6 +192,7 @@ func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	return
 }
 
+// RedisCmdStatInfo TODO:
 func RedisCmdStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 	// r := client.Do("info commandstats")
 	// r, _ := redis.String(conn.Do("info", "Commandstats"))

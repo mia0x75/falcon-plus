@@ -9,6 +9,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 )
 
+// SetupProcRoutes 设置路由
 func SetupProcRoutes() {
 	http.HandleFunc("/expressions", func(w http.ResponseWriter, r *http.Request) {
 		cutils.RenderDataJson(w, cache.ExpressionCache.Get())

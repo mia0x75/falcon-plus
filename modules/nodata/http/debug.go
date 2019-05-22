@@ -10,7 +10,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/nodata/sender"
 )
 
-func SetupDebugHttpRoutes() {
+func SetupDebugRoutes() {
 	http.HandleFunc("/debug/collector/collect", func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now().Unix()
 		cnt := collector.CollectDataOnce()

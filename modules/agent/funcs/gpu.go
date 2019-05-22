@@ -7,7 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
-// 需要load libnvidia-ml.so.1库
+// GpuMetrics 需要load libnvidia-ml.so.1库
 func GpuMetrics() (L []*cmodel.MetricValue) {
 	if err := gonvml.Initialize(); err != nil {
 		log.Errorf("[E] Initialize error: %v", err)

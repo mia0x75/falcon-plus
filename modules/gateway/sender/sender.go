@@ -11,10 +11,12 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
+// 常量列表
 const (
 	DefaultSendQueueMaxSize = 1024000 //102.4w
 )
 
+// 变量列表
 var (
 	SenderQueue     = nlist.NewSafeListLimited(DefaultSendQueueMaxSize)
 	SenderConnPools *cpools.SafeRpcConnPools
@@ -25,6 +27,7 @@ var (
 	TransferSendFailCnt = make(map[string]*nproc.SCounterQps, 0)
 )
 
+// Start TODO:
 func Start() {
 	initConnPools()
 	startSendTasks()
@@ -32,6 +35,7 @@ func Start() {
 	log.Info("[I] send.Start, ok")
 }
 
+// Push2SendQueue TODO:
 func Push2SendQueue(items []*cmodel.MetaData) {
 	for _, item := range items {
 

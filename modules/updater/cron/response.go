@@ -7,6 +7,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/model"
 )
 
+// HandleHeartbeatResponse TODO:
 func HandleHeartbeatResponse(respone *model.HeartbeatResponse) {
 	if respone.ErrorMessage != "" {
 		log.Errorf("[E] receive error message: %s", respone.ErrorMessage)
@@ -27,6 +28,7 @@ func HandleHeartbeatResponse(respone *model.HeartbeatResponse) {
 	}
 }
 
+// HandleDesiredAgent TODO:
 func HandleDesiredAgent(da *model.DesiredAgent) {
 	if da.Cmd == "start" {
 		StartDesiredAgent(da)

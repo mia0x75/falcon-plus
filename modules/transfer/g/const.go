@@ -12,6 +12,7 @@ package g
 // 0.0.16: support config of min step
 // 0.0.17: remove migrating, which is implemented in graph
 
+// 常量定义
 const (
 	GAUGE        = "GAUGE"
 	COUNTER      = "COUNTER"

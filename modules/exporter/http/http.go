@@ -8,23 +8,24 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 )
 
+// SetupRoutes 设置路由
 func SetupRoutes() {
 	SetupCommonRoutes()
-	SetupProcHttpRoutes()
-	SetupIndexHttpRoutes()
+	SetupProcRoutes()
+	SetupIndexRoutes()
 }
 
-// start http server
+// Start 启动服务
 func Start() {
 	go start()
 }
 
 func start() {
-	if !g.Config().Http.Enabled {
+	if !g.Config().HTTP.Enabled {
 		return
 	}
 
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

@@ -7,6 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// MemMetrics TODO:
 func MemMetrics() []*cmodel.MetricValue {
 	m, err := nux.MemInfo()
 	if err != nil {

@@ -14,6 +14,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/model"
 )
 
+// BuildHeartbeatRequest TODO:
 func BuildHeartbeatRequest(hostname string, agentDirs []string) model.HeartbeatRequest {
 	req := model.HeartbeatRequest{Hostname: hostname}
 
@@ -64,6 +65,7 @@ func BuildHeartbeatRequest(hostname string, agentDirs []string) model.HeartbeatR
 	return req
 }
 
+// ListAgentDirs TODO:
 func ListAgentDirs() ([]string, error) {
 	agentDirs, err := f.DirsUnder(g.SelfDir)
 	if err != nil {

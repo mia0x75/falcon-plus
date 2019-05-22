@@ -49,7 +49,7 @@ func main() {
 
 	// sdk configuration
 	sender.Debug = cutils.IsDebug()
-	sender.PostPushUrl = g.Config().Api.Agent
+	sender.PostPushUrl = g.Config().API.Agent
 	// sender
 	sender.StartSender()
 

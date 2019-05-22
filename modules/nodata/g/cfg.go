@@ -17,11 +17,13 @@ import (
 	"github.com/toolkits/file"
 )
 
-type HttpConfig struct {
+// HTTPConfig HTTP配置
+type HTTPConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
+// PlusAPIConfig PlusAPI配置
 type PlusAPIConfig struct {
 	Addr           string `json:"addr"`
 	Token          string `json:"token"`
@@ -29,6 +31,7 @@ type PlusAPIConfig struct {
 	RequestTimeout int32  `json:"request_timeout"`
 }
 
+// DatabaseConfig 数据库配置
 type DatabaseConfig struct {
 	Enabled        bool   `json:"enabled"`
 	Addr           string `json:"addr"`
@@ -37,12 +40,14 @@ type DatabaseConfig struct {
 	WaitTimeout    int    `json:"wait_timeout"`
 }
 
+// CollectorConfig Collector配置
 type CollectorConfig struct {
 	Enabled    bool  `json:"enabled"`
 	Batch      int32 `json:"batch"`
 	Concurrent int32 `json:"concurrent"`
 }
 
+// TransferConfig Transfer配置
 type TransferConfig struct {
 	Enabled        bool   `json:"enabled"`
 	Addr           string `json:"addr"`
@@ -51,31 +56,36 @@ type TransferConfig struct {
 	Batch          int32  `json:"batch"`
 }
 
+// LogConfig 日志配置
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// GlobalConfig Nodata模块配置
 type GlobalConfig struct {
 	Log       *LogConfig       `json:"log"`
-	Http      *HttpConfig      `json:"http"`
-	Api       *PlusAPIConfig   `json:"api"`
+	HTTP      *HTTPConfig      `json:"http"`
+	API       *PlusAPIConfig   `json:"api"`
 	Database  *DatabaseConfig  `json:"database"`
 	Collector *CollectorConfig `json:"collector"`
 	Transfer  *TransferConfig  `json:"transfer"`
 }
 
+// 变量定义
 var (
 	ConfigFile string
 	config     *GlobalConfig
 	configLock = new(sync.RWMutex)
 )
 
+// Config 获取Nodata模块的配置
 func Config() *GlobalConfig {
 	configLock.RLock()
 	defer configLock.RUnlock()
 	return config
 }
 
+// ParseConfig 解析配置文件
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] use -c to specify configuration file")

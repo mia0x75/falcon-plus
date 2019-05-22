@@ -20,11 +20,13 @@ import (
 	"github.com/toolkits/file"
 )
 
+// AlarmConfig Alarm配置
 type AlarmConfig struct {
 	Enabled bool   `json:"enabled"`
 	Url     string `json:"url"`
 }
 
+// IndexConfig Index配置
 type IndexConfig struct {
 	Enabled        bool              `json:"enabled"`
 	Addr           string            `json:"addr"`
@@ -35,11 +37,13 @@ type IndexConfig struct {
 	Cluster        map[string]string `json:"cluster"`
 }
 
-type HttpConfig struct {
+// HTTPConfig HTTP配置
+type HTTPConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
+// MonitorConfig Monitor配置
 type MonitorConfig struct {
 	Enabled bool         `json:"enabled"`
 	Alarm   *AlarmConfig `json:"alarm"`
@@ -47,11 +51,13 @@ type MonitorConfig struct {
 	Hosts   *HostsConfig `json:"hosts"`
 }
 
+// HostsConfig Hosts配置
 type HostsConfig struct {
 	Agents  []string          `json:"agents"`
 	Modules map[string]string `json:"modules"`
 }
 
+// CollectorConfig Collector配置
 type CollectorConfig struct {
 	Enabled bool     `json:"enabled"`
 	Agent   string   `json:"agent"`
@@ -59,6 +65,7 @@ type CollectorConfig struct {
 	Cluster []string `json:"cluster"`
 }
 
+// PluginConfig Plugin配置
 type PluginConfig struct {
 	Pattern        string `json:"pattern"`
 	Interval       int32  `json:"interval"`
@@ -67,10 +74,12 @@ type PluginConfig struct {
 	RequestTimeout int32  `json:"request_timeout"`
 }
 
+// CleanerConfig Cleaner配置
 type CleanerConfig struct {
 	Interval int32 `json:"interval"`
 }
 
+// AgentConfig Agent配置
 type AgentConfig struct {
 	Enabled bool           `json:"enabled"`
 	Dsn     string         `json:"dsn"`
@@ -79,13 +88,15 @@ type AgentConfig struct {
 	Cleaner *CleanerConfig `json:"cleaner"`
 }
 
+// LogConfig 日志配置
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// GlobalConfig Global模块配置
 type GlobalConfig struct {
 	Log       *LogConfig       `json:"log"`
-	Http      *HttpConfig      `json:"http"`
+	HTTP      *HTTPConfig      `json:"http"`
 	Index     *IndexConfig     `json:"index"`
 	Collector *CollectorConfig `json:"collector"`
 	Monitor   *MonitorConfig   `json:"monitor"`
@@ -93,18 +104,21 @@ type GlobalConfig struct {
 	Host      string           `json:"host"`
 }
 
+// 变量定义
 var (
 	ConfigFile string
 	config     *GlobalConfig
 	configLock = new(sync.RWMutex)
 )
 
+// Config 获取Exporter模块的配置
 func Config() *GlobalConfig {
 	configLock.RLock()
 	defer configLock.RUnlock()
 	return config
 }
 
+// ParseConfig 解析配置
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] use -c to specify configuration file")

@@ -11,6 +11,7 @@ import (
 	"github.com/toolkits/file"
 )
 
+// Hostname 获取主机名称
 func Hostname(configHostname string) (string, error) {
 	if configHostname != "" {
 		return configHostname, nil
@@ -41,6 +42,7 @@ func GetLocalIP() string {
 	return ""
 }
 
+// GetUserByPid TODO:
 func GetUserByPid(pid int) string {
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("ps aux|awk '{if(%d==$2){print $1}}'", pid))
 	cmd.Dir = file.SelfDir()
@@ -52,6 +54,7 @@ func GetUserByPid(pid int) string {
 	return strings.Replace(string(bs), "\n", "", -1)
 }
 
+// ExecuteCommand 执行外部Linux命令
 func ExecuteCommand(workdir, arg string) (string, error) {
 	cmd := exec.Command("/bin/sh", "-c", arg)
 	cmd.Dir = workdir
@@ -62,6 +65,7 @@ func ExecuteCommand(workdir, arg string) (string, error) {
 	return string(bs), err
 }
 
+// CheckUserExists TODO:
 func CheckUserExists(username string) bool {
 	_, err := ExecuteCommand(file.SelfDir(), fmt.Sprintf("id -u %s", username))
 	if nil != err {

@@ -11,6 +11,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
+// SetupCommonRoutes 设置路由
 func SetupCommonRoutes() {
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("ok\n"))

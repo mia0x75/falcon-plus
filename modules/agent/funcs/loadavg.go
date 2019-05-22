@@ -7,6 +7,7 @@ import (
 	cmodel "github.com/open-falcon/falcon-plus/common/model"
 )
 
+// LoadAvgMetrics TODO:
 func LoadAvgMetrics() []*cmodel.MetricValue {
 	load, err := nux.LoadAvg()
 	if err != nil {

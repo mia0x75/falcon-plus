@@ -12,12 +12,12 @@ import (
 )
 
 func consume(event *cmodel.Event, isHigh bool) {
-	actionId := event.ActionId()
-	if actionId <= 0 {
+	actionID := event.ActionId()
+	if actionID <= 0 {
 		return
 	}
 
-	action := api.GetAction(actionId)
+	action := api.GetAction(actionID)
 	if action == nil {
 		return
 	}
@@ -72,6 +72,7 @@ func consumeLowEvents(event *cmodel.Event, action *api.Action) {
 	ParseUserMail(event, action)
 }
 
+// ParseUserSms TODO:
 func ParseUserSms(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
 	queue := g.Config().Queue.LatentQueues.SmsQueue
@@ -98,6 +99,7 @@ func ParseUserSms(event *cmodel.Event, action *api.Action) {
 	}
 }
 
+// ParseUserMail TODO:
 func ParseUserMail(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
 	queue := g.Config().Queue.LatentQueues.MailQueue
@@ -124,6 +126,7 @@ func ParseUserMail(event *cmodel.Event, action *api.Action) {
 	}
 }
 
+// ParseUserIm TODO:
 func ParseUserIm(event *cmodel.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
 	queue := g.Config().Queue.LatentQueues.IMQueue

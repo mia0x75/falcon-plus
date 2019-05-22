@@ -13,6 +13,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/updater/utils"
 )
 
+// Heartbeat TODO:
 func Heartbeat() {
 	go func() {
 		SleepRandomDuration()
@@ -65,5 +66,4 @@ func heartbeat() {
 	log.Debugf("[D] %v", heartbeatResponse)
 
 	HandleHeartbeatResponse(&heartbeatResponse)
-
 }

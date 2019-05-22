@@ -43,7 +43,7 @@ func Start() {
 }
 
 func start() {
-	if !g.Config().Http.Enabled {
+	if !g.Config().HTTP.Enabled {
 		log.Info("[I] http.Start warning, not enabled")
 		return
 	}
@@ -54,7 +54,7 @@ func start() {
 
 	SetupRoutes()
 
-	addr := g.Config().Http.Listen
+	addr := g.Config().HTTP.Listen
 	if addr == "" {
 		return
 	}

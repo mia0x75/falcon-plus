@@ -5,13 +5,16 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
+// FuncsAndInterval TODO:
 type FuncsAndInterval struct {
 	Fs       []func() []*cmodel.MetricValue
 	Interval int
 }
 
+// Mappers TODO:
 var Mappers []FuncsAndInterval
 
+// BuildMappers TODO:
 func BuildMappers() {
 	interval := g.Config().Transfer.Interval
 	Mappers = []FuncsAndInterval{

@@ -60,16 +60,17 @@ func GetAction(id int) *Action {
 	return action
 }
 
+// CurlAction TODO:
 func CurlAction(id int) *Action {
 	if id <= 0 {
 		return nil
 	}
 
-	uri := fmt.Sprintf("%s/api/v1/action/%d", g.Config().Api.Api, id)
+	uri := fmt.Sprintf("%s/api/v1/action/%d", g.Config().API.API, id)
 	req := httplib.Get(uri).SetTimeout(5*time.Second, 30*time.Second)
 	token, _ := json.Marshal(map[string]string{
 		"name": "falcon-alarm",
-		"sig":  g.Config().Api.Token,
+		"sig":  g.Config().API.Token,
 	})
 	req.Header("Apitoken", string(token))
 

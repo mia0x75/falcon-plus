@@ -12,6 +12,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
 
+// ConsumeSms 处理队列
 func ConsumeSms() {
 	go func() {
 		d := time.Duration(1) * time.Second
@@ -25,6 +26,7 @@ func ConsumeSms() {
 	}()
 }
 
+// SendSmsList 处理短信告警队列
 func SendSmsList(L []*g.AlarmDto) {
 	for _, sms := range L {
 		SmsWorkerChan <- 1
@@ -32,16 +34,16 @@ func SendSmsList(L []*g.AlarmDto) {
 	}
 }
 
+// SendSms 发送短信告警
 func SendSms(sms *g.AlarmDto) {
 	defer func() {
 		<-SmsWorkerChan
 	}()
 
-	url := g.Config().Api.Sms
+	url := g.Config().API.Sms
 	if strings.TrimSpace(url) != "" {
 		if data, err := json.Marshal(sms); err != nil {
 			log.Errorf("[E] %v", err)
-			return
 		} else {
 			resp, err := cutils.Post(url, data)
 			if err != nil {

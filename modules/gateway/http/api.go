@@ -9,6 +9,7 @@ import (
 	trpc "github.com/open-falcon/falcon-plus/modules/gateway/receiver/rpc"
 )
 
+// SetupAPIRoutes 设置路由
 func SetupAPIRoutes() {
 	http.HandleFunc("/api/push", func(w http.ResponseWriter, req *http.Request) {
 		if req.ContentLength == 0 {

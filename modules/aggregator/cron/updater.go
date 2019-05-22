@@ -7,6 +7,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 )
 
+// UpdateItems TODO:
 func UpdateItems() {
 	go func() {
 		d := time.Duration(g.Config().Database.Interval) * time.Second

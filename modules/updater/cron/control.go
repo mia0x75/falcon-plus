@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Control TODO:
 func Control(workdir, arg string) (string, error) {
 	cmd := exec.Command("./control", arg)
 	cmd.Dir = workdir
@@ -16,14 +17,17 @@ func Control(workdir, arg string) (string, error) {
 	return string(bs), err
 }
 
+// ControlStatus TODO:
 func ControlStatus(workdir string) (string, error) {
 	return Control(workdir, "status")
 }
 
+// ControlStart TODO:
 func ControlStart(workdir string) (string, error) {
 	return Control(workdir, "start")
 }
 
+// ControlStop TODO:
 func ControlStop(workdir string) (string, error) {
 	return Control(workdir, "stop")
 }

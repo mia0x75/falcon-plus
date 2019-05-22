@@ -12,6 +12,7 @@ package g
 // 0.0.10: control sending concurrent of slow transfers
 // 0.0.11: use pfc
 
+// 常量定义
 const (
 	GAUGE        = "GAUGE"
 	COUNTER      = "COUNTER"

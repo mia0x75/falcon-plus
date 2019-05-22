@@ -6,6 +6,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
+// BuildContent 构建告警内容对象
 func BuildContent(tos []string, event *cmodel.Event) *g.AlarmDto {
 	link := g.Link(event)
 	data := &g.AlarmDto{
@@ -29,14 +30,17 @@ func BuildContent(tos []string, event *cmodel.Event) *g.AlarmDto {
 	return data
 }
 
+// GenerateSmsContent 生成短信告警内容
 func GenerateSmsContent(phones []string, event *cmodel.Event) *g.AlarmDto {
 	return BuildContent(phones, event)
 }
 
+// GenerateMailContent 生成邮件告警内容
 func GenerateMailContent(mails []string, event *cmodel.Event) *g.AlarmDto {
 	return BuildContent(mails, event)
 }
 
+// GenerateIMContent 生成IM告警内容
 func GenerateIMContent(ims []string, event *cmodel.Event) *g.AlarmDto {
 	return BuildContent(ims, event)
 }

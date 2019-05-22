@@ -139,18 +139,18 @@ func fetchItemsAndStore(fetchKeys []string, fetchSize int) (size int, errt error
 
 func queryLastPoints(param []*cmodel.GraphLastParam) (resp []*cmodel.GraphLastResp, err error) {
 	cfg := g.Config()
-	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.Api.Addr)
+	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.API.Addr)
 
 	var req *httplib.BeegoHttpRequest
 	headers := map[string]string{"Content-type": "application/json"}
-	req, err = requests.CurlPlus(uri, "POST", "nodata", cfg.Api.Token,
+	req, err = requests.CurlPlus(uri, "POST", "nodata", cfg.API.Token,
 		headers, map[string]string{})
 
 	if err != nil {
 		return
 	}
-	req.SetTimeout(time.Duration(cfg.Api.ConnectTimeout)*time.Millisecond,
-		time.Duration(cfg.Api.RequestTimeout)*time.Millisecond)
+	req.SetTimeout(time.Duration(cfg.API.ConnectTimeout)*time.Millisecond,
+		time.Duration(cfg.API.RequestTimeout)*time.Millisecond)
 
 	b, err := json.Marshal(param)
 	if err != nil {

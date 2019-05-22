@@ -11,6 +11,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
+// SetupCommonRoutes 设置路由
 func SetupCommonRoutes() {
 	routes.GET("/health", func(c *gin.Context) {
 		c.Writer.Write([]byte("ok\n"))

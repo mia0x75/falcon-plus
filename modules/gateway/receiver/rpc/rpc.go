@@ -10,18 +10,19 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/gateway/g"
 )
 
+// Start 启动RPC服务
 func Start() {
 	go start()
 }
 
 func start() {
-	if !g.Config().Rpc.Enabled {
+	if !g.Config().RPC.Enabled {
 		return
 	}
 
 	rpc.Register(new(Transfer))
 
-	addr := g.Config().Rpc.Listen
+	addr := g.Config().RPC.Listen
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
 	if err != nil {
 		log.Fatalf("[F] rpc.Start error, net.ResolveTCPAddr fail, %s", err)

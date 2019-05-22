@@ -9,22 +9,26 @@ import (
 	"github.com/toolkits/file"
 )
 
-type HttpConfig struct {
+// HTTPConfig HTTP配置
+type HTTPConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
-type RpcConfig struct {
+// RPCConfig RPC配置
+type RPCConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
 
+// SocketConfig TCP配置
 type SocketConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 	Timeout int    `json:"timeout"`
 }
 
+// JudgeConfig Judge配置
 type JudgeConfig struct {
 	Enabled        bool                    `json:"enabled"`
 	Batch          int                     `json:"batch"`
@@ -37,6 +41,7 @@ type JudgeConfig struct {
 	ClusterList    map[string]*ClusterNode `json:"cluster_list"`
 }
 
+// GraphConfig Graph配置
 type GraphConfig struct {
 	Enabled        bool                    `json:"enabled"`
 	Batch          int                     `json:"batch"`
@@ -49,6 +54,7 @@ type GraphConfig struct {
 	ClusterList    map[string]*ClusterNode `json:"cluster_list"`
 }
 
+// TsdbConfig Tsdb配置
 type TsdbConfig struct {
 	Enabled        bool   `json:"enabled"`
 	Batch          int    `json:"batch"`
@@ -60,15 +66,17 @@ type TsdbConfig struct {
 	Address        string `json:"address"`
 }
 
+// LogConfig 日志配置
 type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// GlobalConfig Transfer模块配置
 type GlobalConfig struct {
 	Log           *LogConfig      `json:"log"`
 	MinStep       int             `json:"min_step"` //最小周期,单位sec
-	Http          *HttpConfig     `json:"http"`
-	Rpc           *RpcConfig      `json:"rpc"`
+	HTTP          *HTTPConfig     `json:"http"`
+	RPC           *RPCConfig      `json:"rpc"`
 	Socket        *SocketConfig   `json:"socket"`
 	Judge         *JudgeConfig    `json:"judge"`
 	Graph         *GraphConfig    `json:"graph"`
@@ -76,18 +84,21 @@ type GlobalConfig struct {
 	IgnoreMetrics map[string]bool `json:"ignore"`
 }
 
+// 变量定义
 var (
 	ConfigFile string
 	config     *GlobalConfig
 	configLock = new(sync.RWMutex)
 )
 
+// Config 获取Transfer模块的配置
 func Config() *GlobalConfig {
 	configLock.RLock()
 	defer configLock.RUnlock()
 	return config
 }
 
+// ParseConfig 解析配置文件
 func ParseConfig(cfg string) {
 	if cfg == "" {
 		log.Fatal("[F] use -c to specify configuration file")
@@ -121,11 +132,12 @@ func ParseConfig(cfg string) {
 	log.Debugf("[D] read config file: %s successfully", cfg)
 }
 
-// CLUSTER NODE
+// ClusterNode TODO:
 type ClusterNode struct {
 	Addrs []string `json:"addrs"`
 }
 
+// NewClusterNode TODO:
 func NewClusterNode(addrs []string) *ClusterNode {
 	return &ClusterNode{addrs}
 }
