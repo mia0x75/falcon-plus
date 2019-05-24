@@ -1,0 +1,24 @@
+[Unit]
+Description=Falcon+ Nodata Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+PIDFile=/run/nodata.pid
+ExecStartPre=/bin/rm -f /run/nodata.pid
+ExecStart=/bin/falcon-nodata -c /etc/fpm/nodata.json
+ExecStartPost=/bin/sh -c 'umask 022; pgrep -f falcon-nodata > /run/nodata.pid'
+ExecStopPost=/bin/rm -f /run/nodata.pid
+User=root
+Group=root
+KillMode=mixed
+Restart=on-failure
+PrivateTmp=true
+LimitNOFILE=64000
+TimeoutStartSec=180
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=falcon-nodata
+
+[Install]
+WantedBy=multi-user.target

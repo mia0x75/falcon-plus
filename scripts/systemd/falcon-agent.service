@@ -1,0 +1,24 @@
+[Unit]
+Description=Falcon+ Agent Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+PIDFile=/run/agent.pid
+ExecStartPre=/bin/rm -f /run/agent.pid
+ExecStart=/bin/falcon-agent -c /etc/fpm/agent.json
+ExecStartPost=/bin/sh -c 'umask 022; pgrep -f falcon-agent > /run/agent.pid'
+ExecStopPost=/bin/rm -f /run/agent.pid
+User=root
+Group=root
+KillMode=mixed
+Restart=on-failure
+PrivateTmp=true
+LimitNOFILE=64000
+TimeoutStartSec=180
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=falcon-agent
+
+[Install]
+WantedBy=multi-user.target
