@@ -27,7 +27,7 @@ func start(pid int, cfg *g.GlobalConfig) {
 
 	for {
 		s := <-sigs
-		log.Infof("[D] recv: %v", s)
+		log.Debugf("[D] recv: %v", s)
 
 		switch s {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
@@ -55,15 +55,19 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
+	fmt.Printf(g.Banner, "Graph")
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+		"Version", g.Version,
+		"Git commit", g.Git,
+		"Compile", g.Compile,
+		"Distro", g.Distro,
+		"Kernel", g.Kernel,
+		"Branch", g.Branch,
+	)
+
 	if *version {
-		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
-			"Version", g.Version,
-			"Git commit", g.Git,
-			"Compile", g.Compile,
-			"Distro", g.Distro,
-			"Kernel", g.Kernel,
-			"Branch", g.Branch,
-		)
 		os.Exit(0)
 	}
 

@@ -16,6 +16,9 @@ var RootCmd = &cobra.Command{
 	Use: "open-falcon",
 	RunE: func(c *cobra.Command, args []string) error {
 		if versionFlag {
+			fmt.Printf(g.Banner, "Falcon+")
+			fmt.Println()
+			fmt.Println()
 			fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
 				"Version", g.Version,
 				"Git commit", g.Git,

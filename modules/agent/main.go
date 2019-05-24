@@ -21,20 +21,23 @@ func main() {
 
 	flag.Parse()
 
-	if *version {
-		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
-			"Version", g.Version,
-			"Git commit", g.Git,
-			"Compile", g.Compile,
-			"Distro", g.Distro,
-			"Kernel", g.Kernel,
-			"Branch", g.Branch,
-		)
+	if *check {
+		funcs.CheckCollector()
 		os.Exit(0)
 	}
 
-	if *check {
-		funcs.CheckCollector()
+	fmt.Printf(g.Banner, "Agent")
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+		"Version", g.Version,
+		"Git commit", g.Git,
+		"Compile", g.Compile,
+		"Distro", g.Distro,
+		"Kernel", g.Kernel,
+		"Branch", g.Branch,
+	)
+	if *version {
 		os.Exit(0)
 	}
 

@@ -21,15 +21,19 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
+	fmt.Printf(g.Banner, "Updater")
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+		"Version", g.Version,
+		"Git commit", g.Git,
+		"Compile", g.Compile,
+		"Distro", g.Distro,
+		"Kernel", g.Kernel,
+		"Branch", g.Branch,
+	)
+
 	if *version {
-		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
-			"Version", g.Version,
-			"Git commit", g.Git,
-			"Compile", g.Compile,
-			"Distro", g.Distro,
-			"Kernel", g.Kernel,
-			"Branch", g.Branch,
-		)
 		os.Exit(0)
 	}
 

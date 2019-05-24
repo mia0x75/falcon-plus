@@ -22,20 +22,25 @@ func main() {
 	help := flag.Bool("h", false, "help")
 
 	flag.Parse()
-	if *version {
-		fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
-			"Version", g.Version,
-			"Git commit", g.Git,
-			"Compile", g.Compile,
-			"Distro", g.Distro,
-			"Kernel", g.Kernel,
-			"Branch", g.Branch,
-		)
-		os.Exit(0)
-	}
 
 	if *help {
 		flag.Usage()
+		os.Exit(0)
+	}
+
+	fmt.Printf(g.Banner, "API")
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
+		"Version", g.Version,
+		"Git commit", g.Git,
+		"Compile", g.Compile,
+		"Distro", g.Distro,
+		"Kernel", g.Kernel,
+		"Branch", g.Branch,
+	)
+
+	if *version {
 		os.Exit(0)
 	}
 
