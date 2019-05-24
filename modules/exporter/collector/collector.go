@@ -18,6 +18,7 @@ import (
 
 var collectorCron = cron.New()
 
+// Start 启动服务
 func Start() {
 	if !g.Config().Collector.Enabled {
 		log.Info("[I] collector.Start warning, not enable")
@@ -72,8 +73,8 @@ func _collect() {
 		hostPort := hostNamePortList[1]
 
 		tags := "port=" + hostPort
-		srcUrl := fmt.Sprintf(g.Config().Collector.Pattern, hostNamePort)
-		client := cutils.NewHttp(srcUrl)
+		srcURL := fmt.Sprintf(g.Config().Collector.Pattern, hostNamePort)
+		client := cutils.NewHttp(srcURL)
 		client.SetUserAgent("collector.get")
 		headers := map[string]string{
 			"Connection": "close",
@@ -110,15 +111,15 @@ func _collect() {
 			}
 
 			if item["Qps"] != nil {
-				var jmdQps cmodel.JsonMetaData
-				jmdQps.Endpoint = hostName
-				jmdQps.Metric = fmt.Sprintf("%s.stats.%s.Qps", hostModule, itemName)
-				jmdQps.Timestamp = ts
-				jmdQps.Step = 60
-				jmdQps.Value = int64(item["Qps"].(float64))
-				jmdQps.CounterType = "GAUGE"
-				jmdQps.Tags = tags
-				jsonList = append(jsonList, &jmdQps)
+				var jmdQPS cmodel.JsonMetaData
+				jmdQPS.Endpoint = hostName
+				jmdQPS.Metric = fmt.Sprintf("%s.stats.%s.Qps", hostModule, itemName)
+				jmdQPS.Timestamp = ts
+				jmdQPS.Step = 60
+				jmdQPS.Value = int64(item["Qps"].(float64))
+				jmdQPS.CounterType = "GAUGE"
+				jmdQPS.Tags = tags
+				jsonList = append(jsonList, &jmdQPS)
 			}
 		}
 
@@ -130,7 +131,7 @@ func _collect() {
 	}
 }
 
-func sendToTransfer(items []*cmodel.JsonMetaData, destUrl string) error {
+func sendToTransfer(items []*cmodel.JsonMetaData, destURL string) error {
 	if len(items) < 1 {
 		return nil
 	}
@@ -142,7 +143,7 @@ func sendToTransfer(items []*cmodel.JsonMetaData, destUrl string) error {
 	}
 
 	// send by http-post
-	client := cutils.NewHttp(destUrl)
+	client := cutils.NewHttp(destURL)
 	client.SetUserAgent("collector.post")
 	headers := map[string]string{
 		"Content-Type": "application/json; charset=UTF-8",
@@ -150,12 +151,13 @@ func sendToTransfer(items []*cmodel.JsonMetaData, destUrl string) error {
 	}
 	client.SetHeaders(headers)
 	if _, err = client.Post(jsonBody); err != nil {
-		return fmt.Errorf("post to %s, resquest failed with %v", destUrl, err)
+		return fmt.Errorf("post to %s, resquest failed with %v", destURL, err)
 	}
 
 	return nil
 }
 
+// Dto TODO:
 type Dto struct {
 	Msg  string                   `json:"msg"`
 	Data []map[string]interface{} `json:"data"`
