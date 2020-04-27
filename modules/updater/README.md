@@ -31,7 +31,7 @@ updater只有一个功能，就是升级其他业务系统的agent。
     {
         "name": "dinp-agent",
         "version": "2.0.0",
-        "status": "stoped" 
+        "status": "stopped" 
     }
 ]
 ```
@@ -105,7 +105,7 @@ updater将这个信息与自我内存中的信息做对比，该升级的升级�
 - 必须提供control脚本
 - `./control start`可以启动agent
 - `./control stop`可以停止agent
-- `./control status`打印出状态信息，只能是started或者stoped
+- `./control status`打印出状态信息，只能是started或者stopped
 - control文件已经有可执行权限，并且在tarball根目录下
 
 

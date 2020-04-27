@@ -58,7 +58,7 @@ func ControlStopIn(workdir string) error {
 	}
 
 	out, err := ControlStatus(workdir)
-	if err == nil && strings.Contains(out, "stoped") {
+	if err == nil && strings.Contains(out, "stopped") {
 		return nil
 	}
 
@@ -70,7 +70,7 @@ func ControlStopIn(workdir string) error {
 	time.Sleep(time.Second * 3)
 
 	out, err = ControlStatus(workdir)
-	if err == nil && strings.Contains(out, "stoped") {
+	if err == nil && strings.Contains(out, "stopped") {
 		return nil
 	}
 

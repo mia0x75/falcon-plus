@@ -39,7 +39,7 @@ function start() {
 function stop() {
     pid=`cat $pidfile`
     kill $pid
-    echo "$app stoped..."
+    echo "$app stopped..."
 }
 
 function restart() {
@@ -54,7 +54,7 @@ function status() {
     if [ $running -gt 0 ];then
         echo "started"
     else
-        echo "stoped"
+        echo "stopped"
     fi
 }
 
