@@ -1,6 +1,7 @@
 package cron
 
 import (
+	"fmt"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -28,7 +29,7 @@ func reportAgentStatus() {
 		req := cmodel.AgentReportRequest{
 			Hostname:      hostname,
 			IP:            g.IP(),
-			AgentVersion:  g.Version,
+			AgentVersion:  fmt.Sprintf("%s@%s", g.Version, g.Commit),
 			PluginVersion: g.GetCurrPluginVersion(),
 			// TODO: Add system information to support inventory management
 		}
