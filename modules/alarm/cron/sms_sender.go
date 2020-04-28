@@ -2,6 +2,7 @@ package cron
 
 import (
 	"encoding/json"
+	"net/url"
 	"strings"
 	"time"
 
@@ -40,18 +41,29 @@ func SendSms(sms *g.AlarmDto) {
 		<-SmsWorkerChan
 	}()
 
-	url := g.Config().API.Sms
-	if strings.TrimSpace(url) != "" {
+	addr := g.Config().API.Sms
+	for {
+		// Blank
+		if strings.TrimSpace(addr) == "" {
+			log.Debugf("[D] sms url: %s is blank, SKIP", addr)
+			break
+		}
+		// URL validation
+		if _, err := url.ParseRequestURI(addr); err != nil {
+			log.Errorf("[E] %s is not a valid url.", addr)
+			break
+		}
 		if data, err := json.Marshal(sms); err != nil {
 			log.Errorf("[E] %v", err)
+			break
 		} else {
-			resp, err := cutils.Post(url, data)
+			resp, err := cutils.Post(addr, data)
 			if err != nil {
 				log.Errorf("[E] send sms fail, content: %v, error: %v", sms, err)
+				break
 			}
-			log.Debugf("[D] send sms: %v, resp: %v, url: %s", sms, resp, url)
+			log.Debugf("[D] send sms: %v, resp: %v, url: %s", sms, resp, addr)
 		}
-	} else {
-		log.Debugf("[D] sms url: %s is blank, SKIP", url)
+		break
 	}
 }
