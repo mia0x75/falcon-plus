@@ -44,6 +44,7 @@ func main() {
 	g.ParseConfig(*cfg)
 
 	cutils.InitLog(g.Config().Log.Level)
+	g.InitRootDir()
 	g.InitLocalIP()
 	g.InitRPCClients()
 
