@@ -48,7 +48,8 @@ fmt-check:
 
 $(CMD):
 	go build -o bin/$@/falcon-$@ ./modules/$@
-	strip bin/$@/falcon-$@
+	if [ "$(shell uname -s)" != "Darwin" ]; then strip bin/$@/falcon-$@; fi;
+	upx --best bin/$@/falcon-$@
 
 .PHONY: $(TARGET)
 $(TARGET): $(GOFILES)
