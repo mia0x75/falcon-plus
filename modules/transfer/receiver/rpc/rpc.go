@@ -36,11 +36,12 @@ func start() {
 	}
 
 	for {
-		conn, err := listener.Accept()
+		conn, err := listener.AcceptTCP()
 		if err != nil {
 			log.Errorf("[E] listener.Accept occur error: %v", err)
 			continue
 		}
+		conn.SetKeepAlive(true)
 		go rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
 }
