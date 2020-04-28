@@ -3,9 +3,9 @@ package http
 import (
 	"net/http"
 
-	yaag_gin "github.com/betacraft/yaag/gin"
-	"github.com/betacraft/yaag/yaag"
 	"github.com/gin-gonic/gin"
+	yaag_gin "github.com/mia0x75/yaag/gin"
+	"github.com/mia0x75/yaag/yaag"
 	log "github.com/sirupsen/logrus"
 
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
