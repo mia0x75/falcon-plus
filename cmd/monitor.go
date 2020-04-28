@@ -29,7 +29,7 @@ func checkMonReq(name string) error {
 	}
 
 	if !g.HasLogfile(name) {
-		r := g.Rel(g.Cfg(name))
+		r := g.Rel(g.LogPath(name))
 		return fmt.Errorf("expect logfile: %s", r)
 	}
 
