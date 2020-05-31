@@ -64,27 +64,28 @@ function tailf() {
 }
 
 function build() {
-    go build
-    if [ $? -ne 0 ]; then
-        exit $?
+    go build -o $app main.go
+    sc=$?
+    if [ $sc -ne 0 ]; then
+        echo "build error"
+        exit $sc
+    else
+        echo -n "build ok" 
+        ./$app -v 
     fi
-    mv $module $app
-    ./$app -v | grep -v "config"
 }
 
 function pack() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v|grep -v config`
+    version=$(cat ../../VERSION)
     file_list="control cfg.example.json $app"
-    tar zcf $app-$version.tar.gz gitversion $file_list
+    tar zcf $app-$version.tar.gz $file_list
 }
 
 function packbin() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v|grep -v config`
-    tar zcvf $app-bin-$version.tar.gz $app gitversion
+    version=$(cat ../../VERSION)
+    tar zcvf $app-bin-$version.tar.gz $app
 }
 
 function help() {

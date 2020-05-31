@@ -3,7 +3,7 @@ package cron
 import (
 	"time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
@@ -30,7 +30,7 @@ func Collect() {
 	}
 }
 
-func collect(sec int64, fns []func() []*cmodel.MetricValue) {
+func collect(sec int64, fns []func() []*cm.MetricValue) {
 	d := time.Second * time.Duration(sec)
 	for range time.Tick(d) {
 		hostname, err := g.Hostname()
@@ -38,7 +38,7 @@ func collect(sec int64, fns []func() []*cmodel.MetricValue) {
 			continue
 		}
 
-		mvs := []*cmodel.MetricValue{}
+		mvs := []*cm.MetricValue{}
 		ignoreMetrics := g.Config().IgnoreMetrics
 
 		for _, fn := range fns {

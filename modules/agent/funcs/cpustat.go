@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 const (
@@ -131,11 +131,11 @@ func CPUUsagesSummary() (cpuUsages *CPUUsages, switches uint64, prepared bool) {
 }
 
 // CPUMetrics TODO:
-func CPUMetrics() []*cmodel.MetricValue {
+func CPUMetrics() []*cm.MetricValue {
 	cpuUsages, currentCPUSwitches, prepared := CPUUsagesSummary()
 
 	if !prepared {
-		return []*cmodel.MetricValue{}
+		return []*cm.MetricValue{}
 	}
 
 	cpunum := GaugeValue("cpu.num", cpunumTotal())
@@ -150,5 +150,5 @@ func CPUMetrics() []*cmodel.MetricValue {
 	steal := GaugeValue("cpu.steal", cpuUsages.Steal)
 	guest := GaugeValue("cpu.guest", cpuUsages.Guest)
 	switches := CounterValue("cpu.switches", currentCPUSwitches)
-	return []*cmodel.MetricValue{cpunum, idle, busy, user, nice, system, iowait, irq, softirq, steal, guest, switches}
+	return []*cm.MetricValue{cpunum, idle, busy, user, nice, system, iowait, irq, softirq, steal, guest, switches}
 }

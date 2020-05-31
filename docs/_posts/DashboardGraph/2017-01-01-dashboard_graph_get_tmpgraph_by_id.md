@@ -1,6 +1,6 @@
 ---
 category: DashboardGraph
-apiurl: '/api/v1/dashboard/tmpgraph/:id'
+apiurl: '/api/v1/dashboard/tmpgraph/#{id}'
 title: 'Get a tmpgraph by id'
 type: 'GET'
 sample_doc: 'dashboard.html'

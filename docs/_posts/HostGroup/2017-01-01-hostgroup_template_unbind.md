@@ -12,8 +12,8 @@ layout: default
 ### Request
 
 ```{
-  "tpl_id": 5,
-  "grp_id": 3
+  "template_id": 5,
+  "group_id": 3
 }```
 
 ### Response

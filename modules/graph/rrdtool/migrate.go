@@ -13,8 +13,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/consistent"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 )
@@ -121,7 +121,7 @@ func migrate_start(cfg *g.GlobalConfig) {
 	if cfg.Migrate.Enabled {
 		Consistent.NumberOfReplicas = cfg.Migrate.Replicas
 
-		nodes := cutils.KeysOfMap(cfg.Migrate.Cluster)
+		nodes := cu.KeysOfMap(cfg.Migrate.Cluster)
 		for _, node := range nodes {
 			addr := cfg.Migrate.Cluster[node]
 			Consistent.Add(node)
@@ -173,13 +173,13 @@ func net_task_worker(idx int, ch chan *Net_task_t, client **rpc.Client, addr str
 					if err = fetch_rrd(client, task.Key, addr); err != nil {
 						if os.IsNotExist(err) {
 							pfc.Meter("migrate.scprrd.null", 1)
-							//文件不存在时，直接将缓存数据刷入本地
+							// 文件不存在时，直接将缓存数据刷入本地
 							atomic.AddUint64(&stat_cnt[FETCH_S_ISNOTEXIST], 1)
 							store.GraphItems.SetFlag(task.Key, 0)
 							CommitByKey(task.Key)
 						} else {
 							pfc.Meter("migrate.scprrd.err", 1)
-							//warning:其他异常情况，缓存数据会堆积
+							// warning:其他异常情况，缓存数据会堆积
 							atomic.AddUint64(&stat_cnt[FETCH_S_ERR], 1)
 						}
 					} else {
@@ -212,7 +212,7 @@ func reconnection(client **rpc.Client, addr string) {
 	atomic.AddUint64(&stat_cnt[CONN_S_DIAL], 1)
 
 	for err != nil {
-		//danger!! block routine
+		// danger!! block routine
 		time.Sleep(time.Millisecond * 500)
 		*client, err = dial(addr, time.Second)
 		atomic.AddUint64(&stat_cnt[CONN_S_DIAL], 1)
@@ -244,11 +244,11 @@ func send_data(client **rpc.Client, key string, addr string) error {
 	var (
 		err  error
 		flag uint32
-		resp *cmodel.SimpleRpcResponse
+		resp *cm.SimpleRPCResponse
 		i    int
 	)
 
-	//remote
+	// remote
 	if flag, err = store.GraphItems.GetFlag(key); err != nil {
 		return err
 	}
@@ -261,7 +261,7 @@ func send_data(client **rpc.Client, key string, addr string) error {
 	if items_size == 0 {
 		goto out
 	}
-	resp = &cmodel.SimpleRpcResponse{}
+	resp = &cm.SimpleRPCResponse{}
 
 	for i = 0; i < 3; i++ {
 		err = rpc_call(*client, "Graph.Send", items, resp,
@@ -276,7 +276,7 @@ func send_data(client **rpc.Client, key string, addr string) error {
 	}
 	// err
 	store.GraphItems.PushAll(key, items)
-	//flag |= g.GRAPH_F_ERR
+	// flag |= g.GRAPH_F_ERR
 out:
 	flag &= ^g.GRAPH_F_SENDING
 	store.GraphItems.SetFlag(key, flag)

@@ -12,7 +12,7 @@ layout: default
 
 ### Request
 ```{
-  "tpl_id": 221,
+  "template_id": 221,
   "tags": "",
   "run_end": "24:00",
   "run_begin": "00:00",
@@ -31,7 +31,7 @@ layout: default
 ```
 {
   "id": 2,
-  "tpl_id": 221,
+  "template_id": 221,
   "tags": "",
   "run_end": "24:00",
   "run_begin": "00:00",

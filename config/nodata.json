@@ -14,7 +14,7 @@
 	},
 	"database": {
 		"enabled": true,
-		"addr": "%%MYSQL%%/portal?charset=utf8mb4&loc=Local&parseTime=true",
+		"addr": "%%MYSQL%%/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
 		"wait_timeout": 30

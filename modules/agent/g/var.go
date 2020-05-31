@@ -12,7 +12,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 var Root string
@@ -94,7 +94,7 @@ func InitRPCClients() {
 }
 
 // SendToTransfer TODO:
-func SendToTransfer(metrics []*cmodel.MetricValue) {
+func SendToTransfer(metrics []*cm.MetricValue) {
 	if len(metrics) == 0 {
 		return
 	}
@@ -130,7 +130,7 @@ func SendToTransfer(metrics []*cmodel.MetricValue) {
 
 	log.Debugf("[D] => <Total=%d> %v", len(metrics), metrics[0])
 
-	var resp cmodel.TransferResponse
+	var resp cm.TransferResponse
 	SendMetrics(metrics, &resp)
 
 	log.Debugf("[D] <= %v", &resp)

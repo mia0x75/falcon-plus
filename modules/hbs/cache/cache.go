@@ -27,8 +27,8 @@ func Init() {
 	log.Info("[I] #5 Strategies...")
 	Strategies.Init(TemplateCache.GetMap())
 
-	log.Info("[I] #6 HostTemplateIds...")
-	HostTemplateIds.Init()
+	log.Info("[I] #6 HostTemplateIDs...")
+	HostTemplateIDs.Init()
 
 	log.Info("[I] #7 ExpressionCache...")
 	ExpressionCache.Init()
@@ -53,7 +53,7 @@ func LoopInit() {
 		HostMap.Init()
 		TemplateCache.Init()
 		Strategies.Init(TemplateCache.GetMap())
-		HostTemplateIds.Init()
+		HostTemplateIDs.Init()
 		ExpressionCache.Init()
 		MonitoredHosts.Init()
 		Agents.Init()

@@ -6,12 +6,12 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // QueryExpressions TODO:
-func QueryExpressions() (ret []*cmodel.Expression, err error) {
-	q := "select id, expression, func, op, right_value, max_step, priority, note, action_id from expression where action_id>0 and pause=0"
+func QueryExpressions() (ret []*cm.Expression, err error) {
+	q := "SELECT id, expression, func, op, right_value, max_step, priority, note, action_id FROM expressions WHERE action_id > 0 AND pause = 0"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)
@@ -20,10 +20,10 @@ func QueryExpressions() (ret []*cmodel.Expression, err error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		e := cmodel.Expression{}
+		e := cm.Expression{}
 		var exp string
 		err = rows.Scan(
-			&e.Id,
+			&e.ID,
 			&exp,
 			&e.Func,
 			&e.Operator,
@@ -31,7 +31,7 @@ func QueryExpressions() (ret []*cmodel.Expression, err error) {
 			&e.MaxStep,
 			&e.Priority,
 			&e.Note,
-			&e.ActionId,
+			&e.ActionID,
 		)
 
 		if err != nil {

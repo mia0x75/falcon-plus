@@ -7,7 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
@@ -43,9 +43,9 @@ func SendIM(im *g.AlarmDto) {
 	url := g.Config().API.IM
 	if strings.TrimSpace(url) != "" {
 		if data, err := json.Marshal(im); err != nil {
-			log.Errorf("[ERROF] %v", err)
+			log.Errorf("[E] %v", err)
 		} else {
-			resp, err := cutils.Post(url, data)
+			resp, err := cu.Post(url, data)
 			if err != nil {
 				log.Errorf("[E] send im fail, content: %v, error: %v", im, err)
 			}

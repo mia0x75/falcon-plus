@@ -1,6 +1,6 @@
 ---
 category: Strategy
-apiurl: '/api/v1/strategy/#{strategy_id}'
+apiurl: '/api/v1/strategy/#{id}'
 title: "Delete Strategy"
 type: 'DELETE'
 sample_doc: 'template.html'

@@ -14,7 +14,12 @@ func Start() {
 		return
 	}
 
-	InitDB()
+	if err := InitDB(); err != nil {
+		log.Errorf("[E] open database connection fail: %v", err)
+		return
+	}
+	defer Close()
+
 	if cfg.Index.AutoDelete {
 		StartIndexDeleteTask()
 		log.Info("[I] index.Start warning, index cleaner enable")

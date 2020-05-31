@@ -30,7 +30,7 @@ layout: default
             "note": "machine is down",
             "run_begin": "",
             "run_end": "",
-            "tpl_id": 14
+            "template_id": 14
         },
         "hosts": [
             "foo1.bar.com",

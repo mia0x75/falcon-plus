@@ -7,7 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
@@ -45,7 +45,7 @@ func SendMail(mail *g.AlarmDto) {
 		if data, err := json.Marshal(mail); err != nil {
 			log.Errorf("[E] %v", err)
 		} else {
-			resp, err := cutils.Post(url, data)
+			resp, err := cu.Post(url, data)
 			if err != nil {
 				log.Errorf("[E] send mail fail, content: %v, error: %v", mail, err)
 			}

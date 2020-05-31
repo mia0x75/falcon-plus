@@ -42,10 +42,11 @@ func GetFirstItem(key string) (*DataItem, bool) {
 	return first.(*DataItem), true
 }
 
+// AddItem 向集合中添加一个元素
 func AddItem(key string, val *DataItem) {
 	listv, found := ItemMap.Get(key)
 	if !found {
-		ll := tlist.NewSafeListLimited(3) //每个采集指标,缓存最新的3个数据点
+		ll := tlist.NewSafeListLimited(3) // 每个采集指标,缓存最新的3个数据点
 		ll.PushFrontViolently(val)
 		ItemMap.Put(key, ll)
 		return
@@ -54,11 +55,12 @@ func AddItem(key string, val *DataItem) {
 	listv.(*tlist.SafeListLimited).PushFrontViolently(val)
 }
 
+// RemoveItem 从集合中移除一个元素
 func RemoveItem(key string) {
 	ItemMap.Remove(key)
 }
 
-// NoData Data Item Struct
+// DataItem Data item struct
 type DataItem struct {
 	Ts      int64
 	Value   float64
@@ -66,11 +68,13 @@ type DataItem struct {
 	FTs     int64
 }
 
+// NewDataItem 初始化结构体
 func NewDataItem(ts int64, val float64, fstatus string, fts int64) *DataItem {
 	return &DataItem{Ts: ts, Value: val, FStatus: fstatus, FTs: fts}
 }
 
-func (this *DataItem) String() string {
+// String 结构体转字符串
+func (m *DataItem) String() string {
 	return fmt.Sprintf("ts: %s, value: %f, fts: %s, fstatus: %s",
-		ttime.FormatTs(this.Ts), this.Value, ttime.FormatTs(this.FTs), this.FStatus)
+		ttime.FormatTs(m.Ts), m.Value, ttime.FormatTs(m.FTs), m.FStatus)
 }

@@ -18,7 +18,7 @@ Create Action to a Template
 ```{
   "url": "",
   "uic": "test,tt2",
-  "tpl_id": 225,
+  "template_id": 225,
   "callback": 1,
   "before_callback_sms": 0,
   "before_callback_mail": 0,

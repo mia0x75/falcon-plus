@@ -15,14 +15,6 @@ type DatabaseConfig struct {
 	WaitTimeout    int    `json:"wait_timeout"`
 }
 
-type DatabasesConfig struct {
-	Portal    *DatabaseConfig `json:"portal"`
-	Graph     *DatabaseConfig `json:"graph"`
-	Uic       *DatabaseConfig `json:"uic"`
-	Dashboard *DatabaseConfig `json:"dashboard"`
-	Alarms    *DatabaseConfig `json:"alarms"`
-}
-
 type GraphsConfig struct {
 	MaxConnections int               `json:"max_connections"`
 	MaxIdle        int               `json:"max_idle"`
@@ -32,7 +24,7 @@ type GraphsConfig struct {
 	Cluster        map[string]string `json:"cluster"`
 }
 
-type RpcConfig struct {
+type RPCConfig struct {
 	Enabled bool   `json:"enabled"`
 	Listen  string `json:"listen"`
 }
@@ -47,19 +39,19 @@ type LogConfig struct {
 }
 
 type GlobalConfig struct {
-	Log            *LogConfig       `json:"log"`
-	Listen         string           `json:"listen"`
-	AccessControl  bool             `json:"access_control"`
-	SignupDisable  bool             `json:"signup_disable"`
-	SkipAuth       bool             `json:"skip_auth"`
-	DefaultToken   string           `json:"default_token"`
-	GenDoc         bool             `json:"gen_doc"`
-	GenDocPath     string           `json:"gen_doc_path"`
-	MetricListFile string           `json:"metric_list_file"`
-	Rpc            *RpcConfig       `json:"rpc"`
-	Statsd         *StatsdConfig    `json:"statsd"`
-	Databases      *DatabasesConfig `json:"databases"`
-	Graphs         *GraphsConfig    `json:"graphs"`
+	Log            *LogConfig      `json:"log"`
+	Listen         string          `json:"listen"`
+	AccessControl  bool            `json:"access_control"`
+	SignupDisable  bool            `json:"signup_disable"`
+	SkipAuth       bool            `json:"skip_auth"`
+	DefaultToken   string          `json:"default_token"`
+	GenDoc         bool            `json:"gen_doc"`
+	GenDocPath     string          `json:"gen_doc_path"`
+	MetricListFile string          `json:"metric_list_file"`
+	RPC            *RPCConfig      `json:"rpc"`
+	Statsd         *StatsdConfig   `json:"statsd"`
+	Database       *DatabaseConfig `json:"database"`
+	Graphs         *GraphsConfig   `json:"graphs"`
 }
 
 var (

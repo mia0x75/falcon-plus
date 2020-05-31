@@ -8,7 +8,7 @@ import (
 func QueryPlugins() (map[int][]string, error) {
 	m := make(map[int][]string)
 
-	q := "select grp_id, dir from plugin_dir"
+	q := "SELECT group_id, dir FROM plugin_dir"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)

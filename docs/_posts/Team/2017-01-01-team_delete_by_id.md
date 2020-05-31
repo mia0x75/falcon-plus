@@ -1,6 +1,6 @@
 ---
 category: Team
-apiurl: '/api/v1/team/#{team_id}'
+apiurl: '/api/v1/team/#{id}'
 title: "Delete Team By Id"
 type: 'DELETE'
 sample_doc: 'team.html'

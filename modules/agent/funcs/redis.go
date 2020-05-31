@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-redis/redis"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -24,7 +24,7 @@ func NewRedis() *redis.Client {
 var tags string
 
 // RedisMetrics TODO:
-func RedisMetrics() (L []*cmodel.MetricValue) {
+func RedisMetrics() (L []*cm.MetricValue) {
 	if g.Config().Collector.Redis == nil {
 		return nil
 	}
@@ -44,7 +44,7 @@ func RedisMetrics() (L []*cmodel.MetricValue) {
 }
 
 // RedisStatInfo TODO:
-func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
+func RedisStatInfo(client *redis.Client) (L []*cm.MetricValue) {
 	monitorKeys := map[string]string{
 		"connected_clients":              "GAUGE", // 当前已连接的客户端个数
 		"blocked_clients":                "GAUGE", // 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量
@@ -193,7 +193,7 @@ func RedisStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
 }
 
 // RedisCmdStatInfo TODO:
-func RedisCmdStatInfo(client *redis.Client) (L []*cmodel.MetricValue) {
+func RedisCmdStatInfo(client *redis.Client) (L []*cm.MetricValue) {
 	// r := client.Do("info commandstats")
 	// r, _ := redis.String(conn.Do("info", "Commandstats"))
 	// r = strings.Replace(string(r), "\r\n", "\n", -1)

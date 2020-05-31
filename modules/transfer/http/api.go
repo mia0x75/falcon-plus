@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	prpc "github.com/open-falcon/falcon-plus/modules/transfer/receiver/rpc"
 )
 
@@ -18,16 +18,16 @@ func SetupAPIRoutes() {
 		}
 
 		decoder := json.NewDecoder(r.Body)
-		var metrics []*cmodel.MetricValue
+		var metrics []*cm.MetricValue
 		err := decoder.Decode(&metrics)
 		if err != nil {
 			http.Error(w, "decode error", http.StatusBadRequest)
 			return
 		}
 
-		reply := &cmodel.TransferResponse{}
+		reply := &cm.TransferResponse{}
 		prpc.RecvMetricValues(metrics, reply, "http")
 
-		cutils.RenderDataJson(w, reply)
+		cu.RenderDataJSON(w, reply)
 	})
 }

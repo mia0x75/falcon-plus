@@ -1,6 +1,6 @@
 ---
 category: DashboardScreen
-apiurl: '/api/v1/dashboard/screens/pid/:screen_pid'
+apiurl: '/api/v1/dashboard/screens/pid/#{pid}'
 title: 'Gets DashboardScreens by pid'
 type: 'GET'
 sample_doc: 'dashboard.html'

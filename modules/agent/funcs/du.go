@@ -13,7 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/sys"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
@@ -21,9 +21,9 @@ import (
 var timeout = 30
 
 // DuMetrics TODO:
-func DuMetrics() (L []*cmodel.MetricValue) {
+func DuMetrics() (L []*cm.MetricValue) {
 	paths := hbs.ReportPaths()
-	result := make(chan *cmodel.MetricValue, len(paths))
+	result := make(chan *cm.MetricValue, len(paths))
 	var wg sync.WaitGroup
 
 	for _, path := range paths {
@@ -37,7 +37,7 @@ func DuMetrics() (L []*cmodel.MetricValue) {
 				}
 				wg.Done()
 			}()
-			//tips:osx  does not support -b.
+			// 注意: Macos does not support -b.
 			cmd := exec.Command("du", "-bs", path)
 			var stdout bytes.Buffer
 			cmd.Stdout = &stdout

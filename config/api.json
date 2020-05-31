@@ -2,37 +2,11 @@
 	"log": {
 		"level": "info"
 	},
-	"databases": {
-		"portal": {
-			"addr": "%%MYSQL%%/portal?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"graph": {
-			"addr": "%%MYSQL%%/graph?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"uic": {
-			"addr": "%%MYSQL%%/uic?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"dashboard": {
-			"addr": "%%MYSQL%%/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"alarms": {
-			"addr": "%%MYSQL%%/alarms?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		}
+	"database": {
+		"addr": "%%MYSQL%%/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
+		"max_idle": 4,
+		"max_connections": 8,
+		"wait_timeout": 30
 	},
 	"graphs": {
 		"cluster": {
@@ -47,7 +21,7 @@
 	"metric_list_file": "./api/data/metric",
 	"rpc": {
 		"enabled": true,
-		"listen": "0.0.0.0:6040"
+		"listen": "%%API_RPC%%"
 	},
 	"listen": "%%API_HTTP%%",
 	"access_control": true,

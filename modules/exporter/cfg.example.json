@@ -1,5 +1,4 @@
 {
-	"host": "127.0.0.1",
 	"log": {
 		"level": "debug"
 	},
@@ -9,7 +8,7 @@
 	},
 	"index": {
 		"enabled": false,
-		"addr": "root:root@tcp(127.0.0.1:3306)/graph?charset=utf8mb4&loc=Local&parseTime=true",
+		"addr": "root:root@tcp(127.0.0.1:3306)/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
 		"max_idle": 4,
 		"max_connections": 8,
 		"wait_timeout": 30,
@@ -44,6 +43,13 @@
 			"exporter,test.hostname:8001"
 		]
 	},
+	"heartbeat": {
+		"addrs": [
+			"127.0.0.1:6030"
+		],
+		"interval": 60,
+		"timeout": 1000
+	},
 	"monitor": {
 		"enabled": true,
 		"alarm": {
@@ -52,10 +58,10 @@
 		},
 		"pattern": "http://%s/health",
 		"hosts": {
-			"agents" : [
+			"agents": [
 				"10.100.14.94:6071"
 			],
-			"modules":{
+			"modules": {
 				"transfer-00": "10.100.14.94:6071",
 				"graph-00": "10.100.14.94:6071",
 				"exporter-00": "10.100.14.94:6071"

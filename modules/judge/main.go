@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/judge/cron"
 	"github.com/open-falcon/falcon-plus/modules/judge/g"
 	"github.com/open-falcon/falcon-plus/modules/judge/http"
@@ -20,7 +20,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
-	fmt.Printf(g.Banner, "Judge")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
 	g.InitHbsClient()
 

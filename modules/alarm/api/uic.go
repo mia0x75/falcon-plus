@@ -12,26 +12,30 @@ import (
 	"github.com/toolkits/net/httplib"
 
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
-	"github.com/open-falcon/falcon-plus/modules/api/app/model/uic"
+	"github.com/open-falcon/falcon-plus/modules/api/app/model"
 )
 
+// APIGetTeamOutput TODO:
 type APIGetTeamOutput struct {
-	uic.Team
-	Users       []*uic.User `json:"users"`
-	TeamCreator string      `json:"creator_name"`
+	model.Team
+	Users       []*model.User `json:"users"`
+	TeamCreator string        `json:"teamCreator"`
 }
 
+// UsersCache TODO:
 type UsersCache struct {
 	sync.RWMutex
-	M map[string][]*uic.User
+	M map[string][]*model.User
 }
 
-var Users = &UsersCache{M: make(map[string][]*uic.User)}
+// Users TODO:
+var Users = &UsersCache{M: make(map[string][]*model.User)}
 
-func (this *UsersCache) Get(team string) []*uic.User {
-	this.RLock()
-	defer this.RUnlock()
-	val, exists := this.M[team]
+// Get TODO:
+func (s *UsersCache) Get(team string) []*model.User {
+	s.RLock()
+	defer s.RUnlock()
+	val, exists := s.M[team]
 	if !exists {
 		return nil
 	}
@@ -39,13 +43,15 @@ func (this *UsersCache) Get(team string) []*uic.User {
 	return val
 }
 
-func (this *UsersCache) Set(team string, users []*uic.User) {
-	this.Lock()
-	defer this.Unlock()
-	this.M[team] = users
+// Set TODO:
+func (s *UsersCache) Set(team string, users []*model.User) {
+	s.Lock()
+	defer s.Unlock()
+	s.M[team] = users
 }
 
-func UsersOf(team string) []*uic.User {
+// UsersOf TODO:
+func UsersOf(team string) []*model.User {
 	users := CurlUic(team)
 
 	if users != nil {
@@ -57,8 +63,9 @@ func UsersOf(team string) []*uic.User {
 	return users
 }
 
-func GetUsers(teams string) map[string]*uic.User {
-	userMap := make(map[string]*uic.User)
+// GetUsers TODO:
+func GetUsers(teams string) map[string]*model.User {
+	userMap := make(map[string]*model.User)
 	arr := strings.Split(teams, ",")
 	for _, team := range arr {
 		if team == "" {
@@ -77,7 +84,7 @@ func GetUsers(teams string) map[string]*uic.User {
 	return userMap
 }
 
-// return phones, emails, IM
+// ParseTeams return phones, emails, IM
 func ParseTeams(teams string) ([]string, []string, []string) {
 	if teams == "" {
 		return []string{}, []string{}, []string{}
@@ -101,9 +108,10 @@ func ParseTeams(teams string) ([]string, []string, []string) {
 	return phoneSet.ToSlice(), mailSet.ToSlice(), imSet.ToSlice()
 }
 
-func CurlUic(team string) []*uic.User {
+// CurlUic TODO:
+func CurlUic(team string) []*model.User {
 	if team == "" {
-		return []*uic.User{}
+		return []*model.User{}
 	}
 
 	uri := fmt.Sprintf("%s/api/v1/team/name/%s", g.Config().API.API, team)
@@ -112,7 +120,7 @@ func CurlUic(team string) []*uic.User {
 		"name": "falcon-alarm",
 		"sig":  g.Config().API.Token,
 	})
-	req.Header("Apitoken", string(token))
+	req.Header("X-Falcon-Token", string(token))
 
 	var teamUsers APIGetTeamOutput
 	err := req.ToJson(&teamUsers)

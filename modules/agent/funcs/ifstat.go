@@ -4,25 +4,25 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
 // NetMetrics TODO:
-func NetMetrics() []*cmodel.MetricValue {
+func NetMetrics() []*cm.MetricValue {
 	return CoreNetMetrics(g.Config().Collector.System.IfacePrefix)
 }
 
 // CoreNetMetrics TODO:
-func CoreNetMetrics(ifacePrefix []string) []*cmodel.MetricValue {
+func CoreNetMetrics(ifacePrefix []string) []*cm.MetricValue {
 	netIfs, err := nux.NetIfs(ifacePrefix)
 	if err != nil {
 		log.Errorf("[E] %v", err)
-		return []*cmodel.MetricValue{}
+		return []*cm.MetricValue{}
 	}
 
 	cnt := len(netIfs)
-	ret := make([]*cmodel.MetricValue, cnt*26)
+	ret := make([]*cm.MetricValue, cnt*26)
 
 	for idx, netIf := range netIfs {
 		iface := "iface=" + netIf.Iface

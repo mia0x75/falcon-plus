@@ -7,7 +7,7 @@ import (
 
 	"github.com/toolkits/file"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
@@ -29,17 +29,17 @@ func SetupAdminRoutes() {
 	http.HandleFunc("/config/reload", func(w http.ResponseWriter, r *http.Request) {
 		if hbs.IsTrustable(r.RemoteAddr) {
 			g.ParseConfig(g.ConfigFile)
-			cutils.RenderDataJson(w, g.Config())
+			cu.RenderDataJSON(w, g.Config())
 		} else {
 			w.Write([]byte("no privilege"))
 		}
 	})
 
 	http.HandleFunc("/workdir", func(w http.ResponseWriter, r *http.Request) {
-		cutils.RenderDataJson(w, file.SelfDir())
+		cu.RenderDataJSON(w, file.SelfDir())
 	})
 
 	http.HandleFunc("/ips", func(w http.ResponseWriter, r *http.Request) {
-		cutils.RenderDataJson(w, hbs.TrustableIps())
+		cu.RenderDataJSON(w, hbs.TrustableIps())
 	})
 }

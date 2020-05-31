@@ -12,7 +12,7 @@ import (
 	_ "github.com/go-sql-driver/mysql" // TODO:
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -31,7 +31,7 @@ var (
 	Tag        string
 )
 
-//DataType all variables should be monitor
+// DataType all variables should be monitor
 var DataType = map[string]string{
 	"Innodb_buffer_pool_read_ahead_rnd":                            "COUNTER",
 	"Innodb_buffer_pool_read_ahead":                                "COUNTER",
@@ -378,9 +378,9 @@ func dataType(k string) string {
 }
 
 // NewMetric is the constructor of metric
-func NewMetric(name string) *cmodel.MetricValue {
+func NewMetric(name string) *cm.MetricValue {
 	hostname, _ := g.Hostname()
-	return &cmodel.MetricValue{
+	return &cm.MetricValue{
 		Metric:    "mysql." + name,
 		Endpoint:  hostname,
 		Type:      dataType(name),
@@ -410,7 +410,7 @@ func GetIsReadOnly(db *sql.DB) (int, error) {
 }
 
 // MySQLMetrics TODO:
-func MySQLMetrics() (L []*cmodel.MetricValue) {
+func MySQLMetrics() (L []*cm.MetricValue) {
 	if g.Config().Collector.MySQL == nil {
 		return nil
 	}
@@ -509,17 +509,17 @@ func Query(db *sql.DB, sql string) ([]map[string]interface{}, error) {
 }
 
 // ShowGlobalStatus execute mysql query `SHOW GLOBAL STATUS`
-func ShowGlobalStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
+func ShowGlobalStatus(db *sql.DB) ([]*cm.MetricValue, error) {
 	return parseMySQLStatus(db, "SHOW /*!50001 GLOBAL */ STATUS")
 }
 
 // ShowGlobalVariables execute mysql query `SHOW GLOBAL VARIABLES`
-func ShowGlobalVariables(db *sql.DB) ([]*cmodel.MetricValue, error) {
+func ShowGlobalVariables(db *sql.DB) ([]*cm.MetricValue, error) {
 	return parseMySQLStatus(db, "SHOW /*!50001 GLOBAL */ VARIABLES")
 }
 
 // ShowInnodbStatus execute mysql query `SHOW SHOW /*!50000 ENGINE*/ INNODB STATUS`
-func ShowInnodbStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
+func ShowInnodbStatus(db *sql.DB) ([]*cm.MetricValue, error) {
 	type row struct {
 		Type   string
 		Name   string
@@ -535,7 +535,7 @@ func ShowInnodbStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 }
 
 // ShowBinaryLogs execute mysql query `SHOW BINARY LOGS`
-func ShowBinaryLogs(db *sql.DB) ([]*cmodel.MetricValue, error) {
+func ShowBinaryLogs(db *sql.DB) ([]*cm.MetricValue, error) {
 	sum := 0
 
 	binlogFileCounts := NewMetric("binlog_file_counts")
@@ -543,7 +543,7 @@ func ShowBinaryLogs(db *sql.DB) ([]*cmodel.MetricValue, error) {
 
 	results, err := Query(db, "SHOW BINARY LOGS")
 	if err != nil {
-		return []*cmodel.MetricValue{binlogFileCounts, binlogFileSize}, err
+		return []*cm.MetricValue{binlogFileCounts, binlogFileSize}, err
 	}
 
 	for _, v := range results {
@@ -555,11 +555,11 @@ func ShowBinaryLogs(db *sql.DB) ([]*cmodel.MetricValue, error) {
 
 	binlogFileCounts.Value = len(results)
 	binlogFileSize.Value = sum
-	return []*cmodel.MetricValue{binlogFileCounts, binlogFileSize}, err
+	return []*cm.MetricValue{binlogFileCounts, binlogFileSize}, err
 }
 
 // ShowSlaveStatus get all slave status of mysql serves
-func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
+func ShowSlaveStatus(db *sql.DB) ([]*cm.MetricValue, error) {
 	// Check IsSlave
 	results, err := Query(db, "SHOW SLAVE STATUS")
 	if err != nil {
@@ -588,7 +588,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 		if err != nil {
 			return nil, err
 		}
-		return []*cmodel.MetricValue{masterReadOnly, masterReadOnly2, innodbStatsOnMetadata}, nil
+		return []*cm.MetricValue{masterReadOnly, masterReadOnly2, innodbStatsOnMetadata}, nil
 	}
 
 	// be slave
@@ -600,7 +600,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 	if err != nil {
 		return nil, err
 	}
-	data := make([]*cmodel.MetricValue, len(SlaveStatus))
+	data := make([]*cm.MetricValue, len(SlaveStatus))
 	for i, s := range SlaveStatus {
 		data[i] = NewMetric(s)
 		switch s {
@@ -618,7 +618,7 @@ func ShowSlaveStatus(db *sql.DB) ([]*cmodel.MetricValue, error) {
 			}
 		}
 	}
-	return append(data, []*cmodel.MetricValue{ioDelay, slaveReadOnly}...), nil
+	return append(data, []*cm.MetricValue{ioDelay, slaveReadOnly}...), nil
 }
 
 // GetLastNum TODO:
@@ -635,7 +635,7 @@ func GetLastNum(str string, split string) int {
 }
 
 // ShowOtherMetric all other metric will add in this func
-func ShowOtherMetric(db *sql.DB, metric string) (*cmodel.MetricValue, error) {
+func ShowOtherMetric(db *sql.DB, metric string) (*cm.MetricValue, error) {
 	var err error
 	newMetaData := NewMetric(metric)
 	switch metric {
@@ -667,13 +667,13 @@ func ShowOtherMetric(db *sql.DB, metric string) (*cmodel.MetricValue, error) {
 	return newMetaData, err
 }
 
-func parseMySQLStatus(db *sql.DB, sql string) ([]*cmodel.MetricValue, error) {
+func parseMySQLStatus(db *sql.DB, sql string) ([]*cm.MetricValue, error) {
 	results, err := Query(db, sql)
 	if err != nil {
 		return nil, err
 	}
 
-	data := make([]*cmodel.MetricValue, len(results))
+	data := make([]*cm.MetricValue, len(results))
 	i := 0
 	for _, row := range results {
 		if key, ok := row["Variable_name"]; ok {
@@ -692,7 +692,7 @@ func parseMySQLStatus(db *sql.DB, sql string) ([]*cmodel.MetricValue, error) {
 
 func parseInnodbSection(
 	row string, section string,
-	pdata *[]*cmodel.MetricValue, longTranTime *int) error {
+	pdata *[]*cm.MetricValue, longTranTime *int) error {
 	switch section {
 	case "TRANSACTIONS":
 		if strings.Contains(row, "ACTIVE") {
@@ -749,11 +749,11 @@ func parseInnodbSection(
 	return nil
 }
 
-func parseInnodbStatus(rows []string) ([]*cmodel.MetricValue, error) {
+func parseInnodbStatus(rows []string) ([]*cm.MetricValue, error) {
 	var section string
 	longTranTime := 0
 	var err error
-	var data []*cmodel.MetricValue
+	var data []*cm.MetricValue
 	for _, row := range rows {
 		switch row {
 		case "BACKGROUND THREAD":

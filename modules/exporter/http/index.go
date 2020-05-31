@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/index"
 )
 
@@ -11,11 +11,11 @@ import (
 func SetupIndexRoutes() {
 	http.HandleFunc("/index/delete", func(w http.ResponseWriter, r *http.Request) {
 		index.DeleteIndex()
-		cutils.RenderDataJson(w, "ok")
+		cu.RenderDataJSON(w, "ok")
 	})
 
 	http.HandleFunc("/index/updateAll", func(w http.ResponseWriter, r *http.Request) {
 		index.UpdateAllIndex()
-		cutils.RenderDataJson(w, "ok")
+		cu.RenderDataJSON(w, "ok")
 	})
 }

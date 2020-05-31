@@ -56,10 +56,6 @@ nodata服务正常运行，依赖如下准备工作:
 #### 源码编译
 
 ```bash
-# update common lib
-cd $GOPATH/src/github.com/open-falcon/common
-git pull
-
 # compile nodata
 cd $GOPATH/src/github.com/open-falcon/nodata
 go get ./...

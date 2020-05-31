@@ -38,9 +38,9 @@ func (rpc *SingleConnRPCClient) serverConn() error {
 		retry = 1
 
 	RETRY:
-		rpc.rpcClient, err = net.JsonRpcClient("tcp", addr, rpc.Timeout)
+		rpc.rpcClient, err = net.JSONRPCClient("tcp", addr, rpc.Timeout)
 		if err != nil {
-			log.Errorf("[E] net.JsonRpcClient failed: %v", err)
+			log.Errorf("[E] net.JSONRPCClient failed: %v", err)
 			if retry > 3 {
 				continue
 			}

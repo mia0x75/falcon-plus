@@ -33,12 +33,5 @@ _testmain.go
 .idea
 .DS_Store
 /var
-/graph
 /falcon-graph*
 /cfg.json
-/test/*.go
-/test/build
-
-tmp
-cfg.json
-gitversion

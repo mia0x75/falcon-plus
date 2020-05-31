@@ -23,7 +23,7 @@ func init() {
 
 func TestDuMetrics(t *testing.T) {
 	paths := []string{testPath}
-	hbs.CacheDuPaths(paths)
+	hbs.CacheReportDu(paths)
 	duMetrics := DuMetrics()
 	if duMetrics[0].Value == -1 {
 		t.Error("expect metric value > 0 ,but -1")
@@ -32,7 +32,7 @@ func TestDuMetrics(t *testing.T) {
 
 func TestDuMetricsPathNotExist(t *testing.T) {
 	paths := []string{"'path does not exist'"}
-	hbs.CacheDuPaths(paths)
+	hbs.CacheReportDu(paths)
 	duMetrics := DuMetrics()
 	if len(duMetrics) != 1 || duMetrics[0].Value != -1 {
 		t.Errorf("metric value expect -1, but metric : %v", duMetrics)
@@ -42,7 +42,7 @@ func TestDuMetricsPathNotExist(t *testing.T) {
 func TestDuMetricsTimeout(t *testing.T) {
 	timeout = 0
 	paths := []string{testPath}
-	hbs.CacheDuPaths(paths)
+	hbs.CacheReportDu(paths)
 	duMetrics := DuMetrics()
 	if len(duMetrics) != 1 || duMetrics[0].Value != -1 {
 		t.Errorf("metric value expect -1, but metric : %v", duMetrics)

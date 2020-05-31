@@ -1,21 +1,21 @@
 package db
 
-// graph.endpoint
+// GraphEndpoint graph.endpoint
 type GraphEndpoint struct {
-	Id       int64
+	ID       int64
 	Endpoint string
 }
 
-// graph.tag_endpoint
+// GraphTagEndpoint graph.tag_endpoint
 type GraphTagEndpoint struct {
-	Id         int64
+	ID         int64
 	Tag        string
-	EndpointId int64
+	EndpointID int64
 }
 
-// graph.endpoint_counter
+// GraphEndpointCounter graph.endpoint_counter
 type GraphEndpointCounter struct {
-	Id         int64
-	EndpointId int64
+	ID         int64
+	EndpointID int64
 	Counter    string
 }

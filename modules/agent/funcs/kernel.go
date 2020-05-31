@@ -4,11 +4,11 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // KernelMetrics TODO:
-func KernelMetrics() (L []*cmodel.MetricValue) {
+func KernelMetrics() (L []*cm.MetricValue) {
 	maxFiles, err := nux.KernelMaxFiles()
 	if err != nil {
 		log.Errorf("[E] %v", err)

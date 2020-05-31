@@ -6,12 +6,12 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
 // DeviceMetrics TODO:
-func DeviceMetrics() (L []*cmodel.MetricValue) {
+func DeviceMetrics() (L []*cm.MetricValue) {
 	mountPoints, err := nux.ListMountPoint()
 
 	if err != nil {

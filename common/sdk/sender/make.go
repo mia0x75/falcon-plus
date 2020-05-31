@@ -3,11 +3,11 @@ package sender
 import (
 	"time"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
-func MakeMetaData(endpoint, metric, tags string, val interface{}, counterType string, step_and_ts ...int64) *model.JsonMetaData {
-	md := model.JsonMetaData{
+func MakeMetaData(endpoint, metric, tags string, val interface{}, counterType string, step_and_ts ...int64) *cm.JSONMetaData {
+	md := cm.JSONMetaData{
 		Endpoint:    endpoint,
 		Metric:      metric,
 		Tags:        tags,
@@ -30,11 +30,11 @@ func MakeMetaData(endpoint, metric, tags string, val interface{}, counterType st
 	return &md
 }
 
-func MakeGaugeValue(endpoint, metric, tags string, val interface{}, step_and_ts ...int64) *model.JsonMetaData {
+func MakeGaugeValue(endpoint, metric, tags string, val interface{}, step_and_ts ...int64) *cm.JSONMetaData {
 	return MakeMetaData(endpoint, metric, tags, val, "GAUGE", step_and_ts...)
 }
 
-func MakeCounterValue(endpoint, metric, tags string, val interface{}, step_and_ts ...int64) *model.JsonMetaData {
+func MakeCounterValue(endpoint, metric, tags string, val interface{}, step_and_ts ...int64) *cm.JSONMetaData {
 	return MakeMetaData(endpoint, metric, tags, val, "COUNTER", step_and_ts...)
 }
 

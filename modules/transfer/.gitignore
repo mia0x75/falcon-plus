@@ -6,6 +6,8 @@
 # Folders
 _obj
 _test
+.test
+
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -26,12 +28,10 @@ _testmain.go
 *.swp
 *.swo
 *.log
+*.temp
+
 .idea
 .DS_Store
 /var
 /falcon-transfer*
 /cfg.json
-/test/build
-/test/*.go
-
-gitversion

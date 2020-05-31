@@ -12,13 +12,14 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 )
 
+// CleanCache TODO:
 func CleanCache() {
 	go clean()
 }
 
 func clean() {
 	var ticker *time.Ticker
-	//TODO: Move g.CLEAN_CACHE to cfg
+	// TODO: Move g.CLEAN_CACHE to cfg
 	ticker = time.NewTicker(time.Duration(g.CLEAN_CACHE) * time.Second)
 	defer ticker.Stop()
 	for {
@@ -41,9 +42,8 @@ func clean() {
 
 */
 
-// TODO: 删除长期不更新数据(依赖index)
+// DeleteInvalidItems 删除长期不更新数据(依赖index)
 func DeleteInvalidItems() int {
-
 	var currentCnt, deleteCnt int
 	graphItems := store.GraphItems
 
@@ -67,9 +67,8 @@ func DeleteInvalidItems() int {
 	return deleteCnt
 }
 
-// TODO: 删除长期不更新数据(依赖index)
+// DeleteInvalidHistory 删除长期不更新数据(依赖index)
 func DeleteInvalidHistory() int {
-
 	var currentCnt, deleteCnt int
 	historyCache := store.HistoryCache
 

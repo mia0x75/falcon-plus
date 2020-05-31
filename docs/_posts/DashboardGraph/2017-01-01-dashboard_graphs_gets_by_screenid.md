@@ -1,6 +1,6 @@
 ---
 category: DashboardGraph
-apiurl: '/api/v1/dashboard/graphs/screen/:screen_id'
+apiurl: '/api/v1/dashboard/graphs/screen/#{id}'
 title: 'Gets graphs by screen id'
 type: 'GET'
 sample_doc: 'dashboard.html'
@@ -22,7 +22,7 @@ layout: default
         "endpoints": [
             "laiweiofficemac"
         ],
-        "falcon_tags": "",
+        "tags": "",
         "graph_id": 4640,
         "graph_type": "h",
         "method": "",
@@ -38,7 +38,7 @@ layout: default
         "endpoints": [
             "xxx"
         ],
-        "falcon_tags": "",
+        "tags": "",
         "graph_id": 4641,
         "graph_type": "h",
         "method": "SUM",

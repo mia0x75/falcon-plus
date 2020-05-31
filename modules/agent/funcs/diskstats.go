@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 var (
@@ -100,7 +100,7 @@ func IODelta(device string, f func([2]*nux.DiskStats) uint64) uint64 {
 }
 
 // DiskIOMetrics TODO:
-func DiskIOMetrics() (L []*cmodel.MetricValue) {
+func DiskIOMetrics() (L []*cm.MetricValue) {
 	dsList, err := nux.ListDiskStats()
 	if err != nil {
 		log.Errorf("[E] %v", err)
@@ -130,7 +130,7 @@ func DiskIOMetrics() (L []*cmodel.MetricValue) {
 }
 
 // IOStatsMetrics TODO:
-func IOStatsMetrics() (L []*cmodel.MetricValue) {
+func IOStatsMetrics() (L []*cm.MetricValue) {
 	dsLock.RLock()
 	defer dsLock.RUnlock()
 

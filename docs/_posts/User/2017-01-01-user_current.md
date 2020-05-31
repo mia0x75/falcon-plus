@@ -20,7 +20,6 @@ layout: default
   "email": "",
   "phone": "",
   "im": "",
-  "qq": "",
   "role": 2
 }```
 

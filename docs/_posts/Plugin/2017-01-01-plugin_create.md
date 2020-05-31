@@ -8,7 +8,7 @@ layout: default
 ---
 
 * [Session](#/authentication) Required
-* grp_id: hostgroup id
+* group_id: hostgroup id
 
 ### Request
 
@@ -22,7 +22,7 @@ layout: default
 ```Status: 200```
 ```{
   "id": 1501,
-  "grp_id": 343,
+  "group_id": 343,
   "dir": "testpath",
   "create_user": "root"
 }```

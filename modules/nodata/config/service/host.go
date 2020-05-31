@@ -12,9 +12,10 @@ func GetHostsFromGroup(grpName string) map[string]int {
 	hosts := make(map[string]int)
 
 	now := time.Now().Unix()
-	q := fmt.Sprintf("SELECT host.id, host.hostname FROM grp_host AS gh "+
-		" INNER JOIN host ON host.id=gh.host_id AND (host.maintain_begin > %d OR host.maintain_end < %d)"+
-		" INNER JOIN grp ON grp.id=gh.grp_id AND grp.grp_name='%s'", now, now, grpName)
+	q := fmt.Sprintf("SELECT h.id, h.hostname FROM edges l "+
+		" INNER JOIN hosts h ON h.id = l.descendant_id "+
+		" INNER JOIN groups g ON g.id = l.ancestor_id "+
+		" WHERE (h.maintain_begin > %d OR h.maintain_end < %d) AND l.type = 2 AND g.name = '%s'", now, now, grpName)
 
 	rows, err := DB.Query(q)
 	if err != nil {

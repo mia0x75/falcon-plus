@@ -9,10 +9,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
-func PostPush(L []*model.JsonMetaData) error {
+func PostPush(L []*cm.JSONMetaData) error {
 	bs, err := json.Marshal(L)
 	if err != nil {
 		return err

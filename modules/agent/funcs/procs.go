@@ -6,13 +6,13 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
 // ProcMetrics TODO:
-func ProcMetrics() (L []*cmodel.MetricValue) {
+func ProcMetrics() (L []*cm.MetricValue) {
 	ps, err := nux.AllProcs()
 	if err != nil {
 		log.Errorf("[E] %v", err)

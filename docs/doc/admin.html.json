@@ -12,13 +12,13 @@
                         "name": "qfeng"
                     },
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/x-www-form-urlencoded\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -38,13 +38,13 @@
                         "name": "daye"
                     },
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/x-www-form-urlencoded\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -64,13 +64,13 @@
                         "name": "qfeng"
                     },
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"05434ff8db0311e7afde005056a6aba2\", \"name\": \"qfeng\"}",
+                        "X-Falcon-Token": "{\"sig\": \"05434ff8db0311e7afde005056a6aba2\", \"name\": \"qfeng\"}",
                         "Content-Type": " application/x-www-form-urlencoded\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -94,13 +94,13 @@
                     "MethodType": "PUT",
                     "PostForm": null,
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/json\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -118,13 +118,13 @@
                     "MethodType": "PUT",
                     "PostForm": null,
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/json\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -148,13 +148,13 @@
                     "MethodType": "PUT",
                     "PostForm": null,
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/json\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",
@@ -178,13 +178,13 @@
                     "MethodType": "DELETE",
                     "PostForm": null,
                     "RequestHeader": {
-                        "Apitoken": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
+                        "X-Falcon-Token": "{\"sig\": \"25ae3f6cdb1711e79997005056a6aba2\", \"name\": \"root\"}",
                         "Content-Type": " application/json\r"
                     },
                     "CommonRequestHeaders": null,
                     "ResponseHeader": {
                         "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+                        "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
                         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Expose-Headers": "Content-Length",

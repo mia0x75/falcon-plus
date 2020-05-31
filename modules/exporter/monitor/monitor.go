@@ -11,7 +11,7 @@ import (
 	"github.com/toolkits/container/nmap"
 	"github.com/toolkits/cron"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 )
 
@@ -154,7 +154,7 @@ func monitor() {
 			}
 			host := strings.Split(endpoint, ":")[0]
 			url := fmt.Sprintf(g.Config().Monitor.Pattern, endpoint)
-			body, err := cutils.Get(url)
+			body, err := cu.Get(url)
 			state.Lock()
 			defer state.Unlock()
 			if !(err == nil && len(body) >= 2 && string(body[:2]) == "ok") {
@@ -200,7 +200,7 @@ func startJudge() {
 			if data, err := json.Marshal(item.(*AlarmDto)); err != nil {
 				log.Errorf("[E] json marshal error: %v", err)
 			} else {
-				_, err := cutils.Post(g.Config().Monitor.Alarm.Url, data)
+				_, err := cu.Post(g.Config().Monitor.Alarm.Url, data)
 				if err != nil {
 					log.Errorf("[E] alarm send request for health check error: %v", err)
 				} else {

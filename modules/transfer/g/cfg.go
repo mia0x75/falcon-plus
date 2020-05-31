@@ -2,9 +2,11 @@ package g
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"sync"
 
+	pfcg "github.com/mia0x75/gopfc/g"
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 )
@@ -54,8 +56,8 @@ type GraphConfig struct {
 	ClusterList    map[string]*ClusterNode `json:"cluster_list"`
 }
 
-// TsdbConfig Tsdb配置
-type TsdbConfig struct {
+// TSDBConfig TSDB配置
+type TSDBConfig struct {
 	Enabled        bool   `json:"enabled"`
 	Batch          int    `json:"batch"`
 	ConnectTimeout int    `json:"connect_timeout"`
@@ -71,17 +73,31 @@ type LogConfig struct {
 	Level string `json:"level"`
 }
 
+// TransferConfig Transfer配置
+type TransferConfig struct {
+	Enabled     bool              `json:"enabled"`
+	Batch       int               `json:"batch"`
+	ConnTimeout int               `json:"connTimeout"`
+	CallTimeout int               `json:"callTimeout"`
+	MaxConns    int               `json:"maxConns"`
+	MaxIdle     int               `json:"maxIdle"`
+	MaxRetry    int               `json:"retry"`
+	Cluster     map[string]string `json:"cluster"`
+}
+
 // GlobalConfig Transfer模块配置
 type GlobalConfig struct {
-	Log           *LogConfig      `json:"log"`
-	MinStep       int             `json:"min_step"` //最小周期,单位sec
-	HTTP          *HTTPConfig     `json:"http"`
-	RPC           *RPCConfig      `json:"rpc"`
-	Socket        *SocketConfig   `json:"socket"`
-	Judge         *JudgeConfig    `json:"judge"`
-	Graph         *GraphConfig    `json:"graph"`
-	Tsdb          *TsdbConfig     `json:"tsdb"`
-	IgnoreMetrics map[string]bool `json:"ignore"`
+	Log           *LogConfig         `json:"log"`
+	MinStep       int                `json:"min_step"` // 最小周期,单位sec
+	HTTP          *HTTPConfig        `json:"http"`
+	RPC           *RPCConfig         `json:"rpc"`
+	Socket        *SocketConfig      `json:"socket"`
+	Judge         *JudgeConfig       `json:"judge"`
+	Graph         *GraphConfig       `json:"graph"`
+	TSDB          *TSDBConfig        `json:"tsdb"`
+	IgnoreMetrics map[string]bool    `json:"ignore"`
+	Transfer      *TransferConfig    `json:"transfer"`
+	PerfCounter   *pfcg.GlobalConfig `json:"pfc"`
 }
 
 // 变量定义
@@ -127,6 +143,17 @@ func ParseConfig(cfg string) {
 
 	configLock.Lock()
 	defer configLock.Unlock()
+
+	if c.PerfCounter != nil {
+		c.PerfCounter.Debug = c.Log.Level == "debug"
+		port := strings.Split(c.HTTP.Listen, ":")[1]
+		if c.PerfCounter.Tags == "" {
+			c.PerfCounter.Tags = fmt.Sprintf("port=%s", port)
+		} else {
+			c.PerfCounter.Tags = fmt.Sprintf("%s,port=%s", c.PerfCounter.Tags, port)
+		}
+	}
+
 	config = &c
 
 	log.Debugf("[D] read config file: %s successfully", cfg)

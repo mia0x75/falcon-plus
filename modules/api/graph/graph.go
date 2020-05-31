@@ -14,16 +14,16 @@ import (
 	rings "github.com/toolkits/consistent/rings"
 	nset "github.com/toolkits/container/set"
 
-	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cp "github.com/open-falcon/falcon-plus/common/pool"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
 // 连接池
 // node_address -> connection_pool
 var (
-	GraphConnPools *cpools.SafeRpcConnPools
+	GraphConnPools *cp.SafeRPCConnPools
 	clusterMap     map[string]string
 	gcluster       []string
 	connTimeout    int32
@@ -36,6 +36,7 @@ var (
 	GraphNodeRing *rings.ConsistentHashNodeRing
 )
 
+// Start TODO:
 func Start() {
 	addrs := g.Config().Graphs.Cluster
 	clusterMap = addrs
@@ -55,8 +56,9 @@ func Start() {
 	log.Info("[I] graph.Start ok")
 }
 
-func GenQParam(endpoint string, counter string, consolFun string, stime int64, etime int64, step int) cmodel.GraphQueryParam {
-	return cmodel.GraphQueryParam{
+// GenQParam TODO:
+func GenQParam(endpoint string, counter string, consolFun string, stime int64, etime int64, step int) cm.GraphQueryParam {
+	return cm.GraphQueryParam{
 		Start:     stime,
 		End:       etime,
 		ConsolFun: consolFun,
@@ -66,10 +68,11 @@ func GenQParam(endpoint string, counter string, consolFun string, stime int64, e
 	}
 }
 
-func QueryOne(para cmodel.GraphQueryParam) (resp *cmodel.GraphQueryResponse, err error) {
+// QueryOne TODO:
+func QueryOne(para cm.GraphQueryParam) (resp *cm.GraphQueryResponse, err error) {
 	start, end := para.Start, para.End
 	endpoint, counter := para.Endpoint, para.Counter
-	resp = &cmodel.GraphQueryResponse{}
+	resp = &cm.GraphQueryResponse{}
 	pool, addr, err := selectPool(endpoint, counter)
 	if err != nil {
 		return resp, err
@@ -88,12 +91,12 @@ func QueryOne(para cmodel.GraphQueryParam) (resp *cmodel.GraphQueryResponse, err
 
 	type ChResult struct {
 		Err  error
-		Resp *cmodel.GraphQueryResponse
+		Resp *cm.GraphQueryResponse
 	}
 
 	ch := make(chan *ChResult, 1)
 	go func() {
-		resp := &cmodel.GraphQueryResponse{}
+		resp := &cm.GraphQueryResponse{}
 		err := rpcConn.Call("Graph.Query", para, resp)
 		ch <- &ChResult{Err: err, Resp: resp}
 	}()
@@ -106,26 +109,25 @@ func QueryOne(para cmodel.GraphQueryParam) (resp *cmodel.GraphQueryResponse, err
 		if r.Err != nil {
 			pool.ForceClose(conn)
 			return r.Resp, fmt.Errorf("%s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
-		} else {
-			pool.Release(conn)
+		}
+		pool.Release(conn)
 
-			if len(r.Resp.Values) < 1 {
-				r.Resp.Values = []*cmodel.RRDData{}
-				return r.Resp, nil
+		if len(r.Resp.Values) < 1 {
+			r.Resp.Values = []*cm.RRDData{}
+			return r.Resp, nil
+		}
+
+		// TODO query不该做这些事情, 说明graph没做好
+		fixed := []*cm.RRDData{}
+		for _, v := range r.Resp.Values {
+			if v == nil || !(v.Timestamp >= start && v.Timestamp <= end) {
+				continue
 			}
-
-			// TODO query不该做这些事情, 说明graph没做好
-			fixed := []*cmodel.RRDData{}
-			for _, v := range r.Resp.Values {
-				if v == nil || !(v.Timestamp >= start && v.Timestamp <= end) {
-					continue
-				}
-				//FIXME: 查询数据的时候，把所有的负值都过滤掉，因为transfer之前在设置最小值的时候为U
-				if (r.Resp.DsType == "DERIVE" || r.Resp.DsType == "COUNTER") && v.Value < 0 {
-					fixed = append(fixed, &cmodel.RRDData{Timestamp: v.Timestamp, Value: cmodel.JsonFloat(math.NaN())})
-				} else {
-					fixed = append(fixed, v)
-				}
+			// FIXME: 查询数据的时候，把所有的负值都过滤掉，因为transfer之前在设置最小值的时候为U
+			if (r.Resp.DsType == "DERIVE" || r.Resp.DsType == "COUNTER") && v.Value < 0 {
+				fixed = append(fixed, &cm.RRDData{Timestamp: v.Timestamp, Value: cm.JSONFloat(math.NaN())})
+			} else {
+				fixed = append(fixed, v)
 			}
 			r.Resp.Values = fixed
 		}
@@ -133,30 +135,31 @@ func QueryOne(para cmodel.GraphQueryParam) (resp *cmodel.GraphQueryResponse, err
 	}
 }
 
-func Delete(params []*cmodel.GraphDeleteParam) {
+// Delete TODO:
+func Delete(params []*cm.GraphDeleteParam) {
 	var err error
-	var nodes map[string][]*cmodel.GraphDeleteParam = make(map[string][]*cmodel.GraphDeleteParam)
+	var nodes = make(map[string][]*cm.GraphDeleteParam)
 	for _, para := range params {
 		endpoint, metric, tags_str := para.Endpoint, para.Metric, para.Tags
 		var tags map[string]string
-		err, tags = cutils.SplitTagsString(tags_str)
+		err, tags = cu.SplitTagsString(tags_str)
 		if err != nil {
 			log.Errorf("[E] invalid tags: %s error: %v", tags_str, err)
 			continue
 		}
-		counter := cutils.Counter(metric, tags)
-		pk := cutils.PK2(endpoint, counter)
+		counter := cu.Counter(metric, tags)
+		pk := cu.PK2(endpoint, counter)
 
 		if _, ok := nodes[pk]; ok {
 			nodes[pk] = append(nodes[pk], para)
 		} else {
-			nodes[pk] = []*cmodel.GraphDeleteParam{para}
+			nodes[pk] = []*cm.GraphDeleteParam{para}
 		}
 	}
 
 	type ChResult struct {
 		Err  error
-		Resp *cmodel.GraphDeleteResp
+		Resp *cm.GraphDeleteResp
 	}
 
 	for pk, node_params := range nodes {
@@ -181,7 +184,7 @@ func Delete(params []*cmodel.GraphDeleteParam) {
 
 		ch := make(chan *ChResult, 1)
 		go func() {
-			resp := &cmodel.GraphDeleteResp{}
+			resp := &cm.GraphDeleteResp{}
 			err := rpcConn.Call("Graph.Delete", node_params, resp)
 			ch <- &ChResult{Err: err, Resp: resp}
 		}()
@@ -202,7 +205,8 @@ func Delete(params []*cmodel.GraphDeleteParam) {
 	}
 }
 
-func Info(para cmodel.GraphInfoParam) (resp *cmodel.GraphFullyInfo, err error) {
+// Info TODO:
+func Info(para cm.GraphInfoParam) (resp *cm.GraphFullyInfo, err error) {
 	endpoint, counter := para.Endpoint, para.Counter
 
 	pool, addr, err := selectPool(endpoint, counter)
@@ -223,11 +227,11 @@ func Info(para cmodel.GraphInfoParam) (resp *cmodel.GraphFullyInfo, err error) {
 
 	type ChResult struct {
 		Err  error
-		Resp *cmodel.GraphInfoResp
+		Resp *cm.GraphInfoResp
 	}
 	ch := make(chan *ChResult, 1)
 	go func() {
-		resp := &cmodel.GraphInfoResp{}
+		resp := &cm.GraphInfoResp{}
 		err := rpcConn.Call("Graph.Info", para, resp)
 		ch <- &ChResult{Err: err, Resp: resp}
 	}()
@@ -240,22 +244,22 @@ func Info(para cmodel.GraphInfoParam) (resp *cmodel.GraphFullyInfo, err error) {
 		if r.Err != nil {
 			pool.ForceClose(conn)
 			return nil, fmt.Errorf("%s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
-		} else {
-			pool.Release(conn)
-			fullyInfo := cmodel.GraphFullyInfo{
-				Endpoint:  endpoint,
-				Counter:   counter,
-				ConsolFun: r.Resp.ConsolFun,
-				Step:      r.Resp.Step,
-				Filename:  r.Resp.Filename,
-				Addr:      addr,
-			}
-			return &fullyInfo, nil
 		}
+		pool.Release(conn)
+		fullyInfo := cm.GraphFullyInfo{
+			Endpoint:  endpoint,
+			Counter:   counter,
+			ConsolFun: r.Resp.ConsolFun,
+			Step:      r.Resp.Step,
+			Filename:  r.Resp.Filename,
+			Addr:      addr,
+		}
+		return &fullyInfo, nil
 	}
 }
 
-func Last(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
+// Last TODO:
+func Last(para cm.GraphLastParam) (r *cm.GraphLastResp, err error) {
 	endpoint, counter := para.Endpoint, para.Counter
 
 	pool, addr, err := selectPool(endpoint, counter)
@@ -276,11 +280,11 @@ func Last(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
 
 	type ChResult struct {
 		Err  error
-		Resp *cmodel.GraphLastResp
+		Resp *cm.GraphLastResp
 	}
 	ch := make(chan *ChResult, 1)
 	go func() {
-		resp := &cmodel.GraphLastResp{}
+		resp := &cm.GraphLastResp{}
 		err := rpcConn.Call("Graph.Last", para, resp)
 		ch <- &ChResult{Err: err, Resp: resp}
 	}()
@@ -293,14 +297,14 @@ func Last(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
 		if r.Err != nil {
 			pool.ForceClose(conn)
 			return r.Resp, fmt.Errorf("%s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
-		} else {
-			pool.Release(conn)
-			return r.Resp, nil
 		}
+		pool.Release(conn)
+		return r.Resp, nil
 	}
 }
 
-func LastRaw(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
+// LastRaw TODO:
+func LastRaw(para cm.GraphLastParam) (r *cm.GraphLastResp, err error) {
 	endpoint, counter := para.Endpoint, para.Counter
 
 	pool, addr, err := selectPool(endpoint, counter)
@@ -321,11 +325,11 @@ func LastRaw(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
 
 	type ChResult struct {
 		Err  error
-		Resp *cmodel.GraphLastResp
+		Resp *cm.GraphLastResp
 	}
 	ch := make(chan *ChResult, 1)
 	go func() {
-		resp := &cmodel.GraphLastResp{}
+		resp := &cm.GraphLastResp{}
 		err := rpcConn.Call("Graph.LastRaw", para, resp)
 		ch <- &ChResult{Err: err, Resp: resp}
 	}()
@@ -338,15 +342,14 @@ func LastRaw(para cmodel.GraphLastParam) (r *cmodel.GraphLastResp, err error) {
 		if r.Err != nil {
 			pool.ForceClose(conn)
 			return r.Resp, fmt.Errorf("%s, call failed, err %v. proc: %s", addr, r.Err, pool.Proc())
-		} else {
-			pool.Release(conn)
-			return r.Resp, nil
 		}
+		pool.Release(conn)
+		return r.Resp, nil
 	}
 }
 
 func selectPool(endpoint, counter string) (rpool *connp.ConnPool, raddr string, rerr error) {
-	pk := cutils.PK2(endpoint, counter)
+	pk := cu.PK2(endpoint, counter)
 	return selectPoolByPK(pk)
 }
 
@@ -376,19 +379,20 @@ func initConnPools(clusterMap map[string]string) {
 	for _, address := range clusterMap {
 		graphInstances.Add(address)
 	}
-	GraphConnPools = cpools.CreateSafeRpcConnPools(
+	GraphConnPools = cp.CreateSafeRPCConnPools(
 		int(g.Config().Graphs.MaxConnections),
 		int(g.Config().Graphs.MaxIdle),
 		int(connTimeout), int(callTimeout), graphInstances.ToSlice())
 }
 
 func initNodeRings(clusterMap map[string]string) {
-	gcluster := cutils.KeysOfMap(clusterMap)
+	gcluster := cu.KeysOfMap(clusterMap)
 	GraphNodeRing = rings.NewConsistentHashNodesRing(
 		int32(g.Config().Graphs.Replicas),
 		gcluster)
 }
 
+// Hosts TODO:
 func Hosts() []string {
 	f, _ := ioutil.ReadFile("hosts")
 	splitLine := strings.Split(string(f), "\n")

@@ -7,7 +7,7 @@ import (
 
 	"github.com/toolkits/file"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/plugins"
 )
@@ -68,7 +68,7 @@ func SetupPluginRoutes() {
 	})
 
 	http.HandleFunc("/plugins", func(w http.ResponseWriter, r *http.Request) {
-		//TODO: not thread safe
-		cutils.RenderDataJson(w, plugins.Plugins)
+		// TODO: not thread safe
+		cu.RenderDataJSON(w, plugins.Plugins)
 	})
 }

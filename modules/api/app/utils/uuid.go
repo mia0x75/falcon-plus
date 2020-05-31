@@ -6,6 +6,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+// GenerateUUID 生成一个UUID
 func GenerateUUID() string {
 	sig := ""
 	id := uuid.NewV1()

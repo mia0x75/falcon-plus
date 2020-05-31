@@ -15,8 +15,7 @@ layout: default
   "cnname": "翱鶚Test",
   "email": "root123@cepave.com",
   "im": "44955834958",
-  "phone": "99999999999",
-  "qq": "904394234239"
+  "phone": "99999999999"
 }```
 
 ### Response

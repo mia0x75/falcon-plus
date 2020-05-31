@@ -34,7 +34,7 @@ vet:
 
 fmt:
 	@bash ./genver.sh $(GO_VERSION_MIN)
-	$(GOFMT) -l -s -w $(GOFILES)
+	@$(GOFMT) -l -s -w $(GOFILES)
 
 .PHONY: fmt-check
 fmt-check:
@@ -47,13 +47,25 @@ fmt-check:
 	fi;
 
 $(CMD):
-	go build -o bin/$@/falcon-$@ ./modules/$@
-	if [ "$(shell uname -s)" != "Darwin" ]; then strip bin/$@/falcon-$@; fi;
-	upx --best bin/$@/falcon-$@
+	@echo "Compiling module $@ ..."
+	@if [ $@ = "gateway" ]; then \
+		sed -i -e "s/Transfer/Gateway/g" modules/transfer/g/g.go ; \
+		find ./ -type f -name "g.go-e" -exec rm -f {} \; ; \
+		go build -o bin/$@/falcon-$@ ./modules/transfer ; \
+	elif [ $@ = "transfer" ]; then \
+		sed -i -e "s/Gateway/Transfer/g" modules/transfer/g/g.go ; \
+		find ./ -type f -name "g.go-e" -exec rm -f {} \; ; \
+		go build -o bin/$@/falcon-$@ ./modules/$@ ; \
+	else \
+		go build -o bin/$@/falcon-$@ ./modules/$@ ; \
+	fi
+	@if [ "$(shell uname -s)" != "Darwin" ]; then strip bin/$@/falcon-$@; fi;
 
 .PHONY: $(TARGET)
 $(TARGET): $(GOFILES)
-	go build -ldflags "-X main.GitCommit=`git rev-parse --short HEAD` -X main.Version=$(VERSION)" -o bin/open-falcon
+	@echo "Compiling module $@ ..."
+	@go build -ldflags "-X main.GitCommit=`git rev-parse --short HEAD` -X main.Version=$(VERSION)" -o bin/open-falcon
+	@if [ "$(shell uname -s)" != "Darwin" ]; then strip bin/$@; fi;
 
 checkbin: bin/ config/
 
@@ -63,6 +75,7 @@ pack: checkbin
 	@$(foreach var,$(CMD),mkdir -p ./out/$(var);)
 	@$(foreach var,$(CMD),cp ./config/$(var).json ./out/$(var)/$(var).json;)
 	@$(foreach var,$(CMD),cp ./bin/$(var)/falcon-$(var) ./out/$(var);)
+	@$(foreach var,$(CMD),upx --best ./out/$(var)/falcon-$(var)>/dev/null;)
 	@cp -r ./modules/agent/public ./out/agent/
 	@(cd ./out && ln -s ./agent/public/ ./public)
 	@(cd ./out && mkdir -p ./agent/plugin && ln -s ./agent/plugin/ ./plugin)
@@ -70,6 +83,8 @@ pack: checkbin
 	@mkdir out/graph/data
 	@bash ./config/confgen.sh
 	@cp bin/$(TARGET) ./out/$(TARGET)
+	@echo "Compressing executable binary for $(TARGET) ..."
+	@upx --best ./out/$(TARGET)>/dev/null
 	tar -C out -zcf open-falcon-v$(VERSION).tar.gz .
 	@rm -rf out
 

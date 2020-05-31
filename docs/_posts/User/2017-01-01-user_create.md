@@ -21,8 +21,7 @@ layout: default
   "cnname": "翱鹗",
   "email": "root123@cepave.com",
   "im": "44955834958",
-  "phone": "99999999999",
-  "qq": "904394234239"
+  "phone": "99999999999"
 }```
 
 For more example, see the [user](/doc/user.html).

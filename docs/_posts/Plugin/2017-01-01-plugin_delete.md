@@ -1,6 +1,6 @@
 ---
 category: Plugin
-apiurl: '/api/v1/plugin/#{plugin_id}'
+apiurl: '/api/v1/plugin/#{id}'
 title: "Delete Plugin"
 type: 'DELETE'
 sample_doc: 'plugin.html'

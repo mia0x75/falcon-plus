@@ -1,6 +1,6 @@
 ---
 category: DashboardGraph
-apiurl: '/api/v1/dashboard/graph/:id'
+apiurl: '/api/v1/dashboard/graph/#{id}'
 title: 'Update a DashboardGraph'
 type: 'PUT'
 sample_doc: 'dashboard.html'
@@ -13,7 +13,7 @@ layout: default
 ```
 {
     "counters": ["value/name=pfc.push.ms","value/name=pfc.push.size", "agent.alive"],
-    "falcon_tags": "srv=falcon"
+    "tags": "srv=falcon"
 }
 ```
 

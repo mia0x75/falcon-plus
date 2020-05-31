@@ -12,11 +12,11 @@ layout: default
 ### Request
 
 ```{
-  "tpl_id": 5,
-  "grp_id": 3
+  "template_id": 5,
+  "group_id": 3
 }```
 
 ### Response
 
 ```Status: 200```
-```{"grp_id":3,"tpl_id":5,"bind_user":2}```
+```{"group_id":3,"template_id":5,"bind_user":2}```

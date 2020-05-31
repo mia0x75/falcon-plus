@@ -10,13 +10,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -40,13 +40,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -55,7 +55,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "",
-          "ResponseBody": "[{\"id\":78,\"grp_name\":\"tplB\",\"create_user\":\"userA\"},{\"id\":145,\"grp_name\":\"Owl_Default_Group\",\"create_user\":\"userA\"}]",
+          "ResponseBody": "[{\"id\":78,\"name\":\"tplB\",\"create_user\":\"userA\"},{\"id\":145,\"name\":\"Owl_Default_Group\",\"create_user\":\"userA\"}]",
           "ResponseCode": 200
         }
       ]

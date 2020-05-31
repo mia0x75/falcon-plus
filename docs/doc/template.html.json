@@ -10,13 +10,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -40,13 +40,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -70,13 +70,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -100,21 +100,21 @@
           "MethodType": "POST",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
             "Access-Control-Max-Age": "86400",
             "Content-Type": "application/json; charset=utf-8"
           },
-          "RequestUrlParams": "{\"action\":{\"id\":141,\"uic\":\"admin,mm1\",\"url\":\"\",\"callback\":0,\"before_callback_sms\":0,\"before_callback_mail\":0,\"after_callback_sms\":0,\"after_callback_mail\":0},\"stratges\":[{\"id\":686,\"metric\":\"xxx.check\",\"tags\":\"name=xxx\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"<\",\"right_value\":\"1\",\"note\":\"xxx服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":178},{\"id\":687,\"metric\":\"xxx.sync\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"!=\",\"right_value\":\"0\",\"note\":\"XXX同步异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":178},{\"id\":688,\"metric\":\"bbb.check.mq\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"bbb连接MQ异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":178},{\"id\":793,\"metric\":\"aaa.proc.num\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"aaaa 进程大于5\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":178}],\"template\":{\"id\":178,\"tpl_name\":\"TemplateA\",\"parent_id\":0,\"action_id\":141,\"create_user\":\"root\"}}",
+          "RequestUrlParams": "{\"action\":{\"id\":141,\"uic\":\"admin,mm1\",\"url\":\"\",\"callback\":0,\"before_callback_sms\":0,\"before_callback_mail\":0,\"after_callback_sms\":0,\"after_callback_mail\":0},\"stratges\":[{\"id\":686,\"metric\":\"xxx.check\",\"tags\":\"name=xxx\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"<\",\"right_value\":\"1\",\"note\":\"xxx服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":178},{\"id\":687,\"metric\":\"xxx.sync\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"!=\",\"right_value\":\"0\",\"note\":\"XXX同步异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":178},{\"id\":688,\"metric\":\"bbb.check.mq\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"bbb连接MQ异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":178},{\"id\":793,\"metric\":\"aaa.proc.num\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"aaaa 进程大于5\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":178}],\"template\":{\"id\":178,\"tpl_name\":\"TemplateA\",\"parent_id\":0,\"action_id\":141,\"create_user\":\"root\"}}",
           "RequestBody": "{\"parent_id\":0,\"name\":\"AtmpForTesting\"}",
           "ResponseBody": "{\"message\":\"template created\"}",
           "ResponseCode": 200
@@ -131,14 +131,14 @@
           "MethodType": "POST",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -146,7 +146,7 @@
             "Content-Type": "application/json; charset=utf-8"
           },
           "RequestUrlParams": {},
-          "RequestBody": "{\"url\":\"\",\"uic\":\"test,tt2\",\"tpl_id\":225,\"callback\":1,\"before_callback_sms\":0,\"before_callback_mail\":0,\"after_callback_sms\":0,\"after_callback_mail\":0}",
+          "RequestBody": "{\"url\":\"\",\"uic\":\"test,tt2\",\"template_id\":225,\"callback\":1,\"before_callback_sms\":0,\"before_callback_mail\":0,\"after_callback_sms\":0,\"after_callback_mail\":0}",
           "ResponseBody": "{\"message\":\"action is created and bind to template: 225\"}",
           "ResponseCode": 200
         }
@@ -162,14 +162,14 @@
           "MethodType": "PUT",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -177,7 +177,7 @@
             "Content-Type": "application/json; charset=utf-8"
           },
           "RequestUrlParams": {},
-          "RequestBody": "{\"tpl_id\":225,\"parent_id\":0,\"name\":\"AtmpForTesting2\"}",
+          "RequestBody": "{\"template_id\":225,\"parent_id\":0,\"name\":\"AtmpForTesting2\"}",
           "ResponseBody": "{\"message\":\"template updated\"}",
           "ResponseCode": 200
         }
@@ -193,14 +193,14 @@
           "MethodType": "PUT",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -224,13 +224,13 @@
           "MethodType": "DELETE",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -254,13 +254,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -271,7 +271,7 @@
             "tid": "221"
           },
           "RequestBody": "",
-          "ResponseBody": "[{\"id\":893,\"metric\":\"proc.num\",\"tags\":\"name=redis-server\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWRedis服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":894,\"metric\":\"proc.num\",\"tags\":\"name=beam.smp\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWCM进程状态异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":895,\"metric\":\"proc.num\",\"tags\":\"cmdline=fwlog\",\"max_step\":3,\"priority\":3,\"func\":\"all(#5)\",\"op\":\"\\u003c\",\"right_value\":\"2\",\"note\":\"fwlog服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":896,\"metric\":\"fcd.oldworker.count\",\"tags\":\"\",\"max_step\":3,\"priority\":3,\"func\":\"all(#1)\",\"op\":\"\\u003e\",\"right_value\":\"10\",\"note\":\"FastCache Old Worker 数量大于10\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":897,\"metric\":\"service.logs.jifei\",\"tags\":\"\",\"max_step\":1,\"priority\":4,\"func\":\"all(#3)\",\"op\":\"\\u003e\",\"right_value\":\"10\",\"note\":\"fastcache计费日志堆积\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":898,\"metric\":\"proc.num\",\"tags\":\"cmdline=syslog\",\"max_step\":3,\"priority\":4,\"func\":\"all(#1)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"syslog/rsyslog服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":899,\"metric\":\"proc.num\",\"tags\":\"name=fwsa2d\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWSA2服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":900,\"metric\":\"redis.log.null\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"!=\",\"right_value\":\"0\",\"note\":\"FWRedis同步异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221},{\"id\":901,\"metric\":\"check.fwsa2\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"Fwsa2连接MQ异常\",\"run_begin\":\"\",\"run_end\":\"\",\"tpl_id\":221}]",
+          "ResponseBody": "[{\"id\":893,\"metric\":\"proc.num\",\"tags\":\"name=redis-server\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWRedis服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":894,\"metric\":\"proc.num\",\"tags\":\"name=beam.smp\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWCM进程状态异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":895,\"metric\":\"proc.num\",\"tags\":\"cmdline=fwlog\",\"max_step\":3,\"priority\":3,\"func\":\"all(#5)\",\"op\":\"\\u003c\",\"right_value\":\"2\",\"note\":\"fwlog服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":896,\"metric\":\"fcd.oldworker.count\",\"tags\":\"\",\"max_step\":3,\"priority\":3,\"func\":\"all(#1)\",\"op\":\"\\u003e\",\"right_value\":\"10\",\"note\":\"FastCache Old Worker 数量大于10\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":897,\"metric\":\"service.logs.jifei\",\"tags\":\"\",\"max_step\":1,\"priority\":4,\"func\":\"all(#3)\",\"op\":\"\\u003e\",\"right_value\":\"10\",\"note\":\"fastcache计费日志堆积\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":898,\"metric\":\"proc.num\",\"tags\":\"cmdline=syslog\",\"max_step\":3,\"priority\":4,\"func\":\"all(#1)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"syslog/rsyslog服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":899,\"metric\":\"proc.num\",\"tags\":\"name=fwsa2d\",\"max_step\":3,\"priority\":2,\"func\":\"all(#2)\",\"op\":\"\\u003c\",\"right_value\":\"1\",\"note\":\"FWSA2服务异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":900,\"metric\":\"redis.log.null\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"!=\",\"right_value\":\"0\",\"note\":\"FWRedis同步异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221},{\"id\":901,\"metric\":\"check.fwsa2\",\"tags\":\"\",\"max_step\":3,\"priority\":2,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"Fwsa2连接MQ异常\",\"run_begin\":\"\",\"run_end\":\"\",\"template_id\":221}]",
           "ResponseCode": 200
         }
       ]
@@ -286,14 +286,14 @@
           "MethodType": "POST",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -301,7 +301,7 @@
             "Content-Type": "application/json; charset=utf-8"
           },
           "RequestUrlParams": {},
-          "RequestBody": "{\"tpl_id\":221,\"tags\":\"\",\"run_end\":\"24:00\",\"run_begin\":\"00:00\",\"right_value\":\"1\",\"priority\":1,\"op\":\"==\",\"note\":\"this is a test\",\"metric\":\"agent.alive\",\"max_step\":3,\"func\":\"all(#3)\"}",
+          "RequestBody": "{\"template_id\":221,\"tags\":\"\",\"run_end\":\"24:00\",\"run_begin\":\"00:00\",\"right_value\":\"1\",\"priority\":1,\"op\":\"==\",\"note\":\"this is a test\",\"metric\":\"agent.alive\",\"max_step\":3,\"func\":\"all(#3)\"}",
           "ResponseBody": "{\"message\":\"stragtegy created\"}",
           "ResponseCode": 200
         }
@@ -317,13 +317,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -332,7 +332,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "",
-          "ResponseBody": "{\"id\":904,\"metric\":\"agent.alive\",\"tags\":\"\",\"max_step\":3,\"priority\":1,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"this is a test\",\"run_begin\":\"00:00\",\"run_end\":\"24:00\",\"tpl_id\":221}",
+          "ResponseBody": "{\"id\":904,\"metric\":\"agent.alive\",\"tags\":\"\",\"max_step\":3,\"priority\":1,\"func\":\"all(#3)\",\"op\":\"==\",\"right_value\":\"1\",\"note\":\"this is a test\",\"run_begin\":\"00:00\",\"run_end\":\"24:00\",\"template_id\":221}",
           "ResponseCode": 200
         }
       ]
@@ -347,14 +347,14 @@
           "MethodType": "PUT",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -378,13 +378,13 @@
           "MethodType": "DELETE",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -408,13 +408,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -438,13 +438,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",

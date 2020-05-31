@@ -4,7 +4,7 @@ import (
 	"container/list"
 	"sync"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 type SafeLinkedList struct {
@@ -18,91 +18,91 @@ func NewSafeLinkedList() *SafeLinkedList {
 	return &SafeLinkedList{L: list.New()}
 }
 
-func (this *SafeLinkedList) PushFront(v interface{}) *list.Element {
-	this.Lock()
-	defer this.Unlock()
-	return this.L.PushFront(v)
+func (m *SafeLinkedList) PushFront(v interface{}) *list.Element {
+	m.Lock()
+	defer m.Unlock()
+	return m.L.PushFront(v)
 }
 
-func (this *SafeLinkedList) Front() *list.Element {
-	this.RLock()
-	defer this.RUnlock()
-	return this.L.Front()
+func (m *SafeLinkedList) Front() *list.Element {
+	m.RLock()
+	defer m.RUnlock()
+	return m.L.Front()
 }
 
-func (this *SafeLinkedList) PopBack() *list.Element {
-	this.Lock()
-	defer this.Unlock()
+func (m *SafeLinkedList) PopBack() *list.Element {
+	m.Lock()
+	defer m.Unlock()
 
-	back := this.L.Back()
+	back := m.L.Back()
 	if back != nil {
-		this.L.Remove(back)
+		m.L.Remove(back)
 	}
 
 	return back
 }
 
-func (this *SafeLinkedList) Back() *list.Element {
-	this.Lock()
-	defer this.Unlock()
+func (m *SafeLinkedList) Back() *list.Element {
+	m.Lock()
+	defer m.Unlock()
 
-	return this.L.Back()
+	return m.L.Back()
 }
 
-func (this *SafeLinkedList) Len() int {
-	this.RLock()
-	defer this.RUnlock()
-	return this.L.Len()
+func (m *SafeLinkedList) Len() int {
+	m.RLock()
+	defer m.RUnlock()
+	return m.L.Len()
 }
 
 // remain参数表示要给linkedlist中留几个元素
 // 在cron中刷磁盘的时候要留一个，用于创建数据库索引
 // 在程序退出的时候要一个不留的全部刷到磁盘
-func (this *SafeLinkedList) PopAll() []*cmodel.GraphItem {
-	this.Lock()
-	defer this.Unlock()
+func (m *SafeLinkedList) PopAll() []*cm.GraphItem {
+	m.Lock()
+	defer m.Unlock()
 
-	size := this.L.Len()
+	size := m.L.Len()
 	if size <= 0 {
-		return []*cmodel.GraphItem{}
+		return []*cm.GraphItem{}
 	}
 
-	ret := make([]*cmodel.GraphItem, 0, size)
+	ret := make([]*cm.GraphItem, 0, size)
 
 	for i := 0; i < size; i++ {
-		item := this.L.Back()
-		ret = append(ret, item.Value.(*cmodel.GraphItem))
-		this.L.Remove(item)
+		item := m.L.Back()
+		ret = append(ret, item.Value.(*cm.GraphItem))
+		m.L.Remove(item)
 	}
 
 	return ret
 }
 
-//restore PushAll
-func (this *SafeLinkedList) PushAll(items []*cmodel.GraphItem) {
-	this.Lock()
-	defer this.Unlock()
+// restore PushAll
+func (m *SafeLinkedList) PushAll(items []*cm.GraphItem) {
+	m.Lock()
+	defer m.Unlock()
 
 	size := len(items)
 	if size > 0 {
 		for i := size - 1; i >= 0; i-- {
-			this.L.PushBack(items[i])
+			m.L.PushBack(items[i])
 		}
 	}
 }
 
-//return为倒叙的?
-func (this *SafeLinkedList) FetchAll() ([]*cmodel.GraphItem, uint32) {
-	this.Lock()
-	defer this.Unlock()
-	count := this.L.Len()
-	ret := make([]*cmodel.GraphItem, 0, count)
+// return为倒叙的?
+func (m *SafeLinkedList) FetchAll() ([]*cm.GraphItem, uint32) {
+	m.Lock()
+	defer m.Unlock()
+	count := m.L.Len()
+	ret := make([]*cm.GraphItem, 0, count)
 
-	p := this.L.Back()
+	p := m.L.Back()
 	for p != nil {
-		ret = append(ret, p.Value.(*cmodel.GraphItem))
+		ret = append(ret, p.Value.(*cm.GraphItem))
 		p = p.Prev()
 	}
 
-	return ret, this.Flag
+	return ret, m.Flag
 }

@@ -1,49 +1,68 @@
 {
-	"host": "127.0.0.1",
 	"log": {
 		"level": "debug"
 	},
+	"min_step": 5,
 	"http": {
 		"enabled": true,
-		"listen": "0.0.0.0:6060"
+		"listen": "0.0.0.0:6108"
 	},
 	"rpc": {
 		"enabled": true,
-		"listen": "0.0.0.0:8433"
+		"listen": "0.0.0.0:6100"
 	},
 	"socket": {
 		"enabled": true,
-		"listen": "0.0.0.0:4444",
+		"listen": "0.0.0.0:6102",
 		"timeout": 3600
+	},
+	"judge": {
+		"enabled": false,
+		"batch": 200,
+		"connect_timeout": 1000,
+		"execute_timeout": 5000,
+		"max_connections": 32,
+		"max_idle": 32,
+		"replicas": 500,
+		"cluster": {
+			"judge-00": "127.0.0.1:6080"
+		}
+	},
+	"graph": {
+		"enabled": false,
+		"batch": 200,
+		"connect_timeout": 1000,
+		"execute_timeout": 5000,
+		"max_connections": 32,
+		"max_idle": 32,
+		"replicas": 500,
+		"cluster": {
+			"graph-00": "127.0.0.1:6070"
+		}
+	},
+	"tsdb": {
+		"enabled": false,
+		"batch": 200,
+		"connect_timeout": 1000,
+		"execute_timeout": 5000,
+		"max_connections": 32,
+		"max_idle": 32,
+		"retry": 3,
+		"address": "127.0.0.1:8088"
 	},
 	"transfer": {
 		"enabled": true,
 		"batch": 200,
-		"retry": 1,
+		"retry": 3,
 		"connect_timeout": 1000,
 		"execute_timeout": 5000,
 		"max_connections": 32,
 		"max_idle": 32,
 		"cluster": {
-			"transfer-00": "127.0.0.1:8433"
+			"transfer-00": "127.0.0.1:6060"
 		}
 	},
-	"pfc": {
-		"hostname": "127.0.0.1",
-		"step": 5,
-		"prefix": "gateway",
-		"tags": "",
-		"bases": [
-			"debug",
-			"runtime"
-		],
-		"push": {
-			"enabled": true,
-			"api": "http://127.0.0.1:6050/api/push"
-		},
-		"http": {
-			"enabled": true,
-			"listen": "0.0.0.0:2015"
-		}
+	"ignore": {
+		"fs.file.checksum": true
 	}
 }

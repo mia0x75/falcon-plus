@@ -3,16 +3,17 @@ package g
 import (
 	"fmt"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
-func Link(event *cmodel.Event) string {
-	tplId := event.TplId()
-	if tplId != 0 {
-		return fmt.Sprintf("%s/portal/template/view/%d", Config().API.Dashboard, tplId)
+// Link TODO:
+func Link(event *cm.Event) string {
+	templateID := event.TemplateID()
+	if templateID != 0 {
+		return fmt.Sprintf("%s/portal/template/view/%d", Config().API.Dashboard, templateID)
 	}
 
-	eid := event.ExpressionId()
+	eid := event.ExpressionID()
 	if eid != 0 {
 		return fmt.Sprintf("%s/portal/expression/view/%d", Config().API.Dashboard, eid)
 	}
@@ -20,6 +21,7 @@ func Link(event *cmodel.Event) string {
 	return ""
 }
 
+// AlarmDto 告警数据结构
 type AlarmDto struct {
 	Status     string
 	Priority   int
@@ -40,17 +42,17 @@ type AlarmDto struct {
 	Uic        string
 }
 
-func (this *AlarmDto) String() string {
+func (s *AlarmDto) String() string {
 	return fmt.Sprintf(
 		"<Content: %s, Priority:P%d, Status: %s, Value: %s, Operator: %s Threshold: %s, Occur: %d, Uic: %s, Tos: %s>",
-		this.Note,
-		this.Priority,
-		this.Status,
-		this.LeftValue,
-		this.Operator,
-		this.RightValue,
-		this.Occur,
-		this.Uic,
-		this.Subscriber,
+		s.Note,
+		s.Priority,
+		s.Status,
+		s.LeftValue,
+		s.Operator,
+		s.RightValue,
+		s.Occur,
+		s.Uic,
+		s.Subscriber,
 	)
 }

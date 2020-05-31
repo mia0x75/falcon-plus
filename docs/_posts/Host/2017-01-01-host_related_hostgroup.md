@@ -1,6 +1,6 @@
 ---
 category: Host
-apiurl: '/api/v1/host/#{host_id}/hostgroup'
+apiurl: '/api/v1/host/#{id}/hostgroup'
 title: "Get related HostGorup of Host"
 type: 'GET'
 sample_doc: 'host.html'
@@ -9,7 +9,7 @@ layout: default
 
 * [Session](#/authentication) Required
 * ex. /api/v1/host/1647/hostgroup
-* grp_name: hostgroup name
+* name: hostgroup name
 
 ### Response
 
@@ -17,12 +17,12 @@ layout: default
 ```[
   {
     "id": 78,
-    "grp_name": "tplB",
+    "name": "tplB",
     "create_user": "userA"
   },
   {
     "id": 145,
-    "grp_name": "Owl_Default_Group",
+    "name": "Owl_Default_Group",
     "create_user": "userA"
   }
 ]```

@@ -6,9 +6,10 @@ import (
 	"time"
 )
 
+// Cluster TODO:
 type Cluster struct {
-	Id          int64
-	GroupId     int64
+	ID          int64
+	GroupID     int64
 	Numerator   string
 	Denominator string
 	Endpoint    string
@@ -19,40 +20,44 @@ type Cluster struct {
 	LastUpdate  time.Time
 }
 
-func (this *Cluster) String() string {
+// String TODO:
+func (s *Cluster) String() string {
 	return fmt.Sprintf(
-		"<Id: %d, GroupId: %d, Numerator: %s, Denominator: %s, Endpoint: %s, Metric: %s, Tags: %s, DsType: %s, Step: %d, LastUpdate: %v>",
-		this.Id,
-		this.GroupId,
-		this.Numerator,
-		this.Denominator,
-		this.Endpoint,
-		this.Metric,
-		this.Tags,
-		this.DsType,
-		this.Step,
-		this.LastUpdate,
+		"<ID: %d, GroupID: %d, Numerator: %s, Denominator: %s, Endpoint: %s, Metric: %s, Tags: %s, DsType: %s, Step: %d, LastUpdate: %v>",
+		s.ID,
+		s.GroupID,
+		s.Numerator,
+		s.Denominator,
+		s.Endpoint,
+		s.Metric,
+		s.Tags,
+		s.DsType,
+		s.Step,
+		s.LastUpdate,
 	)
 }
 
-// key: Id+LastUpdate
+// SafeClusterMonitorItems key: Id+LastUpdate
 type SafeClusterMonitorItems struct {
 	sync.RWMutex
 	M map[string]*Cluster
 }
 
+// NewClusterMonitorItems TODO:
 func NewClusterMonitorItems() *SafeClusterMonitorItems {
 	return &SafeClusterMonitorItems{M: make(map[string]*Cluster)}
 }
 
-func (this *SafeClusterMonitorItems) Init(m map[string]*Cluster) {
-	this.Lock()
-	defer this.Unlock()
-	this.M = m
+// Init TODO:
+func (s *SafeClusterMonitorItems) Init(m map[string]*Cluster) {
+	s.Lock()
+	defer s.Unlock()
+	s.M = m
 }
 
-func (this *SafeClusterMonitorItems) Get() map[string]*Cluster {
-	this.RLock()
-	defer this.RUnlock()
-	return this.M
+// Get TODO:
+func (s *SafeClusterMonitorItems) Get() map[string]*Cluster {
+	s.RLock()
+	defer s.RUnlock()
+	return s.M
 }

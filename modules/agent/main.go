@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/cron"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
@@ -26,7 +26,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf(g.Banner, "Agent")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -43,7 +43,7 @@ func main() {
 
 	g.ParseConfig(*cfg)
 
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	g.InitRootDir()
 	g.InitLocalIP()
 	g.InitRPCClients()

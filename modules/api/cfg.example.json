@@ -2,37 +2,11 @@
 	"log": {
 		"level": "debug"
 	},
-	"databases": {
-		"portal": {
-			"addr": "root:@tcp(127.0.0.1:3306)/portal?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"graph": {
-			"addr": "root:@tcp(127.0.0.1:3306)/graph?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"uic": {
-			"addr": "root:@tcp(127.0.0.1:3306)/uic?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"dashboard": {
-			"addr": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		},
-		"alarms": {
-			"addr": "root:@tcp(127.0.0.1:3306)/alarms?charset=utf8mb4&loc=Local&parseTime=true",
-			"max_idle": 4,
-			"max_connections": 8,
-			"wait_timeout": 30
-		}
+	"database": {
+		"addr": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
+		"max_idle": 4,
+		"max_connections": 8,
+		"wait_timeout": 30
 	},
 	"graphs": {
 		"cluster": {
@@ -48,9 +22,9 @@
 	"metric_list_file": "./api/data/metric",
 	"rpc": {
 		"enabled": true,
-		"listen": "0.0.0.0:6040"
+		"listen": "0.0.0.0:6000"
 	},
-	"listen": ":8080",
+	"listen": ":6008",
 	"access_control": true,
 	"signup_disable": false,
 	"skip_auth": false,

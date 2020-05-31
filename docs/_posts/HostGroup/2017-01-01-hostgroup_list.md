@@ -15,17 +15,17 @@ layout: default
 ```[
   {
     "id": 3,
-    "grp_name": "docker-A",
+    "name": "docker-A",
     "create_user": "user-A"
   },
   {
     "id": 5,
-    "grp_name": "docker-T",
+    "name": "docker-T",
     "create_user": "user-B"
   },
   {
     "id": 8,
-    "grp_name": "docker-F",
+    "name": "docker-F",
     "create_user": "root"
   }
 ]```

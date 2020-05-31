@@ -64,33 +64,29 @@ function tailf() {
 }
 
 function build() {
-    commit=$(git log -1 --pretty=%h)
-    cat <<EOF > ./g/git.go
-package g
-const (
-    COMMIT = "$commit"
-)
-EOF
+    sed -i -e "s/Gateway/Transfer/g" g/g.go
+	find ./ -type f -name "g.go-e" -exec rm -f {} \;
     go build -o $app main.go
-    show_version
-}
-
-function show_version() {
-    ./$app -vg
+    sc=$?
+    if [ $sc -ne 0 ]; then
+        echo "build error"
+        exit $sc
+    else
+        echo -n "build ok" 
+        ./$app -v 
+    fi
 }
 
 function pack() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v`
-    tar zcvf $app-$version.tar.gz control $app cfg.example.json gitversion ./test/debug
+    version=$(cat ../../VERSION)
+    tar zcvf $app-$version.tar.gz control $app cfg.example.json ./test/debug
 }
 
 function packbin() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v`
-    tar zcvf $app-bin-$version.tar.gz $app gitversion
+    version=$(cat ../../VERSION)
+    tar zcvf $app-bin-$version.tar.gz $app
 }
 
 

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 	"github.com/open-falcon/falcon-plus/modules/transfer/sender"
 )
@@ -14,12 +14,12 @@ import (
 func SetupProcRoutes() {
 	// counter
 	http.HandleFunc("/statistics/all", func(w http.ResponseWriter, r *http.Request) {
-		cutils.RenderDataJson(w, proc.GetAll())
+		cu.RenderDataJSON(w, proc.GetAll())
 	})
 
 	// step
 	http.HandleFunc("/proc/step", func(w http.ResponseWriter, r *http.Request) {
-		cutils.RenderDataJson(w, map[string]interface{}{"min_step": sender.MinStep})
+		cu.RenderDataJSON(w, map[string]interface{}{"min_step": sender.MinStep})
 	})
 
 	// trace
@@ -40,8 +40,8 @@ func SetupProcRoutes() {
 				}
 			}
 		}
-		proc.RecvDataTrace.SetPK(cutils.PK(endpoint, metric, tags))
-		cutils.RenderDataJson(w, proc.RecvDataTrace.GetAllTraced())
+		proc.RecvDataTrace.SetPK(cu.PK(endpoint, metric, tags))
+		cu.RenderDataJSON(w, proc.RecvDataTrace.GetAllTraced())
 	})
 
 	// filter
@@ -57,7 +57,7 @@ func SetupProcRoutes() {
 		threadholdStr := args[3]
 		threadhold, err := strconv.ParseFloat(threadholdStr, 64)
 		if err != nil {
-			cutils.RenderDataJson(w, "bad threadhold")
+			cu.RenderDataJSON(w, "bad threadhold")
 			return
 		}
 
@@ -72,12 +72,12 @@ func SetupProcRoutes() {
 			}
 		}
 
-		err = proc.RecvDataFilter.SetFilter(cutils.PK(endpoint, metric, tags), opt, threadhold)
+		err = proc.RecvDataFilter.SetFilter(cu.PK(endpoint, metric, tags), opt, threadhold)
 		if err != nil {
-			cutils.RenderDataJson(w, err.Error())
+			cu.RenderDataJSON(w, err.Error())
 			return
 		}
 
-		cutils.RenderDataJson(w, proc.RecvDataFilter.GetAllFiltered())
+		cu.RenderDataJSON(w, proc.RecvDataFilter.GetAllFiltered())
 	})
 }

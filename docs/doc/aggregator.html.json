@@ -10,14 +10,14 @@
           "MethodType": "POST",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -26,7 +26,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "{\"tags\":\"\",\"step\":60,\"numerator\":\"$(cpu.idle)\",\"metric\":\"test.idle\",\"hostgroup_id\":343,\"endpoint\":\"testenp\",\"denominator\":\"2\"}",
-          "ResponseBody": "{\"id\":16,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
+          "ResponseBody": "{\"id\":16,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
           "ResponseCode": 200
         }
       ]
@@ -41,13 +41,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -56,7 +56,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "",
-          "ResponseBody": "{\"hostgroup\": \"test_group\", \"aggregators\": [{\"id\":13,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":14,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":15,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":16,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}]}",
+          "ResponseBody": "{\"hostgroup\": \"test_group\", \"aggregators\": [{\"id\":13,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":14,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":15,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"},{\"id\":16,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"2\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}]}",
           "ResponseCode": 200
         }
       ]
@@ -71,14 +71,14 @@
           "MethodType": "PUT",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -87,7 +87,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "{\"tags\":\"\",\"step\":60,\"numerator\":\"$(cpu.idle)\",\"metric\":\"test.idle\",\"id\":16,\"endpoint\":\"testenp\",\"denominator\":\"$#\"}",
-          "ResponseBody": "{\"id\":16,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"$#\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
+          "ResponseBody": "{\"id\":16,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"$#\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
           "ResponseCode": 200
         }
       ]
@@ -102,13 +102,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -117,7 +117,7 @@
           },
           "RequestUrlParams": {},
           "RequestBody": "",
-          "ResponseBody": "{\"id\":16,\"grp_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"$#\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
+          "ResponseBody": "{\"id\":16,\"group_id\":343,\"numerator\":\"$(cpu.idle)\",\"denominator\":\"$#\",\"endpoint\":\"testenp\",\"metric\":\"test.idle\",\"tags\":\"\",\"ds_type\":\"GAUGE\",\"step\":60,\"creator\":\"root\"}",
           "ResponseCode": 200
         }
       ]
@@ -132,13 +132,13 @@
           "MethodType": "DELETE",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",

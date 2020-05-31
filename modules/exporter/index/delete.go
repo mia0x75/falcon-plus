@@ -7,7 +7,6 @@ import (
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 
-	Mdb "github.com/open-falcon/common/db"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
 
@@ -39,50 +38,35 @@ func DeleteIndex() {
 
 // 先select 得到可能被删除的index的信息, 然后以相同的条件delete. select和delete不是原子操作,可能有一些不一致,但不影响正确性
 func deleteIndex() error {
-	dbConn, err := GetDbConn()
-	if err != nil {
-		log.Errorf("[E] get dbConn fail: %v", err)
-		return err
-	}
-	defer dbConn.Close()
-
 	ts := time.Now().Unix()
 	lastTs := ts - deteleStepInSec
 	log.Infof("[I] deleteIndex, lastTs %d", lastTs)
 
-	// reinit statistics
+	// 复位 statistics
 	proc.IndexDeleteCnt.PutOther("deleteCntEndpoint", 0)
 	proc.IndexDeleteCnt.PutOther("deleteCntTagEndpoint", 0)
 	proc.IndexDeleteCnt.PutOther("deleteCntEndpointCounter", 0)
 
-	// endpoint表
+	// endpoints 表
 	{
-		// select
-		rows, err := dbConn.Query("SELECT id, endpoint FROM endpoint WHERE ts < ?", lastTs)
+		// Query
+		rows, err := db.Query("SELECT count(*) as cnt FROM endpoints WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		cnt := 0
-		for rows.Next() {
-			item := &Mdb.GraphEndpoint{}
-			err := rows.Scan(&item.Id, &item.Endpoint)
+		if rows.Next() {
+			err := rows.Scan(&cnt)
 			if err != nil {
 				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Infof("[I] will delete endpoint: %v", item)
-			cnt++
 		}
 
-		if err = rows.Err(); err != nil {
-			log.Errorf("[E] %v", err)
-			return err
-		}
-
-		// delete
-		_, err = dbConn.Exec("DELETE FROM endpoint WHERE ts < ?", lastTs)
+		// Delete
+		_, err = db.Exec("DELETE FROM endpoints WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err
@@ -93,34 +77,26 @@ func deleteIndex() error {
 		proc.IndexDeleteCnt.PutOther("deleteCntEndpoint", cnt)
 	}
 
-	// tag_endpoint表
+	// tags表
 	{
-		// select
-		rows, err := dbConn.Query("SELECT id, tag, endpoint_id FROM tag_endpoint WHERE ts < ?", lastTs)
+		// Query
+		rows, err := db.Query("SELECT count(*) as cnt FROM tags WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		cnt := 0
-		for rows.Next() {
-			item := &Mdb.GraphTagEndpoint{}
-			err := rows.Scan(&item.Id, &item.Tag, &item.EndpointId)
+		if rows.Next() {
+			err := rows.Scan(&cnt)
 			if err != nil {
 				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Infof("[I] will delete tag_endpoint: %v", item)
-			cnt++
 		}
 
-		if err = rows.Err(); err != nil {
-			log.Errorf("[E] %v", err)
-			return err
-		}
-
-		// delete
-		_, err = dbConn.Exec("DELETE FROM tag_endpoint WHERE ts < ?", lastTs)
+		// Delete
+		_, err = db.Exec("DELETE FROM tags WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err
@@ -130,34 +106,26 @@ func deleteIndex() error {
 		// statistics
 		proc.IndexDeleteCnt.PutOther("deleteCntTagEndpoint", cnt)
 	}
-	// endpoint_counter表
+	// counters表
 	{
-		// select
-		rows, err := dbConn.Query("SELECT id, endpoint_id, counter FROM endpoint_counter WHERE ts < ?", lastTs)
+		// Query
+		rows, err := db.Query("SELECT count(1) as cnt FROM counters WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err
 		}
 
 		cnt := 0
-		for rows.Next() {
-			item := &Mdb.GraphEndpointCounter{}
-			err := rows.Scan(&item.Id, &item.EndpointId, &item.Counter)
+		if rows.Next() {
+			err := rows.Scan(&cnt)
 			if err != nil {
 				log.Errorf("[E] %v", err)
 				return err
 			}
-			log.Infof("[I] will delete endpoint_counter: %v", item)
-			cnt++
 		}
 
-		if err = rows.Err(); err != nil {
-			log.Errorf("[E] %v", err)
-			return err
-		}
-
-		// delete
-		_, err = dbConn.Exec("DELETE FROM endpoint_counter WHERE ts < ?", lastTs)
+		// Delete
+		_, err = db.Exec("DELETE FROM counters WHERE ts < ?", lastTs)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			return err

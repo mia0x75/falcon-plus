@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	cmodel "github.com/open-falcon/common/model"
 	log "github.com/sirupsen/logrus"
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
@@ -25,14 +25,13 @@ func Start() {
 		return
 	}
 
-	// init url
 	if g.Config().Collector.Agent == "" {
 		return
 	}
 	if g.Config().Collector.Pattern == "" {
 		return
 	}
-	// start
+	// Start
 	go startCollectorCron()
 	log.Info("[I] collector.Start, ok")
 }
@@ -48,16 +47,16 @@ func collect() {
 	endTs := time.Now().Unix()
 	log.Infof("[I] collect, start %s, ts %ds\n", ntime.FormatTs(startTs), endTs-startTs)
 
-	// statistics
+	// Statistics
 	proc.CollectorCronCnt.Incr()
 }
 
 func _collect() {
 	for _, host := range g.Config().Collector.Cluster {
 		ts := time.Now().Unix()
-		jsonList := make([]*cmodel.JsonMetaData, 0)
+		jsonList := make([]*cm.JSONMetaData, 0)
 
-		// get statistics by http-get
+		// Get statistics via http-get
 		hostInfo := strings.Split(host, ",") // "module,hostname:port"
 		if len(hostInfo) != 2 {
 			continue
@@ -74,7 +73,7 @@ func _collect() {
 
 		tags := "port=" + hostPort
 		srcURL := fmt.Sprintf(g.Config().Collector.Pattern, hostNamePort)
-		client := cutils.NewHttp(srcURL)
+		client := cu.NewHttp(srcURL)
 		client.SetUserAgent("collector.get")
 		headers := map[string]string{
 			"Connection": "close",
@@ -99,7 +98,7 @@ func _collect() {
 			}
 			itemName := item["Name"].(string)
 			if item["Cnt"] != nil {
-				var jmdCnt cmodel.JsonMetaData
+				var jmdCnt cm.JSONMetaData
 				jmdCnt.Endpoint = hostName
 				jmdCnt.Metric = fmt.Sprintf("%s.stats.%s", hostModule, itemName)
 				jmdCnt.Timestamp = ts
@@ -111,7 +110,7 @@ func _collect() {
 			}
 
 			if item["Qps"] != nil {
-				var jmdQPS cmodel.JsonMetaData
+				var jmdQPS cm.JSONMetaData
 				jmdQPS.Endpoint = hostName
 				jmdQPS.Metric = fmt.Sprintf("%s.stats.%s.Qps", hostModule, itemName)
 				jmdQPS.Timestamp = ts
@@ -123,7 +122,7 @@ func _collect() {
 			}
 		}
 
-		// format result
+		// Format result
 		err = sendToTransfer(jsonList, g.Config().Collector.Agent)
 		if err != nil {
 			log.Infof("[I] %s send to transfer error: %v", hostNamePort, err)
@@ -131,19 +130,19 @@ func _collect() {
 	}
 }
 
-func sendToTransfer(items []*cmodel.JsonMetaData, destURL string) error {
+func sendToTransfer(items []*cm.JSONMetaData, destURL string) error {
 	if len(items) < 1 {
 		return nil
 	}
 
-	// format result
+	// Format result
 	jsonBody, err := json.Marshal(items)
 	if err != nil {
 		return fmt.Errorf("json.Marshal failed with %v", err)
 	}
 
-	// send by http-post
-	client := cutils.NewHttp(destURL)
+	// Send via http-post
+	client := cu.NewHttp(destURL)
 	client.SetUserAgent("collector.post")
 	headers := map[string]string{
 		"Content-Type": "application/json; charset=UTF-8",

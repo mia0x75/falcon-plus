@@ -8,17 +8,8 @@ import (
 	"github.com/mia0x75/yaag/yaag"
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/alarm"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/dashboard_graph"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/dashboard_screen"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/expression"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/graph"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/host"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/mockcfg"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/strategy"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/template"
-	"github.com/open-falcon/falcon-plus/modules/api/app/controller/uic"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
+	"github.com/open-falcon/falcon-plus/modules/api/app/controller"
 	"github.com/open-falcon/falcon-plus/modules/api/app/utils"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
@@ -27,19 +18,11 @@ var routes *gin.Engine
 
 func SetupRoutes() {
 	routes.Use(utils.CORS())
+	routes.Use(utils.AuthSessionMidd)
 	routes.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")
 	})
-	graph.Routes(routes)
-	uic.Routes(routes)
-	template.Routes(routes)
-	strategy.Routes(routes)
-	host.Routes(routes)
-	expression.Routes(routes)
-	mockcfg.Routes(routes)
-	dashboard_graph.Routes(routes)
-	dashboard_screen.Routes(routes)
-	alarm.Routes(routes)
+	controller.Routes(routes)
 	SetupCommonRoutes()
 }
 
@@ -48,7 +31,7 @@ func Start() {
 }
 
 func start() {
-	if !cutils.IsDebug() {
+	if !cu.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()
@@ -61,7 +44,7 @@ func start() {
 		})
 		routes.Use(yaag_gin.Document())
 	}
-	//start gin server
+	// Start gin server
 	addr := g.Config().Listen
 	log.Infof("[I] http listening %s", addr)
 

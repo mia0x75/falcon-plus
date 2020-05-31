@@ -38,6 +38,7 @@ func init() {
 	connects = conn_list{list: list.New()}
 }
 
+// Start TODO:
 func Start() {
 	go start()
 }

@@ -4,7 +4,7 @@ import (
 	"container/list"
 	"sync"
 
-	"github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 type SafeLinkedList struct {
@@ -16,22 +16,22 @@ func NewSafeLinkedList() *SafeLinkedList {
 	return &SafeLinkedList{L: list.New()}
 }
 
-func (this *SafeLinkedList) PopBack(limit int) []*model.JsonMetaData {
+func (this *SafeLinkedList) PopBack(limit int) []*cm.JSONMetaData {
 	this.RLock()
 	defer this.RUnlock()
 	sz := this.L.Len()
 	if sz == 0 {
-		return []*model.JsonMetaData{}
+		return []*cm.JSONMetaData{}
 	}
 
 	if sz < limit {
 		limit = sz
 	}
 
-	ret := make([]*model.JsonMetaData, 0, limit)
+	ret := make([]*cm.JSONMetaData, 0, limit)
 	for i := 0; i < limit; i++ {
 		e := this.L.Back()
-		ret = append(ret, e.Value.(*model.JsonMetaData))
+		ret = append(ret, e.Value.(*cm.JSONMetaData))
 		this.L.Remove(e)
 	}
 

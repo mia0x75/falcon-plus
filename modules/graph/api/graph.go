@@ -8,8 +8,8 @@ import (
 	pfc "github.com/mia0x75/gopfc/metric"
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/index"
 	"github.com/open-falcon/falcon-plus/modules/graph/proc"
@@ -17,9 +17,11 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 )
 
+// Graph TODO:
 type Graph int
 
-func (this *Graph) GetRrd(key string, rrdfile *g.File) (err error) {
+// GetRrd TODO:
+func (s *Graph) GetRrd(key string, rrdfile *g.File) (err error) {
 	var (
 		md5    string
 		dsType string
@@ -27,9 +29,8 @@ func (this *Graph) GetRrd(key string, rrdfile *g.File) (err error) {
 	)
 	if md5, dsType, step, err = g.SplitRrdCacheKey(key); err != nil {
 		return err
-	} else {
-		rrdfile.Filename = g.RrdFileName(g.Config().RRD.Storage, md5, dsType, step)
 	}
+	rrdfile.Filename = g.RrdFileName(g.Config().RRD.Storage, md5, dsType, step)
 
 	items := store.GraphItems.PopAll(key)
 	if len(items) > 0 {
@@ -40,22 +41,24 @@ func (this *Graph) GetRrd(key string, rrdfile *g.File) (err error) {
 	return
 }
 
-func (this *Graph) Ping(req cmodel.NullRpcRequest, resp *cmodel.SimpleRpcResponse) error {
+// Ping TODO:
+func (s *Graph) Ping(req cm.NullRPCRequest, resp *cm.SimpleRPCResponse) error {
 	return nil
 }
 
-func (this *Graph) Send(items []*cmodel.GraphItem, resp *cmodel.SimpleRpcResponse) error {
+// Send TODO:
+func (s *Graph) Send(items []*cm.GraphItem, resp *cm.SimpleRPCResponse) error {
 	go handleItems(items)
 	return nil
 }
 
-// 供外部调用、处理接收到的数据 的接口
-func HandleItems(items []*cmodel.GraphItem) error {
+// HandleItems 供外部调用、处理接收到的数据 的接口
+func HandleItems(items []*cm.GraphItem) error {
 	handleItems(items)
 	return nil
 }
 
-func handleItems(items []*cmodel.GraphItem) {
+func handleItems(items []*cm.GraphItem) {
 	if items == nil {
 		return
 	}
@@ -79,7 +82,7 @@ func handleItems(items []*cmodel.GraphItem) {
 			continue
 		}
 
-		counter := cutils.Counter(items[i].Metric, items[i].Tags)
+		counter := cu.Counter(items[i].Metric, items[i].Tags)
 		if !g.IsValidString(counter) {
 			log.Debugf("[D] invalid counter: %s/%s", endpoint, counter)
 			pfc.Meter("invalidCounter", 1)
@@ -91,8 +94,8 @@ func handleItems(items []*cmodel.GraphItem) {
 		checksum := items[i].Checksum()
 		key := g.FormRrdCacheKey(checksum, dsType, step)
 
-		//statistics
-		proc.GraphRpcRecvCnt.Incr()
+		// Statistics
+		proc.GraphRPCRecvCnt.Incr()
 
 		// To Graph
 		first := store.GraphItems.First(key)
@@ -109,9 +112,10 @@ func handleItems(items []*cmodel.GraphItem) {
 	}
 }
 
-func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryResponse) error {
+// Query TODO:
+func (s *Graph) Query(param cm.GraphQueryParam, resp *cm.GraphQueryResponse) error {
 	var (
-		datas      []*cmodel.RRDData
+		datas      []*cm.RRDData
 		datas_size int
 	)
 
@@ -121,7 +125,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 	cfg := g.Config()
 
 	// form empty response
-	resp.Values = []*cmodel.RRDData{}
+	resp.Values = []*cm.RRDData{}
 	resp.Endpoint = param.Endpoint
 	resp.Counter = param.Counter
 	dsType, step, exists := index.GetTypeAndStep(param.Endpoint, param.Counter) // complete dsType and step
@@ -137,7 +141,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 		return nil
 	}
 
-	md5 := cutils.Md5(param.Endpoint + "/" + param.Counter)
+	md5 := cu.Md5(param.Endpoint + "/" + param.Counter)
 	key := g.FormRrdCacheKey(md5, dsType, step)
 	filename := g.RrdFileName(cfg.RRD.Storage, md5, dsType, step)
 
@@ -148,7 +152,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 	if cfg.Migrate.Enabled && flag&g.GRAPH_F_MISS != 0 {
 		node, _ := rrdtool.Consistent.Get(param.Endpoint + "/" + param.Counter)
 		done := make(chan error, 1)
-		res := &cmodel.GraphAccurateQueryResponse{}
+		res := &cm.GraphAccurateQueryResponse{}
 		rrdtool.Net_task_ch[node] <- &rrdtool.Net_task_t{
 			Method: rrdtool.NET_TASK_M_QUERY,
 			Done:   done,
@@ -186,8 +190,8 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 	// merge
 	{
 		// fmt cached items
-		var val cmodel.JsonFloat
-		cache := make([]*cmodel.RRDData, 0)
+		var val cm.JSONFloat
+		cache := make([]*cm.RRDData, 0)
 
 		ts := items[0].Timestamp
 		itemEndTs := items[items_size-1].Timestamp
@@ -196,33 +200,33 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 			for ts < itemEndTs {
 				if itemIdx < items_size-1 && ts == items[itemIdx].Timestamp {
 					if ts == items[itemIdx+1].Timestamp-int64(step) && items[itemIdx+1].Value >= items[itemIdx].Value {
-						val = cmodel.JsonFloat(items[itemIdx+1].Value-items[itemIdx].Value) / cmodel.JsonFloat(step)
+						val = cm.JSONFloat(items[itemIdx+1].Value-items[itemIdx].Value) / cm.JSONFloat(step)
 					} else {
-						val = cmodel.JsonFloat(math.NaN())
+						val = cm.JSONFloat(math.NaN())
 					}
 					itemIdx++
 				} else {
 					// missing
-					val = cmodel.JsonFloat(math.NaN())
+					val = cm.JSONFloat(math.NaN())
 				}
 
 				if ts >= start_ts && ts <= end_ts {
-					cache = append(cache, &cmodel.RRDData{Timestamp: ts, Value: val})
+					cache = append(cache, &cm.RRDData{Timestamp: ts, Value: val})
 				}
 				ts += int64(step)
 			}
 		} else if dsType == g.GAUGE {
 			for ts <= itemEndTs {
 				if itemIdx < items_size && ts == items[itemIdx].Timestamp {
-					val = cmodel.JsonFloat(items[itemIdx].Value)
+					val = cm.JSONFloat(items[itemIdx].Value)
 					itemIdx++
 				} else {
 					// missing
-					val = cmodel.JsonFloat(math.NaN())
+					val = cm.JSONFloat(math.NaN())
 				}
 
 				if ts >= start_ts && ts <= end_ts {
-					cache = append(cache, &cmodel.RRDData{Timestamp: ts, Value: val})
+					cache = append(cache, &cm.RRDData{Timestamp: ts, Value: val})
 				}
 				ts += int64(step)
 			}
@@ -230,11 +234,11 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 		cache_size := len(cache)
 
 		// do merging
-		merged := make([]*cmodel.RRDData, 0)
+		merged := make([]*cm.RRDData, 0)
 		if datas_size > 0 {
 			for _, val := range datas {
 				if val.Timestamp >= start_ts && val.Timestamp <= end_ts {
-					merged = append(merged, val) //rrdtool返回的数据,时间戳是连续的、不会有跳点的情况
+					merged = append(merged, val) // rrdtool返回的数据,时间戳是连续的、不会有跳点的情况
 				}
 			}
 		}
@@ -254,7 +258,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 
 			// fix missing
 			for ts := lastTs + int64(step); ts < cache[0].Timestamp; ts += int64(step) {
-				merged = append(merged, &cmodel.RRDData{Timestamp: ts, Value: cmodel.JsonFloat(math.NaN())})
+				merged = append(merged, &cm.RRDData{Timestamp: ts, Value: cm.JSONFloat(math.NaN())})
 			}
 
 			// merge cached items to result
@@ -277,7 +281,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 		if dsType == g.GAUGE {
 			ret_size++
 		}
-		ret := make([]*cmodel.RRDData, ret_size, ret_size)
+		ret := make([]*cm.RRDData, ret_size, ret_size)
 		mergedIdx := 0
 		ts = start_ts
 		for i := 0; i < ret_size; i++ {
@@ -285,7 +289,7 @@ func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryRe
 				ret[i] = merged[mergedIdx]
 				mergedIdx++
 			} else {
-				ret[i] = &cmodel.RRDData{Timestamp: ts, Value: cmodel.JsonFloat(math.NaN())}
+				ret[i] = &cm.RRDData{Timestamp: ts, Value: cm.JSONFloat(math.NaN())}
 			}
 			ts += int64(step)
 		}
@@ -298,17 +302,17 @@ _RETURN_OK:
 	return nil
 }
 
-//从内存索引、MySQL中删除counter，并从磁盘上删除对应rrd文件
-func (this *Graph) Delete(params []*cmodel.GraphDeleteParam, resp *cmodel.GraphDeleteResp) error {
-	resp = &cmodel.GraphDeleteResp{}
+// Delete 从内存索引、MySQL中删除counter，并从磁盘上删除对应rrd文件
+func (s *Graph) Delete(params []*cm.GraphDeleteParam, resp *cm.GraphDeleteResp) error {
+	resp = &cm.GraphDeleteResp{}
 	for _, param := range params {
-		err, tags := cutils.SplitTagsString(param.Tags)
+		err, tags := cu.SplitTagsString(param.Tags)
 		if err != nil {
 			log.Errorf("[E] invalid tags: %s error: %v", param.Tags, err)
 			continue
 		}
 
-		var item *cmodel.GraphItem = &cmodel.GraphItem{
+		item := &cm.GraphItem{
 			Endpoint: param.Endpoint,
 			Metric:   param.Metric,
 			Tags:     tags,
@@ -321,7 +325,8 @@ func (this *Graph) Delete(params []*cmodel.GraphDeleteParam, resp *cmodel.GraphD
 	return nil
 }
 
-func (this *Graph) Info(param cmodel.GraphInfoParam, resp *cmodel.GraphInfoResp) error {
+// Info TODO:
+func (s *Graph) Info(param cm.GraphInfoParam, resp *cm.GraphInfoResp) error {
 	// statistics
 	proc.GraphInfoCnt.Incr()
 
@@ -330,7 +335,7 @@ func (this *Graph) Info(param cmodel.GraphInfoParam, resp *cmodel.GraphInfoResp)
 		return nil
 	}
 
-	md5 := cutils.Md5(param.Endpoint + "/" + param.Counter)
+	md5 := cu.Md5(param.Endpoint + "/" + param.Counter)
 	filename := fmt.Sprintf("%s/%s/%s_%s_%d.rrd", g.Config().RRD.Storage, md5[0:2], md5, dsType, step)
 
 	resp.ConsolFun = dsType
@@ -340,7 +345,8 @@ func (this *Graph) Info(param cmodel.GraphInfoParam, resp *cmodel.GraphInfoResp)
 	return nil
 }
 
-func (this *Graph) Last(param cmodel.GraphLastParam, resp *cmodel.GraphLastResp) error {
+// Last TODO:
+func (s *Graph) Last(param cm.GraphLastParam, resp *cm.GraphLastResp) error {
 	// statistics
 	proc.GraphLastCnt.Incr()
 
@@ -351,7 +357,8 @@ func (this *Graph) Last(param cmodel.GraphLastParam, resp *cmodel.GraphLastResp)
 	return nil
 }
 
-func (this *Graph) LastRaw(param cmodel.GraphLastParam, resp *cmodel.GraphLastResp) error {
+// LastRaw TODO:
+func (s *Graph) LastRaw(param cm.GraphLastParam, resp *cm.GraphLastResp) error {
 	// statistics
 	proc.GraphLastRawCnt.Incr()
 
@@ -362,11 +369,11 @@ func (this *Graph) LastRaw(param cmodel.GraphLastParam, resp *cmodel.GraphLastRe
 	return nil
 }
 
-// 非法值: ts=0,value无意义
-func GetLast(endpoint, counter string) *cmodel.RRDData {
+// GetLast 非法值: ts=0,value无意义
+func GetLast(endpoint, counter string) *cm.RRDData {
 	dsType, step, exists := index.GetTypeAndStep(endpoint, counter)
 	if !exists {
-		return cmodel.NewRRDData(0, 0.0)
+		return cm.NewRRDData(0, 0.0)
 	}
 
 	if dsType == g.GAUGE {
@@ -374,10 +381,10 @@ func GetLast(endpoint, counter string) *cmodel.RRDData {
 	}
 
 	if dsType == g.COUNTER || dsType == g.DERIVE {
-		md5 := cutils.Md5(endpoint + "/" + counter)
+		md5 := cu.Md5(endpoint + "/" + counter)
 		items := store.GetAllItems(md5)
 		if len(items) < 2 {
-			return cmodel.NewRRDData(0, 0.0)
+			return cm.NewRRDData(0, 0.0)
 		}
 
 		f0 := items[0]
@@ -385,22 +392,22 @@ func GetLast(endpoint, counter string) *cmodel.RRDData {
 		delta_ts := f0.Timestamp - f1.Timestamp
 		delta_v := f0.Value - f1.Value
 		if delta_ts != int64(step) || delta_ts <= 0 {
-			return cmodel.NewRRDData(0, 0.0)
+			return cm.NewRRDData(0, 0.0)
 		}
 		if delta_v < 0 {
 			// when cnt restarted, new cnt value would be zero, so fix it here
 			delta_v = 0
 		}
 
-		return cmodel.NewRRDData(f0.Timestamp, delta_v/float64(delta_ts))
+		return cm.NewRRDData(f0.Timestamp, delta_v/float64(delta_ts))
 	}
 
-	return cmodel.NewRRDData(0, 0.0)
+	return cm.NewRRDData(0, 0.0)
 }
 
-// 非法值: ts=0,value无意义
-func GetLastRaw(endpoint, counter string) *cmodel.RRDData {
-	md5 := cutils.Md5(endpoint + "/" + counter)
+// GetLastRaw 非法值: ts=0,value无意义
+func GetLastRaw(endpoint, counter string) *cm.RRDData {
+	md5 := cu.Md5(endpoint + "/" + counter)
 	item := store.GetLastItem(md5)
-	return cmodel.NewRRDData(item.Timestamp, item.Value)
+	return cm.NewRRDData(item.Timestamp, item.Value)
 }

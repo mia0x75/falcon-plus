@@ -2,6 +2,7 @@ package helper
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,21 +11,37 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 )
 
-type RespJson struct {
+const (
+	HTTPOK                  = http.StatusOK
+	HTTPBadRequest          = http.StatusBadRequest
+	HTTPUnauthorized        = http.StatusUnauthorized
+	HTTPExpectationFailed   = http.StatusExpectationFailed
+	HTTPInternalServerError = http.StatusInternalServerError
+	StandardErrorMessage    = "An error occurred while %s. More information about this error may be available in the server error log."
+	// Please contact the server administrator and inform them of the time the error occurred and anything you might have done that may have caused the error.
+)
+
+// InternelError
+func InternelError(c *gin.Context, op string, err error) {
+	log.Errorf("[E] An error occurred while %s, error: %v", op, err)
+	JSONR(c, HTTPInternalServerError, fmt.Sprintf(StandardErrorMessage, op))
+}
+
+type RespJSON struct {
 	Error string `json:"error,omitempty"`
 	Msg   string `json:"message,omitempty"`
 }
 
 func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 	var (
-		wcode int
-		msg   interface{}
+		code int
+		msg  interface{}
 	)
 	if len(arg) == 1 {
-		wcode = http.StatusOK
+		code = http.StatusOK
 		msg = arg[0]
 	} else {
-		wcode = arg[0].(int)
+		code = arg[0].(int)
 		msg = arg[1]
 	}
 	need_doc := g.Config().GenDoc
@@ -37,10 +54,12 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 			c.Set("body_doc", bodys)
 		}
 	}()
-	if wcode == 200 {
+	if code == 200 {
 		switch msg.(type) {
 		case string:
-			body = RespJson{Msg: msg.(string)}
+			body = RespJSON{
+				Msg: msg.(string),
+			}
 			c.JSON(http.StatusOK, body)
 		default:
 			c.JSON(http.StatusOK, msg)
@@ -49,15 +68,19 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 	} else {
 		switch msg.(type) {
 		case string:
-			body = RespJson{Error: msg.(string)}
-			c.JSON(wcode, body)
+			body = RespJSON{
+				Error: msg.(string),
+			}
 		case error:
-			body = RespJson{Error: msg.(error).Error()}
-			c.JSON(wcode, body)
+			body = RespJSON{
+				Error: msg.(error).Error(),
+			}
 		default:
-			body = RespJson{Error: "system type error. please ask admin for help"}
-			c.JSON(wcode, body)
+			body = RespJSON{
+				Error: "system type error. please ask admin for help",
+			}
 		}
+		c.JSON(code, body)
 	}
 	return
 }

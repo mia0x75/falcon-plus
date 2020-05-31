@@ -11,9 +11,9 @@ import (
 	"github.com/toolkits/net/httplib"
 	ttime "github.com/toolkits/time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/sdk/requests"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cr "github.com/open-falcon/falcon-plus/common/sdk/requests"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
@@ -22,6 +22,7 @@ var (
 	collectorCron = tcron.New()
 )
 
+// StartCollectorCron TODO:
 func StartCollectorCron() {
 	collectorCron.AddFuncCC("*/20 * * * * ?", func() {
 		start := time.Now().Unix()
@@ -29,7 +30,7 @@ func StartCollectorCron() {
 		end := time.Now().Unix()
 		log.Debugf("[D] collect cron, cnt %d, time %ds, start %s\n", cnt, end-start, ttime.FormatTs(start))
 
-		// statistics
+		// Statistics
 		g.CollectorCronCnt.Incr()
 		g.CollectorLastTs.SetCnt(end - start)
 		g.CollectorLastCnt.SetCnt(int64(cnt))
@@ -38,6 +39,7 @@ func StartCollectorCron() {
 	collectorCron.Start()
 }
 
+// CollectDataOnce TODO:
 func CollectDataOnce() int {
 	return collectDataOnce()
 }
@@ -56,7 +58,7 @@ func collectDataOnce() int {
 
 	batch := int(cfg.Batch)
 	if batch < 100 || batch > 1000 {
-		batch = 200 //batch不能太小, 否则channel将会很大
+		batch = 200 // batch不能太小, 否则channel将会很大
 	}
 
 	batchCnt := (keysLen + batch - 1) / batch
@@ -103,7 +105,7 @@ func fetchItemsAndStore(fetchKeys []string, fetchSize int) (size int, errt error
 	}
 
 	// form request args
-	args := make([]*cmodel.GraphLastParam, 0)
+	args := make([]*cm.GraphLastParam, 0)
 	for _, key := range fetchKeys {
 		ndcfg, found := config.GetNdConfig(key)
 		if !found {
@@ -111,8 +113,11 @@ func fetchItemsAndStore(fetchKeys []string, fetchSize int) (size int, errt error
 		}
 
 		endpoint := ndcfg.Endpoint
-		counter := cutils.Counter(ndcfg.Metric, ndcfg.Tags)
-		arg := &cmodel.GraphLastParam{endpoint, counter}
+		counter := cu.Counter(ndcfg.Metric, ndcfg.Tags)
+		arg := &cm.GraphLastParam{
+			Endpoint: endpoint,
+			Counter:  counter,
+		}
 		args = append(args, arg)
 	}
 	if len(args) < 1 {
@@ -131,19 +136,19 @@ func fetchItemsAndStore(fetchKeys []string, fetchSize int) (size int, errt error
 		if glr == nil || glr.Value == nil {
 			continue
 		}
-		AddItem(cutils.PK2(glr.Endpoint, glr.Counter), NewDataItem(glr.Value.Timestamp, float64(glr.Value.Value), "OK", fts))
+		AddItem(cu.PK2(glr.Endpoint, glr.Counter), NewDataItem(glr.Value.Timestamp, float64(glr.Value.Value), "OK", fts))
 	}
 
 	return len(resp), nil
 }
 
-func queryLastPoints(param []*cmodel.GraphLastParam) (resp []*cmodel.GraphLastResp, err error) {
+func queryLastPoints(param []*cm.GraphLastParam) (resp []*cm.GraphLastResp, err error) {
 	cfg := g.Config()
 	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.API.Addr)
 
 	var req *httplib.BeegoHttpRequest
 	headers := map[string]string{"Content-type": "application/json"}
-	req, err = requests.CurlPlus(uri, "POST", "nodata", cfg.API.Token,
+	req, err = cr.CurlPlus(uri, "POST", "nodata", cfg.API.Token,
 		headers, map[string]string{})
 
 	if err != nil {

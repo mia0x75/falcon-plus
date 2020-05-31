@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 )
@@ -26,12 +26,12 @@ type fetch_t struct {
 	start    int64
 	end      int64
 	step     int
-	data     []*cmodel.RRDData
+	data     []*cm.RRDData
 }
 
 type flushfile_t struct {
 	filename string
-	items    []*cmodel.GraphItem
+	items    []*cm.GraphItem
 }
 
 type readfile_t struct {
@@ -65,7 +65,7 @@ const (
 	RRA4320PointCnt = 1460 // 采样值 - 6h / 1y
 )
 
-func create(filename string, item *cmodel.GraphItem) error {
+func create(filename string, item *cm.GraphItem) error {
 	now := time.Now()
 	start := now.Add(time.Duration(-24) * time.Hour)
 	step := uint(item.Step)
@@ -105,7 +105,7 @@ func create(filename string, item *cmodel.GraphItem) error {
 	return c.Create(true)
 }
 
-func update(filename string, items []*cmodel.GraphItem) error {
+func update(filename string, items []*cm.GraphItem) error {
 	u := rrdlite.NewUpdater(filename)
 
 	for _, item := range items {
@@ -126,7 +126,7 @@ func update(filename string, items []*cmodel.GraphItem) error {
 // flush to disk from memory
 // 最新的数据在列表的最后面
 // TODO fix me, filename fmt from item[0], it's hard to keep consistent
-func flushrrd(filename string, items []*cmodel.GraphItem) error {
+func flushrrd(filename string, items []*cm.GraphItem) error {
 	if items == nil || len(items) == 0 {
 		return errors.New("empty items")
 	}
@@ -161,7 +161,7 @@ func ReadFile(filename, md5 string) ([]byte, error) {
 	return task.args.(*readfile_t).data, err
 }
 
-func FlushFile(filename, md5 string, items []*cmodel.GraphItem) error {
+func FlushFile(filename, md5 string, items []*cm.GraphItem) error {
 	done := make(chan error, 1)
 	io_task_chans[getIndex(md5)] <- &io_task_t{
 		method: IO_TASK_M_FLUSH,
@@ -175,7 +175,7 @@ func FlushFile(filename, md5 string, items []*cmodel.GraphItem) error {
 	return <-done
 }
 
-func Fetch(filename string, md5 string, cf string, start, end int64, step int) ([]*cmodel.RRDData, error) {
+func Fetch(filename string, md5 string, cf string, start, end int64, step int) ([]*cm.RRDData, error) {
 	done := make(chan error, 1)
 	task := &io_task_t{
 		method: IO_TASK_M_FETCH,
@@ -193,30 +193,30 @@ func Fetch(filename string, md5 string, cf string, start, end int64, step int) (
 	return task.args.(*fetch_t).data, err
 }
 
-func fetch(filename string, cf string, start, end int64, step int) ([]*cmodel.RRDData, error) {
+func fetch(filename string, cf string, start, end int64, step int) ([]*cm.RRDData, error) {
 	start_t := time.Unix(start, 0)
 	end_t := time.Unix(end, 0)
 	step_t := time.Duration(step) * time.Second
 
 	fetchRes, err := rrdlite.Fetch(filename, cf, start_t, end_t, step_t)
 	if err != nil {
-		return []*cmodel.RRDData{}, err
+		return []*cm.RRDData{}, err
 	}
 
 	defer fetchRes.FreeValues()
 
 	values := fetchRes.Values()
 	size := len(values)
-	ret := make([]*cmodel.RRDData, size)
+	ret := make([]*cm.RRDData, size)
 
 	start_ts := fetchRes.Start.Unix()
 	step_s := fetchRes.Step.Seconds()
 
 	for i, val := range values {
 		ts := start_ts + int64(i+1)*int64(step_s)
-		d := &cmodel.RRDData{
+		d := &cm.RRDData{
 			Timestamp: ts,
-			Value:     cmodel.JsonFloat(val),
+			Value:     cm.JSONFloat(val),
 		}
 		ret[i] = d
 	}
@@ -275,7 +275,7 @@ func PullByKey(key string) {
 			return
 		}
 		atomic.AddUint64(&net_counter, 1)
-		//todo: flushfile after getfile? not yet
+		// TODO: flushfile after getfile? not yet
 	}()
 }
 
@@ -291,7 +291,7 @@ func FlushRRD(idx int, force bool) {
 	for _, key := range keys {
 		flag, _ := store.GraphItems.GetFlag(key)
 
-		//write err data to local filename
+		// write err data to local filename
 		if force == false && g.Config().Migrate.Enabled && flag&g.GRAPH_F_MISS != 0 {
 			if time.Since(begin) > time.Millisecond*g.FLUSH_DISK_STEP {
 				atomic.StoreInt32(&flushrrd_timeout, 1)

@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/toolkits/file"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
@@ -26,15 +26,15 @@ func SetupCommonRoutes() {
 	})
 
 	routes.GET("/config", func(c *gin.Context) {
-		cutils.RenderDataJson(c.Writer, g.Config())
+		cu.RenderDataJSON(c.Writer, g.Config())
 	})
 
 	routes.GET("/config/reload", func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.RemoteAddr, "127.0.0.1") {
 			g.ParseConfig(g.ConfigFile)
-			cutils.RenderDataJson(c.Writer, "ok")
+			cu.RenderDataJSON(c.Writer, "ok")
 		} else {
-			cutils.RenderDataJson(c.Writer, "no privilege")
+			cu.RenderDataJSON(c.Writer, "no privilege")
 		}
 	})
 }

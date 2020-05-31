@@ -2,60 +2,62 @@
 [![Badge](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu/#/zh_CN)
 
 # Falcon+
-
-![Open-Falcon](./logo.png)
+```txt
+    ___       ___       ___       ___       ___       ___    
+   /\  \     /\  \     /\__\     /\  \     /\  \     /\__\   
+  /  \  \   /  \  \   / /  /    /  \  \   /  \  \   / | _|_  
+ /  \ \__\ /  \ \__\ / /__/    / /\ \__\ / /\ \__\ /  |/\__\ 
+ \/\ \/__/ \/\  /  / \ \  \    \ \ \/__/ \ \/ /  / \/|  /  / 
+    \/__/    / /  /   \ \__\    \ \__\    \  /  /    | /  /  
+             \/__/     \/__/     \/__/     \/__/     \/__/   
+```
 
 # Enhancements
 
-- Add updater module
-- Rename falcon_portal to portal
-- Potential bug fix
-- Put all config files to /etc/fpm
-- Change all output log files to /var/log/fpm
-- Naming consistency
-- Builtin mysql monitor
-- Builtin redis monitor
-- Update vendor
-- Replace md5+salt with bcrypt
-- Change log with logrus in all modules
-- Replace viper with local cfg code
-- Code format and style consistency
-- Re-organize port usage (xxx0 - RPC / xxx1 - HTTP / xxx2 - Sockets)
-- Replace time.Sleep with time.Tick
-- Add metric proc.num
-- Remove agent.alive, agent.alive replace with proc.num/name=falcon-agent
-- Remove mysql.alive, see above
-- Add health http method for api module
-- PFC (Performance Counter) (gateway.runtime/gateway.debug/graph.runtime/graph.debug)
-- Support interval settings for echo func
-- Use log.level = "debug" for debug mode, remove "debug: true"
-- Add webroot for agent
-- Change min-step to 5 sec (rrd related)
-- Add exporter module
-- Add health monitor into exporter module
-- Support multiple hbs in agent module
-- Remove GPU related metrics
-- Remove alarm callback
-- Push original JSON in alarm module
-- Save statistic metrics from /statistics/all (gateway.stats/exporter.stats/graph.stats)
-- hbs enhancement
-- Code refactor
+- 合并数据库到一个单独的库
+- 统一配置文件存储位置
+- 统一日志文件存储位置
+- 命名一致性调整(例如: CreateUser, UserUpdate => verb + noun)
+- 使用go.mod替换vendor方式
+- 用户密码到md5+salt散列算法替换为bcrypt方式
+- 所有的日志模块更改为logrus
+- 移除viper读取配置到方式 统一使用读取本地JSON文件到方式
+- 模块API引入缓存机制
+- 代码一致性调整
+- 统一组织所有模块到端口
+- 统一替换time.Sleep为time.Tick
+- 增加指标proc.num
+- 移除指标agent.alive 该指标可用proc.num/name=falcon-agent替代
+- 移除指标mysql.alive 该指标可用proc.num/name=mysqld替代
+- 补齐API模块的自监控代码
+- 性能计数器 (gateway.runtime/gateway.debug/graph.runtime/graph.debug)
+- 统一使用日志级别设置log.level = "debug"替代"debug: true"设置
+- 对agent模块增加webroot功能
+- 更改min-step到5秒(rrd related)
+- 增加自监控模块(exporter)
+- 支持多心跳服务器(HBS)设置
+- 移除GPU相关到监控指标
+- 移除告警模块到回掉
+- 推送原始JSON数据到告警模块
+- 增强心跳服务器(HBS)
+- 调制告警模块和告警判定模块中Redis的链接: [scheme](https://www.iana.org/assignments/uri-schemes/prov/redis)
+- 代码重构
+- 潜在的问题修复
+- 合并Gateway的代码到Transfer
+- 为Gateway, Exporter, Graph模块增加统计指标
+- 增加自动更新模块
 
-# TODO 0.4.0
-- [DONE] 支持Redis连接密码设定
+# TODO
+- [TODO] exporter从hbs获取所有非维护状态的主机，并监控它们的健康状态，不用手工维护cfg.json
 - [TODO] 增加文件系统文件变更监控，对重要文件的变更发出告警
 - [TODO] 告警配置支持表达式，而不仅仅是常量，比如对于mysql.Thread_running > 2 * cpu.num + 2发出告警
 - [TODO] API查询历史数据时，对于当前数据合并缓存内容，确保数据展现的及时性
+- [TODO] mysql监控插件
+- [TODO] redis监控插件
+- [TODO] mongodb监控插件
 - [TODO] 整合滴滴的日志内容监控
-- [TODO] exporter从hbs获取所有非维护状态的主机，并监控它们的健康状态，不用手工维护cfg.json
 
 # 0.4.0改动
-
-```
-USE portal;
-ALTER TABLE strategy MODIFY right_value VARCHAR(200);
-ALTER TABLE expression MODIFY right_value VARCHAR(200);
-```
 
 alarm.json
 ```
@@ -87,8 +89,9 @@ transfer.json
 
 # Prerequisite
 
-- Git >= 1.7.5
-- Go >= 1.6
+- git >= 1.7.5
+- go >= 1.6
+- upx
 
 # Getting Started
 
@@ -119,16 +122,8 @@ git clone https://github.com/open-falcon/falcon-plus.git
 
 ```
 cd $GOPATH/src/github.com/open-falcon/falcon-plus/scripts/mysql/db_schema/
-mysql -h 127.0.0.1 -u root -p < 1_uic-db-schema.sql
-mysql -h 127.0.0.1 -u root -p < 2_portal-db-schema.sql
-mysql -h 127.0.0.1 -u root -p < 3_dashboard-db-schema.sql
-mysql -h 127.0.0.1 -u root -p < 4_graph-db-schema.sql
-mysql -h 127.0.0.1 -u root -p < 5_alarms-db-schema.sql
+mysql -h 127.0.0.1 -u root -p < 1_dashboard-db-schema.sql
 ```
-
-**NOTE: if you are upgrading from v0.1 to current version v0.2.0,then**. [More upgrading instruction](http://www.jianshu.com/p/6fb2c2b4d030)
-
-    mysql -h 127.0.0.1 -u root -p < 5_alarms-db-schema.sql
 
 # Compilation
 
@@ -194,14 +189,6 @@ for example:
 - Follow [this](https://github.com/open-falcon/dashboard).
 
 **NOTE: if you want to use grafana as the dashboard, please check [this](https://github.com/open-falcon/grafana-openfalcon-datasource).**
-
-# Package Management
-
-We use govendor to manage the golang packages. Please install `govendor` before compilation.
-
-    go get -u github.com/kardianos/govendor
-
-Most depended packages are saved under `./vendor` dir. If you want to add or update a package, just run `govendor fetch xxxx@commitID` or `govendor fetch xxxx@v1.x.x`, then you will find the package have been placed in `./vendor` correctly.
 
 # Package Release
 

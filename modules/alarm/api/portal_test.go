@@ -15,7 +15,7 @@ func init() {
 func TestPortalAPI(t *testing.T) {
 	Convey("Get action from api failed", t, func() {
 		r := CurlAction(1)
-		So(r.Id, ShouldEqual, 1)
+		So(r.ID, ShouldEqual, 1)
 	})
 
 }

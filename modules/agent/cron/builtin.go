@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
@@ -37,12 +37,12 @@ func syncBuiltinMetrics() {
 			continue
 		}
 
-		req := cmodel.AgentHeartbeatRequest{
+		req := cm.AgentHeartbeatRequest{
 			Hostname: hostname,
 			Checksum: checksum,
 		}
 
-		var resp cmodel.BuiltinMetricResponse
+		var resp cm.BuiltinMetricResponse
 		err = g.HbsClient.Call("Agent.BuiltinMetrics", req, &resp)
 		if err != nil {
 			log.Errorf("[E] %v", err)

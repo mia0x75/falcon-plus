@@ -17,7 +17,8 @@ func lpush(queue, message string) {
 	}
 }
 
-func WriteSms(content *g.AlarmDto) {
+// WriteSMS 短信告警排队
+func WriteSMS(content *g.AlarmDto) {
 	if content.Subscriber == nil {
 		return
 	}
@@ -31,10 +32,11 @@ func WriteSms(content *g.AlarmDto) {
 		return
 	}
 
-	log.Debugf("[D] write sms to queue, sms: %v, queue: %s", content, g.Config().Queue.InstantQueues.SmsQueue)
-	lpush(g.Config().Queue.InstantQueues.SmsQueue, string(bs))
+	log.Debugf("[D] write sms to queue, sms: %v, queue: %s", content, g.Config().Queue.InstantQueues.SMSQueue)
+	lpush(g.Config().Queue.InstantQueues.SMSQueue, string(bs))
 }
 
+// WriteIM 即时消息告警排队
 func WriteIM(content *g.AlarmDto) {
 	if content.Subscriber == nil {
 		return
@@ -53,6 +55,7 @@ func WriteIM(content *g.AlarmDto) {
 	lpush(g.Config().Queue.InstantQueues.IMQueue, string(bs))
 }
 
+// WriteMail 电子邮件告警排队
 func WriteMail(content *g.AlarmDto) {
 	if content.Subscriber == nil {
 		return

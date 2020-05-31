@@ -4,7 +4,7 @@ import (
 	"container/list"
 	"sync"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 type SafeLinkedList struct {
@@ -12,39 +12,39 @@ type SafeLinkedList struct {
 	L *list.List
 }
 
-func (this *SafeLinkedList) ToSlice() []*cmodel.JudgeItem {
-	this.RLock()
-	defer this.RUnlock()
-	sz := this.L.Len()
+func (m *SafeLinkedList) ToSlice() []*cm.JudgeItem {
+	m.RLock()
+	defer m.RUnlock()
+	sz := m.L.Len()
 	if sz == 0 {
-		return []*cmodel.JudgeItem{}
+		return []*cm.JudgeItem{}
 	}
 
-	ret := make([]*cmodel.JudgeItem, 0, sz)
-	for e := this.L.Front(); e != nil; e = e.Next() {
-		ret = append(ret, e.Value.(*cmodel.JudgeItem))
+	ret := make([]*cm.JudgeItem, 0, sz)
+	for e := m.L.Front(); e != nil; e = e.Next() {
+		ret = append(ret, e.Value.(*cm.JudgeItem))
 	}
 	return ret
 }
 
 // @param limit 至多返回这些，如果不够，有多少返回多少
 // @return bool isEnough
-func (this *SafeLinkedList) HistoryData(limit int) ([]*cmodel.HistoryData, bool) {
+func (m *SafeLinkedList) HistoryData(limit int) ([]*cm.HistoryData, bool) {
 	if limit < 1 {
 		// 其实limit不合法，此处也返回false吧，上层代码要注意
 		// 因为false通常使上层代码进入异常分支，这样就统一了
-		return []*cmodel.HistoryData{}, false
+		return []*cm.HistoryData{}, false
 	}
 
-	size := this.Len()
+	size := m.Len()
 	if size == 0 {
-		return []*cmodel.HistoryData{}, false
+		return []*cm.HistoryData{}, false
 	}
 
-	firstElement := this.Front()
-	firstItem := firstElement.Value.(*cmodel.JudgeItem)
+	firstElement := m.Front()
+	firstItem := firstElement.Value.(*cm.JudgeItem)
 
-	var vs []*cmodel.HistoryData
+	var vs []*cm.HistoryData
 	isEnough := true
 
 	judgeType := firstItem.JudgeType[0]
@@ -54,15 +54,15 @@ func (this *SafeLinkedList) HistoryData(limit int) ([]*cmodel.HistoryData, bool)
 			limit = size
 			isEnough = false
 		}
-		vs = make([]*cmodel.HistoryData, limit)
-		vs[0] = &cmodel.HistoryData{Timestamp: firstItem.Timestamp, Value: firstItem.Value}
+		vs = make([]*cm.HistoryData, limit)
+		vs[0] = &cm.HistoryData{Timestamp: firstItem.Timestamp, Value: firstItem.Value}
 		i := 1
 		currentElement := firstElement
 		for i < limit {
 			nextElement := currentElement.Next()
-			vs[i] = &cmodel.HistoryData{
-				Timestamp: nextElement.Value.(*cmodel.JudgeItem).Timestamp,
-				Value:     nextElement.Value.(*cmodel.JudgeItem).Value,
+			vs[i] = &cm.HistoryData{
+				Timestamp: nextElement.Value.(*cm.JudgeItem).Timestamp,
+				Value:     nextElement.Value.(*cm.JudgeItem).Value,
 			}
 			i++
 			currentElement = nextElement
@@ -73,16 +73,16 @@ func (this *SafeLinkedList) HistoryData(limit int) ([]*cmodel.HistoryData, bool)
 			limit = size - 1
 		}
 
-		vs = make([]*cmodel.HistoryData, limit)
+		vs = make([]*cm.HistoryData, limit)
 
 		i := 0
 		currentElement := firstElement
 		for i < limit {
 			nextElement := currentElement.Next()
-			diffVal := currentElement.Value.(*cmodel.JudgeItem).Value - nextElement.Value.(*cmodel.JudgeItem).Value
-			diffTs := currentElement.Value.(*cmodel.JudgeItem).Timestamp - nextElement.Value.(*cmodel.JudgeItem).Timestamp
-			vs[i] = &cmodel.HistoryData{
-				Timestamp: currentElement.Value.(*cmodel.JudgeItem).Timestamp,
+			diffVal := currentElement.Value.(*cm.JudgeItem).Value - nextElement.Value.(*cm.JudgeItem).Value
+			diffTs := currentElement.Value.(*cm.JudgeItem).Timestamp - nextElement.Value.(*cm.JudgeItem).Timestamp
+			vs[i] = &cm.HistoryData{
+				Timestamp: currentElement.Value.(*cm.JudgeItem).Timestamp,
 				Value:     diffVal / float64(diffTs),
 			}
 			i++
@@ -93,26 +93,26 @@ func (this *SafeLinkedList) HistoryData(limit int) ([]*cmodel.HistoryData, bool)
 	return vs, isEnough
 }
 
-func (this *SafeLinkedList) PushFront(v interface{}) *list.Element {
-	this.Lock()
-	defer this.Unlock()
-	return this.L.PushFront(v)
+func (m *SafeLinkedList) PushFront(v interface{}) *list.Element {
+	m.Lock()
+	defer m.Unlock()
+	return m.L.PushFront(v)
 }
 
 // @return needJudge 如果是false不需要做judge，因为新上来的数据不合法
-func (this *SafeLinkedList) PushFrontAndMaintain(v *cmodel.JudgeItem, maxCount int) bool {
-	this.Lock()
-	defer this.Unlock()
+func (m *SafeLinkedList) PushFrontAndMaintain(v *cm.JudgeItem, maxCount int) bool {
+	m.Lock()
+	defer m.Unlock()
 
-	sz := this.L.Len()
+	sz := m.L.Len()
 	if sz > 0 {
 		// 新push上来的数据有可能重复了，或者timestamp不对，这种数据要丢掉
-		if v.Timestamp <= this.L.Front().Value.(*cmodel.JudgeItem).Timestamp || v.Timestamp <= 0 {
+		if v.Timestamp <= m.L.Front().Value.(*cm.JudgeItem).Timestamp || v.Timestamp <= 0 {
 			return false
 		}
 	}
 
-	this.L.PushFront(v)
+	m.L.PushFront(v)
 
 	sz++
 	if sz <= maxCount {
@@ -121,20 +121,20 @@ func (this *SafeLinkedList) PushFrontAndMaintain(v *cmodel.JudgeItem, maxCount i
 
 	del := sz - maxCount
 	for i := 0; i < del; i++ {
-		this.L.Remove(this.L.Back())
+		m.L.Remove(m.L.Back())
 	}
 
 	return true
 }
 
-func (this *SafeLinkedList) Front() *list.Element {
-	this.RLock()
-	defer this.RUnlock()
-	return this.L.Front()
+func (m *SafeLinkedList) Front() *list.Element {
+	m.RLock()
+	defer m.RUnlock()
+	return m.L.Front()
 }
 
-func (this *SafeLinkedList) Len() int {
-	this.RLock()
-	defer this.RUnlock()
-	return this.L.Len()
+func (m *SafeLinkedList) Len() int {
+	m.RLock()
+	defer m.RUnlock()
+	return m.L.Len()
 }

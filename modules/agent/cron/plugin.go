@@ -11,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/plugins"
 )
@@ -42,11 +42,11 @@ func syncMinePlugins() {
 			continue
 		}
 
-		req := cmodel.AgentHeartbeatRequest{
+		req := cm.AgentHeartbeatRequest{
 			Hostname: hostname,
 		}
 
-		var resp cmodel.AgentPluginsResponse
+		var resp cm.AgentPluginsResponse
 		err = g.HbsClient.Call("Agent.MinePlugins", req, &resp)
 		if err != nil {
 			log.Errorf("[E] Call Agent.MinePlugins fail, error: %v", err)
@@ -72,10 +72,10 @@ func syncMinePlugins() {
 		dirfmtScripts := []string{}
 
 		for _, dir := range pluginDirs {
-			//script_path could be a DIR or a SCRIPT_FILE_WITH_OR_WITHOUT_ARGS
-			//比如： sys/ntp/60_ntp.py(arg1,arg2) 或者 sys/ntp/60_ntp.py 或者 sys/ntp
-			//1. 参数只对单个脚本文件生效，目录不支持参数
-			//2. 如果某个目录下的某个脚本被单独绑定到某个机器，那么再次绑定该目录时，该文件会不会再次执行
+			// script_path could be a DIR or a SCRIPT_FILE_WITH_OR_WITHOUT_ARGS
+			// 比如： sys/ntp/60_ntp.py(arg1,arg2) 或者 sys/ntp/60_ntp.py 或者 sys/ntp
+			// 1. 参数只对单个脚本文件生效，目录不支持参数
+			// 2. 如果某个目录下的某个脚本被单独绑定到某个机器，那么再次绑定该目录时，该文件会不会再次执行
 			args := ""
 
 			re := regexp.MustCompile(`(.*)\((.*)\)`)
@@ -110,7 +110,7 @@ func syncMinePlugins() {
 				plugin := &plugins.Plugin{FilePath: script[0], MTime: fi.ModTime().Unix(), Cycle: cycle, Args: script[1]}
 				desiredAll[script[0]+"("+script[1]+")"] = plugin
 			}
-			//针对某个 hostgroup 绑定了单个脚本后，再绑定该脚本的目录时，会忽略目录中的该文件
+			// 针对某个 hostgroup 绑定了单个脚本后，再绑定该脚本的目录时，会忽略目录中的该文件
 			taken[script[0]] = struct{}{}
 		}
 

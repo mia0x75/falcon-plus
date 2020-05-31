@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 	"github.com/open-falcon/falcon-plus/modules/transfer/sender"
@@ -17,7 +17,7 @@ import (
 func socketTelnetHandle(conn net.Conn) {
 	defer conn.Close()
 
-	items := []*cmodel.MetaData{}
+	items := []*cm.MetaData{}
 	buf := bufio.NewReader(conn)
 
 	cfg := g.Config()
@@ -59,7 +59,7 @@ func socketTelnetHandle(conn net.Conn) {
 		items = append(items, item)
 	}
 
-	// statistics
+	// Statistics
 	proc.SocketRecvCnt.IncrBy(int64(len(items)))
 	proc.RecvCnt.IncrBy(int64(len(items)))
 
@@ -71,12 +71,16 @@ func socketTelnetHandle(conn net.Conn) {
 		sender.Push2JudgeSendQueue(items)
 	}
 
+	if cfg.Transfer.Enabled {
+		sender.Push2TransferSendQueue(items)
+	}
+
 	return
 }
 
 // example: endpoint counter timestamp value [type] [step]
 // default type is DERIVE, default step is 60s
-func convertLine2MetaData(fields []string) (item *cmodel.MetaData, err error) {
+func convertLine2MetaData(fields []string) (item *cm.MetaData, err error) {
 	if len(fields) != 4 && len(fields) != 5 && len(fields) != 6 {
 		err = fmt.Errorf("not_enough_fileds")
 		return
@@ -124,7 +128,7 @@ func convertLine2MetaData(fields []string) (item *cmodel.MetaData, err error) {
 		}
 	}
 
-	item = &cmodel.MetaData{
+	item = &cm.MetaData{
 		Metric:      metric,
 		Endpoint:    endpoint,
 		Timestamp:   ts,

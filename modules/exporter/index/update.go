@@ -9,7 +9,7 @@ import (
 	cron "github.com/toolkits/cron"
 	ntime "github.com/toolkits/time"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 	"github.com/open-falcon/falcon-plus/modules/exporter/proc"
 )
@@ -48,7 +48,7 @@ func UpdateIndexOfOneGraph(graphAddr string, src string) {
 	proc.IndexUpdateCnt.Incr()
 	if err == nil {
 		log.Infof(
-			"[INFO] index update ok, %s, %s, start %s, ts %ds",
+			"[I] index update ok, %s, %s, start %s, ts %ds",
 			src,
 			graphAddr,
 			ntime.FormatTs(startTs),
@@ -57,7 +57,7 @@ func UpdateIndexOfOneGraph(graphAddr string, src string) {
 	} else {
 		proc.IndexUpdateErrorCnt.Incr()
 		log.Errorf(
-			"[ERROR] index update error, %s, %s, start %s, ts %ds, reason %v",
+			"[E] index update error, %s, %s, start %s, ts %ds, reason %v",
 			src,
 			graphAddr,
 			ntime.FormatTs(startTs),
@@ -74,7 +74,7 @@ func updateIndexOfOneGraph(hostNamePort string) error {
 
 	destUrl := fmt.Sprintf(destUrlFmt, hostNamePort)
 
-	client := cutils.NewHttp(destUrl)
+	client := cu.NewHttp(destUrl)
 	client.SetUserAgent(fmt.Sprintf("index.update.%s", hostNamePort))
 	headers := map[string]string{
 		"Connection": "close",

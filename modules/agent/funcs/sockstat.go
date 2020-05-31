@@ -4,11 +4,11 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // SocketStatSummaryMetrics TODO:
-func SocketStatSummaryMetrics() (L []*cmodel.MetricValue) {
+func SocketStatSummaryMetrics() (L []*cm.MetricValue) {
 	ssMap, err := nux.SocketStatSummary()
 	if err != nil {
 		log.Errorf("[E] %v", err)

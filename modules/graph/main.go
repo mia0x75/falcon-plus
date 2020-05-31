@@ -11,7 +11,7 @@ import (
 	pfcg "github.com/mia0x75/gopfc/g"
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/api"
 	"github.com/open-falcon/falcon-plus/modules/graph/cron"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
@@ -55,7 +55,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
-	fmt.Printf(g.Banner, "Graph")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -73,7 +73,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	// init db
 	if err := g.InitDB(); err != nil {
 		os.Exit(0)

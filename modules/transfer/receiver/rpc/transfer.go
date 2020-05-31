@@ -5,15 +5,17 @@ import (
 	"strconv"
 	"time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 	"github.com/open-falcon/falcon-plus/modules/transfer/sender"
 )
 
+// Transfer TODO:
 type Transfer int
 
+// TransferResp TODO:
 type TransferResp struct {
 	Msg        string
 	Total      int
@@ -21,6 +23,7 @@ type TransferResp struct {
 	Latency    int64
 }
 
+// String TODO:
 func (t *TransferResp) String() string {
 	s := fmt.Sprintf("TransferResp total=%d, err_invalid=%d, latency=%dms",
 		t.Total, t.ErrInvalid, t.Latency)
@@ -30,29 +33,24 @@ func (t *TransferResp) String() string {
 	return s
 }
 
-func (this *Transfer) Ping(req cmodel.NullRpcRequest, resp *cmodel.SimpleRpcResponse) error {
+// Ping TODO:
+func (s *Transfer) Ping(req cm.NullRPCRequest, resp *cm.SimpleRPCResponse) error {
 	return nil
 }
 
-func (t *Transfer) Update(args []*cmodel.MetricValue, reply *cmodel.TransferResponse) error {
+// Update TODO:
+func (s *Transfer) Update(args []*cm.MetricValue, reply *cm.TransferResponse) error {
 	return RecvMetricValues(args, reply, "rpc")
 }
 
-// process new metric values
-func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse, from string) error {
+// RecvMetricValues process new metric values
+func RecvMetricValues(args []*cm.MetricValue, reply *cm.TransferResponse, from string) error {
 	start := time.Now()
 	reply.Invalid = 0
 
-	items := []*cmodel.MetaData{}
+	items := []*cm.MetaData{}
 	for _, v := range args {
 		if v == nil {
-			reply.Invalid++
-			continue
-		}
-
-		// 历史遗留问题.
-		// 老版本agent上报的metric=kernel.hostname的数据,其取值为string类型,现在已经不支持了;所以,这里硬编码过滤掉
-		if v.Metric == "kernel.hostname" {
 			reply.Invalid++
 			continue
 		}
@@ -82,19 +80,18 @@ func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse
 			continue
 		}
 
-		// TODO 呵呵,这里需要再优雅一点
-		now := start.Unix()
-		if v.Timestamp <= 0 || v.Timestamp > now*2 {
-			v.Timestamp = now
+		// Original condition: v.Timestamp <= 0 || v.Timestamp > now*2
+		if abs(start.Unix()-v.Timestamp) > 5 {
+			v.Timestamp = start.Unix()
 		}
 
-		fv := &cmodel.MetaData{
+		fv := &cm.MetaData{
 			Metric:      v.Metric,
 			Endpoint:    v.Endpoint,
 			Timestamp:   v.Timestamp,
 			Step:        v.Step,
 			CounterType: v.Type,
-			Tags:        cutils.DictedTagstring(v.Tags), //TODO tags键值对的个数,要做一下限制
+			Tags:        cu.DictedTagstring(v.Tags), // TODO tags键值对的个数,要做一下限制
 		}
 
 		valid := true
@@ -124,13 +121,13 @@ func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse
 		items = append(items, fv)
 	}
 
-	// statistics
+	// Statistics
 	cnt := int64(len(items))
 	proc.RecvCnt.IncrBy(cnt)
 	if from == "rpc" {
-		proc.RpcRecvCnt.IncrBy(cnt)
+		proc.RPCRecvCnt.IncrBy(cnt)
 	} else if from == "http" {
-		proc.HttpRecvCnt.IncrBy(cnt)
+		proc.HTTPRecvCnt.IncrBy(cnt)
 	}
 
 	cfg := g.Config()
@@ -143,8 +140,12 @@ func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse
 		sender.Push2JudgeSendQueue(items)
 	}
 
-	if cfg.Tsdb.Enabled {
-		sender.Push2TsdbSendQueue(items)
+	if cfg.TSDB.Enabled {
+		sender.Push2TSDBSendQueue(items)
+	}
+
+	if cfg.Transfer.Enabled {
+		sender.Push2TransferSendQueue(items)
 	}
 
 	reply.Message = "ok"
@@ -152,4 +153,9 @@ func RecvMetricValues(args []*cmodel.MetricValue, reply *cmodel.TransferResponse
 	reply.Latency = (time.Now().UnixNano() - start.UnixNano()) / 1000000
 
 	return nil
+}
+
+func abs(n int64) int64 {
+	y := n >> 63
+	return (n ^ y) - y
 }

@@ -3,12 +3,12 @@ package funcs
 import (
 	"strings"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // NewMetricValue TODO:
-func NewMetricValue(metric string, val interface{}, dataType string, tags ...string) *cmodel.MetricValue {
-	mv := cmodel.MetricValue{
+func NewMetricValue(metric string, val interface{}, dataType string, tags ...string) *cm.MetricValue {
+	mv := cm.MetricValue{
 		Metric: metric,
 		Value:  val,
 		Type:   dataType,
@@ -24,11 +24,11 @@ func NewMetricValue(metric string, val interface{}, dataType string, tags ...str
 }
 
 // GaugeValue TODO:
-func GaugeValue(metric string, val interface{}, tags ...string) *cmodel.MetricValue {
+func GaugeValue(metric string, val interface{}, tags ...string) *cm.MetricValue {
 	return NewMetricValue(metric, val, "GAUGE", tags...)
 }
 
 // CounterValue TODO:
-func CounterValue(metric string, val interface{}, tags ...string) *cmodel.MetricValue {
+func CounterValue(metric string, val interface{}, tags ...string) *cm.MetricValue {
 	return NewMetricValue(metric, val, "COUNTER", tags...)
 }

@@ -12,29 +12,32 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
-//TODO:use api/app/model/portal/action.go
+// Action TODO: use api/app/model/action.go
 type Action struct {
-	Id                 int    `json:"id"`
+	ID                 int    `json:"id"`
 	Uic                string `json:"uic"`
-	Url                string `json:"url"`
+	URL                string `json:"url"`
 	Callback           int    `json:"callback"`
-	BeforeCallbackSms  int    `json:"before_callback_sms"`
-	BeforeCallbackMail int    `json:"before_callback_mail"`
-	AfterCallbackSms   int    `json:"after_callback_sms"`
-	AfterCallbackMail  int    `json:"after_callback_mail"`
+	BeforeCallbackSMS  int    `json:"beforeCallbackSMS"`
+	BeforeCallbackMail int    `json:"beforeCallbackMail"`
+	AfterCallbackSMS   int    `json:"afterCallbackSMS"`
+	AfterCallbackMail  int    `json:"afterCallbackMail"`
 }
 
+// ActionCache TODO:
 type ActionCache struct {
 	sync.RWMutex
 	M map[int]*Action
 }
 
+// Actions TODO:
 var Actions = &ActionCache{M: make(map[int]*Action)}
 
-func (this *ActionCache) Get(id int) *Action {
-	this.RLock()
-	defer this.RUnlock()
-	val, exists := this.M[id]
+// Get TODO:
+func (s *ActionCache) Get(id int) *Action {
+	s.RLock()
+	defer s.RUnlock()
+	val, exists := s.M[id]
 	if !exists {
 		return nil
 	}
@@ -42,12 +45,14 @@ func (this *ActionCache) Get(id int) *Action {
 	return val
 }
 
-func (this *ActionCache) Set(id int, action *Action) {
-	this.Lock()
-	defer this.Unlock()
-	this.M[id] = action
+// Set TODO:
+func (s *ActionCache) Set(id int, action *Action) {
+	s.Lock()
+	defer s.Unlock()
+	s.M[id] = action
 }
 
+// GetAction TODO:
 func GetAction(id int) *Action {
 	action := CurlAction(id)
 
@@ -72,7 +77,7 @@ func CurlAction(id int) *Action {
 		"name": "falcon-alarm",
 		"sig":  g.Config().API.Token,
 	})
-	req.Header("Apitoken", string(token))
+	req.Header("X-Falcon-Token", string(token))
 
 	var act Action
 	err := req.ToJson(&act)

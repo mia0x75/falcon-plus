@@ -12,7 +12,7 @@ layout: default
 
 ### Request
 ```{
-  "tpl_id": 225,
+  "template_id": 225,
   "parent_id": 0,
   "name": "AtmpForTesting2"
 }```

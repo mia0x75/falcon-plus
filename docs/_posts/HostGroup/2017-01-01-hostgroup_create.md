@@ -17,6 +17,6 @@ layout: default
 ```Status: 200```
 ```{
   "id": 343,
-  "grp_name": "testhostgroup",
-  "create_user": "root"
+  "name": "testhostgroup",
+  "creator": 1
 }```

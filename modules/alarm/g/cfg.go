@@ -32,13 +32,13 @@ type QueueConfig struct {
 // ChannelConfig 消息队列配置
 type ChannelConfig struct {
 	IMQueue   string `json:"im"`
-	SmsQueue  string `json:"sms"`
+	SMSQueue  string `json:"sms"`
 	MailQueue string `json:"mail"`
 }
 
 // APIConfig API配置
 type APIConfig struct {
-	Sms       string `json:"sms"`
+	SMS       string `json:"sms"`
 	Mail      string `json:"mail"`
 	Dashboard string `json:"dashboard"`
 	API       string `json:"api"`
@@ -57,7 +57,7 @@ type DatabaseConfig struct {
 // WorkerConfig Worker配置
 type WorkerConfig struct {
 	IM   int `json:"im"`
-	Sms  int `json:"sms"`
+	SMS  int `json:"sms"`
 	Mail int `json:"mail"`
 }
 

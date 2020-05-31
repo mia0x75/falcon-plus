@@ -7,7 +7,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	pfc "github.com/mia0x75/gopfc"
+	pfcg "github.com/mia0x75/gopfc/g"
+	log "github.com/sirupsen/logrus"
+
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/http"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
@@ -20,7 +24,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
-	fmt.Printf(g.Banner, "Transfer")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -38,7 +42,14 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
+
+	if g.Config().PerfCounter != nil {
+		log.Debugf("[D] pfc config: %v", g.Config().PerfCounter)
+		pfcg.PFCWithConfig(g.Config().PerfCounter)
+		pfc.Start()
+	}
+
 	// proc
 	proc.Start()
 	sender.Start()

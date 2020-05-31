@@ -91,7 +91,7 @@ func ioWorker() {
 							task.done <- err
 						}
 					} else if task.method == IO_TASK_M_WRITE {
-						//filename must not exist
+						// filename must not exist
 						if args, ok := task.args.(*g.File); ok {
 							baseDir := file.Dir(args.Filename)
 							if err = file.InsureDir(baseDir); err != nil {

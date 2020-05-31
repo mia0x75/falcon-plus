@@ -1,6 +1,6 @@
 ---
 category: HostGroup
-apiurl: '/api/v1/hostgroup/update/#{hostgroup_id}'
+apiurl: '/api/v1/hostgroup/#{id}/update'
 title: "Update HostGroup info by id"
 type: 'PUT'
 sample_doc: 'hostgroup.html'
@@ -13,7 +13,7 @@ layout: default
 ### Request
 ```{
   "id" : 343,
-  "grp_name": "test1"
+  "name": "test1"
 }```
 
 ### Response

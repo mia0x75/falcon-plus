@@ -1,6 +1,6 @@
 ---
 category: Template
-apiurl: '/api/v1/template/#{template_id}'
+apiurl: '/api/v1/template/#{id}'
 title: "Delete Template"
 type: 'DELETE'
 sample_doc: 'template.html'

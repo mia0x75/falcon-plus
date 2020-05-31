@@ -1,6 +1,6 @@
 ---
 category: User
-apiurl: '/api/v1/user/u/:uid/teams'
+apiurl: '/api/v1/user/id/#{id}/teams'
 title: 'Get user teams'
 type: 'GET'
 sample_doc: 'user.html'

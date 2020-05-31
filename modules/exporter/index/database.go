@@ -4,28 +4,31 @@ import (
 	"database/sql"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // TODO:
 	log "github.com/sirupsen/logrus"
 
 	"github.com/open-falcon/falcon-plus/modules/exporter/g"
 )
 
-var DB *sql.DB
+var (
+	db *sql.DB
+)
 
-func InitDB() {
-	var err error
-	DB, err = GetDbConn()
-	if err != nil {
-		log.Fatalf("[F] open db fail: %v", err)
-	} else {
-		log.Infof("[I] index:InitDB ok")
-	}
+// Con 获取链接
+func Con() *sql.DB {
+	return db
 }
 
-func GetDbConn() (db *sql.DB, err error) {
+// Close 关闭链接
+func Close() {
+	db.Close()
+}
+
+// InitDB 初始化数据库连接
+func InitDB() (err error) {
 	db, err = sql.Open("mysql", g.Config().Index.Addr)
 	if err != nil {
-		return nil, err
+		log.Fatalf("[F] open db fail: %v", err)
 	}
 
 	db.SetMaxIdleConns(g.Config().Index.MaxIdle)
@@ -34,7 +37,7 @@ func GetDbConn() (db *sql.DB, err error) {
 
 	err = db.Ping()
 	if err != nil {
-		db.Close()
+		log.Fatalf("[F] ping db fail: %v", err)
 	}
 	return
 }

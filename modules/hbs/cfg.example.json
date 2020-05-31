@@ -3,14 +3,16 @@
 		"level": "debug"
 	},
 	"database": {
-		"addr": "root:@tcp(127.0.0.1:3306)/portal?charset=utf8mb4&loc=Local&parseTime=true",
+		"addr": "root:@tcp(127.0.0.1:3306)/dashboard?charset=utf8mb4&loc=Local&parseTime=true",
 		"max_connections": 20,
 		"max_idle": 10,
 		"wait_timeout": 30
 	},
 	"hosts": "",
 	"listen": ":6030",
-	"trustable": [""],
+	"trustable": [
+		""
+	],
 	"http": {
 		"enabled": true,
 		"listen": "0.0.0.0:6031"

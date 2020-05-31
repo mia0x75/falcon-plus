@@ -61,7 +61,7 @@ type GlobalConfig struct {
 	IOWorkerNum    int             `json:"io_workers"`
 	FirstBytesSize int
 	Migrate        struct {
-		Concurrency int               `json:"concurrency"` //number of multiple worker per node
+		Concurrency int               `json:"concurrency"` // number of multiple worker per node
 		Enabled     bool              `json:"enabled"`
 		Replicas    int               `json:"replicas"`
 		Cluster     map[string]string `json:"cluster"`

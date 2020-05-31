@@ -90,7 +90,7 @@ func InsureNewVersionFiles(da *model.DesiredAgent) error {
 	err = downloadTarballCmd.Run()
 	if err != nil {
 		log.Errorf(
-			"[ERROR] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
+			"[E] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
 			password,
 			da.TarballUrl,
 			da.TarballFilename,
@@ -104,7 +104,7 @@ func InsureNewVersionFiles(da *model.DesiredAgent) error {
 	err = downloadMd5Cmd.Run()
 	if err != nil {
 		log.Errorf(
-			"[ERROR] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
+			"[E] wget -q --no-check-certificate --auth-no-challenge --user=owl --password=%s %s -O %s fail: %v",
 			password,
 			da.Md5Url,
 			da.Md5Filename,

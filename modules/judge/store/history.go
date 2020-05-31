@@ -4,7 +4,7 @@ import (
 	"container/list"
 	"sync"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 type JudgeItemMap struct {
@@ -16,65 +16,65 @@ func NewJudgeItemMap() *JudgeItemMap {
 	return &JudgeItemMap{M: make(map[string]*SafeLinkedList)}
 }
 
-func (this *JudgeItemMap) Get(key string) (*SafeLinkedList, bool) {
-	this.RLock()
-	defer this.RUnlock()
-	val, ok := this.M[key]
+func (m *JudgeItemMap) Get(key string) (*SafeLinkedList, bool) {
+	m.RLock()
+	defer m.RUnlock()
+	val, ok := m.M[key]
 	return val, ok
 }
 
-func (this *JudgeItemMap) Set(key string, val *SafeLinkedList) {
-	this.Lock()
-	defer this.Unlock()
-	this.M[key] = val
+func (m *JudgeItemMap) Set(key string, val *SafeLinkedList) {
+	m.Lock()
+	defer m.Unlock()
+	m.M[key] = val
 }
 
-func (this *JudgeItemMap) Len() int {
-	this.RLock()
-	defer this.RUnlock()
-	return len(this.M)
+func (m *JudgeItemMap) Len() int {
+	m.RLock()
+	defer m.RUnlock()
+	return len(m.M)
 }
 
-func (this *JudgeItemMap) Delete(key string) {
-	this.Lock()
-	defer this.Unlock()
-	delete(this.M, key)
+func (m *JudgeItemMap) Delete(key string) {
+	m.Lock()
+	defer m.Unlock()
+	delete(m.M, key)
 }
 
-func (this *JudgeItemMap) BatchDelete(keys []string) {
+func (m *JudgeItemMap) BatchDelete(keys []string) {
 	count := len(keys)
 	if count == 0 {
 		return
 	}
 
-	this.Lock()
-	defer this.Unlock()
+	m.Lock()
+	defer m.Unlock()
 	for i := 0; i < count; i++ {
-		delete(this.M, keys[i])
+		delete(m.M, keys[i])
 	}
 }
 
-func (this *JudgeItemMap) CleanStale(before int64) {
+func (m *JudgeItemMap) CleanStale(before int64) {
 	keys := []string{}
 
-	this.RLock()
-	for key, L := range this.M {
+	m.RLock()
+	for key, L := range m.M {
 		front := L.Front()
 		if front == nil {
 			continue
 		}
 
-		if front.Value.(*cmodel.JudgeItem).Timestamp < before {
+		if front.Value.(*cm.JudgeItem).Timestamp < before {
 			keys = append(keys, key)
 		}
 	}
-	this.RUnlock()
+	m.RUnlock()
 
-	this.BatchDelete(keys)
+	m.BatchDelete(keys)
 }
 
-func (this *JudgeItemMap) PushFrontAndMaintain(key string, val *cmodel.JudgeItem, maxCount int, now int64) {
-	if linkedList, exists := this.Get(key); exists {
+func (m *JudgeItemMap) PushFrontAndMaintain(key string, val *cm.JudgeItem, maxCount int, now int64) {
+	if linkedList, exists := m.Get(key); exists {
 		needJudge := linkedList.PushFrontAndMaintain(val, maxCount)
 		if needJudge {
 			Judge(linkedList, val, now)
@@ -83,7 +83,7 @@ func (this *JudgeItemMap) PushFrontAndMaintain(key string, val *cmodel.JudgeItem
 		NL := list.New()
 		NL.PushFront(val)
 		safeList := &SafeLinkedList{L: NL}
-		this.Set(key, safeList)
+		m.Set(key, safeList)
 		Judge(safeList, val, now)
 	}
 }

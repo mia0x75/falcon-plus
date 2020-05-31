@@ -1,6 +1,6 @@
 ---
 category: User
-apiurl: '/api/v1/user/u/#{user_id}'
+apiurl: '/api/v1/user/id/#{id}'
 title: 'Get User info by id'
 type: 'GET'
 sample_doc: 'user.html'
@@ -9,7 +9,7 @@ layout: default
 
 * [Session](#/authentication) Required
 * `Admin` usage
-* ex. /api/v1/user/u/4
+* ex. /api/v1/user/id/4
 
 ### Response
 
@@ -21,7 +21,6 @@ layout: default
   "email": "",
   "phone": "",
   "im": "",
-  "qq": "",
   "role": 0
 }```
 

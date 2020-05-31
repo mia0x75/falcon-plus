@@ -10,8 +10,8 @@ import (
 	"github.com/toolkits/container/nmap"
 	ttime "github.com/toolkits/time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
 
@@ -21,7 +21,7 @@ var (
 )
 
 func AddMock(key string, endpoint string, metric string, tags string, ts int64, dstype string, step int64, value interface{}) {
-	item := &cmodel.JsonMetaData{
+	item := &cm.JSONMetaData{
 		Metric:      metric,
 		Endpoint:    endpoint,
 		Timestamp:   ts,
@@ -53,7 +53,7 @@ func SendMockOnce() int {
 	end := time.Now().Unix()
 	log.Debugf("[D] sender cron, cnt %d, time %ds, start %s", cnt, end-start, ttime.FormatTs(start))
 
-	// statistics
+	// Statistics
 	g.SenderCronCnt.Incr()
 	g.SenderLastTs.SetCnt(end - start)
 	g.SenderCnt.IncrBy(int64(cnt))
@@ -62,11 +62,10 @@ func SendMockOnce() int {
 }
 
 func sendMock() (cnt int, errt error) {
-
-	cfg := g.Config().Transfer
-	batch := int(cfg.Batch)
-	connTimeout := cfg.ConnectTimeout
-	requTimeout := cfg.RequestTimeout
+	cfgTransfer := g.Config().Transfer
+	batch := int(cfgTransfer.Batch)
+	connTimeout := cfgTransfer.ConnectTimeout
+	requTimeout := cfgTransfer.RequestTimeout
 
 	// send mock to transfer
 	mocks := MockMap.Slice()
@@ -82,12 +81,12 @@ func sendMock() (cnt int, errt error) {
 		fetchMocks := mocks[i : i+sendSize]
 		i += sendSize
 
-		items := make([]*cmodel.JsonMetaData, 0)
+		items := make([]*cm.JSONMetaData, 0)
 		for _, val := range fetchMocks {
 			if val == nil {
 				continue
 			}
-			items = append(items, val.(*cmodel.JsonMetaData))
+			items = append(items, val.(*cm.JSONMetaData))
 		}
 		cntonce, err := sendItemsToTransfer(items, len(items), "nodata.mock",
 			time.Millisecond*time.Duration(connTimeout),
@@ -102,36 +101,35 @@ func sendMock() (cnt int, errt error) {
 }
 
 //
-func sendItemsToTransfer(items []*cmodel.JsonMetaData, size int, httpcliname string,
-	connT, reqT time.Duration) (cnt int, errt error) {
+func sendItemsToTransfer(items []*cm.JSONMetaData, size int, httpcliname string,
+	connT, reqT time.Duration) (cnt int, err error) {
 	if size < 1 {
 		return
 	}
+	cnt = size
 
 	cfg := g.Config()
 	transUlr := fmt.Sprintf("http://%s/api/push", cfg.Transfer.Addr)
 
 	// form request args
-	itemsBody, err := json.Marshal(items)
+	var itemsBody []byte
+	itemsBody, err = json.Marshal(items)
 	if err != nil {
 		log.Errorf("[E] %s, format body error: %v", transUlr, err)
-		errt = err
 		return
 	}
 
-	// post items
-	client := cutils.NewHttp(transUlr)
+	client := cu.NewHttp(transUlr)
 	client.SetUserAgent(httpcliname)
 	headers := map[string]string{
 		"Content-Type": "application/json; charset=UTF-8",
 		"Connection":   "close",
 	}
 	client.SetHeaders(headers)
-	if _, err := client.Post(itemsBody); err != nil {
+	if _, err = client.Post(itemsBody); err != nil {
 		log.Errorf("[E] %s, post to dest error: %v", transUlr, err)
-		errt = err
 		return
 	}
 
-	return size, nil
+	return
 }

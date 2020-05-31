@@ -37,7 +37,6 @@ func compute(operands []string, operators []string, computeMode string, hostname
 }
 
 func compareSum(sum float64, computeMode string) bool {
-
 	regMatch, _ := regexp.Compile(`([><=]+)([\d\.]+)`)
 	match := regMatch.FindStringSubmatch(computeMode)
 

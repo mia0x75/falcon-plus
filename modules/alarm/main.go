@@ -7,11 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/cron"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/http"
-	"github.com/open-falcon/falcon-plus/modules/alarm/model"
 )
 
 func main() {
@@ -25,7 +24,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf(g.Banner, "Alarm")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -42,19 +41,19 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	g.InitRedisConnPool()
-	model.InitDB()
+	g.InitDB()
 	cron.InitSenderWorker()
 
 	http.Start()
 	cron.ReadHighEvent()
 	cron.ReadLowEvent()
-	cron.CombineSms()
+	cron.CombineSMS()
 	cron.CombineMail()
 	cron.CombineIM()
 	cron.ConsumeIM()
-	cron.ConsumeSms()
+	cron.ConsumeSMS()
 	cron.ConsumeMail()
 	cron.CleanExpiredEvent()
 

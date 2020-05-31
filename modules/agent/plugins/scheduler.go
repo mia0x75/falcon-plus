@@ -13,7 +13,7 @@ import (
 	"github.com/toolkits/file"
 	"github.com/toolkits/sys"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -162,7 +162,7 @@ func PluginRun(plugin *Plugin) {
 		return
 	}
 
-	var metrics []*cmodel.MetricValue
+	var metrics []*cm.MetricValue
 	err = json.Unmarshal(data, &metrics)
 	if err != nil {
 		log.Errorf("[E] json.Unmarshal stdout of %s(%s) fail. error:%s stdout: \n%s\n", fpath, args, err, stdout.String())

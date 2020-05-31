@@ -1,6 +1,6 @@
 ---
 category: HostGroup
-apiurl: '/api/v1/hostgroup/#{hostgroup_id}/template'
+apiurl: '/api/v1/hostgroup/#{id}/template'
 title: "Get Template List of  HostGroup"
 type: 'GET'
 sample_doc: 'hostgroup.html'
@@ -16,7 +16,7 @@ layout: default
 ```{
   "hostgroup": {
     "id": 3,
-    "grp_name": "hostgroupA",
+    "name": "hostgroupA",
     "create_user": "root"
   },
   "templates": [

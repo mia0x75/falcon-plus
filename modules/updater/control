@@ -5,8 +5,8 @@ cd $WORKSPACE
 
 mkdir -p var
 
-module=updater-https
-app=ops-$module
+module=updater
+app=falcon-$module
 conf=cfg.json
 pidfile=var/app.pid
 logfile=var/app.log
@@ -63,23 +63,26 @@ function tailf() {
 }
 
 function build() {
-    go build -a
-    if [ $? -ne 0 ]; then
-        exit $?
+    go build -o $app main.go
+    sc=$?
+    if [ $sc -ne 0 ]; then
+        echo "build error"
+        exit $sc
+    else
+        echo -n "build ok" 
+        ./$app -v 
     fi
-    mv $module $app
-    ./$app -v
 }
 
 function pack() {
     build
-    version=`./$app -v`
+    version=$(cat ../../VERSION)
     tar zcvf $app-$version.tar.gz control cfg.example.json $app
 }
 
 function packbin() {
     build
-    version=`./$app -v`
+    version=$(cat ../../VERSION)
     tar zcvf $app-bin-$version.tar.gz $app
 }
 

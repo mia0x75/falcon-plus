@@ -11,13 +11,13 @@ import (
 	"github.com/toolkits/file"
 	"github.com/toolkits/sys"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 	"github.com/open-falcon/falcon-plus/modules/agent/hbs"
 )
 
 // URLMetrics TODO:
-func URLMetrics() (L []*cmodel.MetricValue) {
+func URLMetrics() (L []*cm.MetricValue) {
 	urls := hbs.ReportUrls()
 	sz := len(urls)
 	if sz == 0 {

@@ -8,7 +8,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/open-falcon/falcon-plus/common/sdk/sender"
+	cs "github.com/open-falcon/falcon-plus/common/sdk/sender"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/sdk"
 )
@@ -39,7 +39,7 @@ func WorkerRun(item *g.Cluster) {
 		return
 	}
 
-	hostnames, err := sdk.HostnamesByID(item.GroupId)
+	hostnames, err := sdk.HostnamesByID(item.GroupID)
 	if err != nil || len(hostnames) == 0 {
 		return
 	}
@@ -67,7 +67,7 @@ func WorkerRun(item *g.Cluster) {
 					"[E] [hostname: %s] [numerator: %s] id: %d, error: %v",
 					hostname,
 					item.Numerator,
-					item.Id,
+					item.ID,
 					err,
 				)
 			} else {
@@ -75,7 +75,7 @@ func WorkerRun(item *g.Cluster) {
 					"[D] [hostname: %s] [numerator: %s] id: %d, value: %0.4f",
 					hostname,
 					item.Numerator,
-					item.Id,
+					item.ID,
 					numeratorVal,
 				)
 			}
@@ -93,7 +93,7 @@ func WorkerRun(item *g.Cluster) {
 					"[E] [hostname: %s] [denominator: %s] id: %d, error: %v",
 					hostname,
 					item.Denominator,
-					item.Id,
+					item.ID,
 					err,
 				)
 			} else {
@@ -101,7 +101,7 @@ func WorkerRun(item *g.Cluster) {
 					"[D] [hostname: %s] [denominator: %s] id: %d, value: %0.4f",
 					hostname,
 					item.Denominator,
-					item.Id,
+					item.ID,
 					denominatorVal,
 				)
 			}
@@ -129,7 +129,7 @@ func WorkerRun(item *g.Cluster) {
 		} else {
 			numerator, err = strconv.ParseFloat(numeratorStr, 64)
 			if err != nil {
-				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", numeratorStr, err, item.Id)
+				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", numeratorStr, err, item.ID)
 				return
 			}
 		}
@@ -141,29 +141,29 @@ func WorkerRun(item *g.Cluster) {
 		} else {
 			denominator, err = strconv.ParseFloat(denominatorStr, 64)
 			if err != nil {
-				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", denominatorStr, err, item.Id)
+				log.Errorf("[E] strconv.ParseFloat(%s) fail %v, id: %d", denominatorStr, err, item.ID)
 				return
 			}
 		}
 	}
 
 	if denominator == 0 {
-		log.Warnf("[W] denominator == 0, id: %d", item.Id)
+		log.Warnf("[W] denominator == 0, id: %d", item.ID)
 		return
 	}
 
 	if validCount == 0 {
-		log.Warnf("[W] validCount == 0, id: %d", item.Id)
+		log.Warnf("[W] validCount == 0, id: %d", item.ID)
 		return
 	}
 
 	log.Debugf(
-		"[DEBUG] hostname:all  numerator: %0.4f  denominator: %0.4f  per: %0.4f",
+		"[D] hostname:all  numerator: %0.4f  denominator: %0.4f  per: %0.4f",
 		numerator,
 		denominator,
 		numerator/denominator,
 	)
-	sender.Push(item.Endpoint, item.Metric, item.Tags, numerator/denominator, item.DsType, int64(item.Step))
+	cs.Push(item.Endpoint, item.Metric, item.Tags, numerator/denominator, item.DsType, int64(item.Step))
 }
 
 func parse(expression string, needCompute bool) (operands []string, operators []string, computeMode string) {

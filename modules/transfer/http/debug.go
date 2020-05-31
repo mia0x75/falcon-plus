@@ -25,9 +25,17 @@ func SetupDebugRoutes() {
 		receiver := args[0]
 		switch receiver {
 		case "judge":
-			result = strings.Join(sender.JudgeConnPools.Proc(), "\n")
+			if sender.JudgeConnPools != nil {
+				result = strings.Join(sender.JudgeConnPools.Proc(), "\n")
+			}
 		case "graph":
-			result = strings.Join(sender.GraphConnPools.Proc(), "\n")
+			if sender.GraphConnPools != nil {
+				result = strings.Join(sender.GraphConnPools.Proc(), "\n")
+			}
+		case "transfer":
+			if sender.TransferConnPools != nil {
+				result = strings.Join(sender.TransferConnPools.Proc(), "\n")
+			}
 		default:
 			result = fmt.Sprintf("bad args, module not exist\n")
 		}

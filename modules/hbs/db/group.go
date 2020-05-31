@@ -8,7 +8,7 @@ import (
 func QueryHostGroups() (map[int][]int, error) {
 	m := make(map[int][]int)
 
-	q := "select grp_id, host_id from grp_host"
+	q := "SELECT ancestor_id, descendant_id FROM edges WHERE type = 2"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)

@@ -7,16 +7,16 @@ import (
 
 	"github.com/toolkits/net/httplib"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/common/sdk/requests"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cr "github.com/open-falcon/falcon-plus/common/sdk/requests"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
-	f "github.com/open-falcon/falcon-plus/modules/api/app/model/portal"
+	f "github.com/open-falcon/falcon-plus/modules/api/app/model"
 )
 
 // HostnamesByID TODO:
 func HostnamesByID(groupID int64) ([]string, error) {
 	uri := fmt.Sprintf("%s/api/v1/hostgroup/%d", g.Config().API.API, groupID)
-	req, err := requests.CurlPlus(uri, "GET", "aggregator", g.Config().API.Token,
+	req, err := cr.CurlPlus(uri, "GET", "aggregator", g.Config().API.Token,
 		map[string]string{}, map[string]string{})
 
 	if err != nil {
@@ -24,8 +24,8 @@ func HostnamesByID(groupID int64) ([]string, error) {
 	}
 
 	type RESP struct {
-		HostGroup f.HostGroup `json:"hostgroup"`
-		Hosts     []f.Host    `json:"hosts"`
+		Group f.Group  `json:"hostgroup"`
+		Hosts []f.Host `json:"hosts"`
 	}
 
 	resp := &RESP{}
@@ -46,13 +46,13 @@ func HostnamesByID(groupID int64) ([]string, error) {
 }
 
 // QueryLastPoints TODO:
-func QueryLastPoints(endpoints, counters []string) (resp []*cmodel.GraphLastResp, err error) {
+func QueryLastPoints(endpoints, counters []string) (resp []*cm.GraphLastResp, err error) {
 	cfg := g.Config()
 	uri := fmt.Sprintf("%s/api/v1/graph/lastpoint", cfg.API.API)
 
 	var req *httplib.BeegoHttpRequest
 	headers := map[string]string{"Content-type": "application/json"}
-	req, err = requests.CurlPlus(uri, "POST", "aggregator", cfg.API.Token,
+	req, err = cr.CurlPlus(uri, "POST", "aggregator", cfg.API.Token,
 		headers, map[string]string{})
 
 	if err != nil {
@@ -62,10 +62,10 @@ func QueryLastPoints(endpoints, counters []string) (resp []*cmodel.GraphLastResp
 	req.SetTimeout(time.Duration(cfg.API.ConnectTimeout)*time.Millisecond,
 		time.Duration(cfg.API.RequestTimeout)*time.Millisecond)
 
-	body := []*cmodel.GraphLastParam{}
+	body := []*cm.GraphLastParam{}
 	for _, e := range endpoints {
 		for _, c := range counters {
-			body = append(body, &cmodel.GraphLastParam{e, c})
+			body = append(body, &cm.GraphLastParam{e, c})
 		}
 	}
 

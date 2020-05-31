@@ -8,7 +8,7 @@ import (
 	tcron "github.com/toolkits/cron"
 	ttime "github.com/toolkits/time"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
@@ -51,7 +51,7 @@ func syncNdConfig() (cnt int, errt error) {
 			log.Warnf("[W] bad config: %+v", ndc)
 			continue
 		}
-		pk := cutils.PK(endpoint, metric, tags)
+		pk := cu.PK(endpoint, metric, tags)
 		nm.Put(pk, ndc)
 	}
 

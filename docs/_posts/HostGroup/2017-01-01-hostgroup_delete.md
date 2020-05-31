@@ -1,6 +1,6 @@
 ---
 category: HostGroup
-apiurl: '/api/v1/hostgroup/#{hostgroup_id}'
+apiurl: '/api/v1/hostgroup/#{id}'
 title: "Delete HostGroup"
 type: 'DELETE'
 sample_doc: 'hostgroup.html'

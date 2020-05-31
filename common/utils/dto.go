@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type RespJson struct {
+type RespJSON struct {
 	Error string `json:"error,omitempty"`
 	Msg   string `json:"message,omitempty"`
 }
@@ -23,23 +23,23 @@ type Dto struct {
 // func JSONR(c *gin.Context, wcode int, msg interface{}) (werror error) {
 func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 	var (
-		wcode int
-		msg   interface{}
+		code int
+		msg  interface{}
 	)
 
 	if len(arg) == 1 {
-		wcode = http.StatusOK
+		code = http.StatusOK
 		msg = arg[0]
 	} else {
-		wcode = arg[0].(int)
+		code = arg[0].(int)
 		msg = arg[1]
 	}
 
 	var body interface{}
-	if wcode == 200 {
+	if code == 200 {
 		switch msg.(type) {
 		case string:
-			body = RespJson{Msg: msg.(string)}
+			body = RespJSON{Msg: msg.(string)}
 			c.JSON(http.StatusOK, body)
 		default:
 			c.JSON(http.StatusOK, msg)
@@ -48,20 +48,19 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 	} else {
 		switch msg.(type) {
 		case string:
-			body = RespJson{Error: msg.(string)}
-			c.JSON(wcode, body)
+			body = RespJSON{Error: msg.(string)}
 		case error:
-			body = RespJson{Error: msg.(error).Error()}
-			c.JSON(wcode, body)
+			body = RespJSON{Error: msg.(error).Error()}
 		default:
-			body = RespJson{Error: "system type error. please ask admin for help"}
-			c.JSON(wcode, body)
+			body = RespJSON{Error: "system type error. please ask admin for help"}
 		}
+		c.JSON(code, body)
 	}
 	return
 }
 
-func RenderJson(w http.ResponseWriter, v interface{}) {
+// RenderJSON
+func RenderJSON(w http.ResponseWriter, v interface{}) {
 	bs, err := json.Marshal(v)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -71,32 +70,36 @@ func RenderJson(w http.ResponseWriter, v interface{}) {
 	w.Write(bs)
 }
 
-func RenderDataJson(w http.ResponseWriter, data interface{}) {
-	RenderJson(w, Dto{Msg: "success", Data: data})
+// RenderDataJSON
+func RenderDataJSON(w http.ResponseWriter, data interface{}) {
+	RenderJSON(w, Dto{Msg: "success", Data: data})
 }
 
-func RenderMsgJson(w http.ResponseWriter, msg string) {
-	RenderJson(w, map[string]string{"msg": msg})
+// RenderMsgJSON
+func RenderMsgJSON(w http.ResponseWriter, msg string) {
+	RenderJSON(w, map[string]string{"msg": msg})
 }
 
+// AutoRender
 func AutoRender(w http.ResponseWriter, data interface{}, err error) {
 	if err != nil {
-		RenderMsgJson(w, err.Error())
+		RenderMsgJSON(w, err.Error())
 		return
 	}
-	RenderDataJson(w, data)
+	RenderDataJSON(w, data)
 }
 
+// StdRender
 func StdRender(w http.ResponseWriter, data interface{}, err error) {
 	if err != nil {
 		w.WriteHeader(400)
-		RenderMsgJson(w, err.Error())
+		RenderMsgJSON(w, err.Error())
 		return
 	}
-	RenderJson(w, data)
+	RenderJSON(w, data)
 }
 
-func postByJson(rw http.ResponseWriter, req *http.Request, url string) {
+func postByJSON(rw http.ResponseWriter, req *http.Request, url string) {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(req.Body)
 	s := buf.String()

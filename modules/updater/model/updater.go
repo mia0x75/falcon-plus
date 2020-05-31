@@ -26,33 +26,33 @@ type DesiredAgent struct {
 	Md5Url          string `json:"-"`
 }
 
-func (this *DesiredAgent) String() string {
+func (m *DesiredAgent) String() string {
 	return fmt.Sprintf(
 		"<Name:%s, Version:%s, RunUser:%s, WorkDir: %s, Md5:%s, Cmd:%s>",
-		this.Name,
-		this.Version,
-		this.RunUser,
-		this.WorkDir,
-		this.Md5,
-		this.Cmd,
+		m.Name,
+		m.Version,
+		m.RunUser,
+		m.WorkDir,
+		m.Md5,
+		m.Cmd,
 	)
 }
 
-func (this *DesiredAgent) FillAttrs(workdir string) {
-	this.AgentDir = path.Join(workdir, this.Name)
-	this.AgentVersionDir = path.Join(this.AgentDir, this.Version)
-	this.TarballFilename = fmt.Sprintf("%s-%s.tar.gz", this.Name, this.Version)
-	this.Md5Filename = fmt.Sprintf("%s.md5", this.TarballFilename)
-	this.TarballFilepath = path.Join(this.AgentVersionDir, this.TarballFilename)
-	this.Md5Filepath = path.Join(this.AgentVersionDir, this.Md5Filename)
-	this.ControlFilepath = path.Join(this.AgentVersionDir, "control")
+func (m *DesiredAgent) FillAttrs(workdir string) {
+	m.AgentDir = path.Join(workdir, m.Name)
+	m.AgentVersionDir = path.Join(m.AgentDir, m.Version)
+	m.TarballFilename = fmt.Sprintf("%s-%s.tar.gz", m.Name, m.Version)
+	m.Md5Filename = fmt.Sprintf("%s.md5", m.TarballFilename)
+	m.TarballFilepath = path.Join(m.AgentVersionDir, m.TarballFilename)
+	m.Md5Filepath = path.Join(m.AgentVersionDir, m.Md5Filename)
+	m.ControlFilepath = path.Join(m.AgentVersionDir, "control")
 
-	if this.Md5 == "" {
-		this.Md5 = this.Tarball
+	if m.Md5 == "" {
+		m.Md5 = m.Tarball
 	}
 
-	this.TarballUrl = fmt.Sprintf("%s/%s", this.Tarball, this.TarballFilename)
-	this.Md5Url = fmt.Sprintf("%s/%s", this.Md5, this.Md5Filename)
+	m.TarballUrl = fmt.Sprintf("%s/%s", m.Tarball, m.TarballFilename)
+	m.Md5Url = fmt.Sprintf("%s/%s", m.Md5, m.Md5Filename)
 }
 
 type RealAgent struct {
@@ -64,15 +64,15 @@ type RealAgent struct {
 	WorkDir   string `json:"workDir"`
 }
 
-func (this *RealAgent) String() string {
+func (m *RealAgent) String() string {
 	return fmt.Sprintf(
 		"<Name:%s, Version:%s, Status:%s, Timestamp:%v, RunUser: %s, WorkDir: %s>",
-		this.Name,
-		this.Version,
-		this.Status,
-		this.Timestamp,
-		this.RunUser,
-		this.WorkDir,
+		m.Name,
+		m.Version,
+		m.Status,
+		m.Timestamp,
+		m.RunUser,
+		m.WorkDir,
 	)
 }
 

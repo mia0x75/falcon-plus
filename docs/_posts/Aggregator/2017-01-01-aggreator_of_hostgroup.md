@@ -1,6 +1,6 @@
 ---
 category: Aggregator
-apiurl: '/api/v1/hostgroup/#{hostgroup_id}/aggregators'
+apiurl: '/api/v1/hostgroup/#{id}/aggregators'
 title: "Get Aggregator List of HostGroup"
 type: 'GET'
 sample_doc: 'aggregator.html'
@@ -21,7 +21,7 @@ layout: default
   "aggregators": [
       {
         "id": 13,
-        "grp_id": 343,
+        "group_id": 343,
         "numerator": "$(cpu.idle)",
         "denominator": "2",
         "endpoint": "testenp",
@@ -33,7 +33,7 @@ layout: default
       },
       {
         "id": 14,
-        "grp_id": 343,
+        "group_id": 343,
         "numerator": "$(cpu.idle)",
         "denominator": "2",
         "endpoint": "testenp",

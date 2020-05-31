@@ -3,14 +3,14 @@ package db
 import (
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // QueryGroupTemplates TODO:
 func QueryGroupTemplates() (map[int][]int, error) {
 	m := make(map[int][]int)
 
-	q := "select grp_id, tpl_id from grp_tpl"
+	q := "SELECT ancestor_id, descendant_id FROM edges WHERE type = 3"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)
@@ -37,10 +37,10 @@ func QueryGroupTemplates() (map[int][]int, error) {
 }
 
 // QueryTemplates 获取所有的策略模板列表
-func QueryTemplates() (map[int]*cmodel.Template, error) {
-	templates := make(map[int]*cmodel.Template)
+func QueryTemplates() (map[int]*cm.Template, error) {
+	templates := make(map[int]*cm.Template)
 
-	q := "select id, tpl_name, parent_id, action_id, create_user from tpl"
+	q := "select id, name, parent_id, action_id, creator from templates"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)
@@ -49,22 +49,22 @@ func QueryTemplates() (map[int]*cmodel.Template, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		t := cmodel.Template{}
-		err = rows.Scan(&t.Id, &t.Name, &t.ParentId, &t.ActionId, &t.Creator)
+		t := cm.Template{}
+		err = rows.Scan(&t.ID, &t.Name, &t.ParentID, &t.ActionID, &t.Creator)
 		if err != nil {
 			log.Errorf("[E] %v", err)
 			continue
 		}
-		templates[t.Id] = &t
+		templates[t.ID] = &t
 	}
 
 	return templates, nil
 }
 
-// QueryHostTemplateIds 一个机器ID对应了多个模板ID
-func QueryHostTemplateIds() (map[int][]int, error) {
+// QueryHostTemplateIDs 一个机器ID对应了多个模板ID
+func QueryHostTemplateIDs() (map[int][]int, error) {
 	ret := make(map[int][]int)
-	q := "select a.tpl_id, b.host_id from grp_tpl as a inner join grp_host as b on a.grp_id = b.grp_id"
+	q := "SELECT a.descendant_id, b.descendant_id FROM edges a INNER JOIN edges b ON a.ancestor_id = b.ancestor_id AND a.type = 3 AND b.type = 2"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)

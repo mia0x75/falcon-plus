@@ -1,6 +1,6 @@
 ---
 category: DashboardGraph
-apiurl: '/api/v1/dashboard/graph/:id'
+apiurl: '/api/v1/dashboard/graph/#{id}'
 title: 'Delete a DashboardGraph'
 type: 'DELETE'
 sample_doc: 'dashboard.html'

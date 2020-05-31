@@ -8,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -71,7 +71,7 @@ type LockStats struct {
 // LockStatsMap is a map of lock stats
 type LockStatsMap map[string]LockStats
 
-//IndexCounterStats index counter stats
+// IndexCounterStats index counter stats
 type IndexCounterStats struct {
 	Accesses  float64 `bson:"accesses"`
 	Hits      float64 `bson:"hits"`
@@ -396,7 +396,7 @@ type OpcountersReplStats struct {
 	Command float64 `bson:"command"`
 }
 
-//NetworkStats network stats
+// NetworkStats network stats
 type NetworkStats struct {
 	BytesIn     float64 `bson:"bytesIn"`
 	BytesOut    float64 `bson:"bytesOut"`
@@ -515,7 +515,7 @@ func NewMongoDB() *mgo.Session {
 var mgoTags string
 
 // MongoDBMetrics TODO:
-func MongoDBMetrics() (L []*cmodel.MetricValue) {
+func MongoDBMetrics() (L []*cm.MetricValue) {
 	if g.Config().Collector.MongoDB == nil {
 		return nil
 	}
@@ -535,7 +535,7 @@ func MongoDBMetrics() (L []*cmodel.MetricValue) {
 }
 
 // MongoDBStatInfo TODO:
-func MongoDBStatInfo(session *mgo.Session) (L []*cmodel.MetricValue) {
+func MongoDBStatInfo(session *mgo.Session) (L []*cm.MetricValue) {
 	var serverStatus = GetServerStatus(session)
 	fmt.Println(serverStatus.Version)
 	fmt.Println(serverStatus.Uptime)
@@ -545,7 +545,7 @@ func MongoDBStatInfo(session *mgo.Session) (L []*cmodel.MetricValue) {
 // GetServerStatus returns the server status info.
 func GetServerStatus(session *mgo.Session) *ServerStatus {
 	result := &ServerStatus{}
-	d := bson.D{{"serverStatus", 1}, {"recordStats", 1}}
+	d := bson.D{{Name: "serverStatus", Value: 1}, {Name: "recordStats", Value: 1}}
 	err := session.DB("admin").Run(d, result)
 	if err != nil {
 		log.Errorf("[E] Failed to get server status: %s", err)

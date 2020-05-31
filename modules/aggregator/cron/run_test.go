@@ -5,7 +5,6 @@ import (
 )
 
 func Test_expressionValid(t *testing.T) {
-
 	expressionMap := map[string]bool{
 		// true
 		"1210":                                true,

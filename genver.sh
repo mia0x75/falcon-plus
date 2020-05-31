@@ -43,17 +43,18 @@ const (
 	Branch  = "${branch}"
 	Distro  = "${distro}"
 	Kernel  = "${kernel}"
+	Module  = "Falcon+"
 )
 
-// 定义变量
-var (
+// 常量定义
+const (
 	Banner = \`
     ___       ___       ___       ___       ___       ___    
    /\  \     /\  \     /\__\     /\  \     /\  \     /\__\   
-  /::\  \   /::\  \   /:/  /    /::\  \   /::\  \   /:| _|_  
- /::\:\__\ /::\:\__\ /:/__/    /:/\:\__\ /:/\:\__\ /::|/\__\ 
- \/\:\/__/ \/\::/  / \:\  \    \:\ \/__/ \:\/:/  / \/|::/  / 
-    \/__/    /:/  /   \:\__\    \:\__\    \::/  /    |:/  /  
+  /  \  \   /  \  \   / /  /    /  \  \   /  \  \   / | _|_  
+ /  \ \__\ /  \ \__\ / /__/    / /\ \__\ / /\ \__\ /  |/\__\ 
+ \/\ \/__/ \/\  /  / \ \  \    \ \ \/__/ \ \/ /  / \/|  /  / 
+    \/__/    / /  /   \ \__\    \ \__\    \  /  /    | /  /  
              \/__/     \/__/     \/__/     \/__/     \/__/   %s\`
 )
 
@@ -63,14 +64,25 @@ func init() {
 EOF
 
 cp g/g.go modules/agent/g
+sed -i -e 's/Falcon+/Agent/g' modules/agent/g/g.go
 cp g/g.go modules/aggregator/g
+sed -i -e 's/Falcon+/Aggregator/g' modules/aggregator/g/g.go
 cp g/g.go modules/alarm/g
+sed -i -e 's/Falcon+/Alarm/g' modules/alarm/g/g.go
 cp g/g.go modules/api/g
+sed -i -e 's/Falcon+/API/g' modules/api/g/g.go
 cp g/g.go modules/exporter/g
-cp g/g.go modules/gateway/g
+sed -i -e 's/Falcon+/Exporter/g' modules/exporter/g/g.go
 cp g/g.go modules/graph/g
+sed -i -e 's/Falcon+/Graph/g' modules/graph/g/g.go
 cp g/g.go modules/hbs/g
+sed -i -e 's/Falcon+/HBS/g' modules/hbs/g/g.go
 cp g/g.go modules/judge/g
+sed -i -e 's/Falcon+/Judge/g' modules/judge/g/g.go
 cp g/g.go modules/nodata/g
+sed -i -e 's/Falcon+/Nodata/g' modules/nodata/g/g.go
 cp g/g.go modules/transfer/g
+sed -i -e 's/Falcon+/Transfer/g' modules/transfer/g/g.go
 cp g/g.go modules/updater/g
+sed -i -e 's/Falcon+/Updater/g' modules/updater/g/g.go
+find ./ -type f -name "g.go-e" -exec rm -f {} \;

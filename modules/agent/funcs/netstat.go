@@ -4,7 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/nux"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // USES TODO:
@@ -35,7 +35,7 @@ var USES = map[string]struct{}{
 }
 
 // NetstatMetrics TODO:
-func NetstatMetrics() (L []*cmodel.MetricValue) {
+func NetstatMetrics() (L []*cm.MetricValue) {
 	tcpExts, err := nux.Netstat("TcpExt")
 
 	if err != nil {

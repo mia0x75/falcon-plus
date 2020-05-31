@@ -6,8 +6,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 )
 
 type MockCfg struct {
@@ -23,8 +23,8 @@ type MockCfg struct {
 }
 
 // 当 grp展开结果 与 host结果 存在冲突时, 优先选择 host结果
-func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
-	ret := make(map[string]*cmodel.NodataConfig)
+func GetMockCfgFromDB() map[string]*cm.NodataConfig {
+	ret := make(map[string]*cm.NodataConfig)
 
 	q := fmt.Sprintf("SELECT id,name,obj,obj_type,metric,tags,dstype,step,mock FROM mockcfg")
 	rows, err := DB.Query(q)
@@ -42,7 +42,7 @@ func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 			log.Errorf("[E] db.scan error, mockcfg: %v", err)
 			continue
 		}
-		t.Tags = cutils.DictedTagstring(tags)
+		t.Tags = cu.DictedTagstring(tags)
 
 		err = checkMockCfg(&t)
 		if err != nil {
@@ -56,8 +56,8 @@ func GetMockCfgFromDB() map[string]*cmodel.NodataConfig {
 		}
 
 		for _, ep := range endpoints {
-			uuid := cutils.PK(ep, t.Metric, t.Tags)
-			ncfg := cmodel.NewNodataConfig(t.Id, t.Name, t.ObjType, ep, t.Metric, t.Tags, t.Type, t.Step, t.Mock)
+			uuid := cu.PK(ep, t.Metric, t.Tags)
+			ncfg := cm.NewNodataConfig(t.Id, t.Name, t.ObjType, ep, t.Metric, t.Tags, t.Type, t.Step, t.Mock)
 
 			val, found := ret[uuid]
 			if !found { // so cute, it's the first one
@@ -157,7 +157,7 @@ func checkMockCfg(mc *MockCfg) error {
 	return nil
 }
 
-func isSpuerNodataCfg(A *cmodel.NodataConfig, B *cmodel.NodataConfig) bool {
+func isSpuerNodataCfg(A *cm.NodataConfig, B *cm.NodataConfig) bool {
 	if A.ObjType == "group" && B.ObjType == "host" {
 		return false
 	}

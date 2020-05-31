@@ -7,25 +7,25 @@ import (
 
 	"github.com/toolkits/nux"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/agent/funcs"
 )
 
 // SetupCPURoutes TODO:
 func SetupCPURoutes() {
 	http.HandleFunc("/proc/cpu/num", func(w http.ResponseWriter, r *http.Request) {
-		cutils.RenderDataJson(w, runtime.NumCPU())
+		cu.RenderDataJSON(w, runtime.NumCPU())
 	})
 
 	http.HandleFunc("/proc/cpu/mhz", func(w http.ResponseWriter, r *http.Request) {
 		data, err := nux.CpuMHz()
-		cutils.AutoRender(w, data, err)
+		cu.AutoRender(w, data, err)
 	})
 
 	http.HandleFunc("/page/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
 		cpuUsages, _, prepared := funcs.CPUUsagesSummary()
 		if !prepared {
-			cutils.RenderMsgJson(w, "not prepared")
+			cu.RenderMsgJSON(w, "not prepared")
 			return
 		}
 
@@ -42,17 +42,17 @@ func SetupCPURoutes() {
 			fmt.Sprintf("%.1f%%", cpuUsages.Guest),
 		}
 
-		cutils.RenderDataJson(w, [][10]string{item})
+		cu.RenderDataJSON(w, [][10]string{item})
 	})
 
 	http.HandleFunc("/proc/cpu/usage", func(w http.ResponseWriter, r *http.Request) {
 		cpuUsages, _, prepared := funcs.CPUUsagesSummary()
 		if !prepared {
-			cutils.RenderMsgJson(w, "not prepared")
+			cu.RenderMsgJSON(w, "not prepared")
 			return
 		}
 
-		cutils.RenderDataJson(w, map[string]interface{}{
+		cu.RenderDataJSON(w, map[string]interface{}{
 			"idle":    fmt.Sprintf("%.1f%%", cpuUsages.Idle),
 			"busy":    fmt.Sprintf("%.1f%%", cpuUsages.Busy),
 			"user":    fmt.Sprintf("%.1f%%", cpuUsages.User),

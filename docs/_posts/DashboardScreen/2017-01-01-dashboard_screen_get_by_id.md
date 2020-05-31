@@ -1,6 +1,6 @@
 ---
 category: DashboardScreen
-apiurl: '/api/v1/dashboard/screen/:screen_id'
+apiurl: '/api/v1/dashboard/screen/#{id}'
 title: 'Get a DashboardScreen by id'
 type: 'GET'
 sample_doc: 'dashboard.html'

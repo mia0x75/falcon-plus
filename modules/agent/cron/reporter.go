@@ -6,7 +6,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/agent/g"
 )
 
@@ -26,7 +26,7 @@ func reportAgentStatus() {
 			continue
 		}
 
-		req := cmodel.AgentReportRequest{
+		req := cm.AgentReportRequest{
 			Hostname:      hostname,
 			IP:            g.IP(),
 			AgentVersion:  fmt.Sprintf("%s@%s", g.Version, g.Commit),
@@ -34,7 +34,7 @@ func reportAgentStatus() {
 			// TODO: Add system information to support inventory management
 		}
 
-		var resp cmodel.SimpleRpcResponse
+		var resp cm.SimpleRPCResponse
 		err = g.HbsClient.Call("Agent.ReportStatus", req, &resp)
 		if err != nil || resp.Code != 0 {
 			log.Errorf("[E] call Agent.ReportStatus fail: %v Request: %v Response: %v\n", err, req, resp)

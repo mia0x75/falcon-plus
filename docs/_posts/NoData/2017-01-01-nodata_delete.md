@@ -1,6 +1,6 @@
 ---
 category: NoData
-apiurl: '/api/v1/nodata/#{nodata_id}'
+apiurl: '/api/v1/nodata/#{id}'
 title: "Delete Nodata"
 type: 'DELETE'
 sample_doc: 'nodata.html'

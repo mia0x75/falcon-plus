@@ -1,6 +1,6 @@
 ---
 category: Expression
-apiurl: '/api/v1/expression/#{expression_id}'
+apiurl: '/api/v1/expression/#{id}'
 title: "Get Expression Info by id"
 type: 'GET'
 sample_doc: 'expression.html'

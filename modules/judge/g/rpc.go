@@ -41,7 +41,7 @@ func (rpc *SingleConnRPCClient) insureConn() {
 		}
 
 		for _, s := range rpc.RPCServers {
-			rpc.rpcClient, err = net.JsonRpcClient("tcp", s, rpc.Timeout)
+			rpc.rpcClient, err = net.JSONRPCClient("tcp", s, rpc.Timeout)
 			if err == nil {
 				return
 			}

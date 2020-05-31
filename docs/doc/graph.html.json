@@ -65,13 +65,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -137,13 +137,13 @@
           "MethodType": "GET",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",
@@ -171,14 +171,14 @@
           "MethodType": "POST",
           "PostForm": null,
           "RequestHeader": {
-            "Apitoken": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
+            "X-Falcon-Token": "{\"name\":\"root\",\"sig\":\"427d6803b78311e68afd0242ac130006\"}",
             "Content-Type": " application/json\r",
             "X-Forwarded-For": " 127.0.0.1\r"
           },
           "CommonRequestHeaders": null,
           "ResponseHeader": {
             "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "Content-Type, Content-Length, Apitoken",
+            "Access-Control-Allow-Headers": "Content-Type, Content-Length, X-Falcon-Token",
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, UPDATE",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Expose-Headers": "Content-Length",

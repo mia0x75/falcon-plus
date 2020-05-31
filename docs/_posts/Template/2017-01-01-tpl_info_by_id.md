@@ -1,6 +1,6 @@
 ---
 category: Template
-apiurl: '/api/v1/template/#{template_id}'
+apiurl: '/api/v1/template/#{id}'
 title: "Get Template Info by id"
 type: 'GET'
 sample_doc: 'template.html'
@@ -37,7 +37,7 @@ layout: default
       "note": "xxx服务异常",
       "run_begin": "",
       "run_end": "",
-      "tpl_id": 178
+      "template_id": 178
     },
     {
       "id": 687,
@@ -51,7 +51,7 @@ layout: default
       "note": "XXX同步异常",
       "run_begin": "",
       "run_end": "",
-      "tpl_id": 178
+      "template_id": 178
     },
     {
       "id": 688,
@@ -65,7 +65,7 @@ layout: default
       "note": "bbb连接MQ异常",
       "run_begin": "",
       "run_end": "",
-      "tpl_id": 178
+      "template_id": 178
     },
     {
       "id": 793,
@@ -79,7 +79,7 @@ layout: default
       "note": "aaaa 进程大于5",
       "run_begin": "",
       "run_end": "",
-      "tpl_id": 178
+      "template_id": 178
     }
   ],
   "template": {

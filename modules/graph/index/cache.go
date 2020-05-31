@@ -11,8 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	tcache "github.com/toolkits/cache/localcache/timedcache"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/proc"
 )
@@ -30,9 +30,9 @@ var (
 
 // db本地缓存
 var (
-	// endpoint表的内存缓存, key:endpoint(string) / value:id(int64)
+	// endpoints表的内存缓存, key:endpoint(string) / value:id(int64)
 	dbEndpointCache = tcache.New(600*time.Second, 60*time.Second)
-	// endpoint_counter表的内存缓存, key:endpoint_id-counter(string) / val:dstype-step(string)
+	// counters表的内存缓存, key:endpoint_id-counter(string) / val:dstype-step(string)
 	dbEndpointCounterCache = tcache.New(600*time.Second, 60*time.Second)
 )
 
@@ -44,7 +44,7 @@ func InitCache() {
 // USED WHEN QUERY
 func GetTypeAndStep(endpoint string, counter string) (dsType string, step int, found bool) {
 	// get it from index cache
-	pk := cutils.Md5(fmt.Sprintf("%s/%s", endpoint, counter))
+	pk := cu.Md5(fmt.Sprintf("%s/%s", endpoint, counter))
 	if icitem := IndexedItemCache.Get(pk); icitem != nil {
 		if item := icitem.(*IndexCacheItem).Item; item != nil {
 			dsType = item.DsType
@@ -61,7 +61,7 @@ func GetTypeAndStep(endpoint string, counter string) (dsType string, step int, f
 	var endpointId int64 = -1
 	if endpointId, found = GetEndpointFromCache(endpoint); found {
 		if dsType, step, found = GetCounterFromCache(endpointId, counter); found {
-			//found = true
+			// found = true
 			return
 		}
 	}
@@ -71,7 +71,7 @@ func GetTypeAndStep(endpoint string, counter string) (dsType string, step int, f
 	return
 }
 
-// Return EndpointId if Found
+// GetEndpointFromCache returns EndpointId if found
 func GetEndpointFromCache(endpoint string) (int64, bool) {
 	// get from cache
 	endpointId, found := dbEndpointCache.Get(endpoint)
@@ -81,7 +81,7 @@ func GetEndpointFromCache(endpoint string) (int64, bool) {
 
 	// get from db
 	var id int64 = -1
-	err := g.DB.QueryRow("SELECT id FROM endpoint WHERE endpoint = ?", endpoint).Scan(&id)
+	err := g.DB.QueryRow("SELECT id FROM endpoints WHERE endpoint = ?", endpoint).Scan(&id)
 	if err != nil && err != sql.ErrNoRows {
 		log.Errorf("[E] query endpoint id fail: %v", err)
 		return -1, false
@@ -97,7 +97,7 @@ func GetEndpointFromCache(endpoint string) (int64, bool) {
 	return id, true
 }
 
-// Return DsType Step if Found
+// GetCounterFromCache returns DsType step if found
 func GetCounterFromCache(endpointId int64, counter string) (dsType string, step int, found bool) {
 	var err error
 	// get from cache
@@ -115,7 +115,7 @@ func GetCounterFromCache(endpointId int64, counter string) (dsType string, step 
 	}
 
 	// get from db
-	err = g.DB.QueryRow("SELECT type, step FROM endpoint_counter WHERE endpoint_id = ? and counter = ?",
+	err = g.DB.QueryRow("SELECT type, step FROM counters WHERE endpoint_id = ? and counter = ?",
 		endpointId, counter).Scan(&dsType, &step)
 	if err != nil && err != sql.ErrNoRows {
 		log.Errorf("[E] query type and step fail: %v", err)
@@ -143,14 +143,13 @@ func startCacheProcUpdateTask() {
 	}
 }
 
-// INDEX CACHE
-// 索引缓存的元素数据结构
+// IndexCacheItem 索引缓存的元素数据结构
 type IndexCacheItem struct {
 	UUID string
-	Item *cmodel.GraphItem
+	Item *cm.GraphItem
 }
 
-func NewIndexCacheItem(uuid string, item *cmodel.GraphItem) *IndexCacheItem {
+func NewIndexCacheItem(uuid string, item *cm.GraphItem) *IndexCacheItem {
 	return &IndexCacheItem{UUID: uuid, Item: item}
 }
 
@@ -165,51 +164,51 @@ func NewIndexCacheBase(max int) *IndexCacheBase {
 	return &IndexCacheBase{maxSize: max, data: make(map[string]interface{})}
 }
 
-func (this *IndexCacheBase) GetMaxSize() int {
-	return this.maxSize
+func (m *IndexCacheBase) GetMaxSize() int {
+	return m.maxSize
 }
 
-func (this *IndexCacheBase) Put(key string, item interface{}) {
-	this.Lock()
-	defer this.Unlock()
-	this.data[key] = item
+func (m *IndexCacheBase) Put(key string, item interface{}) {
+	m.Lock()
+	defer m.Unlock()
+	m.data[key] = item
 }
 
-func (this *IndexCacheBase) Remove(key string) {
-	this.Lock()
-	defer this.Unlock()
-	delete(this.data, key)
+func (m *IndexCacheBase) Remove(key string) {
+	m.Lock()
+	defer m.Unlock()
+	delete(m.data, key)
 }
 
-func (this *IndexCacheBase) Get(key string) interface{} {
-	this.RLock()
-	defer this.RUnlock()
-	return this.data[key]
+func (m *IndexCacheBase) Get(key string) interface{} {
+	m.RLock()
+	defer m.RUnlock()
+	return m.data[key]
 }
 
-func (this *IndexCacheBase) ContainsKey(key string) bool {
-	this.RLock()
-	defer this.RUnlock()
-	return this.data[key] != nil
+func (m *IndexCacheBase) ContainsKey(key string) bool {
+	m.RLock()
+	defer m.RUnlock()
+	return m.data[key] != nil
 }
 
-func (this *IndexCacheBase) Size() int {
-	this.RLock()
-	defer this.RUnlock()
-	return len(this.data)
+func (m *IndexCacheBase) Size() int {
+	m.RLock()
+	defer m.RUnlock()
+	return len(m.data)
 }
 
-func (this *IndexCacheBase) Keys() []string {
-	this.RLock()
-	defer this.RUnlock()
+func (m *IndexCacheBase) Keys() []string {
+	m.RLock()
+	defer m.RUnlock()
 
-	count := len(this.data)
+	count := len(m.data)
 	if count == 0 {
 		return []string{}
 	}
 
 	keys := make([]string, 0, count)
-	for key := range this.data {
+	for key := range m.data {
 		keys = append(keys, key)
 	}
 

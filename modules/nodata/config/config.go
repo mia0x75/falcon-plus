@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/container/nmap"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config/service"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
 )
@@ -52,13 +52,13 @@ func Size() int {
 	return NdConfigMap.Size()
 }
 
-func GetNdConfig(key string) (*cmodel.NodataConfig, bool) {
+func GetNdConfig(key string) (*cm.NodataConfig, bool) {
 	rwlock.RLock()
 	defer rwlock.RUnlock()
 
 	val, found := NdConfigMap.Get(key)
 	if found && val != nil {
-		return val.(*cmodel.NodataConfig), true
+		return val.(*cm.NodataConfig), true
 	}
-	return &cmodel.NodataConfig{}, false
+	return &cm.NodataConfig{}, false
 }

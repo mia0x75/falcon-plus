@@ -5,14 +5,14 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/alarm/api"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
 
-func consume(event *cmodel.Event, isHigh bool) {
-	actionID := event.ActionId()
+func consume(event *cm.Event, isHigh bool) {
+	actionID := event.ActionID()
 	if actionID <= 0 {
 		return
 	}
@@ -30,7 +30,7 @@ func consume(event *cmodel.Event, isHigh bool) {
 }
 
 // 高优先级的不做报警合并
-func consumeHighEvents(event *cmodel.Event, action *api.Action) {
+func consumeHighEvents(event *cm.Event, action *api.Action) {
 	if action.Uic == "" {
 		return
 	}
@@ -39,9 +39,9 @@ func consumeHighEvents(event *cmodel.Event, action *api.Action) {
 	// <=P2 才发送短信
 	if event.Priority() < 3 {
 		if len(phones) > 0 {
-			content := GenerateSmsContent(phones, event)
+			content := GenerateSMSContent(phones, event)
 			content.Uic = action.Uic
-			redi.WriteSms(content)
+			redi.WriteSMS(content)
 		}
 	}
 
@@ -58,24 +58,24 @@ func consumeHighEvents(event *cmodel.Event, action *api.Action) {
 }
 
 // 低优先级的做报警合并
-func consumeLowEvents(event *cmodel.Event, action *api.Action) {
+func consumeLowEvents(event *cm.Event, action *api.Action) {
 	if action.Uic == "" {
 		return
 	}
 
 	// <=P2 才发送短信
 	if event.Priority() < 3 {
-		ParseUserSms(event, action)
+		ParseUserSMS(event, action)
 	}
 
 	ParseUserIm(event, action)
 	ParseUserMail(event, action)
 }
 
-// ParseUserSms TODO:
-func ParseUserSms(event *cmodel.Event, action *api.Action) {
+// ParseUserSMS TODO:
+func ParseUserSMS(event *cm.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
-	queue := g.Config().Queue.LatentQueues.SmsQueue
+	queue := g.Config().Queue.LatentQueues.SMSQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -84,11 +84,11 @@ func ParseUserSms(event *cmodel.Event, action *api.Action) {
 		if user.Phone == "" {
 			continue
 		}
-		content := GenerateSmsContent([]string{user.Phone}, event)
+		content := GenerateSMSContent([]string{user.Phone}, event)
 		content.Uic = action.Uic
 		bs, err := json.Marshal(content)
 		if err != nil {
-			log.Errorf("[E] json marshal SmsDto fail: %v", err)
+			log.Errorf("[E] json marshal SMSDto fail: %v", err)
 			continue
 		}
 
@@ -100,7 +100,7 @@ func ParseUserSms(event *cmodel.Event, action *api.Action) {
 }
 
 // ParseUserMail TODO:
-func ParseUserMail(event *cmodel.Event, action *api.Action) {
+func ParseUserMail(event *cm.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
 	queue := g.Config().Queue.LatentQueues.MailQueue
 
@@ -127,7 +127,7 @@ func ParseUserMail(event *cmodel.Event, action *api.Action) {
 }
 
 // ParseUserIm TODO:
-func ParseUserIm(event *cmodel.Event, action *api.Action) {
+func ParseUserIm(event *cm.Event, action *api.Action) {
 	userMap := api.GetUsers(action.Uic)
 	queue := g.Config().Queue.LatentQueues.IMQueue
 

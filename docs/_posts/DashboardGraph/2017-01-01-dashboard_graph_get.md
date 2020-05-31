@@ -1,6 +1,6 @@
 ---
 category: DashboardGraph
-apiurl: '/api/v1/dashboard/graph/:id'
+apiurl: '/api/v1/dashboard/graph/#{id}'
 title: 'Get DashboardGraph info by id'
 type: 'GET'
 sample_doc: 'dashboard.html'
@@ -16,7 +16,7 @@ layout: default
 {
     "counters":["value/name=pfc.push.ms", "value/name=pfc.push.size"],
     "endpoints":["laiweiofficemac"],
-    "falcon_tags":"",
+    "tags":"",
     "graph_id":4626,
     "graph_type":"h",
     "method":"",

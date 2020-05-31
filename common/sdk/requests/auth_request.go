@@ -30,7 +30,7 @@ func CurlPlus(uri, method, token_name, token_sig string, headers, params map[str
 		"name": token_name,
 		"sig":  token_sig,
 	})
-	req.Header("Apitoken", string(token))
+	req.Header("X-Falcon-Token", string(token))
 
 	for hk, hv := range headers {
 		req.Header(hk, hv)

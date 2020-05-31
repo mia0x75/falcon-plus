@@ -1,6 +1,6 @@
 ---
 category: HostGroup
-apiurl: '/api/v1/hostgroup/#{hostgroup_id}/host'
+apiurl: '/api/v1/hostgroup/#{id}/host'
 title: "Update partial hosts in HostGroup"
 type: 'PATCH'
 sample_doc: 'hostgroup.html'

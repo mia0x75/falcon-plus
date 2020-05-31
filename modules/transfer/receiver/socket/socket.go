@@ -8,6 +8,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 )
 
+// Start 启动服务
 func Start() {
 	go start()
 }

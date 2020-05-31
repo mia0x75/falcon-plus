@@ -13,38 +13,27 @@ mkdir -p var &>/dev/null
 
 ## build & pack
 function build() {
-    commit=$(git log -1 --pretty=%h)
-    cat <<EOF > ./g/git.go
-package g
-const (
-    COMMIT = "$commit"
-)
-EOF
     go build -o $app main.go
     sc=$?
-    if [ $sc -ne 0 ];then
+    if [ $sc -ne 0 ]; then
         echo "build error"
         exit $sc
     else
-        echo -n "build ok, vsn=" 
+        echo -n "build ok" 
         ./$app -v 
     fi
 }
 
 function pack() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v`
-    tar zcvf $app-$version.tar.gz control $app cfg.example.json gitversion ./test
-    rm -f gitversion &>/dev/null
+    version=$(cat ../../VERSION)
+    tar zcvf $app-$version.tar.gz control $app cfg.example.json ./test
 }
 
 function packbin() {
     build
-    git log -1 --pretty=%h > gitversion
-    version=`./$app -v`
-    tar zcvf $app-bin-$version.tar.gz $app gitversion
-    rm -f gitversion &>/dev/null
+    version=$(cat ../../VERSION)
+    tar zcvf $app-bin-$version.tar.gz $app
 }
 
 ## opt
@@ -86,10 +75,6 @@ function status() {
     fi
 }
 
-function version() {
-    ./$app -vg
-}
-
 function tailf() {
     tail -f $logfile
 }
@@ -108,7 +93,7 @@ function check_pid() {
 
 ## usage
 function usage() {
-    echo "$0 build|pack|packbin|start|stop|restart|status|tail|version"
+    echo "$0 build|pack|packbin|start|stop|restart|status|tail"
 }
 
 ## main
@@ -137,9 +122,6 @@ case $action in
     ## other
     "status" )
         status
-        ;;
-    "version" )
-        version
         ;;
     "tail" )
         tailf

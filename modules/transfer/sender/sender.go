@@ -7,19 +7,20 @@ import (
 	rings "github.com/toolkits/consistent/rings"
 	nlist "github.com/toolkits/container/list"
 
-	cpools "github.com/open-falcon/falcon-plus/common/backend_pool"
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cp "github.com/open-falcon/falcon-plus/common/pool"
 	"github.com/open-falcon/falcon-plus/modules/transfer/g"
 	"github.com/open-falcon/falcon-plus/modules/transfer/proc"
 )
 
+// 常量定义
 const (
-	DefaultSendQueueMaxSize = 102400 //10.24w
+	DefaultSendQueueMaxSize = 102400 // 10.24w
 )
 
 // 默认参数
 var (
-	MinStep int //最小上报周期,单位sec
+	MinStep int // 最小上报周期,单位sec
 )
 
 // 服务节点的一致性哈希环
@@ -32,20 +33,29 @@ var (
 // 发送缓存队列
 // node -> queue_of_data
 var (
-	TsdbQueue   *nlist.SafeListLimited
-	JudgeQueues = make(map[string]*nlist.SafeListLimited)
-	GraphQueues = make(map[string]*nlist.SafeListLimited)
+	TSDBQueue     *nlist.SafeListLimited
+	JudgeQueues   = make(map[string]*nlist.SafeListLimited)
+	GraphQueues   = make(map[string]*nlist.SafeListLimited)
+	TransferQueue *nlist.SafeListLimited
+)
+
+// transfer的主机列表，以及主机名和地址的映射关系
+// 用于随机遍历transfer
+var (
+	TransferMap       = make(map[string]string, 0)
+	TransferHostnames = make([]string, 0)
 )
 
 // 连接池
 // node_address -> connection_pool
 var (
-	JudgeConnPools     *cpools.SafeRpcConnPools
-	TsdbConnPoolHelper *cpools.TsdbConnPoolHelper
-	GraphConnPools     *cpools.SafeRpcConnPools
+	JudgeConnPools     *cp.SafeRPCConnPools
+	TSDBConnPoolHelper *cp.TSDBConnPoolHelper
+	GraphConnPools     *cp.SafeRPCConnPools
+	TransferConnPools  *cp.SafeRPCConnPools
 )
 
-// 初始化数据发送服务, 在main函数中调用
+// Start 初始化数据发送服务, 在main函数中调用
 func Start() {
 	go start()
 }
@@ -54,7 +64,7 @@ func start() {
 	// 初始化默认参数
 	MinStep = g.Config().MinStep
 	if MinStep < 1 {
-		MinStep = 30 //默认30s
+		MinStep = 30 // 默认30s
 	}
 	//
 	initConnPools()
@@ -66,8 +76,8 @@ func start() {
 	log.Info("[I] send.Start, ok")
 }
 
-// 将数据 打入 某个Judge的发送缓存队列, 具体是哪一个Judge 由一致性哈希 决定
-func Push2JudgeSendQueue(items []*cmodel.MetaData) {
+// Push2JudgeSendQueue 将数据 打入 某个Judge的发送缓存队列, 具体是哪一个Judge 由一致性哈希 决定
+func Push2JudgeSendQueue(items []*cm.MetaData) {
 	for _, item := range items {
 		pk := item.PK()
 		node, err := JudgeNodeRing.GetNode(pk)
@@ -83,7 +93,7 @@ func Push2JudgeSendQueue(items []*cmodel.MetaData) {
 		}
 		ts := alignTs(item.Timestamp, int64(step))
 
-		judgeItem := &cmodel.JudgeItem{
+		judgeItem := &cm.JudgeItem{
 			Endpoint:  item.Endpoint,
 			Metric:    item.Metric,
 			Value:     item.Value,
@@ -101,8 +111,8 @@ func Push2JudgeSendQueue(items []*cmodel.MetaData) {
 	}
 }
 
-// 将数据 打入 某个Graph的发送缓存队列, 具体是哪一个Graph 由一致性哈希 决定
-func Push2GraphSendQueue(items []*cmodel.MetaData) {
+// Push2GraphSendQueue 将数据 打入 某个Graph的发送缓存队列, 具体是哪一个Graph 由一致性哈希 决定
+func Push2GraphSendQueue(items []*cm.MetaData) {
 	cfg := g.Config().Graph
 
 	for _, item := range items {
@@ -142,9 +152,9 @@ func Push2GraphSendQueue(items []*cmodel.MetaData) {
 	}
 }
 
-// 打到Graph的数据,要根据rrdtool的特定 来限制 step、counterType、timestamp
-func convert2GraphItem(d *cmodel.MetaData) (*cmodel.GraphItem, error) {
-	item := &cmodel.GraphItem{}
+// convert2GraphItem 打到Graph的数据,要根据rrdtool的特定 来限制 step、counterType、timestamp
+func convert2GraphItem(d *cm.MetaData) (*cm.GraphItem, error) {
+	item := &cm.GraphItem{}
 
 	item.Endpoint = d.Endpoint
 	item.Metric = d.Metric
@@ -173,29 +183,29 @@ func convert2GraphItem(d *cmodel.MetaData) (*cmodel.GraphItem, error) {
 		return item, fmt.Errorf("not_supported_counter_type")
 	}
 
-	item.Timestamp = alignTs(item.Timestamp, int64(item.Step)) //item.Timestamp - item.Timestamp%int64(item.Step)
+	item.Timestamp = alignTs(item.Timestamp, int64(item.Step)) // item.Timestamp - item.Timestamp%int64(item.Step)
 
 	return item, nil
 }
 
-// 将原始数据入到tsdb发送缓存队列
-func Push2TsdbSendQueue(items []*cmodel.MetaData) {
+// Push2TSDBSendQueue 将原始数据入到tsdb发送缓存队列
+func Push2TSDBSendQueue(items []*cm.MetaData) {
 	for _, item := range items {
 		if isMetricIgnored(item) {
 			continue
 		}
-		tsdbItem := convert2TsdbItem(item)
-		isSuccess := TsdbQueue.PushFront(tsdbItem)
+		tsdbItem := convert2TSDBItem(item)
+		isSuccess := TSDBQueue.PushFront(tsdbItem)
 
 		if !isSuccess {
-			proc.SendToTsdbDropCnt.Incr()
+			proc.SendToTSDBDropCnt.Incr()
 		}
 	}
 }
 
-// 转化为tsdb格式
-func convert2TsdbItem(d *cmodel.MetaData) *cmodel.TsdbItem {
-	t := cmodel.TsdbItem{Tags: make(map[string]string)}
+// convert2TSDBItem 转化为TSDB格式
+func convert2TSDBItem(d *cm.MetaData) *cm.TSDBItem {
+	t := cm.TSDBItem{Tags: make(map[string]string)}
 
 	for k, v := range d.Tags {
 		t.Tags[k] = v
@@ -211,10 +221,21 @@ func alignTs(ts int64, period int64) int64 {
 	return ts - ts%period
 }
 
-func isMetricIgnored(item *cmodel.MetaData) bool {
+func isMetricIgnored(item *cm.MetaData) bool {
 	ignoreMetrics := g.Config().IgnoreMetrics
 	if b, ok := ignoreMetrics[item.Metric]; ok && b {
 		return true
 	}
 	return false
+}
+
+// Push2TransferSendQueue 数据发送到下一个Transfer 当前角色为网关
+func Push2TransferSendQueue(items []*cm.MetaData) {
+	for _, item := range items {
+		isSuccess := TransferQueue.PushFront(item)
+
+		if !isSuccess {
+			proc.SendToTransferDropCnt.Incr()
+		}
+	}
 }

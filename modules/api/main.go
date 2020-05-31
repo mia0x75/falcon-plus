@@ -9,7 +9,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
+	"github.com/open-falcon/falcon-plus/modules/api/cache"
 	"github.com/open-falcon/falcon-plus/modules/api/g"
 	"github.com/open-falcon/falcon-plus/modules/api/graph"
 	"github.com/open-falcon/falcon-plus/modules/api/http"
@@ -28,7 +29,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf(g.Banner, "API")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -45,12 +46,12 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	if err := g.InitDB(); err != nil {
 		log.Fatalf("[F] open db fail: %v", err)
 		os.Exit(0)
 	}
-
+	cache.Init()
 	rpc.Start()
 	graph.Start()
 	http.Start()

@@ -1,6 +1,6 @@
 ---
 category: Host
-apiurl: '/api/v1/host/#{host_id}/template'
+apiurl: '/api/v1/host/#{id}/template'
 title: "Get bind Template List of Host"
 type: 'GET'
 sample_doc: 'host.html'

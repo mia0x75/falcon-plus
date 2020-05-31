@@ -4,7 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/file"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/modules/graph/g"
 	"github.com/open-falcon/falcon-plus/modules/graph/store"
 )
@@ -17,7 +17,7 @@ func Start() {
 }
 
 // index收到一条新上报的监控数据,尝试用于增量更新索引
-func ReceiveItem(item *cmodel.GraphItem, md5 string) {
+func ReceiveItem(item *cm.GraphItem, md5 string) {
 	if item == nil {
 		return
 	}
@@ -46,13 +46,13 @@ func ReceiveItem(item *cmodel.GraphItem, md5 string) {
 	unIndexedItemCache.Put(md5, NewIndexCacheItem(uuid, item))
 }
 
-//从graph cache中删除掉某个item, 并删除指定的counter对应的rrd文件
-func RemoveItem(item *cmodel.GraphItem) {
+// 从graph cache中删除掉某个item, 并删除指定的counter对应的rrd文件
+func RemoveItem(item *cm.GraphItem) {
 	md5 := item.Checksum()
 	IndexedItemCache.Remove(md5)
 	unIndexedItemCache.Remove(md5)
 
-	//discard data of memory
+	// discard data of memory
 	checksum := item.Checksum()
 	key := g.FormRrdCacheKey(checksum, item.DsType, item.Step)
 	poped_items := store.GraphItems.PopAll(key)

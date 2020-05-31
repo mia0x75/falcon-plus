@@ -12,13 +12,13 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
 
-// CombineSms 合并短信告警
-func CombineSms() {
+// CombineSMS 合并短信告警
+func CombineSMS() {
 	go func() {
 		d := time.Duration(1) * time.Minute
 		// 每分钟读取处理一次
 		for range time.Tick(d) {
-			combineSms()
+			combineSMS()
 		}
 	}()
 }
@@ -106,8 +106,8 @@ func combineIM() {
 	}
 }
 
-func combineSms() {
-	dtos := popAllSmsDto()
+func combineSMS() {
+	dtos := popAllSMSDto()
 	count := len(dtos)
 	if count == 0 {
 		return
@@ -132,13 +132,13 @@ func combineSms() {
 		}
 		size := len(arr)
 		arr[0].Occur = size
-		redi.WriteSms(arr[0])
+		redi.WriteSMS(arr[0])
 	}
 }
 
-func popAllSmsDto() []*g.AlarmDto {
+func popAllSMSDto() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.Config().Queue.LatentQueues.SmsQueue
+	queue := g.Config().Queue.LatentQueues.SMSQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -147,7 +147,7 @@ func popAllSmsDto() []*g.AlarmDto {
 		reply, err := redis.String(rc.Do("RPOP", queue))
 		if err != nil {
 			if err != redis.ErrNil {
-				log.Errorf("[E] get SmsDto fail: %v", err)
+				log.Errorf("[E] get SMSDto fail: %v", err)
 			}
 			break
 		}
@@ -159,7 +159,7 @@ func popAllSmsDto() []*g.AlarmDto {
 		var smsDto *g.AlarmDto
 		err = json.Unmarshal([]byte(reply), &smsDto)
 		if err != nil {
-			log.Errorf("[E] json unmarshal SmsDto: %s fail: %v", reply, err)
+			log.Errorf("[E] json unmarshal SMSDto: %s fail: %v", reply, err)
 			continue
 		}
 		ret = append(ret, smsDto)

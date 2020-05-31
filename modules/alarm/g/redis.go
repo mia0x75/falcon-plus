@@ -7,8 +7,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// RedisConnPool Redis链接池对象
 var RedisConnPool *redis.Pool
 
+// InitRedisConnPool 初始化Redis链接池
 func InitRedisConnPool() {
 	cfg := Config().Redis
 
@@ -31,6 +33,7 @@ func InitRedisConnPool() {
 	}
 }
 
+// PingRedis 测试Redis链接
 func PingRedis(c redis.Conn, t time.Time) error {
 	_, err := c.Do("ping")
 	if err != nil {

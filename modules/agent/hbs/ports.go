@@ -9,14 +9,14 @@ var (
 	portsLock = new(sync.RWMutex)
 )
 
-// ReportPorts TODO:
+// ReportPorts 获取暂存的本地端口数据
 func ReportPorts() []int64 {
 	portsLock.RLock()
 	defer portsLock.RUnlock()
 	return ports
 }
 
-// CacheReportPorts TODO:
+// CacheReportPorts 把本地端口数据存储到变量中
 func CacheReportPorts(value []int64) {
 	portsLock.Lock()
 	defer portsLock.Unlock()

@@ -7,8 +7,8 @@ import (
 	tcron "github.com/toolkits/cron"
 	ttime "github.com/toolkits/time"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cm "github.com/open-falcon/falcon-plus/common/model"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/nodata/collector"
 	"github.com/open-falcon/falcon-plus/modules/nodata/config"
 	"github.com/open-falcon/falcon-plus/modules/nodata/g"
@@ -43,23 +43,23 @@ func judge() {
 	keys := config.Keys()
 	for _, key := range keys {
 		ndcfg, found := config.GetNdConfig(key)
-		if !found { //策略不存在,不处理
+		if !found { // 策略不存在,不处理
 			continue
 		}
 		step := ndcfg.Step
 		mock := ndcfg.Mock
 
 		item, found := collector.GetFirstItem(key)
-		if !found { //没有数据,未开始采集,不处理
+		if !found { // 没有数据,未开始采集,不处理
 			continue
 		}
 
 		lastTs := now - getTimeout(step)
-		if item.FStatus != "OK" || item.FTs < lastTs { //数据采集失败,不处理
+		if item.FStatus != "OK" || item.FTs < lastTs { // 数据采集失败,不处理
 			continue
 		}
 
-		if fCompare(mock, item.Value) == 0 { //采集到的数据为mock数据,则认为上报超时了
+		if fCompare(mock, item.Value) == 0 { // 采集到的数据为mock数据,则认为上报超时了
 			if LastTs(key)+step <= now {
 				TurnNodata(key, now)
 				genMock(genTs(now, step), key, ndcfg)
@@ -67,7 +67,7 @@ func judge() {
 			continue
 		}
 
-		if item.Ts < lastTs { //数据过期, 则认为上报超时
+		if item.Ts < lastTs { // 数据过期, 则认为上报超时
 			if LastTs(key)+step <= now {
 				TurnNodata(key, now)
 				genMock(genTs(now, step), key, ndcfg)
@@ -79,11 +79,11 @@ func judge() {
 	}
 }
 
-func genMock(ts int64, key string, ndcfg *cmodel.NodataConfig) {
-	sender.AddMock(key, ndcfg.Endpoint, ndcfg.Metric, cutils.SortedTags(ndcfg.Tags), ts, ndcfg.Type, ndcfg.Step, ndcfg.Mock)
+func genMock(ts int64, key string, ndcfg *cm.NodataConfig) {
+	sender.AddMock(key, ndcfg.Endpoint, ndcfg.Metric, cu.SortedTags(ndcfg.Tags), ts, ndcfg.Type, ndcfg.Step, ndcfg.Mock)
 }
 
-//mock的数据,要前移1+个周期、防止覆盖正常值
+// mock的数据,要前移1+个周期、防止覆盖正常值
 func genTs(nowTs int64, step int64) int64 {
 	if step < 1 {
 		step = 60
@@ -94,7 +94,7 @@ func genTs(nowTs int64, step int64) int64 {
 
 func getTimeout(step int64) int64 {
 	if step < 60 {
-		return 180 //60*3
+		return 180 // 60*3
 	}
 
 	return step * 3

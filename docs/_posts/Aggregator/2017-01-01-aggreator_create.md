@@ -29,7 +29,7 @@ layout: default
 ```Status: 200```
 ```{
   "id": 16,
-  "grp_id": 343,
+  "group_id": 343,
   "numerator": "$(cpu.idle)",
   "denominator": "2",
   "endpoint": "testenp",

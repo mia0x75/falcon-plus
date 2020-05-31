@@ -8,40 +8,40 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 	"github.com/open-falcon/falcon-plus/modules/alarm/redi"
 )
 
-// ConsumeSms 处理队列
-func ConsumeSms() {
+// ConsumeSMS 处理队列
+func ConsumeSMS() {
 	go func() {
 		d := time.Duration(1) * time.Second
 		for range time.Tick(d) {
-			L := redi.PopAllSms()
+			L := redi.PopAllSMS()
 			if len(L) == 0 {
 				continue
 			}
-			SendSmsList(L)
+			SendSMSList(L)
 		}
 	}()
 }
 
-// SendSmsList 处理短信告警队列
-func SendSmsList(L []*g.AlarmDto) {
-	for _, sms := range L {
-		SmsWorkerChan <- 1
-		go SendSms(sms)
+// SendSMSList 处理短信告警队列
+func SendSMSList(L []*g.AlarmDto) {
+	for _, s := range L {
+		SMSWorkerChan <- 1
+		go SendSMS(s)
 	}
 }
 
-// SendSms 发送短信告警
-func SendSms(sms *g.AlarmDto) {
+// SendSMS 发送短信告警
+func SendSMS(s *g.AlarmDto) {
 	defer func() {
-		<-SmsWorkerChan
+		<-SMSWorkerChan
 	}()
 
-	addr := g.Config().API.Sms
+	addr := g.Config().API.SMS
 	for {
 		// Blank
 		if strings.TrimSpace(addr) == "" {
@@ -53,16 +53,16 @@ func SendSms(sms *g.AlarmDto) {
 			log.Errorf("[E] %s is not a valid url.", addr)
 			break
 		}
-		if data, err := json.Marshal(sms); err != nil {
+		if data, err := json.Marshal(s); err != nil {
 			log.Errorf("[E] %v", err)
 			break
 		} else {
-			resp, err := cutils.Post(addr, data)
+			resp, err := cu.Post(addr, data)
 			if err != nil {
-				log.Errorf("[E] send sms fail, content: %v, error: %v", sms, err)
+				log.Errorf("[E] send sms fail, content: %v, error: %v", s, err)
 				break
 			}
-			log.Debugf("[D] send sms: %v, resp: %v, url: %s", sms, resp, addr)
+			log.Debugf("[D] send sms: %v, resp: %v, url: %s", s, resp, addr)
 		}
 		break
 	}

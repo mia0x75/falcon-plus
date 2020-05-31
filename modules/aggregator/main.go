@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/open-falcon/falcon-plus/common/sdk/sender"
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cs "github.com/open-falcon/falcon-plus/common/sdk/sender"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/cron"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/db"
 	"github.com/open-falcon/falcon-plus/modules/aggregator/g"
@@ -26,7 +26,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf(g.Banner, "Aggregator")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -42,7 +42,7 @@ func main() {
 	}
 
 	g.ParseConfig(*cfg)
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	if err := db.InitDB(); err != nil {
 		os.Exit(0)
 	}
@@ -51,10 +51,10 @@ func main() {
 	cron.UpdateItems()
 
 	// sdk configuration
-	sender.Debug = cutils.IsDebug()
-	sender.PostPushUrl = g.Config().API.Agent
+	cs.Debug = cu.IsDebug()
+	cs.PostPushUrl = g.Config().API.Agent
 	// sender
-	sender.StartSender()
+	cs.StartSender()
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

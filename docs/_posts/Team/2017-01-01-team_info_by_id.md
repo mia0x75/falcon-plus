@@ -1,6 +1,6 @@
 ---
 category: Team
-apiurl: '/api/v1/team/t/#{team_id}'
+apiurl: '/api/v1/team/id/#{id}'
 title: "Get Team Info By Id"
 type: 'GET'
 sample_doc: 'team.html'

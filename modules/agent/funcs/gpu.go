@@ -4,11 +4,11 @@ import (
 	"github.com/mindprince/gonvml"
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // GpuMetrics 需要load libnvidia-ml.so.1库
-func GpuMetrics() (L []*cmodel.MetricValue) {
+func GpuMetrics() (L []*cm.MetricValue) {
 	if err := gonvml.Initialize(); err != nil {
 		log.Errorf("[E] Initialize error: %v", err)
 		return

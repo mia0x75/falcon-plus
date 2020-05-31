@@ -36,9 +36,9 @@ var (
 	CounterCacheCnt       = nproc.NewSCounterBase("CounterCacheCnt")
 )
 
-// Rpc
+// RPC
 var (
-	GraphRpcRecvCnt = nproc.NewSCounterQps("GraphRpcRecvCnt")
+	GraphRPCRecvCnt = nproc.NewSCounterQps("GraphRpcRecvCnt")
 )
 
 // Query
@@ -51,11 +51,12 @@ var (
 	GraphLoadDbCnt    = nproc.NewSCounterQps("GraphLoadDbCnt") // load sth from db when query/info, tmp
 )
 
+// GetAll TODO:
 func GetAll() []interface{} {
 	ret := make([]interface{}, 0)
 
 	// rpc recv
-	ret = append(ret, GraphRpcRecvCnt.Get())
+	ret = append(ret, GraphRPCRecvCnt.Get())
 
 	// query
 	ret = append(ret, GraphQueryCnt.Get())

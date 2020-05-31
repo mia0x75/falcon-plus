@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
@@ -29,11 +29,11 @@ func start() {
 		return
 	}
 
-	if !cutils.IsDebug() {
+	if !cu.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	routes = gin.Default()
-	//start gin server
+	// Start gin server
 	log.Infof("[I] http listening %s", addr)
 
 	SetupRoutes()

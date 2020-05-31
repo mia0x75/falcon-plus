@@ -6,14 +6,14 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	cmodel "github.com/open-falcon/falcon-plus/common/model"
+	cm "github.com/open-falcon/falcon-plus/common/model"
 )
 
 // QueryHosts TODO:
 func QueryHosts() (map[string]int, error) {
 	m := make(map[string]int)
 
-	q := "select id, hostname from host"
+	q := "SELECT id, hostname FROM hosts"
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)
@@ -40,10 +40,10 @@ func QueryHosts() (map[string]int, error) {
 }
 
 // QueryMonitoredHosts TODO:
-func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
-	hosts := make(map[int]*cmodel.Host)
+func QueryMonitoredHosts() (map[int]*cm.Host, error) {
+	hosts := make(map[int]*cm.Host)
 	now := time.Now().Unix()
-	q := fmt.Sprintf("select id, hostname from host where maintain_begin > %d or maintain_end < %d", now, now)
+	q := fmt.Sprintf("SELECT id, hostname FROM hosts WHERE maintain_begin > %d or maintain_end < %d", now, now)
 	rows, err := DB.Query(q)
 	if err != nil {
 		log.Errorf("[E] exec %s fail: %v", q, err)
@@ -52,13 +52,13 @@ func QueryMonitoredHosts() (map[int]*cmodel.Host, error) {
 
 	defer rows.Close()
 	for rows.Next() {
-		t := cmodel.Host{}
-		err = rows.Scan(&t.Id, &t.Name)
+		t := cm.Host{}
+		err = rows.Scan(&t.ID, &t.Name)
 		if err != nil {
 			log.Warnf("[W] %v", err)
 			continue
 		}
-		hosts[t.Id] = &t
+		hosts[t.ID] = &t
 	}
 
 	return hosts, nil

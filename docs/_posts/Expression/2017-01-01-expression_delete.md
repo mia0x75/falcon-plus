@@ -1,6 +1,6 @@
 ---
 category: Expression
-apiurl: '/api/v1/expression/#{expression_id}'
+apiurl: '/api/v1/expression/#{id}'
 title: "Delete Expression"
 type: 'DELETE'
 sample_doc: 'expression.html'

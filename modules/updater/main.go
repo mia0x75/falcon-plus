@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/toolkits/sys"
 
-	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	cu "github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/updater/cron"
 	"github.com/open-falcon/falcon-plus/modules/updater/g"
 	"github.com/open-falcon/falcon-plus/modules/updater/http"
@@ -21,7 +21,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	flag.Parse()
 
-	fmt.Printf(g.Banner, "Updater")
+	fmt.Printf(g.Banner, g.Module)
 	fmt.Println()
 	fmt.Println()
 	fmt.Printf("%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n%-11s: %s\n",
@@ -41,7 +41,7 @@ func main() {
 		log.Fatalf("[F] %v", err)
 	}
 
-	cutils.InitLog(g.Config().Log.Level)
+	cu.InitLog(g.Config().Log.Level)
 	g.InitGlobalVariables()
 
 	CheckDependency()
@@ -60,6 +60,7 @@ func main() {
 	select {}
 }
 
+// CheckDependency 检查依赖
 func CheckDependency() {
 	_, err := sys.CmdOut("wget", "--help")
 	if err != nil {

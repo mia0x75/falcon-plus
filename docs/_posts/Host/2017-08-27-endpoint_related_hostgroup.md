@@ -1,6 +1,6 @@
 ---
 category: Host
-apiurl: '/api/v1/endpoint/#{endpoint_name}/hostgroup'
+apiurl: '/api/v1/endpoint/#{name}/hostgroup'
 title: "Get related HostGorup of Endpoint"
 type: 'GET'
 sample_doc: 'host.html'
@@ -8,18 +8,18 @@ layout: default
 ---
  * [Session](#/authentication) Required
 * ex. /api/v1/endpoint/test1/hostgroup
-* grp_name: hostgroup name
+* name: hostgroup name
  ### Response
  ```Status: 200```
 ```[
   {
     "id": 78,
-    "grp_name": "tplB",
+    "name": "tplB",
     "create_user": "userA"
   },
   {
     "id": 145,
-    "grp_name": "Owl_Default_Group",
+    "name": "Owl_Default_Group",
     "create_user": "userA"
   }
 ]```

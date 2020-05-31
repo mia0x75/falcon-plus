@@ -4,10 +4,10 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
-// TODO:
+// 变量定义
 var (
 	IMWorkerChan   chan int
-	SmsWorkerChan  chan int
+	SMSWorkerChan  chan int
 	MailWorkerChan chan int
 )
 
@@ -15,6 +15,6 @@ var (
 func InitSenderWorker() {
 	workerConfig := g.Config().Worker
 	IMWorkerChan = make(chan int, workerConfig.IM)
-	SmsWorkerChan = make(chan int, workerConfig.Sms)
+	SMSWorkerChan = make(chan int, workerConfig.SMS)
 	MailWorkerChan = make(chan int, workerConfig.Mail)
 }

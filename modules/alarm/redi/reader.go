@@ -9,9 +9,10 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/alarm/g"
 )
 
-func PopAllSms() []*g.AlarmDto {
+// PopAllSMS 短信告警读取
+func PopAllSMS() []*g.AlarmDto {
 	var ret []*g.AlarmDto
-	queue := g.Config().Queue.InstantQueues.SmsQueue
+	queue := g.Config().Queue.InstantQueues.SMSQueue
 
 	rc := g.RedisConnPool.Get()
 	defer rc.Close()
@@ -42,6 +43,7 @@ func PopAllSms() []*g.AlarmDto {
 	return ret
 }
 
+// PopAllIM 即时消息告警读取
 func PopAllIM() []*g.AlarmDto {
 	var ret []*g.AlarmDto
 	queue := g.Config().Queue.InstantQueues.IMQueue
@@ -75,6 +77,7 @@ func PopAllIM() []*g.AlarmDto {
 	return ret
 }
 
+// PopAllMail 邮件告警读取
 func PopAllMail() []*g.AlarmDto {
 	var ret []*g.AlarmDto
 	queue := g.Config().Queue.InstantQueues.MailQueue
