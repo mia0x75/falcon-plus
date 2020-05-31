@@ -48,11 +48,17 @@ func JSONR(c *gin.Context, arg ...interface{}) (werror error) {
 	} else {
 		switch msg.(type) {
 		case string:
-			body = RespJSON{Error: msg.(string)}
+			body = RespJSON{
+				Error: msg.(string),
+			}
 		case error:
-			body = RespJSON{Error: msg.(error).Error()}
+			body = RespJSON{
+				Error: msg.(error).Error(),
+			}
 		default:
-			body = RespJSON{Error: "system type error. please ask admin for help"}
+			body = RespJSON{
+				Error: "system type error. please ask admin for help",
+			}
 		}
 		c.JSON(code, body)
 	}

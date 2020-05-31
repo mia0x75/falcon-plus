@@ -27,6 +27,7 @@ func InternelError(c *gin.Context, op string, err error) {
 	JSONR(c, HTTPInternalServerError, fmt.Sprintf(StandardErrorMessage, op))
 }
 
+// cu.RespJSON ?
 type RespJSON struct {
 	Error string `json:"error,omitempty"`
 	Msg   string `json:"message,omitempty"`
